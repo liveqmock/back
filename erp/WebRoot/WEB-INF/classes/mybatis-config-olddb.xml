@@ -1,0 +1,40 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE configuration PUBLIC "-//mybatis.org//DTD Config 3.0//EN" "http://mybatis.org/dtd/mybatis-3-config.dtd">
+<configuration>
+
+	<typeAliases>
+    
+		<typeAlias alias="KN_App_User" type="com.kn.data.pojo.KN_App_User"/>
+		<typeAlias alias="KN_LPCS_DY" type="com.kn.data.pojo.KN_LPCS_DY"/>
+		<typeAlias alias="KN_LPCS_LP_OLD" type="com.kn.data.pojo.KN_LPCS_LP_OLD"/>
+		<typeAlias alias="KN_LPCS_LT_OLD" type="com.kn.data.pojo.KN_LPCS_LT_OLD"/>
+		<typeAlias alias="KN_LPCS_LG_OLD" type="com.kn.data.pojo.KN_LPCS_LG_OLD"/>
+		<typeAlias alias="KN_LPCS_LP2" type="com.kn.data.pojo.KN_LPCS_LP2"/>
+		<typeAlias alias="KN_DATABASES" type="com.kn.data.pojo.KN_DATABASES"/>
+		<typeAlias alias="KN_KHGXGL_KH" type="com.kn.data.pojo.KN_KHGXGL_KH"/>
+		<typeAlias alias="KN_RGS_YZ" type="com.kn.data.pojo.KN_RGS_YZ"/>
+		<typeAlias alias="KN_XSGL_RGS" type="com.kn.data.pojo.KN_XSGL_RGS"/>
+    	<typeAlias alias="KNLOG_XSGL_RGS" type="com.kn.data.pojo.KNLOG_XSGL_RGS" />
+    	<typeAlias alias="KN_XSGL_YZJL" type="com.kn.data.pojo.KN_XSGL_YZJL" />
+    	<typeAlias alias="KN_CWGL_YSK" type="com.kn.data.pojo.KN_CWGL_YSK" />
+    	<typeAlias alias="KN_CUGL_SSK" type="com.kn.data.pojo.KN_CUGL_SSK" />
+	</typeAliases>
+	
+	<mappers>	
+		<mapper resource="com/kn/data/mappers/OldDataMapper.xml"/>
+		<mapper resource="com/kn/data/mappers/KN_LPCS_DY_Mapper.xml"/>
+		<mapper resource="com/kn/data/mappers/KN_LPCS_LP_OLD_Mapper.xml"/>
+		<mapper resource="com/kn/data/mappers/KN_LPCS_LT_OLD_Mapper.xml"/>
+		<mapper resource="com/kn/data/mappers/KN_LPCS_LG_OLD_Mapper.xml"/>
+		<mapper resource="com/kn/data/mappers/KN_LPCS_LP2_Mapper.xml"/>
+		<mapper resource="com/kn/data/mappers/KN_DATABASES_Mapper.xml"/>
+		<mapper resource="com/kn/data/mappers/KN_KHGXGL_KH_Mapper.xml"/>
+		<mapper resource="com/kn/data/mappers/KN_RGS_YZ_Mapper.xml"/>
+		<mapper resource="com/kn/data/mappers/KN_XSGL_RGS_Mapper.xml"/>
+		<mapper resource="com/kn/data/mappers/KNLOG_XSGL_RGS_Mapper.xml" />
+		<mapper resource="com/kn/data/mappers/KN_XSGL_YZJL_Mapper.xml" />
+		<mapper resource="com/kn/data/mappers/KN_CWGL_YSK_Mapper.xml" />
+		<mapper resource="com/kn/data/mappers/KN_CUGL_SSK_Mapper.xml" />
+	</mappers>	
+</configuration>		
+			

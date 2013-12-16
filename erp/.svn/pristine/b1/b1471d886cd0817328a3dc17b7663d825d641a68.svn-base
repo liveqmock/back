@@ -1,0 +1,130 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE struts PUBLIC
+    "-//Apache Software Foundation//DTD Struts Configuration 2.0//EN"
+    "http://struts.apache.org/dtds/struts-2.0.dtd">
+<struts>
+	<include file="struts-default.xml" />
+	
+	<constant name="struts.ui.theme" value="simple" />
+
+	<!-- 指定Web应用的默认编码集，相当于调用 HttpServletRequest的setCharacterEncoding方法 -->
+	<constant name="struts.i18n.encoding" value="UTF-8" />
+	<!-- 设 置浏览器是否缓存静态内容，默认值为true（生产环境下使用），开发阶段最好 关闭 -->
+	<constant name="struts.serve.static.browserCache" value="false" />
+	<!-- 当 struts的配置文件修改后，系统是否自动重新加载该文件，默认值为false（生 产环境下使用），开发阶段最好打开 -->
+	<constant name="struts.configuration.xml.reload" value="true" />
+	<!-- 开 发模式下使用，这样可以打印出更详细的错误信息-->
+	<constant name="struts.devMode" value="false" />
+	
+	<include file="struts-demo-empty.xml"/>
+	<include file="struts-customer.xml"/>
+	<include file="struts-customer-tianluan.xml"/>
+	<include file="struts-customer-huijing.xml"/>
+	<include file="struts-customer-oldhuijing.xml"/>
+	<include file="struts-customer-shanshui.xml"/>
+	<include file="struts-customer-guangzhou.xml"/>
+	<include file="struts-user.xml"/>
+	<include file="struts-user-tianluan.xml"/>
+	<include file="struts-user-huijing.xml"/>
+	<include file="struts-user-shanshui.xml"/>
+	<include file="struts-user-oldhuijing.xml"/>
+	<include file="struts-sale-hengda.xml"/>
+	<include file="struts-presale-hengda.xml"/>
+	<include file="struts-user-permission.xml"/>
+	<include file="struts-report-hengda.xml"/>
+	<include file="struts-customer-guangzhou.xml"/>
+	<include file="struts-saleunit-guangzhou.xml"/>
+	<include file="struts-saleunit-new.xml"/>
+	<include file="struts-saleunit-new-questions.xml"/>
+	<include file="struts-saleunit-new-init.xml"/><!-- 楼盘初始 -->
+	<include file="struts-finance-guangzhou.xml"/>
+	<include file="struts-report-guangzhou.xml"/>
+	<include file="struts-saleunit-new-contract-record.xml"/>
+	<include file="struts-saleunit-financial-manager.xml"/>
+	<include file="struts-saleunit-new-report.xml"/>
+	<include file="struts-base.xml"/> <!-- 自定义struts基础xml -->
+	<include file="struts-setup-manager.xml"/> <!-- 下拉框及自定义下拉框的设置管理 -->
+	<include file="struts-saleunit-chip-manager.xml"/> <!-- 认筹 -->
+	<include file="struts-saleunit-common.xml"/> <!-- common action -->
+	<include file="struts-saleunit-new-unit-group.xml"/> <!-- 组团 -->
+	<include file="struts-customer-collection.xml"/> <!-- VIP客户信息数据分析 -->
+	<include file="struts-user-manager.xml"/> <!-- 用户管理 -->
+	<include file="struts-company-project-manager.xml"/> <!-- 项目管理 -->
+	<include file="struts-saleunit-scene.xml"/> <!-- 现场销控情况 -->
+	
+	<include file="struts-demo-easyui.xml"/> <!-- demo -->
+	
+	<include file="struts-customer-phone.xml"/> <!-- 主要是处理关于客户号码归属地的问题 -->
+	<include file="struts-customer-log.xml"/> <!--客户修改信息 -->
+	<include file="struts-unit-discount-manager.xml"/> <!-- 折扣管理 -->
+	
+	<include file="struts-saleunit-contract-manager.xml"/> <!-- 成交管理(客户,单元) -->
+	
+	<include file="struts-saleunit-operation.xml"/> <!-- 挞定、改名、换房、退房  -->
+	<include file="struts-saleunit-index-report.xml"/> <!-- 主页  -->
+	
+	<include file="struts-mobile.xml"/> <!-- 手机  -->
+
+	<package name="book" extends="struts-default" >
+	
+	<!-- 添加图书信息 -->
+		<action name="addSBook" class="com.dou.book.action.SBookAction" method="addSBook">
+			<result name="success">/success.jsp</result>
+			<result name="error">/error.jsp</result>
+		</action>
+		<!-- 查看全部图书信息 -->
+		<action name="viewSBook" class="com.dou.book.action.SBookAction" method="viewSBook">
+			<result name="success" >/viewBook.jsp</result>
+			<result name="error">/viewBook.jsp</result>
+		</action>
+		<!-- 删除图书信息 -->
+		<action name="removeSBook" class="com.dou.book.action.SBookAction" method="removeSBook">
+			<result name="success" type="redirectAction">/viewSBook.action</result>
+			<result name="error" type="redirectAction">/viewSBook.action</result>
+		</action>
+		<action name="findById" class="com.dou.book.action.SBookAction" method="modifySBook">
+			<result name="success">/updateBook.jsp</result>
+			<result name="error" type="redirectAction">/viewSBook.action</result>
+		</action>
+		<action name="updateSBook" class="com.dou.book.action.SBookAction" method="updateSBook">
+			<result name="success" type="redirectAction">/viewSBook.action</result>
+			<result name="error" type="redirectAction">/viewSBook.action</result>
+		</action>
+	</package>
+	
+	<package name="student" extends="struts-default" >
+	
+	<!-- 添加的录入 -->
+		<action name="newStudent" class="com.dou.student.action.StudentAction" method="newStudent">
+			<result name="success">/student/addStudent.jsp</result>
+			<result name="error">/student/error.jsp</result>
+		</action>
+	<!-- 执行添加 -->
+		<action name="addStudent" class="com.dou.student.action.StudentAction" method="addStudent">
+			<result name="success">/student/success.jsp</result>
+			<result name="error">/student/error.jsp</result>
+		</action>
+		<!-- 查看全部 -->
+		<action name="queryStudent" class="com.dou.student.action.StudentAction" method="queryStudent">
+			<result name="success" >/student/viewStudent.jsp</result>
+			<result name="error">/student/viewStudent.jsp</result>
+		</action>
+		<!-- 查看一个学生 -->
+		<action name="findStudent" class="com.dou.student.action.StudentAction" method="findStudent">
+			<result name="success">/student/updateStudent.jsp</result>
+			<result name="error" type="redirectAction">/student/queryStudent.action</result>
+		</action>
+		<!-- 修改 -->
+		<action name="updateStudent" class="com.dou.student.action.StudentAction" method="updateStudent">
+			<result name="success" type="redirectAction">/student/queryStudent.action</result>
+			<result name="error" type="redirectAction">/student/queryStudent.action</result>
+		</action>
+		<!-- 删除 -->
+		<action name="deleteStudent" class="com.dou.student.action.StudentAction" method="deleteStudent">
+			<result name="success" type="redirectAction">/student/queryStudent.action</result>
+			<result name="error" type="redirectAction">/student/queryStudent.action</result>
+		</action>
+	</package>
+	
+	
+</struts>

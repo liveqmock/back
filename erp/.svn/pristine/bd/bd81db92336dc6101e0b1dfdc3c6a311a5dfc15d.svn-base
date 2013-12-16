@@ -1,0 +1,100 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.ihk.kn.data.IOlddbIdlogMapper">
+
+	<resultMap type="OlddbIdlog" id="olddbIdlogResultMap">
+		<id property="id" column="id" />        
+		<result property="myTable" column="my_table" />
+		<result property="myId" column="my_id" />
+		<result property="olddbId" column="olddb_id" />
+	</resultMap>
+
+	<insert id="addOlddbIdlog" parameterType="OlddbIdlog">
+		 <selectKey resultType="java.lang.Integer" keyProperty="id" order="AFTER" >
+            SELECT @@IDENTITY
+        </selectKey>		
+		insert into olddb_idlog(
+		my_table,
+		my_id,
+		olddb_id
+		)
+			VALUES(
+		#{myTable},
+		#{myId},
+		#{olddbId}
+			)
+		
+	</insert>
+	<delete id="deleteOlddbIdlog" parameterType="com.ihk.utils.base.PojoDeleteCond">
+	update olddb_idlog set is_deleted='1', mod_id=#{modId}, mod_time=#{modTime} where id=#{id};
+	</delete>
+	<update id="updateOlddbIdlog" parameterType="int">
+	update olddb_idlog set 
+		my_table=#{myTable},
+		my_id=#{myId},
+		olddb_id=#{olddbId}
+	 where id=#{id}
+	</update>
+	<select id="findOlddbIdlogById" resultMap="olddbIdlogResultMap">
+	select * from olddb_idlog where id=#{id}
+	</select>
+    
+	<sql id="findWhereCond"> 
+		<where>
+			<if test="myTable != null and myTable != ''">
+			my_table = #{myTable}
+            </if>    
+		</where>
+		
+	</sql>
+	
+	<select id="findOlddbIdlogCount" resultType="int" parameterType="com.ihk.kn.data.pojo.OlddbIdlogCond">
+		SELECT count(0) from olddb_idlog  
+        <include refid="findWhereCond"/>     
+    </select>
+        
+	<select id="findOlddbIdlog" resultMap="olddbIdlogResultMap" parameterType="com.ihk.kn.data.pojo.OlddbIdlogCond">
+		SELECT * from  olddb_idlog 
+        <include refid="findWhereCond"/> 
+            <if test="topNum  > 0">
+            limit #{startLine}
+            ,#{topNum}
+            </if>
+    </select>
+    
+	<select id="findOlddbIdlogPage" resultMap="olddbIdlogResultMap" parameterType="com.ihk.kn.data.pojo.OlddbIdlogCond">
+		SELECT * from  olddb_idlog 
+        <include refid="findWhereCond"/> 
+    
+		<if test="startLine >= 0">
+		<if test="pageSize > 0">
+			limit #{startLine},#{pageSize};
+		</if>
+		</if>
+	</select>
+	
+	<select id="findOlddbIdlogByOldIdAndTableName" resultMap="olddbIdlogResultMap" parameterType="com.ihk.kn.data.pojo.OlddbIdlogCond">
+		SELECT * from  olddb_idlog 
+        where my_table = #{myTable}
+        and olddb_id = #{oldId}
+        order by id desc limit 1
+	</select>
+	
+	<select id="findIdMapByTableName" resultType="java.util.Map">
+		SELECT my_id as mid, olddb_id as oid from  olddb_idlog 
+        where my_table = #{myTable}
+	</select>
+	
+	<select id="findQuestionByCustomerId" resultType="java.util.Map">
+		SELECT t.id oid,t.remark1 remark1,concat(c.字段名称,':',cc.值) as val
+		FROM 
+		customer t , olddb_idlog o,
+		climb.客户关系管理_调查项目_属性 c,climb.客户关系管理_调查项目_值 cc
+		WHERE o.my_id = t.id 
+		AND o.my_table = 'tj6_customer'
+		AND o.olddb_id = cc.客户id 
+		AND c.字段id = cc.字段id
+		and cc.客户id = #{id}
+	</select>
+	
+</mapper>

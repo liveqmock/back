@@ -1,0 +1,152 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.ihk.property.data.IPayWayDetailMapper">
+
+	<resultMap type="PayWayDetail" id="payWayDetailResultMap">
+		<id property="id" column="id" />        
+		<result property="wayId" column="way_id" />
+		<result property="detailName" column="detail_name" />
+		<result property="dayNum" column="day_num" />
+		<result property="payType" column="pay_type" />
+		<result property="payName" column="pay_name" />
+		<result property="baseMoneyType" column="base_money_type" />
+		<result property="typeName" column="type_name" />
+		<result property="feeType" column="fee_type" />
+		<result property="payMoney" column="pay_money" />
+		<result property="payPercent" column="pay_percent" />
+		<result property="payDate" column="pay_date" />
+		<result property="orderIndex" column="order_index" />
+		<result property="remark" column="remark" />
+		<result property="modNum" column="mod_num" />
+		<result property="isInclude" column="is_include" />
+		<result property="isDeleted" column="is_deleted" />
+		<result property="createdId" column="created_id" />
+		<result property="createdTime" column="created_time" />
+		<result property="modId" column="mod_id" />
+		<result property="modTime" column="mod_time" />
+	</resultMap>
+
+	<insert id="addPayWayDetail" parameterType="PayWayDetail">
+		 <selectKey resultType="java.lang.Integer" keyProperty="id" order="AFTER" >
+            SELECT @@IDENTITY
+        </selectKey>		
+		insert into pay_way_detail(
+		way_id,
+		detail_name,
+		day_num,
+		pay_type,
+		pay_name,
+		base_money_type,
+		type_name,
+		fee_type,
+		pay_money,
+		pay_percent,
+		pay_date,
+		order_index,
+		remark,
+		mod_num,
+		is_include,
+		is_deleted,
+		created_id,
+		created_time,
+		mod_id,
+		mod_time
+		)
+			VALUES(
+		#{wayId},
+		#{detailName},
+		#{dayNum},
+		#{payType},
+		#{payName},
+		#{baseMoneyType},
+		#{typeName},
+		#{feeType},
+		#{payMoney},
+		#{payPercent},
+		#{payDate},
+		#{orderIndex},
+		#{remark},
+		#{modNum},
+		#{isInclude},
+		#{isDeleted},
+		#{createdId},
+		#{createdTime},
+		#{modId},
+		#{modTime}
+			)
+		
+	</insert>
+	<delete id="deletePayWayDetail" parameterType="com.ihk.utils.base.PojoDeleteCond">
+	update pay_way_detail set is_deleted='1', mod_id=#{modId}, mod_time=#{modTime} where id=#{id};
+	</delete>
+	<update id="updatePayWayDetail" parameterType="int">
+	update pay_way_detail set 
+		way_id=#{wayId},
+		detail_name=#{detailName},
+		day_num=#{dayNum},
+		pay_type=#{payType},
+		pay_name=#{payName},
+		base_money_type=#{baseMoneyType},
+		type_name=#{typeName},
+		fee_type=#{feeType},
+		pay_money=#{payMoney},
+		pay_percent=#{payPercent},
+		pay_date=#{payDate},
+		order_index=#{orderIndex},
+		remark=#{remark},
+		mod_num=#{modNum},
+		is_include=#{isInclude},
+		mod_id=#{modId},
+		mod_time=#{modTime}
+	 where id=#{id}
+	</update>
+	
+	<select id="findPayWayDetailById" resultMap="payWayDetailResultMap">
+	select * from pay_way_detail where id=#{id}
+	</select>
+    
+	<sql id="findWhereCond"> 
+		<where>
+        
+			<if test="wayId != null and wayId != 0">
+				way_id = #{wayId}
+            </if>    
+            and is_deleted = '0'
+           
+		</where>
+	</sql>
+	
+	<select id="findPayWayDetailCount" resultType="int" parameterType="com.ihk.property.data.pojo.PayWayDetailCond">
+		SELECT count(0) from pay_way_detail  
+        <include refid="findWhereCond"/>     
+    </select>
+        
+	<select id="findPayWayDetail" resultMap="payWayDetailResultMap" parameterType="com.ihk.property.data.pojo.PayWayDetailCond">
+		SELECT * from  pay_way_detail 
+        <include refid="findWhereCond"/> 
+		<if test="topNum > 0">
+			limit #{topNum};
+		</if>
+    </select>
+    
+	<select id="findPayWayDetailPage" resultMap="payWayDetailResultMap" parameterType="com.ihk.property.data.pojo.PayWayDetailCond">
+		SELECT * from  pay_way_detail 
+        <include refid="findWhereCond"/> 
+    
+		<if test="startLine >= 0">
+		<if test="pageSize > 0">
+			limit #{startLine},#{pageSize};
+		</if>
+		</if>
+	</select>
+	
+	<select id="findPayWayDetailByWayId" resultMap="payWayDetailResultMap">
+		select * from pay_way_detail where way_id = #{wayId} and is_deleted = '0' order by pay_type
+	</select>
+	
+	<select id="findPayWayDetailByWayIdAndPayType" resultMap="payWayDetailResultMap" parameterType="map">
+		select * from pay_way_detail where way_id = #{wayId} and pay_type = #{payType} and is_deleted = '0'
+	</select>
+	
+	
+</mapper>

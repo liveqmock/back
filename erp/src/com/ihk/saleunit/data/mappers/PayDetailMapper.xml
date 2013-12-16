@@ -1,0 +1,128 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.ihk.saleunit.data.IPayDetailMapper">
+
+	<resultMap type="PayDetail" id="payDetailResultMap">
+		<id property="id" column="id" />        
+		<result property="confirmType" column="confirm_type" />
+		<result property="mainId" column="main_id" />
+		<result property="orderIndex" column="order_index" />
+		<result property="payType" column="pay_type" />
+		<result property="payName" column="pay_name" />
+		<result property="limitDate" column="limit_date" />
+		<result property="payMoney" column="pay_money" />
+		<result property="remark" column="remark" />
+		<result property="isPay" column="is_pay" />
+		<result property="isDeleted" column="is_deleted" />
+		<result property="createdId" column="created_id" />
+		<result property="createdTime" column="created_time" />
+		<result property="modId" column="mod_id" />
+		<result property="modTime" column="mod_time" />
+	</resultMap>
+
+	<insert id="addPayDetail" parameterType="PayDetail">
+		 <selectKey resultType="java.lang.Integer" keyProperty="id" order="AFTER" >
+            SELECT @@IDENTITY
+        </selectKey>		
+		insert into pay_detail(
+		confirm_type,
+		main_id,
+		order_index,
+		pay_type,
+		pay_name,
+		limit_date,
+		pay_money,
+		remark,
+		is_pay,
+		is_deleted,
+		created_id,
+		created_time,
+		mod_id,
+		mod_time
+		)
+			VALUES(
+		#{confirmType},
+		#{mainId},
+		#{orderIndex},
+		#{payType},
+		#{payName},
+		#{limitDate},
+		#{payMoney},
+		#{remark},
+		#{isPay},
+		#{isDeleted},
+		#{createdId},
+		#{createdTime},
+		#{modId},
+		#{modTime}
+			)
+		
+	</insert>
+	<delete id="deletePayDetail" parameterType="int">
+	update pay_detail set is_deleted='1' where id=#{id};
+	</delete>
+	<update id="updatePayDetail" parameterType="int">
+	update pay_detail set 
+		confirm_type=#{confirmType},
+		main_id=#{mainId},
+		order_index=#{orderIndex},
+		pay_type=#{payType},
+		pay_name=#{payName},
+		limit_date=#{limitDate},
+		pay_money=#{payMoney},
+		remark=#{remark},
+		is_pay=#{isPay},
+		is_deleted=#{isDeleted},
+		created_id=#{createdId},
+		created_time=#{createdTime},
+		mod_id=#{modId},
+		mod_time=#{modTime}
+	 where id=#{id}
+	</update>
+	<select id="findPayDetailById" resultMap="payDetailResultMap">
+	select * from pay_detail where id=#{id}
+	</select>
+    
+	<sql id="findWhereCond"> 
+		<where>
+			
+			<if test="confirmType != null and confirmType != ''">
+				and confirm_type = #{confirmType}
+			</if>
+			
+			<if test="mainId != null and mainId != ''">
+				and main_id = #{mainId}
+			</if>
+			
+		</where>
+	</sql>
+	
+	<select id="findPayDetailCount" resultType="int" parameterType="com.ihk.saleunit.data.pojo.PayDetailCond">
+		SELECT count(0) from pay_detail  
+        <include refid="findWhereCond"/>     
+    </select>
+        
+	<select id="findPayDetail" resultMap="payDetailResultMap" parameterType="com.ihk.saleunit.data.pojo.PayDetailCond">
+		SELECT * from  pay_detail 
+        <include refid="findWhereCond"/> 
+		<if test="topNum > 0">
+			limit #{topNum};
+		</if>
+    </select>
+    
+	<select id="findPayDetailPage" resultMap="payDetailResultMap" parameterType="com.ihk.saleunit.data.pojo.PayDetailCond">
+		SELECT * from  pay_detail 
+        <include refid="findWhereCond"/> 
+    
+		<if test="startLine >= 0">
+		<if test="pageSize > 0">
+			limit #{startLine},#{pageSize};
+		</if>
+		</if>
+	</select>
+	
+	<select id="findPayDetailMaxOrderIndex" resultType="Integer">
+		select max(order_index) from pay_detail
+	</select>
+	
+</mapper>

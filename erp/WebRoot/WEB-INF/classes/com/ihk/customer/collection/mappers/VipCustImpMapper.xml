@@ -1,0 +1,229 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.ihk.customer.collection.IVipCustImpMapper">
+
+	<resultMap type="VipCustImp" id="vipCustImpResultMap">
+		<id property="id" column="id" />        
+		<result property="customerNo" column="customer_no" />
+		<result property="source" column="source" />
+		<result property="customerName" column="customer_name" />
+		<result property="dealDate" column="deal_date" />
+		<result property="idcardNo" column="idcard_no" />
+		<result property="tel" column="tel" />
+		<result property="phone" column="phone" />
+		<result property="contactAddr" column="contact_addr" />
+		<result property="resideArea" column="reside_area" />
+		<result property="wordArea" column="word_area" />
+		<result property="natives" column="natives" />
+		<result property="projectName" column="project_name" />
+		<result property="total" column="total" />
+		<result property="areaSize" column="area_size" />
+		<result property="flag" column="flag" />
+		<result property="createdate" column="createdate" />
+		<result property="attribute" column="attribute" />
+		<result property="paymethod" column="paymethod" />
+		<result property="adArea" column="ad_area" />
+		<result property="businesscircle" column="businesscircle" />
+		<result property="constructtype" column="constructtype" />
+		<result property="area" column="area" />
+		<result property="building" column="building" />
+		<result property="floor" column="floor" />
+		<result property="room_no" column="room_no" />
+		<result property="construction_area" column="construction_area" />
+		<result property="companyId" column="company_id" />
+		<result property="isArrange" column="is_arrange" />
+		<result property="isDeleted" column="is_deleted" />
+	</resultMap>
+
+	<insert id="addVipCustImp" parameterType="VipCustImp">
+		 <selectKey resultType="java.lang.Integer" keyProperty="id" order="AFTER" >
+            SELECT @@IDENTITY
+        </selectKey>		
+		insert into vip_cust_imp(
+		customer_no,
+		source,
+		customer_name,
+		deal_date,
+		idcard_no,
+		tel,
+		phone,
+		contact_addr,
+		reside_area,
+		word_area,
+		natives,
+		project_name,
+		area,
+		total,
+		area_size,
+		flag,
+		createdate,
+		attribute,
+		paymethod,
+		ad_area,
+		businesscircle,
+		constructtype,
+        building,
+        floor,
+        room_no,
+        construction_area,
+        memo,
+        company_id,
+		is_arrange,
+		is_deleted
+		)
+			VALUES(
+		#{customerNo},
+		#{source},
+		#{customerName},
+		#{dealDate},
+		#{idcardNo},
+		#{tel},
+		#{phone},
+		#{contactAddr},
+		#{resideArea},
+		#{wordArea},
+		#{natives},
+		#{projectName},
+		#{area},
+		#{total},
+		#{areaSize},
+		#{flag},
+		#{createdate},
+		#{attribute},
+		#{paymethod},
+		#{adArea},
+		#{businesscircle},
+		#{constructtype},
+		#{building},
+		#{floor},
+		#{room_no},
+		#{construction_area},
+		#{memo},
+		#{companyId},
+		#{isArrange},
+		#{isDeleted}
+			)
+		
+	</insert>
+    <delete id="deleteVipCustImp" parameterType="int">
+	delete from vip_cust_imp where id=#{id};
+	</delete>
+    <delete id="deleteVipCustImpByFlag" parameterType="int">
+	delete from vip_cust_imp where flag=1;
+	</delete>
+
+    <delete id="deleteVipCustImpALL" parameterType="int">
+	     truncate vip_cust_imp;
+	</delete>
+    <delete id="deleteVipCustALL" parameterType="int">
+	     delete from vip_cust;
+	</delete>
+    <delete id="deleteVipCustdealALL" parameterType="int">
+	     delete from vip_custdeal;
+	</delete>
+
+    <update id="updateAllowsImp" parameterType="int">
+        update vip_cust_imp set  flag=0
+
+        where flag= #{flag}
+        and is_arrange=#{isArrange}
+        and company_id=#{companyId}
+      <if test="id != null and id != ''">
+          and id=#{id}
+      </if>
+
+    </update>
+
+    <update id="updateVipCustImp" parameterType="int">
+	update vip_cust_imp set 
+		customer_no=#{customerNo},
+		source=#{source},
+		customer_name=#{customerName},
+		deal_date=#{dealDate},
+		idcard_no=#{idcardNo},
+		tel=#{tel},
+		phone=#{phone},
+		contact_addr=#{contactAddr},
+		reside_area=#{resideArea},
+		word_area=#{wordArea},
+		natives=#{natives},
+		project_name=#{projectName},
+		total=#{total},
+		area_size=#{areaSize},
+		flag=#{flag},
+		createdate=#{createdate},
+		attribute=#{attribute},
+		paymethod=#{paymethod},
+		ad_area=#{adArea},
+		businesscircle=#{businesscircle},
+		constructtype=#{constructtype},
+		building=#{building},
+		floor=#{floor},
+		room_no=#{room_no},
+		construction_area=#{construction_area},
+		is_arrange=#{isArrange},
+		is_deleted=#{isDeleted}
+	 where id=#{id}
+	</update>
+	<select id="findVipCustImpById" resultMap="vipCustImpResultMap" parameterType="com.ihk.customer.collection.pojo.VipCustImpCond">
+	select * from vip_cust_imp where id=#{id} and company_id=#{companyId}
+	</select>
+    
+	<sql id="findWhereCond"> 
+		<where>
+            company_id = #{companyId}
+            <if test="project_name != null and project_name != ''">
+                and project_name = #{project_name}
+                and building = #{building}
+                and room_no = #{room_no}
+                and floor = #{floor}
+            </if>
+            <if test="area != null and area != ''">
+                and area = #{area}
+            </if>
+
+            <if test="id != null and id != 0">
+                and id = #{id}
+            </if>
+
+            <if test="flag != null and flag>=0">
+                and flag = #{flag}
+            </if>
+            <if test="isArrange != null">
+                and is_arrange = #{isArrange}
+            </if>
+            <if test="isDeleted != null and isDeleted != ''">
+                and is_deleted = #{isDeleted}
+            </if>
+		</where>
+	</sql>
+	
+	<select id="findVipCustImpCount" resultType="int" parameterType="com.ihk.customer.collection.pojo.VipCustImpCond">
+		SELECT count(0) from vip_cust_imp  
+        <include refid="findWhereCond"/>     
+    </select>
+        
+	<select id="findVipCustImp" resultMap="vipCustImpResultMap" parameterType="com.ihk.customer.collection.pojo.VipCustImpCond">
+		SELECT * from  vip_cust_imp 
+        <include refid="findWhereCond"/> 
+		<if test="topNum > 0">
+			limit #{topNum};
+		</if>
+    </select>
+    
+	<select id="findVipCustImpPage" resultMap="vipCustImpResultMap" parameterType="com.ihk.customer.collection.pojo.VipCustImpCond">
+		SELECT * from  vip_cust_imp 
+        <include refid="findWhereCond"/>
+
+        <if test="sort != null and sort != ''">
+            order by ${sort} ${order}
+        </if>
+
+        <if test="startLine >= 0">
+		<if test="pageSize > 0">
+			limit #{startLine},#{pageSize}
+		</if>
+		</if>
+
+	</select>
+</mapper>

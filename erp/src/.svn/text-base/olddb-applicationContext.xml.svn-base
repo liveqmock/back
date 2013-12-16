@@ -1,0 +1,130 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<beans xmlns="http://www.springframework.org/schema/beans"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:aop="http://www.springframework.org/schema/aop"
+	xmlns:tx="http://www.springframework.org/schema/tx" xmlns:jdbc="http://www.springframework.org/schema/jdbc"
+	xmlns:context="http://www.springframework.org/schema/context"	
+	xsi:schemaLocation="       
+      http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context-3.0.xsd       
+      http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-3.0.xsd       
+      http://www.springframework.org/schema/jdbc http://www.springframework.org/schema/jdbc/spring-jdbc-3.0.xsd       
+      http://www.springframework.org/schema/tx http://www.springframework.org/schema/tx/spring-tx-3.0.xsd       
+      http://www.springframework.org/schema/aop http://www.springframework.org/schema/aop/spring-aop-3.0.xsd"
+	default-autowire="byName">
+	<context:annotation-config />
+	<!-- 导入属性配置文件 -->
+	
+	<!-- 旧数据 -->
+	<context:component-scan base-package="com.kn" />
+	<context:component-scan base-package="com.ihk.kn" />
+	
+	<!-- olddata旧数据导入 -->
+	<!-- 旧系统的数据库 -->
+	<bean id="oldDataSource" class="org.apache.commons.dbcp.BasicDataSource"
+		destroy-method="close">
+		<property name="driverClassName" value="${old_jdbc.driverClassName}" />
+		<property name="url" value="${old_jdbc.url}" />
+		<property name="username" value="${old_jdbc.username}" />
+		<property name="password" value="${old_jdbc.password}" />
+		<property name="maxActive" value="${old_jdbc.maxActive}" />
+		<property name="maxIdle" value="${old_jdbc.maxIdle}" />
+		<property name="maxWait" value="${old_jdbc.maxWait}" />
+		<property name="testOnBorrow" value="${old_jdbc.testOnBorrow}" />
+		<property name="testOnReturn" value="${old_jdbc.testOnReturn}" />
+		<property name="testWhileIdle" value="${old_jdbc.testWhileIdle}" />
+	</bean>
+	
+	<bean id="oldSqlSessionFactory" class="org.mybatis.spring.SqlSessionFactoryBean">
+		<property name="configLocation" value="classpath:mybatis-config-olddb.xml" />
+		<property name="dataSource" ref="oldDataSource" />
+	</bean>
+	
+	<bean id="oldDataMapper" class="org.mybatis.spring.MapperFactoryBean">
+		<property name="sqlSessionFactory" ref="oldSqlSessionFactory" />
+		<property name="mapperInterface" value="com.kn.data.IOldDataMapper" />
+	</bean>
+	
+	<bean id="kN_XSHL_YZJL_Mapper" class="org.mybatis.spring.MapperFactoryBean">
+		<property name="sqlSessionFactory" ref="oldSqlSessionFactory" />
+		<property name="mapperInterface" value="com.kn.data.IKN_XSGL_YZJL_Mapper" />
+	</bean>
+	
+	<bean id="kN_KHGXGL_KH_Mapper" class="org.mybatis.spring.MapperFactoryBean">
+		<property name="sqlSessionFactory" ref="oldSqlSessionFactory" />
+		<property name="mapperInterface" value="com.kn.data.IKN_KHGXGL_KH_Mapper" />
+	</bean>
+	
+	<bean id="kN_LPCS_DY_Mapper" class="org.mybatis.spring.MapperFactoryBean">
+		<property name="sqlSessionFactory" ref="oldSqlSessionFactory" />
+		<property name="mapperInterface" value="com.kn.data.IKN_LPCS_DY_Mapper" />
+	</bean>
+	
+	<bean id="kN_LPCS_LP_OLD_Mapper" class="org.mybatis.spring.MapperFactoryBean">
+		<property name="sqlSessionFactory" ref="oldSqlSessionFactory" />
+		<property name="mapperInterface" value="com.kn.data.IKN_LPCS_LP_OLD_Mapper" />
+	</bean>
+	
+	<bean id="kN_RGS_YZ_Mapper" class="org.mybatis.spring.MapperFactoryBean">
+		<property name="sqlSessionFactory" ref="oldSqlSessionFactory" />
+		<property name="mapperInterface" value="com.kn.data.IKN_RGS_YZ_Mapper" />
+	</bean>
+	
+	<bean id="kN_CWGL_YSK_Mapper" class="org.mybatis.spring.MapperFactoryBean">
+		<property name="sqlSessionFactory" ref="oldSqlSessionFactory" />
+		<property name="mapperInterface" value="com.kn.data.IKN_CWGL_YSK_Mapper" />
+	</bean>
+	
+	<bean id="kN_CUGL_SSK_Mapper" class="org.mybatis.spring.MapperFactoryBean">
+		<property name="sqlSessionFactory" ref="oldSqlSessionFactory" />
+		<property name="mapperInterface" value="com.kn.data.IKN_CUGL_SSK_Mapper" />
+	</bean>
+	
+	<bean id="kN_LPCS_LT_OLD_Mapper" class="org.mybatis.spring.MapperFactoryBean">
+		<property name="sqlSessionFactory" ref="oldSqlSessionFactory" />
+		<property name="mapperInterface" value="com.kn.data.IKN_LPCS_LT_OLD_Mapper" />
+	</bean>
+	
+	<bean id="kN_LPCS_LG_OLD_Mapper" class="org.mybatis.spring.MapperFactoryBean">
+		<property name="sqlSessionFactory" ref="oldSqlSessionFactory" />
+		<property name="mapperInterface" value="com.kn.data.IKN_LPCS_LG_OLD_Mapper" />
+	</bean>
+	
+	<bean id="kN_DATABASES_Mapper" class="org.mybatis.spring.MapperFactoryBean">
+		<property name="sqlSessionFactory" ref="oldSqlSessionFactory" />
+		<property name="mapperInterface" value="com.kn.data.IKN_DATABASES_Mapper" />
+	</bean>
+	
+	<bean id="kN_LPCS_LP2_Mapper" class="org.mybatis.spring.MapperFactoryBean">
+		<property name="sqlSessionFactory" ref="oldSqlSessionFactory" />
+		<property name="mapperInterface" value="com.kn.data.IKN_LPCS_LP2_Mapper" />
+	</bean>
+	
+	<bean id="kN_XSGL_RGS_Mapper" class="org.mybatis.spring.MapperFactoryBean">
+		<property name="sqlSessionFactory" ref="oldSqlSessionFactory" />
+		<property name="mapperInterface" value="com.kn.data.IKN_XSGL_RGS_Mapper" />
+	</bean>
+	
+	
+	
+	<bean id="kNLOG_XSGL_RGS_Mapper" class="org.mybatis.spring.MapperFactoryBean">
+		<property name="sqlSessionFactory" ref="oldSqlSessionFactory" />
+		<property name="mapperInterface" value="com.kn.data.IKNLOG_XSGL_RGS_Mapper" />
+	</bean>
+	
+	
+	
+	<bean id="olddbIdlogMapper" parent="baseMapper">
+		<property name="mapperInterface" value="com.ihk.kn.data.IOlddbIdlogMapper" />
+	</bean>		
+	<!--
+	<bean id="kNLOG_XSGL_RGS_Mapper" parent="baseMapper">
+		<property name="mapperInterface" value="com.kn.data.IKNLOG_XSGL_RGS_Mapper" />
+	</bean>	
+	
+	-->	
+	<bean id="oldDataToSqlUtils" class="com.kn.action.OldDataToSqlUtils">
+		<property name="oldDataServices" ref="oldDataServices" />
+		<property name="olddbIdlogServices" ref="olddbIdlogServices" />
+	</bean>
+  
+</beans>

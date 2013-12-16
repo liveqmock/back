@@ -1,0 +1,111 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.ihk.property.data.IProjectDiscountMapper">
+
+	<resultMap type="ProjectDiscount" id="projectDiscountResultMap">
+		<id property="id" column="id" />        
+		<result property="payWayId" column="pay_way_id" />
+		<result property="discountType" column="discount_type" />
+		<result property="discountPercent" column="discount_percent" />
+		<result property="remark" column="remark" />
+		<result property="isDeleted" column="is_deleted" />
+		<result property="createdId" column="created_id" />
+		<result property="createdTime" column="created_time" />
+		<result property="modId" column="mod_id" />
+		<result property="modTime" column="mod_time" />
+	</resultMap>
+
+	<insert id="addProjectDiscount" parameterType="ProjectDiscount">
+		 <selectKey resultType="java.lang.Integer" keyProperty="id" order="AFTER" >
+            SELECT @@IDENTITY
+        </selectKey>		
+		insert into project_discount(
+		pay_way_id,
+		discount_type,
+		discount_percent,
+		remark,
+		is_deleted,
+		created_id,
+		created_time,
+		mod_id,
+		mod_time
+		)
+			VALUES(
+		#{payWayId},
+		#{discountType},
+		#{discountPercent},
+		#{remark},
+		#{isDeleted},
+		#{createdId},
+		#{createdTime},
+		#{modId},
+		#{modTime}
+			)
+		
+	</insert>
+	<delete id="deleteProjectDiscount" parameterType="com.ihk.utils.base.PojoDeleteCond">
+	update project_discount set is_deleted='1', mod_id=#{modId}, mod_time=#{modTime} where id=#{id};
+	</delete>
+	<update id="updateProjectDiscount" parameterType="int">
+	update project_discount set 
+		pay_way_id=#{payWayId},
+		discount_type=#{discountType},
+		discount_percent=#{discountPercent},
+		remark=#{remark},
+		mod_id=#{modId},
+		mod_time=#{modTime}
+	 where id=#{id}
+	</update>
+	<select id="findProjectDiscountById" resultMap="projectDiscountResultMap">
+	select * from project_discount where id=#{id}
+	</select>
+    
+	<sql id="findWhereCond"> 
+		<where>
+        <!--
+			<if test="date1 != null and date1 != ''">
+            </if>    
+            and is_deleted = '0'
+            -->
+		</where>
+	</sql>
+	
+	<select id="findProjectDiscountCount" resultType="int" parameterType="com.ihk.property.data.pojo.ProjectDiscountCond">
+		SELECT count(0) from project_discount  
+        <include refid="findWhereCond"/>     
+    </select>
+        
+	<select id="findProjectDiscount" resultMap="projectDiscountResultMap" parameterType="com.ihk.property.data.pojo.ProjectDiscountCond">
+		SELECT * from  project_discount 
+        <include refid="findWhereCond"/> 
+		<if test="topNum > 0">
+			limit #{topNum};
+		</if>
+    </select>
+    
+	<select id="findProjectDiscountPage" resultMap="projectDiscountResultMap" parameterType="com.ihk.property.data.pojo.ProjectDiscountCond">
+		SELECT * from  project_discount 
+        <include refid="findWhereCond"/> 
+    
+		<if test="startLine >= 0">
+		<if test="pageSize > 0">
+			limit #{startLine},#{pageSize};
+		</if>
+		</if>
+	</select>
+	
+	<select id="findProjectDiscountByPayWayId" resultMap="projectDiscountResultMap">
+		select * from project_discount where pay_way_id = #{payWayId} and is_deleted = '0'
+	</select>
+	
+	<update id="deleteProjectDiscountByPayWayId" parameterType="int">
+		update project_discount set is_deleted='1' where pay_way_id = #{payWayId}
+	</update>
+	
+	<select id="findProjectDiscountByUnitDiscountId" resultMap="projectDiscountResultMap">
+		select p.* from project_discount p inner join confirm_discount c on p.id = c.project_discount_id 
+			inner join unit_discount u on u.id = c.unit_discount_id 
+			where u.id = #{unitDiscountId} and p.is_deleted = '0' and c.is_deleted = '0' and u.is_deleted = '0'
+	</select>
+	
+</mapper>

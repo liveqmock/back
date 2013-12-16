@@ -1,0 +1,97 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.ihk.customer.data.IOnlyFollowMapper">
+
+	<resultMap type="OnlyFollow" id="onlyFollowResultMap">
+		<id property="id" column="id" />        
+		<result property="userId" column="user_id" />
+		<result property="customerId" column="customer_id" />
+		<result property="isDeleted" column="is_deleted" />
+		<result property="createdId" column="created_id" />
+		<result property="createdTime" column="created_time" />
+		<result property="modId" column="mod_id" />
+		<result property="modTime" column="mod_time" />
+	</resultMap>
+
+	<insert id="addOnlyFollow" parameterType="OnlyFollow">
+		 <selectKey resultType="java.lang.Integer" keyProperty="id" order="AFTER" >
+            SELECT @@IDENTITY
+        </selectKey>		
+		insert into only_follow(
+		user_id,
+		customer_id,
+		is_deleted,
+		created_id,
+		created_time,
+		mod_id,
+		mod_time
+		)
+			VALUES(
+		#{userId},
+		#{customerId},
+		#{isDeleted},
+		#{createdId},
+		#{createdTime},
+		#{modId},
+		#{modTime}
+			)
+		
+	</insert>
+	<delete id="deleteOnlyFollow" parameterType="com.ihk.utils.base.PojoDeleteCond">
+	update only_follow set is_deleted='1', mod_id=#{modId}, mod_time=#{modTime} where id=#{id};
+	</delete>
+	<update id="updateOnlyFollow" parameterType="int">
+	update only_follow set 
+		user_id=#{userId},
+		customer_id=#{customerId},
+		mod_id=#{modId},
+		mod_time=#{modTime}
+	 where id=#{id}
+	</update>
+	
+	<select id="findOnlyFollowById" resultMap="onlyFollowResultMap">
+	select * from only_follow where id=#{id}
+	</select>
+    
+	<sql id="findWhereCond"> 
+		<where>
+		</where>
+	</sql>
+	
+	<select id="findOnlyFollowCount" resultType="int" parameterType="com.ihk.customer.data.pojo.OnlyFollowCond">
+		SELECT count(0) from only_follow  
+        <include refid="findWhereCond"/>     
+    </select>
+        
+	<select id="findOnlyFollow" resultMap="onlyFollowResultMap" parameterType="com.ihk.customer.data.pojo.OnlyFollowCond">
+		SELECT * from  only_follow 
+        <include refid="findWhereCond"/> 
+		<if test="topNum > 0">
+			limit #{topNum};
+		</if>
+    </select>
+    
+	<select id="findOnlyFollowPage" resultMap="onlyFollowResultMap" parameterType="com.ihk.customer.data.pojo.OnlyFollowCond">
+		SELECT * from  only_follow 
+        <include refid="findWhereCond"/> 
+    
+		<if test="startLine >= 0">
+		<if test="pageSize > 0">
+			limit #{startLine},#{pageSize};
+		</if>
+		</if>
+	</select>
+	
+	<select id="findOnlyFollowByUserId" resultMap="onlyFollowResultMap">
+		select * from only_follow where user_id=#{userId} and is_deleted = '0'
+	</select>
+	
+	<select id="findOnlyFollowByCustomerId" resultMap="onlyFollowResultMap">
+		select * from only_follow where customer_id=#{customerId} and is_deleted = '0'
+	</select>
+	
+	<select id="findOnlyFollowByUserIdAndCustomerId" resultMap="onlyFollowResultMap" parameterType="map">
+		select * from only_follow where user_id=#{userId} and customer_id=#{customerId} and is_deleted = '0'
+	</select>
+	
+</mapper>

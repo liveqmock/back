@@ -1,0 +1,105 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.ihk.user.data.IProjectStateMapper">
+
+	<resultMap type="ProjectState" id="projectStateResultMap">
+		<id property="id" column="id" />        
+		<result property="projectId" column="project_id" />
+		<result property="projectState" column="project_state" />
+		<result property="startDate" column="start_date" />
+		<result property="isDeleted" column="is_deleted" />
+		<result property="createdId" column="created_id" />
+		<result property="createdTime" column="created_time" />
+		<result property="modId" column="mod_id" />
+		<result property="modTime" column="mod_time" />
+	</resultMap>
+
+	<insert id="addProjectState" parameterType="ProjectState">
+		 <selectKey resultType="java.lang.Integer" keyProperty="id" order="AFTER" >
+            SELECT @@IDENTITY
+        </selectKey>		
+		insert into project_state(
+		project_id,
+		project_state,
+		start_date,
+		is_deleted,
+		created_id,
+		created_time,
+		mod_id,
+		mod_time
+		)
+			VALUES(
+		#{projectId},
+		#{projectState},
+		#{startDate},
+		#{isDeleted},
+		#{createdId},
+		#{createdTime},
+		#{modId},
+		#{modTime}
+			)
+		
+	</insert>
+	<delete id="deleteProjectState" parameterType="int">
+	update project_state set is_deleted='1' where id=#{id};
+	</delete>
+	<update id="updateProjectState" parameterType="int">
+	update project_state set 
+		project_id=#{projectId},
+		project_state=#{projectState},
+		start_date=#{startDate},
+		is_deleted=#{isDeleted},
+		created_id=#{createdId},
+		created_time=#{createdTime},
+		mod_id=#{modId},
+		mod_time=#{modTime}
+	 where id=#{id}
+	</update>
+	<select id="findProjectStateById" resultMap="projectStateResultMap">
+	select * from project_state where id=#{id}
+	</select>
+    
+	<sql id="findWhereCond"> 
+		<where>
+			<if test="projectId != null and projectId != ''">
+				and project_id = #{projectId, jdbcType=INTEGER}
+			</if>
+			<if test="date1 != null and date1 != ''">
+				and start_date &gt;= #{date1}			
+            </if>    
+			<if test="date2 != null and date2 != ''">
+				and start_date &lt; date_add(#{date2},interval 1 day)
+			</if>
+            and is_deleted = '0'
+		</where>
+	</sql>
+	
+	<select id="findProjectStateCount" resultType="int" parameterType="com.ihk.user.data.pojo.ProjectStateCond">
+		SELECT count(0) from project_state  
+        <include refid="findWhereCond"/>     
+    </select>
+        
+	<select id="findProjectState" resultMap="projectStateResultMap" parameterType="com.ihk.user.data.pojo.ProjectStateCond">
+		SELECT * from  project_state 
+        <include refid="findWhereCond"/> 
+        
+		<if test="orderByFiled=='11'">
+			order by start_date desc,mod_time desc 
+		</if>
+		
+		<if test="topNum > 0">
+			limit #{topNum};
+		</if>
+    </select>
+    
+	<select id="findProjectStatePage" resultMap="projectStateResultMap" parameterType="com.ihk.user.data.pojo.ProjectStateCond">
+		SELECT * from  project_state 
+        <include refid="findWhereCond"/> 
+    
+		<if test="startLine >= 0">
+		<if test="pageSize > 0">
+			limit #{startLine},#{pageSize};
+		</if>
+		</if>
+	</select>
+</mapper>

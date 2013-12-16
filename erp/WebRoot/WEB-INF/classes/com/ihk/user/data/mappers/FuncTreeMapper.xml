@@ -1,0 +1,97 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.ihk.user.data.IFuncTreeMapper">
+
+	<resultMap type="FuncTree" id="funcTreeResultMap">
+		<id property="treeCode" column="tree_code" />        
+		<result property="treeName" column="tree_name" />
+		<result property="actionUrl" column="action_url" />
+		<result property="orderIndex" column="order_index" />
+	</resultMap>
+
+	
+	<select id="findAll" resultMap="funcTreeResultMap">
+	
+		select * from func_tree order by order_index
+	</select>
+	
+	<select id="findListByName" resultMap="funcTreeResultMap" parameterType="com.ihk.user.data.pojo.FuncTree">
+		
+		select * from func_tree 
+		<where>
+		<if test="treeName != null ">
+				and tree_name like concat(concat('%', #{treeName, jdbcType=VARCHAR}), '%') order by order_index
+			</if>
+		</where>
+	</select>
+	
+	
+	<insert id="addFuncTree" parameterType="FuncTree">
+		 <selectKey resultType="java.lang.Integer" keyProperty="id" order="AFTER" >
+            SELECT @@IDENTITY
+        </selectKey>		
+		insert into func_tree(
+		tree_name,
+		action_url,
+		order_index
+		)
+			VALUES(
+		#{treeName},
+		#{actionUrl},
+		#{orderIndex}
+			)
+		
+	</insert>
+	<delete id="deleteFuncTree" parameterType="int">
+	delete from func_tree where tree_code=#{tree_code};
+	</delete>
+	<update id="updateFuncTree" parameterType="FuncTree">
+	update func_tree set 
+		tree_name=#{treeName},
+		action_url=#{actionUrl},
+		order_index=#{orderIndex}
+	 where tree_code=#{treeCode}
+	</update>
+	<select id="findFuncTreeById" resultMap="funcTreeResultMap">
+	select * from func_tree where tree_code=#{tree_code}
+	</select>
+	
+	<sql id="findWhereCond"> 
+		<where>	
+    <if test="treeCodes!=null and treeCodes.size() > 0">  
+            and tree_code in
+            <foreach  
+                collection="treeCodes"  
+                item="treeCode"  
+                open="("  
+                separator=","  
+                close=")">  
+                #{treeCode}  
+            </foreach>  
+        </if> 
+        </where> 
+	</sql>
+	
+	<select id="findFuncTreeCount" resultType="int" parameterType="com.ihk.user.data.pojo.FuncTreeCond">
+		SELECT count(0) from func_tree 
+     <include refid="findWhereCond"/>  
+    </select>
+    
+	<select id="findFuncTreePage" resultMap="funcTreeResultMap" parameterType="com.ihk.user.data.pojo.FuncTreeCond">
+		SELECT * from  func_tree 
+     <include refid="findWhereCond"/>  
+    
+		<if test="orderByFiled == null or orderByFiled == ''">
+			order by order_index
+		</if>
+		<if test="orderByFiled=='11'">
+			order by order_index
+		</if>
+		
+		<if test="startLine >= 0">
+		<if test="pageSize > 0">
+			limit #{startLine},#{pageSize};
+		</if>
+		</if>
+	</select>
+</mapper>

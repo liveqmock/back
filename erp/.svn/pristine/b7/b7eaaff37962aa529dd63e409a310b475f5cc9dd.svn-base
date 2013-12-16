@@ -1,0 +1,39 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE struts PUBLIC
+    "-//Apache Software Foundation//DTD Struts Configuration 2.0//EN"
+    "http://struts.apache.org/dtds/struts-2.0.dtd">
+<struts>
+	
+	<package name="presale_hengda" extends="struts-default">
+		<!-- 恒大预售 -->
+		<action name="presale_hengda!*" class="com.ihk.sale.action.PresaleAction">
+			<result name="addpresalejsp">/hengda/presale/input.jsp</result>
+			<result name="indexpre">/hengda/presale/index.jsp</result>
+			<result name="addpresale">/hengda/presale/input.jsp</result>
+			<result name="searchpre">/hengda/presale/index.jsp</result>
+			<result name="error">/hengda/error.jsp</result>
+			<result name="updatePre_jsp">/hengda/presale/update.jsp</result>
+			<result name="indexallpre">/hengda/presale/index_all.jsp</result>
+			<result name="index">/hengda/index.jsp</result>
+		</action>
+		<!-- 恒大项目主页 -->
+		<action name="index_hengda!*"  class="com.ihk.sale.action.IndexAction">
+			<result name="indexget">/hengda/index.jsp</result>
+		</action>
+		<!-- 恒大用户管理action -->
+		<action name="user_hengda!*" class="com.ihk.user.action.UserAccountAction">
+			<result name="newUserAccount">/hengda/userAccount/success.jsp</result>
+			<result name="findUserAccountPage">/hengda/userAccount/index.jsp</result>
+			<result name="indexUserAccount">/hengda/userAccount/index.jsp</result>
+			<result name="addUserAccountJsp">/hengda/userAccount/input.jsp</result>
+			<result name="addUserAccount">/hengda/userAccount/success.jsp</result>
+			<result name="updateUserAccountJsp_user">/hengda/userAccount/update_user.jsp</result>		
+			<result name="updateUserAccountJsp_manager">/hengda/userAccount/update_manager.jsp</result>
+			<result name="updateByManagerJsp">/hengda/userAccount/update_manager.jsp</result>		
+			<result name="updatePwdByManager">/hengda/userAccount/success.jsp</result>		
+			<result name="updatePwd">/hengda/userAccount/success.jsp</result>
+			<result name="error">/hengda/userAccount/error.jsp</result>
+		</action>
+	</package>
+
+</struts>

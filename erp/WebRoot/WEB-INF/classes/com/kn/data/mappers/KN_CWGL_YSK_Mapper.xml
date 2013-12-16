@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.kn.data.IKN_CWGL_YSK_Mapper">
+
+	<resultMap type="KN_CWGL_YSK" id="kN_CWGL_YSK_ResultMap">
+		<id property="应收款id" column="应收款ID" />        
+		<result property="类别" column="类别" />
+		<result property="收费项目" column="收费项目" />
+		<result property="期数" column="期数" />
+		<result property="应收日期" column="应收日期" />
+		<result property="应收外币金额" column="应收外币金额" />
+		<result property="币种" column="币种" />
+		<result property="汇率" column="汇率" />
+		<result property="应收本币金额" column="应收本币金额" />
+		<result property="已收金额" column="已收金额" />
+		<result property="备注" column="备注" />
+		<result property="状态" column="状态" />
+		<result property="认购书id" column="认购书ID" />
+		<result property="审核" column="审核" />
+		<result property="业主姓名" column="业主姓名" />
+		<result property="oldmemo" column="OLDMEMO" />
+		<result property="房款比例O" column="房款比例_O" />
+		<result property="房款比例" column="房款比例" />
+		<result property="单元id" column="单元ID" />
+	</resultMap>
+
+        
+	<select id="findKN_CWGL_YSK" resultMap="kN_CWGL_YSK_ResultMap">
+		
+select t1.*,t2.单元id from climb.财务管理_应收款 t1 ,climb.销售管理_认购书 t2 
+where t1.认购书id = t2.认购书id and t1.状态 = '有效'
+        
+    </select>
+    
+</mapper>

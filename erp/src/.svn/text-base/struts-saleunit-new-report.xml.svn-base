@@ -1,0 +1,721 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE struts PUBLIC
+    "-//Apache Software Foundation//DTD Struts Configuration 2.0//EN"
+    "http://struts.apache.org/dtds/struts-2.0.dtd">
+<struts>
+	<package name="saleunit_new_guangzhou_report" extends="struts-default,json-default"
+		namespace="/saleunit_new_report/report/guangzhou">
+		<!-- 客户转化率分析报表  -->
+		<action name="khzhlfxReport" class="com.ihk.saleunit.action.new_report.KhzhlfxReportAction">
+			<result name="success">/saleunit_new_report/guangzhou/khzhlfx_report.jsp</result>
+		</action>
+		
+		<action name="khzhlfxReportDetail" class="com.ihk.saleunit.action.new_report.KhzhlfxReportAction" method="showDetail">
+			<result name="detail">/saleunit_new_report/guangzhou/show_customer_list.jsp</result>
+		</action>
+		
+		<action name="searchDetailList" class="com.ihk.saleunit.action.new_report.KhzhlfxReportAction" method="searchDetailList">
+			<result name="detail" type="json">
+				<param name="root">res</param>
+			</result>
+		</action>
+		
+		<action name="layout"
+			class="com.ihk.saleunit.action.new_report.ReportLayoutAction" method="layout">
+			<result name="suc">/saleunit_new_report/guangzhou/layout.jsp
+			</result>
+		</action>
+		<action name="table1"
+			class="com.ihk.saleunit.action.new_report.ReportLayoutAction" method="table1">
+			<result name="suc">/saleunit_new_report/guangzhou/table1.jsp
+			</result>
+		</action>
+		<!-- 年度销售计划及落实情况 -->
+		<action name="ndxsjhReportFirst"
+			class="com.ihk.saleunit.action.new_report.NdxsjhReportAction" method="ndxsjhReportFirst">
+			<result name="ndxsjhReportFirst">/saleunit_new_report/guangzhou/ndxsjh_report_first.jsp</result>
+		</action>
+		<action name="ndxsjhReport"
+			class="com.ihk.saleunit.action.new_report.NdxsjhReportAction" method="ndxsjhReport">
+			<result name="suc">/saleunit_new_report/guangzhou/ndxsjh_report.jsp
+			</result>
+		</action>
+
+		<!-- 年度销售数据统计 -->
+		<action name="ndxssjtjReport"
+			class="com.ihk.saleunit.action.new_report.ReportLayoutAction" method="ndxssjtjReport">
+			<result name="suc">/saleunit_new_report/guangzhou/ndxssjtj_report.jsp
+			</result>
+		</action>
+		
+		<!-- 齐定签约回款情况 -->
+		<action name="qdqyhkjReportFirst"
+			class="com.ihk.saleunit.action.new_report.QdqyhkjReportAction" method="qdqyhkjReportFirst">
+			<result name="qdqyhkjReportFirst">/saleunit_new_report/guangzhou/qdqyhkj_report_first.jsp</result>
+		</action>
+		<action name="qdqyhkjReport"
+			class="com.ihk.saleunit.action.new_report.QdqyhkjReportAction" method="qdqyhkjReport">
+			<result name="suc">/saleunit_new_report/guangzhou/qdqyhkj_report.jsp
+			</result>
+		</action>
+		
+		<!-- 成交签约回款情况 -->
+		<action name="cjqyhkReportFirst"
+			class="com.ihk.saleunit.action.new_report.CjqyhkReportAction" method="cjqyhkReportFirst">
+			<result name="cjqyhkReportFirst">/saleunit_new_report/guangzhou/cjqyhk_report_first.jsp
+			</result>
+		</action>
+		<action name="cjqyhkReport"
+			class="com.ihk.saleunit.action.new_report.CjqyhkReportAction" method="cjqyhkReport">
+			<result name="suc">/saleunit_new_report/guangzhou/cjqyhk_report.jsp
+			</result>
+		</action>
+		
+		<!-- 累计成交统计表 -->
+		<action name="ljcjtjbReportFirst"
+			class="com.ihk.saleunit.action.new_report.LjcjtjbReportAction" method="ljcjtjbReportFirst">
+			<result name="ljcjtjbReportFirst">/saleunit_new_report/guangzhou/ljcjtjb_report_first.jsp
+			</result>
+		</action>
+		<action name="ljcjtjbReport"
+			class="com.ihk.saleunit.action.new_report.LjcjtjbReportAction" method="ljcjtjbReport">
+			<result name="suc">/saleunit_new_report/guangzhou/ljcjtjb_report.jsp
+			</result>
+		</action>
+		<!-- 累计成交统计表 导出 -->
+		<action name="ljcjtjbdownload" class="com.ihk.saleunit.action.new_report.LjcjtjbReportAction" method="download" />
+		
+		<!-- 累计签约回款统计 -->
+		<action name="ljqyhktjReportFirst"
+			class="com.ihk.saleunit.action.new_report.LjqyhktjReportAction" method="ljqyhktjReportFirst">
+			<result name="ljqyhktjReportFirst">/saleunit_new_report/guangzhou/ljqyhktj_report_first.jsp
+			</result>
+		</action>
+		<action name="ljqyhktjReport"
+			class="com.ihk.saleunit.action.new_report.LjqyhktjReportAction" method="ljqyhktjReport">
+			<result name="suc">/saleunit_new_report/guangzhou/ljqyhktj_report.jsp
+			</result>
+		</action>
+		<!-- 累计签约回款统计 导出 -->
+		<action name="ljqyhktjdownload" class="com.ihk.saleunit.action.new_report.LjqyhktjReportAction" method="download" />
+		
+		<!-- 总体货量分析 -->
+		<action name="zthlfxReportFirst" class="com.ihk.saleunit.action.new_report.ZthlfxReportAction" method="zthlfxReportFirst">
+			<result name="zthlfxReportFirst">/saleunit_new_report/guangzhou/zthlfx_report_first.jsp</result>
+		</action>
+		<action name="zthlfxReport"
+			class="com.ihk.saleunit.action.new_report.ZthlfxReportAction" method="zthlfxReport">
+			<result name="suc">/saleunit_new_report/guangzhou/zthlfx_report.jsp
+			</result>
+		</action>
+
+		<!-- 销售货量分析(按楼层) -->
+		<action name="xshlfxLcReportFirst" class="com.ihk.saleunit.action.new_report.XshlfxLcReportAction" method="xshlfxLcReportFirst">
+			<result name="xshlfxLcReportFirst">/saleunit_new_report/guangzhou/xshlfx_lc_report_first.jsp</result>
+		</action>
+		<action name="xshlfxLcReport"
+			class="com.ihk.saleunit.action.new_report.XshlfxLcReportAction" method="xshlfxLcReport">
+			<result name="suc">/saleunit_new_report/guangzhou/xshlfx_lc_report.jsp
+			</result>
+		</action>
+		<!-- 销售货量分析(楼层) 查看项目列定义 -->
+		<action name="queryXshlfxLcL"
+			class="com.ihk.saleunit.action.new_report.XshlfxLcReportAction" method="queryXshlfxLcL">
+			<result name="suc">/saleunit_new_report/guangzhou/query_xshlfx_ld.jsp
+			</result>
+		</action>
+		<!-- 销售货量分析导出 -->
+		<action name="xshlfxLcdownload" class="com.ihk.saleunit.action.new_report.XshlfxLcReportAction" method="download" />
+		<!-- 销售货量分析(按价格) -->
+		<action name="xshlfxJgReportFirst" class="com.ihk.saleunit.action.new_report.XshlfxJgReportAction" method="xshlfxJgReportFirst">
+			<result name="xshlfxJgReportFirst">/saleunit_new_report/guangzhou/xshlfx_jg_report_first.jsp</result>
+		</action>
+		<action name="xshlfxJgReport"
+			class="com.ihk.saleunit.action.new_report.XshlfxJgReportAction" method="xshlfxJgReport">
+			<result name="suc">/saleunit_new_report/guangzhou/xshlfx_jg_report.jsp
+			</result>
+		</action>
+		<!-- 销售货量分析(价格) 查看项目列定义 -->
+		<action name="queryXshlfxJgJ"
+			class="com.ihk.saleunit.action.new_report.XshlfxJgReportAction" method="queryXshlfxJgJ">
+			<result name="suc">/saleunit_new_report/guangzhou/query_xshlfx_ld.jsp
+			</result>
+		</action>
+		<!-- 销售货量分析导出 -->
+		<action name="xshlfxJgdownload" class="com.ihk.saleunit.action.new_report.XshlfxJgReportAction" method="download" />
+		<!-- 销售货量分析(按分类) -->
+		<action name="xshlfxFlReportFirst" class="com.ihk.saleunit.action.new_report.XshlfxFlReportAction" method="xshlfxFlReportFirst">
+			<result name="xshlfxFlReportFirst">/saleunit_new_report/guangzhou/xshlfx_fl_report_first.jsp</result>
+		</action>
+		<action name="xshlfxFlReport"
+			class="com.ihk.saleunit.action.new_report.XshlfxFlReportAction" method="xshlfxFlReport">
+			<result name="suc">/saleunit_new_report/guangzhou/xshlfx_fl_report.jsp
+			</result>
+		</action>
+		<!-- 销售货量分析(分类) 查看项目列定义 -->
+		<!--<action name="queryXshlfxFlF"
+			class="com.ihk.saleunit.action.new_report.XshlfxFlReportAction" method="queryXshlfxFlF">
+			<result name="suc">/saleunit_new_report/guangzhou/query_xshlfx_ld.jsp
+			</result>
+		</action>-->
+		<!-- 销售货量分析导出 -->
+		<action name="xshlfxFldownload" class="com.ihk.saleunit.action.new_report.XshlfxFlReportAction" method="download" />
+		<!-- 项目结佣情况一览表 -->
+		<action name="xmjyqkReportFirst"
+			class="com.ihk.saleunit.action.new_report.XmjyqkReportAction" method="xmjyqkReportFirst">
+			<result name="xmjyqkReportFirst">/saleunit_new_report/guangzhou/xmjyqk_report_first.jsp</result>
+		</action>
+		<action name="xmjyqkReport"
+			class="com.ihk.saleunit.action.new_report.XmjyqkReportAction" method="xmjyqkReport">
+			<result name="suc">/saleunit_new_report/guangzhou/xmjyqk_report.jsp
+			</result>
+		</action>
+		
+        <!-- 单元结佣明细表 -->
+        <action name="commission_affirm_detailFirst"
+                class="com.ihk.saleunit.action.new_report.CommissionReportAction" method="commission_detailFirst">
+            <result name="commission_detailFirst">/saleunit_new_report/guangzhou/commission_det_affirm_first.jsp</result>
+        </action>
+        <action name="commission_detailFirst"
+                class="com.ihk.saleunit.action.new_report.CommissionReportAction" method="commission_detailFirst">
+            <result name="commission_detailFirst">/saleunit_new_report/guangzhou/commission_det_first.jsp</result>
+        </action>
+        <!-- 返回单元明细json -->
+        <action name="commission_unit"
+                class="com.ihk.saleunit.action.new_report.CommissionReportAction" method="commission_unit">
+            <result type="json">
+                <param name="root">unitList</param>
+            </result>
+        </action>
+        <action name="commissionUnitAffirm"
+                class="com.ihk.saleunit.action.new_report.CommissionReportAction" method="commissionUnitAffirm">
+            <result type="json">
+                <param name="root">unitList</param>
+            </result>
+        </action>
+        <!-- 导出单元结佣明细表 -->
+        <action name="exportExcel" class="com.ihk.saleunit.action.new_report.CommissionReportAction" method="exportExcel"/>
+
+        <!-- 项目结佣明细表 -->
+        <action name="commission_prjFirst"
+                class="com.ihk.saleunit.action.new_report.CommissionPrjReportAction" method="commission_detailFirst">
+            <result name="commission_detailFirst">/saleunit_new_report/guangzhou/commission_prj_first.jsp</result>
+        </action>
+        <action name="commission_prj"
+                class="com.ihk.saleunit.action.new_report.CommissionPrjReportAction" method="commission_prj">
+            <result type="json">
+                <param name="root">prjList</param>
+            </result>
+        </action>
+	
+		<action name="commission_affirm_prjFirst"
+                class="com.ihk.saleunit.action.new_report.CommissionPrjReportAction" method="commission_detailFirst">
+            <result name="commission_detailFirst">/saleunit_new_report/guangzhou/commission_prj_affirm_first.jsp</result>
+        </action>
+        <action name="commission_affirm_prj"
+                class="com.ihk.saleunit.action.new_report.CommissionPrjReportAction" method="commission_affirm_prj">
+            <result type="json">
+                <param name="root">prjList</param>
+            </result>
+        </action>
+        <!-- 公司结佣明细表 -->
+        <!-- 系统计算 -->
+        <action name="commission_companyFirst"
+                class="com.ihk.saleunit.action.new_report.CommissionCompanyReportAction" method="commissionDetailFirst">
+            <result name="commission_detailFirst">/saleunit_new_report/guangzhou/commission_company_first.jsp</result>
+        </action>
+        <action name="commission_company"
+                class="com.ihk.saleunit.action.new_report.CommissionCompanyReportAction" method="commissionCompany">
+            <result type="json">
+                <param name="root">companyList</param>
+            </result>
+        </action>
+		 <!-- 开发商确认 -->
+		<action name="commission_affirm_companyFirst"
+                class="com.ihk.saleunit.action.new_report.CommissionCompanyReportAction" method="commissionDetailFirst">
+            <result name="commission_detailFirst">/saleunit_new_report/guangzhou/commission_company_affirm_first.jsp</result>
+        </action>
+        <action name="commission_affirm_company"
+                class="com.ihk.saleunit.action.new_report.CommissionCompanyReportAction" method="commissionAffirmCompany">
+            <result type="json">
+                <param name="root">companyList</param>
+            </result>
+        </action> 
+		 
+		 
+		<!-- 活跃客户筛选报表 -->	
+		<action name="customerQuery" class="com.ihk.customer.action.HyCustomerSxReportAction" method="index" >
+			<result name="success" >/saleunit_new_report/guangzhou/hy_customer_sx.jsp</result>
+		</action>	
+		<!-- 活跃客户筛选报表 异步查询 -->
+		<action name="customerQueryAjax" class="com.ihk.customer.action.HyCustomerSxReportAction" method="customerQueryAjax"/>	
+		<!-- 活跃客户筛选报表 电话明细 -->	
+		<action name="phoneDetailList" class="com.ihk.customer.action.HyCustomerSxReportAction" method="phoneDetailList" >
+			<result name="success" >/saleunit_new_report/guangzhou/hy_customer_sx_detail.jsp</result>
+		</action>	
+		<!-- 活跃客户筛选报表明细 异步查询 -->
+		<action name="phoneDetailListAjax" class="com.ihk.customer.action.HyCustomerSxReportAction" method="phoneDetailListAjax"/>		
+		<!-- 活跃客户筛选报表导出 -->
+		<action name="customerQueryDownload" class="com.ihk.customer.action.HyCustomerSxReportAction" method="download" >
+		</action>
+		<!-- 活跃客户筛选报表导出明细 -->
+		<action name="customerQueryDownloadDetail" class="com.ihk.customer.action.HyCustomerSxReportAction" method="downloadDetail" >
+		</action>	
+		
+				
+		<!-- 客户数量环比图(项目) -->
+		<action name="customerNum" class="com.ihk.customer.action.ChartCustomerNumAction" method="index">
+			<result name="success" >/saleunit_new_report/guangzhou/chart_customer_num.jsp</result>
+		</action>
+		<!-- 客户数量环比图（项目） 异步查询 -->
+		<action name="customerNumAjax" class="com.ihk.customer.action.ChartCustomerNumAction" method="searchAjax"/>
+		
+		<!-- 客户数量环比图（公司）-->
+		<action name="customerNumCompany" class="com.ihk.customer.action.ChartCustomerNumCompanyAction" method="index">
+			<result name="success" >/saleunit_new_report/guangzhou/chart_customer_num_company.jsp</result>
+		</action>
+		<!-- 客户数量环比图 （公司）异步查询 -->
+		<action name="customerNumCompanyAjax" class="com.ihk.customer.action.ChartCustomerNumCompanyAction" method="searchAjax"/>
+		
+		<!-- 客户数量环比图（销售）-->
+		<action name="customerNumSales" class="com.ihk.customer.action.ChartCustomerNumSalesAction" method="index">
+			<result name="success" >/saleunit_new_report/guangzhou/chart_customer_num_sales.jsp</result>
+		</action>
+		<!-- 客户数量环比图 （销售）异步查询 -->
+		<action name="customerNumSalesAjax" class="com.ihk.customer.action.ChartCustomerNumSalesAction" method="searchAjax"/>
+		<!-- 客户数量环比图 下载 -->
+		<action name="customerNumDownload" class="com.ihk.saleunit.action.new_report.SaleReporCompanytAction" method="download"/>
+		
+		<!-- 客户分类明细表 -->
+		<action name="customerTable" class="com.ihk.customer.action.ChartTableAnalysisAction" method="index">
+			<result name="success" >/saleunit_new_report/guangzhou/customer_table.jsp</result>
+		</action>
+		<!-- 客户分类明细表 异步查询 -->
+		<action name="customerTableAjax" class="com.ihk.customer.action.ChartTableAnalysisAction" method="searchAjax"/>
+		<!-- 客户分类明细表 下载 -->
+		<action name="customerTableDownload" class="com.ihk.customer.action.ChartTableAnalysisAction" method="download"/>
+		
+		
+		<action name="getSelCategory" class="com.ihk.customer.action.ChartTableAnalysisAction" method="getHtmlSelCategory">			
+		</action>
+		
+		
+		<!-- 客户问卷分类(公司) -->
+		<action name="customerQuestionCompany" class="com.ihk.saleunit.action.new_report.CustomerQuestionCompanyAction" method="index">
+			<result name="success" >/saleunit_new_report/guangzhou/customer_question_company.jsp</result>
+		</action>
+		<!-- 客户问卷分类(公司) 异步查询-->
+		<action name="customerQuestionCompanyAjax" class="com.ihk.saleunit.action.new_report.CustomerQuestionCompanyAction" method="searchAjax"/>
+		<!-- 客户问卷分类(公司) 下载 -->
+		<action name="customerQuestionCompanyDownload" class="com.ihk.saleunit.action.new_report.CustomerQuestionCompanyAction" method="download"/>
+		
+		<!-- 客户问卷分类(项目) -->
+		<action name="customerQuestionProject" class="com.ihk.saleunit.action.new_report.CustomerQuestionProjectAction" method="index">
+			<result name="success" >/saleunit_new_report/guangzhou/customer_question_project.jsp</result>
+		</action>
+		<!-- 客户问卷分类(项目) 异步查询 -->
+		<action name="customerQuestionProjectAjax" class="com.ihk.saleunit.action.new_report.CustomerQuestionProjectAction" method="searchAjax"/>
+		<!-- 客户问卷分类(项目) 下载 -->
+		<action name="customerQuestionProjectDownload" class="com.ihk.saleunit.action.new_report.CustomerQuestionProjectAction" method="download"/>
+				
+		<!-- 客户问卷分类(销售) -->
+		<action name="customerQuestionSales" class="com.ihk.saleunit.action.new_report.CustomerQuestionSalesAction" method="index">
+			<result name="success" >/saleunit_new_report/guangzhou/customer_question_sales.jsp</result>
+		</action>
+		<!-- 客户问卷分类(销售) 异步查询-->
+		<action name="customerQuestionSalesAjax" class="com.ihk.saleunit.action.new_report.CustomerQuestionSalesAction" method="searchAjax"/>
+		<!-- 客户问卷分类(销售) 下载 -->
+		<action name="customerQuestionSalesDownload" class="com.ihk.saleunit.action.new_report.CustomerQuestionSalesAction" method="download"/>
+		
+		
+		<!-- 显示客户明细 -->
+		<action name="showCustomerList" class="com.ihk.customer.action.CustomerListByReportAction" method="search">
+			<result name="suc">/saleunit_new_report/guangzhou/show_customer_list.jsp</result>
+		</action>
+		<!-- 客户明细导出 -->
+		<action name="flmxCustomerListExport" class="com.ihk.customer.action.CustomerListByReportAction" method="saleReportDownload" >
+			<!-- 设置文件名参数，由页面上传入 -->
+             <param name="fileName">客户分类比例.xls</param>
+             <result name="success" type="stream">
+	             <!-- 下载文件类型定义 -->
+	             <param name="contentType">application/vnd.ms-excel</param>
+	             <!-- 下载文件处理方法 -->
+	             <param name="contentDisposition">
+	                attachment;filename="${downloadChineseFileName}"
+	             </param>
+	             <!-- 下载文件输出流定义 -->
+	             <param name="inputName">downloadFile</param>
+             </result>
+		</action>
+		
+		<action name="customerExport" class="com.ihk.customer.action.ChartTableAnalysisAction" method="export" >
+			<!-- 设置文件名参数，由页面上传入 -->
+             <param name="fileName">客户分类比例.xls</param>
+             <result name="success" type="stream">
+	             <!-- 下载文件类型定义 -->
+	             <param name="contentType">application/vnd.ms-excel</param>
+	             <!-- 下载文件处理方法 -->
+	             <param name="contentDisposition">
+	                attachment;filename="${downloadChineseFileName}"
+	             </param>
+	             <!-- 下载文件输出流定义 -->
+	             <param name="inputName">downloadFile</param>
+             </result>
+		</action>
+		
+		<!-- 客户分类比例(项目) -->
+		<action name="customerPie" class="com.ihk.customer.action.ChartCustomerPieAction" method="index">
+			<result name="success" >/saleunit_new_report/guangzhou/chart_customer_pie.jsp</result>
+		</action>
+		<!-- 客户分类比例 异步查询 -->
+		<action name="customerPieAjax" class="com.ihk.customer.action.ChartCustomerPieAction" method="searchAjax"/>
+		<!-- 客户分类比例 下载 -->
+		<action name="customerPieDownload" class="com.ihk.customer.action.ChartCustomerPieAction" method="download"/>
+		
+		<action name="pieExport" class="com.ihk.customer.action.ChartCustomerPieAction" method="export" >
+			<!-- 设置文件名参数，由页面上传入 -->
+             <param name="fileName">customer.xls</param>
+             <result name="success" type="stream">
+	             <!-- 下载文件类型定义 -->
+	             <param name="contentType">application/vnd.ms-excel</param>
+	             <!-- 下载文件处理方法 -->
+	             <param name="contentDisposition">
+	                attachment;filename="${downloadChineseFileName}"
+	             </param>
+	             <!-- 下载文件输出流定义 -->
+	             <param name="inputName">downloadFile</param>
+             </result>
+		</action>
+		
+		
+		<!-- 分类比例分析图(分类环比走势图)(项目) -->
+		<action name="categoryNum" class="com.ihk.customer.action.ChartCategoryNumAction"  method="index">
+			<result name="success" >/saleunit_new_report/guangzhou/chart_category_num.jsp</result>
+		</action>
+		<!-- 分类比例分析图(分类环比走势图)(项目) 异步查询 -->
+		<action name="categoryNumAjax" class="com.ihk.customer.action.ChartCategoryNumAction" method="searchAjax"/>
+		
+		<!-- 分类交叉分析(售前客户) -->
+		<action name="customerDoublePieFirst" class="com.ihk.customer.action.ChartCustomerDoublePieAction" method="customerDoublePieFirst">
+			<result name="customerDoublePieFirst">/saleunit_new_report/guangzhou/chart_customer_double_pie_first.jsp</result>
+		</action>
+		<action name="customerDoublePie" class="com.ihk.customer.action.ChartCustomerDoublePieAction" method="customerDoublePie">
+			<result name="customerDoublePie">/saleunit_new_report/guangzhou/chart_customer_double_pie.jsp</result>
+		</action>
+		<action name="doublePieExport" class="com.ihk.customer.action.ChartCustomerDoublePieAction" method="export" >
+			<!-- 设置文件名参数，由页面上传入 -->
+             <param name="fileName">customer.xls</param>
+             <result name="success" type="stream">
+	             <!-- 下载文件类型定义 -->
+	             <param name="contentType">application/vnd.ms-excel</param>
+	             <!-- 下载文件处理方法 -->
+	             <param name="contentDisposition">
+	                attachment;filename="${downloadChineseFileName}"
+	             </param>
+	             <!-- 下载文件输出流定义 -->
+	             <param name="inputName">downloadFile</param>
+             </result>
+		</action>
+		<!-- 认筹分析 -->
+		<action name="rcfxReportFirst" class="com.ihk.saleunit.action.new_report.RcfxReportAction" method="rcfxReportFirst">
+			<result name="rcfxReportFirst">/saleunit_new_report/guangzhou/rcfx_report_first.jsp</result>
+		</action>
+		<action name="rcfxReport" class="com.ihk.saleunit.action.new_report.RcfxReportAction" method="rcfxReport">
+			<result name="suc">/saleunit_new_report/guangzhou/rcfx_report.jsp</result>
+		</action>
+		<!-- 认筹分析导出 -->
+		<action name="rcfxdownload" class="com.ihk.saleunit.action.new_report.RcfxReportAction" method="download" />
+		<action name="xsryjxReport" class="com.ihk.saleunit.action.new_report.XsryjxReportAction" method="xsryjxReport">
+			<result name="suc">/saleunit_new_report/guangzhou/xsryjx_report.jsp</result>
+		</action>
+		
+		<action name="sqkhtjReport" class="com.ihk.saleunit.action.new_report.SqkhtjReportAction" method="sqkhtjReport">
+			<result name="suc">/saleunit_new_report/guangzhou/sqkhtj_report.jsp</result>
+		</action>
+		<!-- 项目客户数量对比(作废) -->
+		<action name="projectAndCustNumFirst" class="com.ihk.sale.action.guangzhou.ChartProjectCustomerNumAction" method="projectAndCustNumFirst">
+			<result name="projectAndCustNumFirst" >/saleunit_new_report/guangzhou/chart_project_custnum_first.jsp</result>
+		</action>
+		<!-- 项目客户数量对比(作废) -->
+		<action name="projectAndCustNum" class="com.ihk.sale.action.guangzhou.ChartProjectCustomerNumAction" method="index">
+			<result name="success" >/saleunit_new_report/guangzhou/chart_project_custnum.jsp</result>
+		</action>
+		
+		<!-- 客户数量对比(公司) -->
+		<action name="customerNumCompareCompany" class="com.ihk.saleunit.action.new_report.CustomerNumCompareCompanyAction" method="index">
+			<result name="success" >/saleunit_new_report/guangzhou/customer_num_compare_company.jsp</result>
+		</action>
+		<!-- 客户数量对比(公司) 异步查询-->
+		<action name="customerNumCompareCompanyAjax" class="com.ihk.saleunit.action.new_report.CustomerNumCompareCompanyAction" method="searchAjax"/>
+		<!-- 客户数量对比(公司)  下载 -->
+		<action name="customerNumCompareCompanyDownload" class="com.ihk.saleunit.action.new_report.CustomerNumCompareCompanyAction" method="download"/>
+				
+		<!-- 客户数量对比(项目) -->
+		<action name="customerNumCompareProject" class="com.ihk.saleunit.action.new_report.CustomerNumCompareProjectAction" method="index">
+			<result name="success" >/saleunit_new_report/guangzhou/customer_num_compare_project.jsp</result>
+		</action>
+		<!-- 客户数量对比(项目) 异步查询-->
+		<action name="customerNumCompareProjectAjax" class="com.ihk.saleunit.action.new_report.CustomerNumCompareProjectAction" method="searchAjax"/>
+		<!-- 客户数量对比(项目)  下载 -->
+		<action name="customerNumCompareProjectDownload" class="com.ihk.saleunit.action.new_report.CustomerNumCompareProjectAction" method="download"/>
+				
+		<!-- 客户数量对比(销售) -->
+		<action name="customerNumCompareSales" class="com.ihk.saleunit.action.new_report.CustomerNumCompareSalesAction" method="index">
+			<result name="success" >/saleunit_new_report/guangzhou/customer_num_compare_sales.jsp</result>
+		</action>
+		<!-- 客户数量对比(销售) 异步查询-->
+		<action name="customerNumCompareSalesAjax" class="com.ihk.saleunit.action.new_report.CustomerNumCompareSalesAction" method="searchAjax"/>
+		<!-- 客户数量对比(销售)  下载 -->
+		<action name="customerNumCompareSalesDownload" class="com.ihk.saleunit.action.new_report.CustomerNumCompareSalesAction" method="download"/>		
+		
+		<action name="andCustExport" class="com.ihk.sale.action.guangzhou.ChartProjectCustomerNumAction" method="export" >
+			<!-- 设置文件名参数，由页面上传入 -->
+             <param name="fileName">projectandcust.xls</param>
+             <result name="success" type="stream">
+	             <!-- 下载文件类型定义 -->
+	             <param name="contentType">application/vnd.ms-excel</param>
+	             <!-- 下载文件处理方法 -->
+	             <param name="contentDisposition">
+	                attachment;filename="${downloadChineseFileName}"
+	             </param>
+	             <!-- 下载文件输出流定义 -->
+	             <param name="inputName">downloadFile</param>
+             </result>
+		</action>
+		<!-- 
+		<action name="redAnalysisFirst" class="com.ihk.customer.action.CustomerRedAnalysis" method="redAnalysisFirst">
+			<result name="redAnalysisFirst" >/saleunit_new_report/guangzhou/customerRed_analysis_first.jsp</result>
+		</action>
+		 -->
+		<!-- 客户质量分析 -->
+		<action name="redAnalysis" class="com.ihk.customer.action.CustomerRedAnalysis" method="index">
+			<result name="success" >/saleunit_new_report/guangzhou/customerRed_analysis.jsp</result>
+		</action>
+		<!-- 客户质量分析异步查询 -->
+		<action name="redAnalysisAjax" class="com.ihk.customer.action.CustomerRedAnalysis" method="searchAjax"/>
+		<!-- 客户质量分析下载 -->
+		<action name="redAnalysisDownload" class="com.ihk.customer.action.CustomerRedAnalysis" method="download" >
+		</action>
+		
+	    <!-- 成交客户背景分析 -->
+	    <action name="cjkhbjFirst" class="com.ihk.customer.action.CjkhbjReportAction" method="cjkhbjFirst" >
+			<result name="cjkhbjFirst">/saleunit_new_report/guangzhou/cjkhbj_report_first.jsp</result>
+		</action>
+		<action name="cjkhbj" class="com.ihk.customer.action.CjkhbjReportAction" method="cjkhbj" >
+			<result name="success">/saleunit_new_report/guangzhou/cjkhbj_report.jsp</result>
+		</action>
+		
+		<!-- 客户成交明细报表(客户交易明细 项目) -->
+		<action name="khcj" class="com.ihk.customer.action.KhcjReportAction" method="khcj" >
+			<result name="success">/saleunit_new_report/guangzhou/khcj_report.jsp</result>
+		</action>
+		
+		<!-- 成交数据交叉分析 -->
+		<action name="cjsjjcReportFirst" class="com.ihk.customer.action.CjsjjcReportAction" method="cjsjjcReportFirst">
+			<result name="cjsjjcReportFirst">/saleunit_new_report/guangzhou/cjsjjc_report_first.jsp</result>
+		</action>
+		<action name="cjsjjcReport" class="com.ihk.customer.action.CjsjjcReportAction" method="cjsjjcReport">
+			<result name="success">/saleunit_new_report/guangzhou/cjsjjc_report.jsp</result>
+		</action>
+		
+		<!-- 售后问卷分析 -->
+		<action name="shwjReportFirst" class="com.ihk.customer.action.ShwjReportAction" method="shwjReportFirst">
+			<result name="shwjReportFirst">/saleunit_new_report/guangzhou/shwj_report_first.jsp</result>
+		</action>
+		<action name="shwjReport" class="com.ihk.customer.action.ShwjReportAction" method="shwjReport">
+			<result name="success">/saleunit_new_report/guangzhou/shwj_report.jsp</result>
+		</action>
+		<!-- 售后问卷下载 -->
+		<action name="shwjReportDownload" class="com.ihk.customer.action.ShwjReportAction" method="download" />
+		
+		<!-- 售前客户分类统计 -->
+		<action name="sqkhflReport" class="com.ihk.saleunit.action.new_report.SqkhflReportAction" method="sqkhflReport">
+			<result name="success">/saleunit_new_report/guangzhou/sqkhfl_report.jsp</result>
+		</action>
+		
+		<!-- 售前客户问卷报表 -->
+		<action name="preCustomerQuestionReport" class="com.ihk.saleunit.action.new_report.SqkhflReportAction" method="sqkhflReport">
+			<result name="success">/saleunit_new_report/guangzhou/sqkhfl_report.jsp</result>
+		</action>
+
+		
+		<!-- 成交客户分类统计 -->
+		<action name="cjkhflReportFirst" class="com.ihk.saleunit.action.new_report.CjkhflReportAction" method="cjkhflReportFirst">
+			<result name="cjkhflReportFirst">/saleunit_new_report/guangzhou/cjkhfl_report_first.jsp</result>
+		</action>
+		<action name="cjkhflReport" class="com.ihk.saleunit.action.new_report.CjkhflReportAction" method="cjkhflReport">
+			<result name="success">/saleunit_new_report/guangzhou/cjkhfl_report.jsp</result>
+		</action>
+		
+		
+		<!-- 客户跟进情况(公司) 查询页面格式-->
+		<action name="customerFollowCompany" class="com.ihk.saleunit.action.new_report.CustomerFollowCompanyAction" method="index">
+			<result name="success" >/saleunit_new_report/guangzhou/customer_follow_company.jsp</result>
+		</action>
+		<!-- 客户跟进情况(公司) 异步查询-->
+		<action name="customerFollowCompanyAjax" class="com.ihk.saleunit.action.new_report.CustomerFollowCompanyAction" method="searchAjax"/>		
+		<!-- 客户跟进情况(公司)下载 -->
+		<action name="customerFollowCompanyDownload" class="com.ihk.saleunit.action.new_report.CustomerFollowCompanyAction" method="download" >
+		</action>
+		
+		<!-- 客户跟进情况(项目) 查询页面格式-->
+		<action name="xmgjqkReport" class="com.ihk.saleunit.action.new_report.XmgjqkReportAction" method="index">
+			<result name="success" >/saleunit_new_report/guangzhou/xmgjqk_report.jsp</result>
+		</action>
+		<!-- 客户跟进情况(项目) 异步查询-->
+		<action name="xmgjqkReportAjax" class="com.ihk.saleunit.action.new_report.XmgjqkReportAction" method="xmgjqkReportAjax"/>		
+		<!-- 客户跟进情况(项目)下载 -->
+		<action name="xmgjqkDownload" class="com.ihk.saleunit.action.new_report.XmgjqkReportAction" method="download" >
+		</action>
+		
+		<!-- 客户跟进情况(销售) -->
+		<action name="xsgjqkReport" class="com.ihk.saleunit.action.new_report.XsgjqkReportAction" method="index">
+			<result name="success" >/saleunit_new_report/guangzhou/xsgjqk_report.jsp</result>
+		</action>
+		<!-- 客户跟进情况(销售) 异步查询 -->
+		<action name="xsgjqkReportAjax" class="com.ihk.saleunit.action.new_report.XsgjqkReportAction" method="xsgjqkReportAjax"/>
+		<!-- 客户跟进情况(销售)下载 -->
+		<action name="xsgjqkDownload" class="com.ihk.saleunit.action.new_report.XsgjqkReportAction" method="download" />
+		
+		<!-- 2013-10-25追加，加入按销售人员、跟进类型等条件的客户查询 -->
+		<!-- 客户跟进情况（销售） 表单显示页面跳转 -->
+		<action name="customerListByFollowForm" class="com.ihk.saleunit.action.new_report.CustomerListByFollow" method="index">
+			<result name="success">/saleunit_new_report/guangzhou/show_customer_list_customer_follow.jsp</result>
+		</action>		
+		
+		<!-- 客户跟进情况（销售)客户信息 异步返回数据 -->
+		<action name="customerListByFollowAjaxResult" class="com.ihk.saleunit.action.new_report.CustomerListByFollow" method="xsgjqkReportAjax"/>
+		<!-- 客户跟进情况（销售）客户信息 下载 -->
+		<action name="customerListByFollowDownload" class="com.ihk.saleunit.action.new_report.CustomerListByFollow" method="download"/>
+		
+		<!-- 销售分析报表 (公司) -->
+		<action name="saleReportCompany" class="com.ihk.saleunit.action.new_report.SaleReporCompanytAction" method="index">
+			<result name="success" >/saleunit_new_report/guangzhou/sale_report_company.jsp</result>
+		</action>
+		<!-- 销售分析报表 (公司 ) 异步查询 -->
+		<action name="saleReportCompanyAjax" class="com.ihk.saleunit.action.new_report.SaleReporCompanytAction" method="searchAjax"/>
+		<!-- 销售分析报表(公司) 下载 -->
+		<action name="saleReportCompanyDownload" class="com.ihk.saleunit.action.new_report.SaleReporCompanytAction" method="download"/>
+		
+		<!-- 销售分析报表 (公司 项目) -->
+		<action name="saleReportProject" class="com.ihk.saleunit.action.new_report.SaleReportAction" method="index">
+			<result name="success" >/saleunit_new_report/guangzhou/sale_report_project.jsp</result>
+		</action>
+		<!-- 销售分析报表 (公司 项目 ) 异步查询-->
+		<action name="saleReportProjectAjax" class="com.ihk.saleunit.action.new_report.SaleReportAction" method="searchAjax"/>
+		<!-- 销售分析报表(公司 项目) 下载 -->
+		<action name="saleReportProjectDownload" class="com.ihk.saleunit.action.new_report.SaleReportAction" method="download"/>
+		
+		<!-- 销售分析报表 (销售人员 ) -->
+		<action name="saleReportSale" class="com.ihk.saleunit.action.new_report.SaleReportSaleAction" method="index">
+			<result name="success" >/saleunit_new_report/guangzhou/sale_report_sale.jsp</result>
+		</action>
+		<!-- 销售分析报表 (销售人员 ) 异步查询 -->
+		<action name="saleReportSaleAjax" class="com.ihk.saleunit.action.new_report.SaleReportSaleAction" method="searchAjax"/>
+		<!-- 销售分析报表 (销售人员 ) 导出 -->
+		<action name="saleReportSaleDownload" class="com.ihk.saleunit.action.new_report.SaleReportSaleAction" method="download" />
+		
+		<!-- 销售分析报表 (单元明细) -->
+		<action name="saleReportSaleUnit" class="com.ihk.saleunit.action.new_report.SaleReportSaleUnitAction" method="index">
+			<result name="success" >/saleunit_new_report/guangzhou/sale_report_sale_unit.jsp</result>
+		</action>
+		<!-- 销售分析报表 (单元明细) 异步查询 -->
+		<action name="saleReportSaleUnitAjax" class="com.ihk.saleunit.action.new_report.SaleReportSaleUnitAction" method="searchAjax"/>
+		<!-- 销售分析报表 (单元明细 ) 导出-->
+		<action name="saleReportSaleUnitDownload" class="com.ihk.saleunit.action.new_report.SaleReportSaleUnitAction" method="download" />
+	
+		<!-- 客户转化率分析报表 -->
+		<action name="customerChangeReportAjax" class="com.ihk.saleunit.action.new_report.KhzhlfxReportAction" method="searchAjax"/> 
+		 
+		<!-- 公用的饼图,一般用于弹出 -->
+		<action name="commonPie" class="com.ihk.saleunit.action.new_report.CommonPieAction" method="commonPie">
+			<result name="success" >/saleunit_new_report/guangzhou/common_pie.jsp</result>
+		</action>
+		
+		
+		
+		
+	</package>
+		
+	
+	<!-- 查询客户列表 -->
+	<package name="customer_report_json" extends="struts-default,json-default" namespace="/customer/report_json">
+		<action name="searchCustomerList" class="com.ihk.customer.action.CustomerListByReportAction" method="searchCustomerList">
+			<result name="suc" type="json">
+				<param name="root">res</param>
+			</result>
+		</action>
+		<action name="searchxshlfxLc" class="com.ihk.saleunit.action.new_report.XshlfxLcReportAction" method="searchxshlfxLcReport">
+			<result name="suc" type="json">
+                <param name="root">result</param>
+            </result>
+		</action>
+		<action name="searchxshlfxJg"
+			class="com.ihk.saleunit.action.new_report.XshlfxJgReportAction" method="searchxshlfxJgReport">
+			<result name="suc" type="json">
+				<param name="root">result</param>
+			</result>
+		</action>
+		<action name="searchxshlfxFl"
+			class="com.ihk.saleunit.action.new_report.XshlfxFlReportAction" method="searchxshlfxFlReport">
+			<result name="suc" type="json">
+				<param name="root">result</param>
+			</result>
+		</action>
+        
+    	<!-- 成交客户背景分析 -->
+    	<action name="cjkhbjReport" class="com.ihk.customer.action.CjkhbjReportAction" method="cjkhbjReport" >
+    		<result type="json">
+    			<param name="root">result</param>
+    		</result>
+    	</action>    
+    
+    	<!-- 客户成交明细表 -->
+        <action name="khcjReport" class="com.ihk.customer.action.KhcjReportAction" method="khcjReport" >
+			<result type="json">
+	                <param name="root">result</param>
+	        </result>
+		</action>
+		<!-- ajax(客户交易明细 项目) -->
+		<action name="khcjReportAjax" class="com.ihk.customer.action.KhcjReportAction" method="khcjReportAjax"/>
+
+		<!-- 售前客户,客户来源及来访日期报表 -->
+		<action name="sourceAndVisit" class="com.ihk.saleunit.action.new_report.CustomerSourceAndVisitDateReportAction" method="layout">
+			<result name="layout">/saleunit_new_report/guangzhou/source_visit_report.jsp</result>
+		</action>
+		
+		<action name="sourceAndVisitAjax" class="com.ihk.saleunit.action.new_report.CustomerSourceAndVisitDateReportAction" method="sourceAndVisitAjax"/>
+		<!-- 中山来电来访简况查询 -->
+		<action name="zhongshanConfirmDetailAjax" class="com.ihk.saleunit.action.new_report.ZhongShanConfirmDetailAction" method="zhongshanConfirmDetailAjax"/>
+		<!-- 中山来电来访简况查询导出  -->
+		<action name="zhongshanConfirmDetailDownload" class="com.ihk.saleunit.action.new_report.ZhongShanConfirmDetailAction" method="zhongshanConfirmDetailDownload"/>
+		
+		<!--项目推货情况查询-->
+		<action name="projectPushDetailAjax" class="com.ihk.saleunit.action.new_report.projectPushDetailAction" method="projectPushDetailAjax"/>
+		<!-- 项目推货情况导出  -->
+		<action name="projectPushDetailDownload" class="com.ihk.saleunit.action.new_report.projectPushDetailAction" method="projectPushDetailDownload"/>
+		
+		
+    </package>
+    
+    <!-- 中山公司的有关报表 -->
+    <package name="saleunit_new_zhongshan_report" extends="struts-default,json-default"
+		namespace="/saleunit_new_report/report/zhongshan">
+		
+		<!-- 通配符 -->
+		<action name="*" class="com.ihk.saleunit.action.new_report.ZhongShanCustomerAnalysisAction" method="{1}">
+			<result name="{1}">/saleunit_new_report/zhongshan/{1}.jsp</result>
+		</action>
+		<!-- 中山公司报表，来电来访成交简况 -->
+		<action name="zhongshanConfirmDetail" class="com.ihk.saleunit.action.new_report.ZhongShanConfirmDetailAction" method="zhongshanConfirmDetail">
+			<result name="success" >/saleunit_new_report/zhongshan/zhong_shan_confirm_detail.jsp</result>
+		</action>
+		
+		<!-- 项目推货情况 -->
+		<action name="projectPushDetail" class="com.ihk.saleunit.action.new_report.projectPushDetailAction" method="projectPushDetail">
+			<result name="success" >/saleunit_new_report/zhongshan/project_push_detail.jsp</result>
+		</action>
+		
+	</package>
+    
+</struts>

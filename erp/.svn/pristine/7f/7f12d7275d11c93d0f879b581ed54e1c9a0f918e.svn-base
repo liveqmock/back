@@ -1,0 +1,129 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.ihk.property.data.IUnitBindMapper">
+
+	<resultMap type="UnitBind" id="unitBindResultMap">
+		<id property="id" column="id" />        
+		<result property="mainUnitId" column="main_unit_id" />
+		<result property="slaveUnitId" column="slave_unit_id" />
+		<result property="isDeleted" column="is_deleted" />
+		<result property="createdId" column="created_id" />
+		<result property="createdTime" column="created_time" />
+		<result property="modId" column="mod_id" />
+		<result property="modTime" column="mod_time" />
+	</resultMap>
+
+	<insert id="addUnitBind" parameterType="UnitBind">
+		 <selectKey resultType="java.lang.Integer" keyProperty="id" order="AFTER" >
+            SELECT @@IDENTITY
+        </selectKey>		
+		insert into unit_bind(
+		main_unit_id,
+		slave_unit_id,
+		is_deleted,
+		created_id,
+		created_time,
+		mod_id,
+		mod_time
+		)
+			VALUES(
+		#{mainUnitId},
+		#{slaveUnitId},
+		#{isDeleted},
+		#{createdId},
+		#{createdTime},
+		#{modId},
+		#{modTime}
+			)
+		
+	</insert>
+	<delete id="deleteUnitBind" parameterType="int">
+	update unit_bind set is_deleted='1' where id=#{id};
+	</delete>
+	<update id="updateUnitBind" parameterType="int">
+	update unit_bind set 
+		main_unit_id=#{mainUnitId},
+		slave_unit_id=#{slaveUnitId},
+		is_deleted=#{isDeleted},
+		created_id=#{createdId},
+		created_time=#{createdTime},
+		mod_id=#{modId},
+		mod_time=#{modTime}
+	 where id=#{id}
+	</update>
+	<select id="findUnitBindById" resultMap="unitBindResultMap">
+	select * from unit_bind where id=#{id}
+	</select>
+    
+	<sql id="findWhereCond"> 
+		<where>
+      
+			<if test="mainUnitId != null and mainUnitId != '' and mainUnitId != '0'">
+			main_unit_id = #{mainUnitId}
+            </if>   
+            <if test="slaveUnitId != null and slaveUnitId != '' and slaveUnitId != '0'">
+			slave_unit_id = #{slaveUnitId}
+            </if>   
+            and is_deleted = '0'
+          
+		</where>
+	</sql>
+	
+	<select id="findUnitBindCount" resultType="int" parameterType="com.ihk.property.data.pojo.UnitBindCond">
+		SELECT count(0) from unit_bind  
+        <include refid="findWhereCond"/>     
+    </select>
+        
+	<select id="findUnitBind" resultMap="unitBindResultMap" parameterType="com.ihk.property.data.pojo.UnitBindCond">
+		SELECT * from  unit_bind 
+        <include refid="findWhereCond"/> 
+		<if test="topNum > 0">
+			limit #{topNum};
+		</if>
+    </select>
+    
+	<select id="findUnitBindPage" resultMap="unitBindResultMap" parameterType="com.ihk.property.data.pojo.UnitBindCond">
+		SELECT * from  unit_bind 
+        <include refid="findWhereCond"/> 
+    
+		<if test="startLine >= 0">
+		<if test="pageSize > 0">
+			limit #{startLine},#{pageSize};
+		</if>
+		</if>
+	</select>
+	
+	<update id="deletedByIds" parameterType="int">
+		update unit_bind set is_deleted = '1' 
+		where main_unit_id in
+		<if test="userIds !=null and userIds.size() > 0">  
+	            <foreach  
+	                collection="userIds"  
+	                item="uId"  
+	                open="("  
+	                separator=","  
+	                close=")">  
+	                #{uId}  
+	            </foreach>  
+	        </if> 
+		or slave_unit_id  in 
+		<if test="userIds !=null and userIds.size() > 0">  
+	            <foreach  
+	                collection="userIds"  
+	                item="uId"  
+	                open="("  
+	                separator=","  
+	                close=")">  
+	                #{uId}  
+	            </foreach>  
+	        </if> 
+	</update>
+	<update id="deletedByBuildId" parameterType="int">
+		update unit_bind set is_deleted = '1' 
+		where main_unit_id in
+		(select id from property_unit where build_id = #{buildId})
+		or slave_unit_id in
+		(select id from property_unit where build_id = #{buildId}) and is_deleted = '0'
+		
+	</update>
+</mapper>

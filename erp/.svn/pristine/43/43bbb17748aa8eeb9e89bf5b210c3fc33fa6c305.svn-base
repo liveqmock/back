@@ -1,0 +1,529 @@
+<%@ page language="java" pageEncoding="UTF-8"	isELIgnored="false"%>
+
+<%@ page contentType="text/html; charset=utf-8"%>
+<%@ taglib prefix="s" uri="/struts-tags"%>
+<%
+    String path = request.getContextPath();
+    String basePath = request.getScheme() + "://"
+            + request.getServerName() + ":" + request.getServerPort()
+            + path + "/";
+%>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    <title>结佣</title>
+    <s:include value="../checkcommission/header.jsp"></s:include>
+    <script type="text/javascript">
+
+        $(document).ready(function(){
+            //bindCompanyPropertyPorjectForXKZXOnly("projectId", "projectIds"); //单个项目的选择
+            bindProjectTreeAreaBuildOnly("projectId", "areaId", "buildId");
+            $('#tbList').datagrid({
+                width:'auto',
+                height: $(this).height()-42,
+                //fitColumns: true,
+
+                loadMsg:'数据加载中...',
+                url:'',
+                columns:[[
+                    {field:'ck',title:"选项",checkbox:true,hidden:false},
+                    {field:'checkcommissionId',title:'checkcommissionId',hidden:true},
+                    {field:'unit_id',title:'单元ID',hidden:true},
+                    {field:'checkfeeid',title:'对数表ID',hidden:true},
+
+                    {field:'paymentAmount',title:'实收款(元)',width:70,align:"center",formatter:formatPaymentAmount},
+                    {field:'t_commissionAmount',title:'应收款(元)',width:70,align:"center",formatter:totalCommissionAmount},
+                    {field:'t_commission',title:'应收佣金点(%)',width:70,align:"center",formatter:totalCommission},
+
+                    {field:'work_date',title:'成交日期',width:70,align:"center"},
+                    {field:'sign_date',title:'签约日期',width:70,align:"center"},
+                    {field:'area_name',title:'分区',width:50,hidden:true},
+                    {field:'build_name',title:'楼栋',width:50},
+                    {field:'unit_no',title:'单元号',width:50},
+                    {field:'customer_name',title:'业主姓名',width:100,sortable:true},
+                    {field:'build_area',title:'建筑面积(㎡)',width:50,sortable:true,align:"right"},
+                    {field:'sum_price',title:'成交总价(元)',width:80,sortable:true,align:"right",formatter:formatPrice},
+                    {field:'contract_no',title:'合同号',width:50},
+                    {field:'pay_name',title:'付款方式',width:50},
+
+                    {field:'commission',title:'佣金点(%)',width:60,align:"center",formatter:formatPrice},
+                    {field:'commissionAmount',title:'应收佣金(元)',width:60,align:"center",hidden:false,formatter:formatPrice},
+                    /*{field:'sec_commission',title:'一二手佣金点(%)',width:60,align:"center",formatter:formatPrice},
+                    {field:'sec_commissionAmount',title:'一二手应收佣金(元)',width:60,align:"center",hidden:false,formatter:formatPrice},*/
+                    {field:'rel_commission',title:'关系户佣金点(%)',width:60,align:"center",formatter:formatPrice},
+                    {field:'rel_commissionAmount',title:'关系户应收佣金(元)',width:60,align:"center",hidden:false,formatter:formatPrice},
+
+                    {field:'repayMoney',title:'回款金额(元)',width:50,align:"right",formatter:formatPrice},
+                    {field:'repayAmount',title:'合计回款金额(元)',width:50,align:"right",formatter:formatPrice},
+                    {field:'receiptId',title:'实收款ID',width:50,hidden:true},
+
+                    {field:'sales',title:'销售人员',width:80},
+                    {field:'checkcommissionTypeName',title:'状态',width:70,align:"center",hidden:true},
+                    {field:'checkcommission_date',title:'对佣日期',width:70,align:"center",hidden:true}
+                ]],
+
+                onHeaderContextMenu: function(e, field){
+                    e.preventDefault();
+                    if (!$('#tmenu').length){
+                        createColumnMenu();
+                    }
+                    $('#tmenu').menu('show', {
+                        left:e.pageX,
+                        top:490
+                    });
+                },
+
+                toolbar: '#tb',
+                showFooter: true,
+                singleSelect:false
+            });
+
+            //合计佣金点
+            function totalCommission(val,row){
+                var commission = row.commission;
+                var rel_commission = row.rel_commission;
+                var rel_commissionAmount = row.rel_commissionAmount;
+
+                if(commission==null || commission=="" || commission=="undefined"){
+                    commission = 0;
+                }
+                if(rel_commission==null || rel_commission=="" || rel_commission=="undefined"){
+                    rel_commission = 0;
+                }
+
+                if(rel_commission==0 && rel_commissionAmount==0 ){
+                    val = commission  ;
+                } else {
+                    val = rel_commission  ;
+                }
+                row.t_commission = val;
+
+                if(row.checkfeeTypeName=="总记录数:"){
+                    val = "";
+                    return val;
+                } else {
+                    return commafy(Math.round(val*100)/100);
+                }
+            }
+
+            //合计应收佣金
+            var sum_commissionAmount = 0;
+            var i=0;
+            function totalCommissionAmount(val,row){
+
+                var commissionAmount = row.commissionAmount;
+                var rel_commissionAmount = row.rel_commissionAmount;
+                var rel_commission = row.rel_commission;
+
+                if(rel_commissionAmount==null || rel_commissionAmount=="" || rel_commissionAmount=="undefined"){
+                    rel_commissionAmount = 0;
+                }
+                if(rel_commission==null || rel_commission=="" || rel_commission=="undefined"){
+                    rel_commission = 0;
+                }
+                if(commissionAmount==null || commissionAmount=="" || commissionAmount=="undefined"){
+                    commissionAmount = 0;
+                }
+
+                if(rel_commission==0 && rel_commissionAmount==0){
+                    val = parseFloat(commissionAmount)  ;
+                } else {
+                    val = parseFloat(rel_commissionAmount)  ;
+                }
+
+                row.t_commissionAmount = val;
+
+                if(i==0){
+                    sum_commissionAmount =  val;
+                } else {
+                    sum_commissionAmount = sum_commissionAmount + val;
+                }
+                i++;
+
+                if(row.checkfeeTypeName=="总记录数:"){
+
+                    row.t_commissionAmount = sum_commissionAmount;
+                    val = sum_commissionAmount;
+                    i=0;
+                }
+
+                return commafy(val);
+            }
+
+            function formatPaymentAmount(val,row){
+                var paymentAmount = row.paymentAmount;
+                var sum_paymentAmount = $("#sum_paymentAmount_hidden").val();
+                if(paymentAmount==null || paymentAmount=="" || paymentAmount=="undefined"){
+                    paymentAmount = 0;
+                }
+                
+                //sum_paymentAmount = sum_paymentAmount + paymentAmount;
+                var t = parseInt(sum_paymentAmount) + paymentAmount;
+                $("#sum_paymentAmount_hidden").val(t);
+
+                if(row.checkfeeTypeName=="总记录数:"){
+                    val = sum_paymentAmount;
+                }
+
+                if(val=="0"){
+                    val="-";
+                    return val;
+                }
+                return commafy(val);
+            }
+
+            function formatPrice(val,row){
+                if(val==null || val=="0" || val=="0.00") return "-";
+                return commafy(val);
+            }
+
+            $("#projectId").combotree({
+                onChange:function(newValue, oldValue){
+                	getCheckCommissionDate(newValue);
+                }
+            });
+			$("#checkCommissionDate").combobox({
+				valueField:'id',
+				textField:'text',
+				editable:false,
+				url:'./saleunit_new/checkcommission/getDateListForCombotree.action',
+				onLoadSuccess:function(node, data){
+
+					var module = $("#checkCommissionDate").combotree('textbox');
+					$(module).bind('focus', function(){
+						$("#checkCommissionDate").combotree('showPanel');
+					});
+				}
+            });
+
+        });
+
+        function createColumnMenu(){
+            var tmenu = $('<div id="tmenu" style="width:100px;"></div>').appendTo('body');
+            var fields = $('#tbList').datagrid('getColumnFields');
+            var columns= $('#tbList').datagrid('options' ).columns[0];
+            for(var i=2; i<columns.length; i++){
+                if(columns[i].hidden){
+                    $('<div id="'+columns[i].field+'"/>').html(columns[i].title).appendTo(tmenu);
+                } else {
+                    $('<div iconCls="icon-ok" id="'+columns[i].field+'"/>').html(columns[i].title).appendTo(tmenu);
+                }
+            }
+            tmenu.menu({
+                onClick: function(item){
+                    if (item.iconCls=='icon-ok'){
+                        $('#tbList').datagrid('hideColumn', item.id);
+                        tmenu.menu('setIcon', {
+                            target: item.target,
+                            iconCls: 'icon-empty'
+                        });
+                    } else {
+                        $('#tbList').datagrid('showColumn', item.id);
+                        tmenu.menu('setIcon', {
+                            target: item.target,
+                            iconCls: 'icon-ok'
+                        });
+                    }
+                }
+            });
+        }
+
+        function modCheckFee() {
+        	$("#sum_paymentAmount_hidden").val(0);
+			var checkCommissionDate = $("#checkCommissionDate").combobox("getValue");
+            var projectIds = $("input[name='propertyUnitCond.strSearchProjectIds']").val();
+            var checkCommissionType = $("#checkCommissionType").val();
+            var checkIds = getSelections("checkfeeid");
+
+            if(projectIds==null || projectIds.length==0 || projectIds.indexOf(",")>=0) {
+                myAlert("请选择项目。");
+                return;
+            }
+
+            $('#tbList').datagrid({
+                loadMsg:'数据加载中...',
+                url:'./saleunit_new/checkcommission/checkmod_view.action',
+                queryParams:{
+                    projectIds:projectIds,
+                    checkCommissionDate:checkCommissionDate,
+                    checkCommissionType:checkCommissionType,
+                    checkIds:checkIds
+                }
+
+            });
+        }
+
+        /**
+         * 导出对佣表
+         */
+        function exportExcel(){
+            var projectIds = $("input[name='propertyUnitCond.strSearchProjectIds']").val();
+            var checkCommissionDate = $("#checkCommissionDate").combobox("getValue");
+
+            if(projectIds==null || projectIds.length==0|| projectIds.indexOf(",")>=0) {
+                myAlert("请选择项目。");
+                return;
+            }
+
+            /*if(checkCommissionDate==null || checkCommissionDate.length==0){
+                myAlert("对数日期不能为空。");
+                return;
+            }*/
+
+            location.href = './saleunit_new/resultcommission/exportResultCommission.action?projectIds='+projectIds
+                    +"&checkCommissionDate="+checkCommissionDate;
+                    //+"&checkCommissionType="+$("#checkCommissionType").combobox("getValue");
+        }
+
+        function getSelections(colname){
+            var ids = [];
+            var rows = $('#tbList').datagrid('getSelections');
+
+            $.each(rows, function (i, obj) {
+                $.each(obj, function (name, val) {
+                    if(name==colname){
+                        ids.push(val);
+                    }
+                });
+            });
+            return ids;
+        }
+
+        function compareToCommissionAmount(colname){
+            var ids = [];
+            var rows = $('#tbList').datagrid('getSelections');
+            var commissionAmount = 0;
+            var paymentAmount = $("#paymentAmount").val();
+            $.each(rows, function (i, obj) {
+                $.each(obj, function (name, val) {
+                    if(name==colname){
+                        //ids.push(val);
+                        commissionAmount = commissionAmount+val;
+                    }
+                });
+            });
+            if(paymentAmount > commissionAmount) {
+                return false;
+            }
+            return true;
+        }
+
+        function clearSelections(){
+            $('#tbList').datagrid('clearSelections');
+        }
+
+
+        /**
+         * 获取对佣日期下拉列表
+         * @param projectId
+         */
+        function getCheckCommissionDate(projectId){
+        	if(!isNaN(projectId)) {
+            $("#checkCommissionDate").combobox("clear");
+
+			$("#checkCommissionDate").combobox(
+                    "reload",
+                    "./saleunit_new/checkcommission/getDateListForCombotree.action?propertyId=" + projectId
+                           // +"&checkCommissionType="+$("#checkCommissionType").combobox("getValue")
+            	);
+        	}
+        }
+        /**
+         *刷新对数日期
+         */
+        function reloadCheckCommissionDate(){
+            var projectIds = $("input[name='propertyUnitCond.strSearchProjectIds']").val();
+            if(projectIds==null || projectIds.length==0|| projectIds.indexOf(",")>=0) {
+                myAlert("请选择项目。");
+                return;
+            }
+            getCheckCommissionDate(projectIds);
+        }
+
+        $(".datagrid-cell").live('contextmenu',function(e){
+            //显示快捷菜单
+            $('#mm').menu('show', {
+                left: e.pageX,
+                top: e.pageY
+            });
+
+            return false;
+        });
+
+
+        //添加右击菜单内容
+        function onRowContextMenu(e, rowIndex, rowData){
+            e.preventDefault();
+
+            var selected=$("#test").datagrid('getRows'); //获取所有行集合对象
+            var idValue = selected[rowIndex].id;
+            $(this).datagrid('selectRecord', idValue);  //通过获取到的id的值做参数选中一行
+
+            $('#mm').menu('show', {
+                left:e.pageX,
+                top:e.pageY
+            });
+        }
+
+        function doResume(){
+            var selected = $('#tbList').datagrid('getSelected');
+            var checkCommissionDate = getCheckCommissionDates();
+
+            if(selected){
+                ajaxModifyMethod("resume_checkcommission", checkCommissionDate);
+            } else {
+                alert("请选择要操作的数据");
+            }
+        }
+
+        //共用的ajax action方法
+        function ajaxModifyMethod(action, checkCommissionDate){
+            var projectIds = $("input[name='propertyUnitCond.strSearchProjectIds']").val();
+            var receiptId = getSelections("receiptId");
+            var checkCommissionIds = getSelections("checkcommissionId");
+            var checkIds = getSelections("checkfeeid");
+            var t_commissionAmounts = getSelections("t_commissionAmount");
+            var ids = getSelections("unit_id");
+            if(ids.length <= 0 || ids.join(",") == ""){
+                myAlert("请先选择要操作的单元");
+                return ;
+            }
+
+            $.ajax({
+                type: 'get',
+                url: './saleunit_new/checkcommission/' + action + '.action',
+                data: "ids=" + ids.join(",") + "&checkCommissionDate=" + checkCommissionDate + "&receiptId=" + receiptId
+                        + "&projectIds=" + projectIds + "&checkCommissionIds=" + checkCommissionIds
+                        + "&checkIds=" + checkIds+ "&t_commissionAmounts=" + t_commissionAmounts,
+                dataType: "json",
+                beforeSend:function(){
+                    moduleMaskByModule($("body"));
+                },
+                success: function(data){
+
+                    if(data.type == "true"){
+
+                        //myAlert("操作成功");
+                        moduleMaskRemove();
+                        modCheckFee();
+                    }else{
+
+                        myAlert("操作失败,请重试");
+                        moduleMaskRemove();
+                    }
+
+                },
+                error: function(XMLHttpRequest, textStatus, errorThrown){
+
+                    myAlert("请求异常,请重试");
+                    moduleMaskRemove();
+                }
+            });
+
+        }
+
+        //保存实收款
+        function btn_save() {
+            var ids = getSelections("unit_id");
+            var checkcommissionIds = getSelections("checkcommissionId");
+            var t_commissionAmounts = getSelections("t_commissionAmount");
+            var projectIds = $("input[name='propertyUnitCond.strSearchProjectIds']").val();
+            var checkCommissionDates = getSelections("checkcommission_date");
+            var paymentAmount =  $("#paymentAmount").val();
+            if(projectIds==null || projectIds.length==0|| projectIds.indexOf(",")>=0) {
+                myAlert("请选择项目。");
+                return;
+            }
+
+            if(ids.length <= 0 || ids.join(",") == ""){
+                myAlert("请先选择要操作的单元");
+                return ;
+            }
+
+            if(!compareToCommissionAmount("t_commissionAmount")){
+                myAlert("实收金额不能大于应收款。");
+                return;
+            }
+
+            $.ajax({
+                type: 'get',
+                url: './saleunit_new/resultcommission/savePayment.action',
+                data: "ids=" + ids.join(",") + "&checkCommissionDates=" + checkCommissionDates
+                        +"&projectIds="+projectIds+"&paymentAmount=" + paymentAmount
+                        +"&checkcommissionIds=" + checkcommissionIds
+                        +"&t_commissionAmounts=" + t_commissionAmounts,
+
+                dataType: "json",
+                beforeSend:function(){
+                    moduleMaskByModule($("body"));
+                },
+                success: function(data){
+
+                    if(data.type == "true"){
+
+                        //myAlert("操作成功");
+                        moduleMaskRemove();
+                        modCheckFee();
+                    }else{
+
+                        myAlert("操作失败,请重试");
+                        moduleMaskRemove();
+                    }
+
+                },
+                error: function(XMLHttpRequest, textStatus, errorThrown){
+
+                    myAlert("请求异常,请重试");
+                    moduleMaskRemove();
+                }
+            });
+        }
+
+    </script>
+</head>
+<body  style="padding:0;background:white;">
+
+
+<div id="toolbar" style="height: auto;padding: 5px">
+    <form class="registerform" id="thisForm" name="thisForm"  method="post">
+        <table width="100%" border="0" align="left" cellspacing="0">
+
+            <tr>
+                <td>
+
+                    <span style="margin: 0 0 0 12px">
+
+                        选择项目:
+                        <input type="text" id="projectId" name="propertyUnitCond.strSearchProjectIds" />
+
+                        <%--已对佣未结佣--%>
+                        <input type="hidden" id="checkCommissionType" name="checkCommissionType" value="2"/>
+
+                        对佣日期:
+                        <input id="checkCommissionDate"/>
+                        <img src="./ui/js/themes/icons/reload.png" alt="刷新对佣日期" title="刷新对佣日期" onclick="return reloadCheckCommissionDate()" align="middle" style="padding-bottom:10px;cursor: pointer;">
+
+                        <input type="button" onclick="return modCheckFee()" value="查看" />
+                        <input type="button" onclick="return exportExcel()" value="导出" />
+
+                    </span>
+
+                </td>
+            </tr>
+        </table>
+    </form>
+</div>
+
+<div id="tb">
+     实收款：<input id="paymentAmount" name="paymentAmount" style="width: 50px;">元
+    <input id="btn_save" type="button" value=" 保存 " onclick="btn_save()">
+</div>
+
+<div region="center" style="background:#ffffff;overflow:hidden;padding:5px;">
+    <table id="tbList"></table>
+</div>
+<input id="sum_paymentAmount_hidden" type="hidden"/>
+
+</body>
+</html>

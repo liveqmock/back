@@ -1,0 +1,128 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.ihk.saleunit.data.ICancelUnitMapper">
+
+	<resultMap type="CancelUnit" id="cancelUnitResultMap">
+		<id property="id" column="id" />        
+		<result property="companyProjectId" column="company_project_id" />
+		<result property="propertyProjectId" column="property_project_id" />
+		<result property="areaId" column="area_id" />
+		<result property="buildId" column="build_id" />
+		<result property="unitId" column="unit_id" />
+		<result property="confirmType" column="confirm_type" />
+		<result property="mainId" column="main_id" />
+		<result property="cancelTime" column="cancel_time" />
+		<result property="overdueFine" column="overdue_fine" />
+		<result property="approverMan" column="approver_man" />
+		<result property="inputMan" column="input_man" />
+		<result property="remark" column="remark" />
+		<result property="isDeleted" column="is_deleted" />
+		<result property="createdId" column="created_id" />
+		<result property="createdTime" column="created_time" />
+		<result property="modId" column="mod_id" />
+		<result property="modTime" column="mod_time" />
+	</resultMap>
+
+	<insert id="addCancelUnit" parameterType="CancelUnit">
+		 <selectKey resultType="java.lang.Integer" keyProperty="id" order="AFTER" >
+            SELECT @@IDENTITY
+        </selectKey>		
+		insert into cancel_unit(
+		company_project_id,
+		property_project_id,
+		area_id,
+		build_id,
+		unit_id,
+		confirm_type,
+		main_id,
+		cancel_time,
+		overdue_fine,
+		approver_man,
+		input_man,
+		remark,
+		is_deleted,
+		created_id,
+		created_time,
+		mod_id,
+		mod_time
+		)
+			VALUES(
+		#{companyProjectId},
+		#{propertyProjectId},
+		#{areaId},
+		#{buildId},
+		#{unitId},
+		#{confirmType},
+		#{mainId},
+		#{cancelTime},
+		#{overdueFine},
+		#{approverMan},
+		#{inputMan},
+		#{remark},
+		#{isDeleted},
+		#{createdId},
+		#{createdTime},
+		#{modId},
+		#{modTime}
+			)
+		
+	</insert>
+	<delete id="deleteCancelUnit" parameterType="com.ihk.utils.base.PojoDeleteCond">
+	update cancel_unit set is_deleted='1', mod_id=#{modId}, mod_time=#{modTime} where id=#{id};
+	</delete>
+	<update id="updateCancelUnit" parameterType="int">
+	update cancel_unit set 
+		company_project_id=#{companyProjectId},
+		property_project_id=#{propertyProjectId},
+		area_id=#{areaId},
+		build_id=#{buildId},
+		unit_id=#{unitId},
+		confirm_type=#{confirmType},
+		main_id=#{mainId},
+		cancel_time=#{cancelTime},
+		overdue_fine=#{overdueFine},
+		approver_man=#{approverMan},
+		input_man=#{inputMan},
+		remark=#{remark},
+		mod_id=#{modId},
+		mod_time=#{modTime}
+	 where id=#{id}
+	</update>
+	
+	<select id="findCancelUnitById" resultMap="cancelUnitResultMap">
+	select * from cancel_unit where id=#{id}
+	</select>
+	
+	<select id="findCancelUnitByUnitId" resultMap="cancelUnitResultMap">
+	select * from cancel_unit where unit_id=#{unitId} and is_deleted = '0'
+	</select>
+    
+	<sql id="findWhereCond"> 
+		<where>
+		</where>
+	</sql>
+	
+	<select id="findCancelUnitCount" resultType="int" parameterType="com.ihk.saleunit.data.pojo.CancelUnitCond">
+		SELECT count(0) from cancel_unit  
+        <include refid="findWhereCond"/>     
+    </select>
+        
+	<select id="findCancelUnit" resultMap="cancelUnitResultMap" parameterType="com.ihk.saleunit.data.pojo.CancelUnitCond">
+		SELECT * from  cancel_unit 
+        <include refid="findWhereCond"/> 
+		<if test="topNum > 0">
+			limit #{topNum};
+		</if>
+    </select>
+    
+	<select id="findCancelUnitPage" resultMap="cancelUnitResultMap" parameterType="com.ihk.saleunit.data.pojo.CancelUnitCond">
+		SELECT * from  cancel_unit 
+        <include refid="findWhereCond"/> 
+    
+		<if test="startLine >= 0">
+		<if test="pageSize > 0">
+			limit #{startLine},#{pageSize};
+		</if>
+		</if>
+	</select>
+</mapper>

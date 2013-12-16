@@ -1,0 +1,87 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.ihk.setting.data.IActionRecordLogMapper">
+
+	<resultMap type="ActionRecordLog" id="actionRecordLogResultMap">
+		<id property="id" column="id" />        
+		<result property="logType" column="log_type" />
+		<result property="logDesc" column="log_desc" />
+		<result property="projectId" column="project_id" />
+		<result property="userId" column="user_id" />
+		<result property="logTime" column="log_time" />
+	</resultMap>
+	
+	<insert id="addActionRecordLog" parameterType="ActionRecordLog">
+		 <selectKey resultType="java.lang.Integer" keyProperty="id" order="AFTER" >
+            SELECT @@IDENTITY
+        </selectKey>		
+		insert into action_record_log(
+		log_type,
+		log_desc,
+		project_id,
+		user_id,
+		log_time
+		)
+			VALUES(
+		#{logType},
+		#{logDesc},
+		#{projectId},
+		#{userId},
+		#{logTime}
+			)
+		
+	</insert>
+	<delete id="deleteActionRecordLog" parameterType="int">
+	update action_record_log set is_deleted='1' where id=#{id};
+	</delete>
+
+	<select id="findOperLogById" resultMap="actionRecordLogResultMap">
+	select * from action_record_log where id=#{id}
+	</select>
+    
+	<sql id="findWhereCond"> 
+		<where>
+			<if test="projectName!=null and projectName!=''">
+        	   and p.project_name LIKE #{projectName}
+			</if>
+            <if test="searchName != null and searchName != ''">
+        	   and p.user_id in (select id from user_account where real_name like CONCAT(CONCAT('%', #{searchName}),'%') and is_deleted = '0')
+            </if> 
+            <if test="date1 != null and date1 != '' ">
+				and p.log_time &gt;= #{date1}
+			</if>
+			<if test="date2 != null and date2 != ''">
+				and p.log_time &lt; date_add(#{date2},interval 1 day)
+			</if>
+			<if test="logType !=null and logType != ''">
+				and p.log_type = #{logType}
+			</if>
+		</where>
+	</sql>
+	
+	<select id="findActionRecordLogCount" resultType="int" parameterType="com.ihk.setting.data.pojo.ActionRecordLogCond">
+		SELECT count(0) from action_record_log l
+		JOIN company_project p
+		ON
+		l.project_id =
+		p.id
+        <include refid="findWhereCond"/>     
+    </select>
+        
+	<select id="findActionRecordLogPage" resultMap="actionRecordLogResultMap" parameterType="com.ihk.setting.data.pojo.ActionRecordLogCond">
+	SELECT
+	*
+	FROM
+	action_record_log l
+	JOIN company_project p
+	ON l.project_id =
+	p.id
+	<include refid="findWhereCond" />
+	order by p.id desc
+	<if test="startLine >= 0">
+		<if test="pageSize > 0">
+			limit #{startLine},#{pageSize};
+		</if>
+	</if>
+	</select>
+</mapper>

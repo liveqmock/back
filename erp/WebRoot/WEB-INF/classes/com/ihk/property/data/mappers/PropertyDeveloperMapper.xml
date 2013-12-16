@@ -1,0 +1,97 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.ihk.property.data.IPropertyDeveloperMapper">
+
+	<resultMap type="PropertyDeveloper" id="propertyDeveloperResultMap">
+		<id property="id" column="id" />        
+		<result property="developerName" column="developer_name" />
+		<result property="remark" column="remark" />
+		<result property="isDeleted" column="is_deleted" />
+		<result property="createdId" column="created_id" />
+		<result property="createdTime" column="created_time" />
+		<result property="modId" column="mod_id" />
+		<result property="modTime" column="mod_time" />
+		<result property="companyProjectId" column="company_project_id" />
+	</resultMap>
+
+	<insert id="addPropertyDeveloper" parameterType="PropertyDeveloper">
+		 <selectKey resultType="java.lang.Integer" keyProperty="id" order="AFTER" >
+            SELECT @@IDENTITY
+        </selectKey>		
+		insert into property_developer(
+		developer_name,
+		remark,
+		is_deleted,
+		created_id,
+		created_time,
+		mod_id,
+		mod_time,
+		company_project_id
+		)
+			VALUES(
+		#{developerName},
+		#{remark},
+		#{isDeleted},
+		#{createdId},
+		#{createdTime},
+		#{modId},
+		#{modTime},
+		#{companyProjectId}
+			)
+		
+	</insert>
+	<delete id="deletePropertyDeveloper" parameterType="int">
+	update property_developer set is_deleted='1' where id=#{id};
+	</delete>
+	<update id="updatePropertyDeveloper" parameterType="int">
+	update property_developer set 
+		developer_name=#{developerName},
+		remark=#{remark},
+		is_deleted=#{isDeleted},
+		created_id=#{createdId},
+		created_time=#{createdTime},
+		mod_id=#{modId},
+		mod_time=#{modTime},
+		company_project_id=#{companyProjectId}
+	 where id=#{id}
+	</update>
+	<select id="findPropertyDeveloperById" resultMap="propertyDeveloperResultMap">
+	select * from property_developer where id=#{id}
+	</select>
+    
+	<sql id="findWhereCond"> 
+		<where>
+			<if test="searchName != null and searchName != ''">
+				and developer_name like CONCAT(CONCAT('%', #{searchName}),'%')    
+            </if>    
+            <if test="companyProjectId != 0">
+				and company_project_id=#{companyProjectId}
+            </if> 
+            and is_deleted = '0'
+		</where>
+	</sql>
+	
+	<select id="findPropertyDeveloperCount" resultType="int" parameterType="com.ihk.property.data.pojo.PropertyDeveloperCond">
+		SELECT count(0) from property_developer  
+        <include refid="findWhereCond"/>     
+    </select>
+        
+	<select id="findPropertyDeveloper" resultMap="propertyDeveloperResultMap" parameterType="com.ihk.property.data.pojo.PropertyDeveloperCond">
+		SELECT * from  property_developer 
+        <include refid="findWhereCond"/> 
+		<if test="topNum > 0">
+			limit #{topNum};
+		</if>
+    </select>
+    
+	<select id="findPropertyDeveloperPage" resultMap="propertyDeveloperResultMap" parameterType="com.ihk.property.data.pojo.PropertyDeveloperCond">
+		SELECT * from  property_developer 
+        <include refid="findWhereCond"/> 
+    
+		<if test="startLine >= 0">
+		<if test="pageSize > 0">
+			limit #{startLine},#{pageSize};
+		</if>
+		</if>
+	</select>
+</mapper>

@@ -1,0 +1,108 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE struts PUBLIC
+    "-//Apache Software Foundation//DTD Struts Configuration 2.0//EN"
+    "http://struts.apache.org/dtds/struts-2.0.dtd">
+<struts>
+
+ 	<!-- 单元操作action,包括:挞定、改名、换房、退房 -->
+ 	
+	<package name="saleunit_operation" extends="struts-base" namespace="/saleunit/operation">
+	
+		<!-- 单元操作 --><!-- DEMO 下方的列表显示 -->
+		<action name="unitOperation" class="com.ihk.saleunit.action.new_.GuangZhouAppointUnitOperation" method="unitOperation">
+			<result name="unit_operation">/saleunit_new/guangzhou/unit_operation.jsp</result>
+		</action>
+		<!-- 查看详细 --><!-- DEMO iframe弹出框,没有提交与关闭按钮 (在div弹出框中，再弹出iframe) -->
+		<action name="showConfirmDetail" class="com.ihk.saleunit.action.new_.GuangZhouAppointNewUnitInfoAction" method="showConfirmDetail">
+			<result name="showConfirmDetail">/saleunit_new/guangzhou/show_confirm_detail.jsp</result>
+		</action>
+
+		<!-- 新增挞订 --><!-- DEMO div弹出框 -->
+		<action name="addCancelContract" class="com.ihk.saleunit.action.tart.GuangZhouAppointNewTartAction" method="addCancelContract">
+			<result name="add_cancel_contract">/saleunit_new/guangzhou/add_cancel_contract.jsp</result>
+		</action>
+		<!-- 查看挞订记录 --><!-- DEMO div弹出框 -->
+		<action name="showTartRecord" class="com.ihk.saleunit.action.new_.GuangZhouAppointUnitOperation" method="showTartRecord">
+			<result name="show_tart_record">/saleunit_new/guangzhou/show_tart_record.jsp</result>
+		</action>
+		<!-- 提交挞订 --><!-- DEMO div弹出框中的提交按钮对应响应方法 -->
+		<action name="submitTart" class="com.ihk.saleunit.action.tart.GuangZhouAppointNewTartAction" method="submitTart"/>
+		<!-- 撤销挞订 -->
+		<action name="cancelTart" class="com.ihk.saleunit.action.new_.GuangZhouAppointUnitOperation" method="cancelTart"/>
+		
+
+		<!-- 新增改名 -->
+		<action name="addChangeCustomerName" class="com.ihk.saleunit.action.rename.GuangZhouAppointNewRename" method="addChangeCustomerName">
+			<result name="add_change_customer_name">/saleunit_new/guangzhou/add_change_customer_name.jsp</result>
+		</action>
+		<!-- 提交改名 -->
+		<action name="submitChangeCustomerName" class="com.ihk.saleunit.action.rename.GuangZhouAppointNewRename" method="submitChangeCustomerName"/>
+		<!-- 查看改名 -->
+		<action name="showCustomerRenameRecord" class="com.ihk.saleunit.action.new_.GuangZhouAppointUnitOperation" method="showCustomerRenameRecord">
+			<result name="show_customer_rename_record">/saleunit_new/guangzhou/show_change_customer_name.jsp</result>
+		</action>
+		<!-- 撤销改名 -->
+		<action name="cancelCustomerRename" class="com.ihk.saleunit.action.new_.GuangZhouAppointUnitOperation" method="cancelCustomerRename"/>
+		
+
+		
+		<!-- 新增换房 -->
+		 <action name="addChangeUnit" class="com.ihk.saleunit.action.replace_unit.GuangZhouAppointNewReplaceUnitAction" method="addChangeUnit">
+			<result name="add_change_unit">/saleunit_new/guangzhou/add_change_unit.jsp</result>
+		</action>
+		<!-- 查看换房的单元详细 -->
+		<action name="showConfirmChangeUnitDetail" class="com.ihk.saleunit.action.new_.GuangZhouAppointNewUnitInfoAction" method="showConfirmChangeUnitDetail">
+			<result name="showConfirmChangeUnitDetail">/saleunit_new/guangzhou/show_confirm_detail.jsp</result>
+		</action>
+		<!-- 提交换房 -->
+		<action name="submitReplaceUnit" class="com.ihk.saleunit.action.replace_unit.GuangZhouAppointNewReplaceUnitAction" method="submitChangeUnit"></action>
+		<!-- 选择新单元 -->
+		<action name="chooseNewUnit" class="com.ihk.saleunit.action.replace_unit.GuangZhouAppointNewReplaceUnitAction" method="chooseNewUnit">
+			<result name="choose_new_unit">/saleunit_new/guangzhou/choose_new_unit.jsp</result>
+			<!-- 全额回款单元选择界面 -->
+			<result name="choose_new_unit_checkfee">/saleunit_new/checkfee/choose_new_unit.jsp</result>
+			<!-- 部分回款单元选择界面 -->
+			<result name="choose_new_unit_checkfee_part">/saleunit_new/checkfee/choose_new_unit_part.jsp</result>
+		</action>
+		<!-- 查看换房记录 -->
+		<action name="showChangeUnitRecord" class="com.ihk.saleunit.action.new_.GuangZhouAppointUnitOperation" method="showChangeUnitRecord">
+			<result name="show_change_unit_record">/saleunit_new/guangzhou/show_tart_record.jsp</result>
+		</action>
+		<!-- 换房新建成交 -->
+		<action name="createXiaoZhuConfirmDialog" class="com.ihk.saleunit.action.new_.GuangZhouConfirmXiaoZhuAction" method="createXiaoZhuConfirmDialog">
+			<result name="changeUnitaddConfirmDialog">/saleunit_new/guangzhou/change_unit_add_confirm.jsp</result>
+		</action>
+		<action name="changeUnitAddConfirmDialog" class="com.ihk.saleunit.action.new_.GuangZhouConfirmXiaoZhuAction" method="changeUnitAddConfirmDialog"/>
+		<!-- 提交选择新单元 -->
+		<action name="submitChooseNewUnit" class="com.ihk.saleunit.action.replace_unit.GuangZhouAppointNewReplaceUnitAction" method="submitChooseNewUnit"></action>
+		<!-- 撤销换房 -->
+		<action name="cancelChangeUnit" class="com.ihk.saleunit.action.new_.GuangZhouAppointUnitOperation" method="cancelChangeUnit"/>
+		<!-- 楼盘项目id固定获取对应的分区,楼栋tree,主要用于单元操作的换房 -->
+		<action name="layoutLeftForOper" class="com.ihk.saleunit.action.new_.GuangZhouAppointNewLeftAction" method="layoutLeftForOper"/>
+		
+		<action name="getUnit" class="com.ihk.saleunit.action.new_.GuangZhouAppointNewLeftAction" method="getUnit">
+			<result name="getUnit">/saleunit_new/guangzhou/unit.jsp</result>
+			<result name="getUnitList">/saleunit_new/guangzhou/unitList.jsp</result>
+			<result name="getUnitForOper">/saleunit_new/guangzhou/unit_oper.jsp</result>
+			<result name="getUnitForCheckFee">/saleunit_new/checkfee/unit_oper.jsp</result>
+			<result name="getUnitForCheckFeePart">/saleunit_new/checkfee/unit_oper_part.jsp</result>
+		</action>
+
+		<!-- 新增退房 -->
+		<action name="addRejectUnit" class="com.ihk.saleunit.action.cancel_unit.GuangZhouAppointNewCancelUnitAction" method="addRejectUnit">
+			<result name="add_reject_unit_confirm">/saleunit_new/guangzhou/add_reject_unit_confirm.jsp</result>
+			<result name="add_reject_unit_contract">/saleunit_new/guangzhou/add_reject_unit_contract.jsp</result>
+		</action> 
+		<!-- 查看退房记录 -->
+		<action name="showCancelUnitRecord" class="com.ihk.saleunit.action.new_.GuangZhouAppointUnitOperation" method="showCancelUnitRecord">
+			<result name="show_cancel_unit_record">/saleunit_new/guangzhou/show_cancel_unit_record.jsp</result>
+		</action>
+		<!-- 提交退房 -->
+		<action name="submitCancelUnit" class="com.ihk.saleunit.action.cancel_unit.GuangZhouAppointNewCancelUnitAction" method="submitCancelUnit"></action>
+		<!-- 撤销退房 -->
+		<action name="cancelCancelUnit" class="com.ihk.saleunit.action.new_.GuangZhouAppointUnitOperation" method="cancelCancelUnit"/>
+	
+		
+	</package>
+	
+</struts>

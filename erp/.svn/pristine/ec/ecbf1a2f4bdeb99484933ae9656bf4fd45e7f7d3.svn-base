@@ -1,0 +1,984 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<beans xmlns="http://www.springframework.org/schema/beans"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:aop="http://www.springframework.org/schema/aop"
+	xmlns:tx="http://www.springframework.org/schema/tx" xmlns:jdbc="http://www.springframework.org/schema/jdbc"
+	xmlns:context="http://www.springframework.org/schema/context"	
+	xsi:schemaLocation="       
+      http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context-3.0.xsd       
+      http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-3.0.xsd       
+      http://www.springframework.org/schema/jdbc http://www.springframework.org/schema/jdbc/spring-jdbc-3.0.xsd       
+      http://www.springframework.org/schema/tx http://www.springframework.org/schema/tx/spring-tx-3.0.xsd       
+      http://www.springframework.org/schema/aop http://www.springframework.org/schema/aop/spring-aop-3.0.xsd"
+	default-autowire="byName">
+	<context:annotation-config />
+	<!-- 导入属性配置文件 -->
+	<!-- 测试机 -->
+	 
+	<context:property-placeholder location="classpath:mysql.properties" />
+	
+	 
+	<!-- 正式机 -->
+	<!-- 
+	<context:property-placeholder location="classpath:mysql_10.3.properties" />
+	 -->
+	 
+	<!-- 指定注解查找包路径 -->
+	<context:component-scan base-package="com.ihk.demo" />
+	<context:component-scan base-package="com.dou.book" />
+	<context:component-scan base-package="com.dou.student" />
+	<context:component-scan base-package="com.ihk.user" />
+	<context:component-scan base-package="com.ihk.customer" />
+	<context:component-scan base-package="com.ihk.setting" />
+	<context:component-scan base-package="com.ihk.utils" />
+	<context:component-scan base-package="com.ihk.sale" />
+	<context:component-scan base-package="com.ihk.article" />
+	<context:component-scan base-package="com.ihk.property" />
+	<context:component-scan base-package="com.ihk.saleunit" />
+	<context:component-scan base-package="com.ihk.report" />
+	
+	<context:component-scan base-package="com.ihk.saleunit.log" />
+	
+	
+	<!-- 配置多数据源,方便本地junit dbcp,正式junit dbcp,正式jndi的切换, localDbcp; remoteDbcp; localJndi; remoteJndi;不方便升级 -->
+	<!-- 
+	<bean id="dataSource" class="com.ihk.utils.base.MultiDataSource">
+		<property name="dataSource" ref="remoteJndi"/>
+	</bean>
+	 -->
+	
+	<!-- 本地42, dbcp 连接池  localDbcp -->
+	
+	<bean id="dataSource" class="org.apache.commons.dbcp.BasicDataSource" destroy-method="close">
+		<property name="driverClassName" value="${jdbc.driverClassName}"/>
+		<property name="url" value="${jdbc.url}"/>
+		<property name="username" value="${jdbc.username}"/>
+		<property name="password" value="${jdbc.password}"/>
+		<property name="maxActive" value="${jdbc.maxActive}" />
+		<property name="maxIdle" value="${jdbc.maxIdle}" />
+		<property name="maxWait" value="${jdbc.maxWait}" />
+		<property name="validationQuery" value="${jdbc.validationQuery}" />
+		<property name="testOnBorrow" value="${jdbc.testOnBorrow}" />
+		<property name="testOnReturn" value="${jdbc.testOnReturn}" />
+		<property name="testWhileIdle" value="${jdbc.testWhileIdle}" />
+	</bean>
+	
+	  
+	<!-- 服务器10.5, dbcp 连接池  remoteDbcp -->
+	<!--     
+	<bean id="dataSource" class="org.apache.commons.dbcp.BasicDataSource" destroy-method="close">
+		<property name="driverClassName" value="${jdbc.driverClassName}"/>
+		<property name="url" value="${remoteDbcp.url}"/>
+		<property name="username" value="${remoteDbcp.username}"/>
+		<property name="password" value="${remoteDbcp.password}"/>
+		<property name="maxActive" value="${jdbc.maxActive}" />
+		<property name="maxIdle" value="${jdbc.maxIdle}" />
+		<property name="maxWait" value="${jdbc.maxWait}" />
+		<property name="validationQuery" value="${jdbc.validationQuery}" />
+		<property name="testOnBorrow" value="${jdbc.testOnBorrow}" />
+		<property name="testOnReturn" value="${jdbc.testOnReturn}" />
+		<property name="testWhileIdle" value="${jdbc.testWhileIdle}" />
+	</bean>
+	-->
+	 
+	<!-- tomcat7 jndi 连接池  java:comp/env/为固定,(tomcat7中不用修改tomcat的配置文件,可以使用) -->
+	
+	<!-- 本地jndi localJndi -->
+	 <!--  
+	<bean id="dataSource" class="org.springframework.jndi.JndiObjectFactoryBean">
+		<property name="jndiName" value="java:comp/env/jdbc/crm"/>
+	</bean>
+	-->
+	<!-- 服务器10.5使用此数据源 remoteJndi -->
+	<!--  
+	<bean id="dataSource" class="org.springframework.jndi.JndiObjectFactoryBean">
+		<property name="jndiName" value="java:comp/env/jdbc/crm_remote"/>
+	</bean>
+	 -->
+	
+	<!-- spring jdbc(使用这种方式,每一次的请求都要打开一个新的连接,不推荐使用) --> 
+	<!--  
+	<bean id="dataSource"
+		class="org.springframework.jdbc.datasource.DriverManagerDataSource">
+		<property name="driverClassName" value="${jdbc.driverClassName}" />
+		<property name="url" value="${jdbc.url}" />
+	</bean>
+	-->
+
+	<!-- transactionManager与sqlSessionFactory的dataSource要一样才能保证事务的有效性 -->
+	<bean id="transactionManager"
+		class="org.springframework.jdbc.datasource.DataSourceTransactionManager">
+		<property name="dataSource" ref="dataSource" />
+	</bean>
+	
+	<!-- 
+	<tx:annotation-driven transaction-manager="transactionManager"/>
+	 -->
+	
+	<!-- DataSourceTransactionManager 的工厂类  -->
+	<bean id="dataSourceTransactionManagerFactory"
+		class="com.ihk.utils.DataSourceTransactionManagerFactory">
+		<property name="transactionManager" ref="transactionManager"/>
+		<!-- dataSouuce 也可以利用transactionManager来获取,在此处注入主要是为了不能获取transactionManager的情况 -->
+		<property name="dataSource" ref="dataSource"/>
+	</bean>
+	
+	<!-- org.mybatis.spring.SqlSessionFactoryBean -->
+	<bean id="sqlSessionFactory" class="org.mybatis.spring.SqlSessionFactoryBean">
+		<property name="configLocation" value="classpath:mybatis-config.xml" />
+		<property name="dataSource" ref="dataSource" />
+		<!-- 
+		<property name="mapperLocations" value="classpath:com/*/data/mappers/*.xml"/>
+		 -->
+	</bean>
+	
+	<!-- SqlSession工厂类,主要用来获取Connection -->
+	<bean id="mySqlSessionFactory" class="com.ihk.utils.base.MySqlSessionFactory">
+		<property name="sqlSessionFactory" ref="sqlSessionFactory"/>
+	</bean>
+	
+	<!-- base interceptor 过滤 method name -->
+	<bean class="com.ihk.interceptor.BaseExPatternInterceptorMethodName">
+		<property name="baseExPatternInterceptor">
+			<list>
+				<value>find*.Page</value>
+			</list>
+		</property>
+	</bean>
+	
+	<!-- 基础mapper bean, abstract="true" lazy-init="true" 为源码中的用法-->
+	<bean id="baseMapper" class="org.mybatis.spring.MapperFactoryBean" abstract="true" lazy-init="true">
+      <property name="sqlSessionFactory" ref="sqlSessionFactory" />
+    </bean>
+    
+	<!-- 例子 -->
+	<bean id="demoTableMapper" class="org.mybatis.spring.MapperFactoryBean">
+		<property name="sqlSessionFactory" ref="sqlSessionFactory" />
+		<property name="mapperInterface" value="com.ihk.demo.data.IDemoTableMapper" />
+	</bean>	
+
+	<bean id="bookMapper" class="org.mybatis.spring.MapperFactoryBean">
+		<property name="sqlSessionFactory" ref="sqlSessionFactory" />
+		<property name="mapperInterface" value="com.dou.book.data.ISBookMapper" />
+	</bean>
+	<bean id="studentMapper" class="org.mybatis.spring.MapperFactoryBean">
+		<property name="sqlSessionFactory" ref="sqlSessionFactory" />
+		<property name="mapperInterface" value="com.dou.student.data.IStudentMapper" />
+	</bean>
+	
+	<bean id="userAccountMapper" class="org.mybatis.spring.MapperFactoryBean">
+		<property name="sqlSessionFactory" ref="sqlSessionFactory" />
+		<property name="mapperInterface" value="com.ihk.user.data.IUserAccountMapper" />
+	</bean>
+	 
+	<bean id="CompanyMapper" class="org.mybatis.spring.MapperFactoryBean">
+		<property name="sqlSessionFactory" ref="sqlSessionFactory" />
+		<property name="mapperInterface" value="com.ihk.user.data.ICompanyMapper" />
+	</bean>
+	<bean id="companyGroupMapper" class="org.mybatis.spring.MapperFactoryBean">
+		<property name="sqlSessionFactory" ref="sqlSessionFactory" />
+		<property name="mapperInterface" value="com.ihk.user.data.ICompanyGroupMapper" />
+	</bean>	
+	<bean id="CompanyProjectMapper" class="org.mybatis.spring.MapperFactoryBean">
+		<property name="sqlSessionFactory" ref="sqlSessionFactory" />
+		<property name="mapperInterface" value="com.ihk.user.data.ICompanyProjectMapper" />
+	</bean>
+	<bean id="projectStateMapper" class="org.mybatis.spring.MapperFactoryBean">
+		<property name="sqlSessionFactory" ref="sqlSessionFactory" />
+		<property name="mapperInterface" value="com.ihk.user.data.IProjectStateMapper" />
+	</bean>	
+	<bean id="TeamMapper" class="org.mybatis.spring.MapperFactoryBean">
+		<property name="sqlSessionFactory" ref="sqlSessionFactory" />
+		<property name="mapperInterface" value="com.ihk.user.data.ITeamMapper" />
+	</bean>
+	
+	<bean id="inputMemoryMapper" class="org.mybatis.spring.MapperFactoryBean">
+		<property name="sqlSessionFactory" ref="sqlSessionFactory" />
+		<property name="mapperInterface" value="com.ihk.user.data.IInputMemoryMapper" />
+	</bean>	
+	
+	<bean id="customerMapper" class="org.mybatis.spring.MapperFactoryBean">
+		<property name="sqlSessionFactory" ref="sqlSessionFactory" />
+		<property name="mapperInterface" value="com.ihk.customer.data.ICustomerMapper" />
+	</bean>
+	
+	<bean id="customerLogMapper" class="org.mybatis.spring.MapperFactoryBean">
+		<property name="sqlSessionFactory" ref="sqlSessionFactory" />
+		<property name="mapperInterface" value="com.ihk.customer.data.ICustomerLogMapper" />
+	</bean>
+	
+	<bean id="customerFollowMapper" class="org.mybatis.spring.MapperFactoryBean">
+		<property name="sqlSessionFactory" ref="sqlSessionFactory" />
+		<property name="mapperInterface" value="com.ihk.customer.data.ICustomerFollowMapper" />
+	</bean>
+	
+	<bean id="customerFocusMapper" class="org.mybatis.spring.MapperFactoryBean">
+		<property name="sqlSessionFactory" ref="sqlSessionFactory" />
+		<property name="mapperInterface" value="com.ihk.customer.data.ICustomerFocusMapper" />
+	</bean>	
+	
+	<bean id="customerKnownMapper" class="org.mybatis.spring.MapperFactoryBean">
+		<property name="sqlSessionFactory" ref="sqlSessionFactory" />
+		<property name="mapperInterface" value="com.ihk.customer.data.ICustomerKnownMapper" />
+	</bean>
+	
+	<bean id="customerRedMapper" class="org.mybatis.spring.MapperFactoryBean">
+		<property name="sqlSessionFactory" ref="sqlSessionFactory" />
+		<property name="mapperInterface" value="com.ihk.customer.data.ICustomerRedMapper" />
+	</bean>
+	
+	<bean id="vipCustImpMapper" class="org.mybatis.spring.MapperFactoryBean">
+		<property name="sqlSessionFactory" ref="sqlSessionFactory" />
+		<property name="mapperInterface" value="com.ihk.customer.collection.IVipCustImpMapper" />
+	</bean>
+	
+	<bean id="vipCustdealMapper" class="org.mybatis.spring.MapperFactoryBean">
+		<property name="sqlSessionFactory" ref="sqlSessionFactory" />
+		<property name="mapperInterface" value="com.ihk.customer.collection.IVipCustdealMapper" />
+	</bean>
+	
+	<bean id="vipCustMapper" class="org.mybatis.spring.MapperFactoryBean">
+		<property name="sqlSessionFactory" ref="sqlSessionFactory" />
+		<property name="mapperInterface" value="com.ihk.customer.collection.IVipCustMapper" />
+	</bean>
+	
+	<bean id="vipCustomerMapter" class="org.mybatis.spring.MapperFactoryBean">
+		<property name="sqlSessionFactory" ref="sqlSessionFactory" />
+		<property name="mapperInterface" value="com.ihk.customer.collection.IVipCustomerMapper" />
+	</bean>
+	
+	<bean id="vipCustFollowMapter" class="org.mybatis.spring.MapperFactoryBean">
+		<property name="sqlSessionFactory" ref="sqlSessionFactory" />
+		<property name="mapperInterface" value="com.ihk.customer.collection.IVipCustFollowMapper" />
+	</bean>
+	
+	<bean id="vipCustItemMapter" class="org.mybatis.spring.MapperFactoryBean">
+		<property name="sqlSessionFactory" ref="sqlSessionFactory" />
+		<property name="mapperInterface" value="com.ihk.customer.collection.IVipCustItemMapper" />
+	</bean>
+	
+	<!--<bean id="vipCustvisitMapper" class="org.mybatis.spring.MapperFactoryBean">
+		<property name="sqlSessionFactory" ref="sqlSessionFactory" />
+		<property name="mapperInterface" value="com.ihk.customer.collection.IVipCustvisitMapper" />
+	</bean>	-->
+	
+	<bean id="projectRangeMapper" class="org.mybatis.spring.MapperFactoryBean">
+		<property name="sqlSessionFactory" ref="sqlSessionFactory" />
+		<property name="mapperInterface" value="com.ihk.customer.data.IProjectRangeMapper" />
+	</bean>	
+	
+	<bean id="followRoomMapper" class="org.mybatis.spring.MapperFactoryBean">
+		<property name="sqlSessionFactory" ref="sqlSessionFactory" />
+		<property name="mapperInterface" value="com.ihk.customer.data.IFollowRoomMapper" />
+	</bean>
+	
+	<bean id="recommendRoomMapper" class="org.mybatis.spring.MapperFactoryBean">
+		<property name="sqlSessionFactory" ref="sqlSessionFactory" />
+		<property name="mapperInterface" value="com.ihk.customer.data.IRecommendRoomMapper" />
+	</bean>
+	
+	<bean id="codeDtlMapper" class="org.mybatis.spring.MapperFactoryBean">
+		<property name="sqlSessionFactory" ref="sqlSessionFactory" />
+		<property name="mapperInterface" value="com.ihk.setting.data.ICodeDtlMapper" />
+	</bean>
+	
+	<bean id="codeTypeMapper" class="org.mybatis.spring.MapperFactoryBean">
+		<property name="sqlSessionFactory" ref="sqlSessionFactory" />
+		<property name="mapperInterface" value="com.ihk.setting.data.ICodeTypeMapper" />
+	</bean>
+	
+	<bean id="projectCodeMapper" class="org.mybatis.spring.MapperFactoryBean">
+		<property name="sqlSessionFactory" ref="sqlSessionFactory" />
+		<property name="mapperInterface" value="com.ihk.setting.data.IProjectCodeMapper" />
+	</bean>	
+	
+	<bean id="projectTextMapper" class="org.mybatis.spring.MapperFactoryBean">
+		<property name="sqlSessionFactory" ref="sqlSessionFactory" />
+		<property name="mapperInterface" value="com.ihk.setting.data.IProjectTextMapper" />
+	</bean>	
+
+	<bean id="provinceMapper" class="org.mybatis.spring.MapperFactoryBean">
+		<property name="sqlSessionFactory" ref="sqlSessionFactory" />
+		<property name="mapperInterface" value="com.ihk.setting.data.IProvinceMapper" />
+	</bean>		
+	<bean id="cityMapper" class="org.mybatis.spring.MapperFactoryBean">
+		<property name="sqlSessionFactory" ref="sqlSessionFactory" />
+		<property name="mapperInterface" value="com.ihk.setting.data.ICityMapper" />
+	</bean>			
+	<bean id="regionMapper" class="org.mybatis.spring.MapperFactoryBean">
+		<property name="sqlSessionFactory" ref="sqlSessionFactory" />
+		<property name="mapperInterface" value="com.ihk.setting.data.IRegionMapper" />
+	</bean>	
+	<bean id="blockMapper" class="org.mybatis.spring.MapperFactoryBean">
+		<property name="sqlSessionFactory" ref="sqlSessionFactory" />
+		<property name="mapperInterface" value="com.ihk.setting.data.IBlockMapper" />
+	</bean>	
+	<bean id="roleMapper" class="org.mybatis.spring.MapperFactoryBean">
+		<property name="sqlSessionFactory" ref="sqlSessionFactory" />
+		<property name="mapperInterface" value="com.ihk.user.data.IRoleMapper" />
+	</bean>	
+	
+	<bean id="userRoleMapper" class="org.mybatis.spring.MapperFactoryBean">
+		<property name="sqlSessionFactory" ref="sqlSessionFactory" />
+		<property name="mapperInterface" value="com.ihk.user.data.IUserRoleMapper" />
+	</bean>	
+	
+	<bean id="privMapper" class="org.mybatis.spring.MapperFactoryBean">
+		<property name="sqlSessionFactory" ref="sqlSessionFactory" />
+		<property name="mapperInterface" value="com.ihk.user.data.IPrivMapper" />
+	</bean>	
+	
+	<bean id="rolePrivMapper" class="org.mybatis.spring.MapperFactoryBean">
+		<property name="sqlSessionFactory" ref="sqlSessionFactory" />
+		<property name="mapperInterface" value="com.ihk.user.data.IRolePrivMapper" />
+	</bean>	
+		
+	<bean id="rolePrivRefMapper" class="org.mybatis.spring.MapperFactoryBean">
+		<property name="sqlSessionFactory" ref="sqlSessionFactory" />
+		<property name="mapperInterface" value="com.ihk.user.data.IRolePrivRefMapper" />
+	</bean>	
+	
+	<bean id="funcTreeMapper" class="org.mybatis.spring.MapperFactoryBean">
+		<property name="sqlSessionFactory" ref="sqlSessionFactory" />
+		<property name="mapperInterface" value="com.ihk.user.data.IFuncTreeMapper" />
+	</bean>	
+	
+	<bean id="privFuncMapper" class="org.mybatis.spring.MapperFactoryBean">
+		<property name="sqlSessionFactory" ref="sqlSessionFactory" />
+		<property name="mapperInterface" value="com.ihk.user.data.IPrivFuncMapper" />
+	</bean>	
+	
+	<bean id="presaleMonitorMapper" class="org.mybatis.spring.MapperFactoryBean">
+		<property name="sqlSessionFactory" ref="sqlSessionFactory" />
+		<property name="mapperInterface" value="com.ihk.sale.data.IPresaleMonitorMapper" />
+	</bean>	
+	<bean id="presaleMonitorAllMapper" class="org.mybatis.spring.MapperFactoryBean">
+		<property name="sqlSessionFactory" ref="sqlSessionFactory" />
+		<property name="mapperInterface" value="com.ihk.sale.data.IPresaleMonitorAllMapper" />
+	</bean>	
+	
+	<bean id="saleMonitorMapper" class="org.mybatis.spring.MapperFactoryBean">
+		<property name="sqlSessionFactory" ref="sqlSessionFactory" />
+		<property name="mapperInterface" value="com.ihk.sale.data.ISaleMonitorMapper" />
+	</bean>
+	
+	<bean id="saleMonitorAllMapper" class="org.mybatis.spring.MapperFactoryBean">
+		<property name="sqlSessionFactory" ref="sqlSessionFactory" />
+		<property name="mapperInterface" value="com.ihk.sale.data.ISaleMonitorAllMapper" />
+	</bean>	
+	<bean id="saleMonitorMonthMapper" class="org.mybatis.spring.MapperFactoryBean">
+		<property name="sqlSessionFactory" ref="sqlSessionFactory" />
+		<property name="mapperInterface" value="com.ihk.sale.data.ISaleMonitorMonthMapper" />
+	</bean>	
+	<bean id="saleMonitorWeekMapper" class="org.mybatis.spring.MapperFactoryBean">
+		<property name="sqlSessionFactory" ref="sqlSessionFactory" />
+		<property name="mapperInterface" value="com.ihk.sale.data.ISaleMonitorWeekMapper" />
+	</bean>	
+	<bean id="saleMonitorYearMapper" class="org.mybatis.spring.MapperFactoryBean">
+		<property name="sqlSessionFactory" ref="sqlSessionFactory" />
+		<property name="mapperInterface" value="com.ihk.sale.data.ISaleMonitorYearMapper" />
+	</bean>	
+	<bean id="saleMonitorLogMapper" class="org.mybatis.spring.MapperFactoryBean">
+		<property name="sqlSessionFactory" ref="sqlSessionFactory" />
+		<property name="mapperInterface" value="com.ihk.sale.data.ISaleMonitorLogMapper" />
+	</bean>	
+	<bean id="saleMonitorLogbeforeMapper" class="org.mybatis.spring.MapperFactoryBean">
+		<property name="sqlSessionFactory" ref="sqlSessionFactory" />
+		<property name="mapperInterface" value="com.ihk.sale.data.ISaleMonitorLogbeforeMapper" />
+	</bean>	
+	<bean id="saleBuildLogMapper" class="org.mybatis.spring.MapperFactoryBean">
+		<property name="sqlSessionFactory" ref="sqlSessionFactory" />
+		<property name="mapperInterface" value="com.ihk.sale.data.ISaleBuildLogMapper" />
+	</bean>	
+	<bean id="operLogMapper" class="org.mybatis.spring.MapperFactoryBean">
+		<property name="sqlSessionFactory" ref="sqlSessionFactory" />
+		<property name="mapperInterface" value="com.ihk.setting.data.IOperLogMapper" />
+	</bean>	
+	<bean id="articleMapper" class="org.mybatis.spring.MapperFactoryBean">
+		<property name="sqlSessionFactory" ref="sqlSessionFactory" />
+		<property name="mapperInterface" value="com.ihk.article.data.IArticleMapper" />
+	</bean>	
+	
+	<bean id="propertyDeveloperMapper" class="org.mybatis.spring.MapperFactoryBean">
+		<property name="sqlSessionFactory" ref="sqlSessionFactory" />
+		<property name="mapperInterface" value="com.ihk.property.data.IPropertyDeveloperMapper" />
+	</bean>	
+	<bean id="propertyProjectMapper" class="org.mybatis.spring.MapperFactoryBean">
+		<property name="sqlSessionFactory" ref="sqlSessionFactory" />
+		<property name="mapperInterface" value="com.ihk.property.data.IPropertyProjectMapper" />
+	</bean>	
+	<bean id="propertyProjectPlanMapper" class="org.mybatis.spring.MapperFactoryBean">
+		<property name="sqlSessionFactory" ref="sqlSessionFactory" />
+		<property name="mapperInterface" value="com.ihk.saleunit.data.IPropertyProjectPlanMapper" />
+	</bean>	
+	<bean id="propertyPrivMapper" class="org.mybatis.spring.MapperFactoryBean">
+		<property name="sqlSessionFactory" ref="sqlSessionFactory" />
+		<property name="mapperInterface" value="com.ihk.property.data.IPropertyPrivMapper" />
+	</bean>	
+	<bean id="propertyAreaMapper" class="org.mybatis.spring.MapperFactoryBean">
+		<property name="sqlSessionFactory" ref="sqlSessionFactory" />
+		<property name="mapperInterface" value="com.ihk.property.data.IPropertyAreaMapper" />
+	</bean>	
+	<bean id="propertyBuildMapper" class="org.mybatis.spring.MapperFactoryBean">
+		<property name="sqlSessionFactory" ref="sqlSessionFactory" />
+		<property name="mapperInterface" value="com.ihk.property.data.IPropertyBuildMapper" />
+	</bean>	
+	<bean id="unitBindMapper" class="org.mybatis.spring.MapperFactoryBean">
+		<property name="sqlSessionFactory" ref="sqlSessionFactory" />
+		<property name="mapperInterface" value="com.ihk.property.data.IUnitBindMapper" />
+	</bean>	
+	<bean id="propertyUnitMapper" class="org.mybatis.spring.MapperFactoryBean">
+		<property name="sqlSessionFactory" ref="sqlSessionFactory" />
+		<property name="mapperInterface" value="com.ihk.property.data.IPropertyUnitMapper" />
+	</bean>	
+	<bean id="buildDiscountMapper" class="org.mybatis.spring.MapperFactoryBean">
+		<property name="sqlSessionFactory" ref="sqlSessionFactory" />
+		<property name="mapperInterface" value="com.ihk.property.data.IBuildDiscountMapper" />
+	</bean>	
+	<bean id="payWayMapper" class="org.mybatis.spring.MapperFactoryBean">
+		<property name="sqlSessionFactory" ref="sqlSessionFactory" />
+		<property name="mapperInterface" value="com.ihk.property.data.IPayWayMapper" />
+	</bean>	
+	<bean id="payWayDetailMapper" class="org.mybatis.spring.MapperFactoryBean">
+		<property name="sqlSessionFactory" ref="sqlSessionFactory" />
+		<property name="mapperInterface" value="com.ihk.property.data.IPayWayDetailMapper" />
+	</bean>	
+	<bean id="unitPayBillDetailMapper" class="org.mybatis.spring.MapperFactoryBean">
+		<property name="sqlSessionFactory" ref="sqlSessionFactory" />
+		<property name="mapperInterface" value="com.ihk.property.data.IUnitPayBillDetailMapper" />
+	</bean>	
+	<bean id="unitPayBillMapper" class="org.mybatis.spring.MapperFactoryBean">
+		<property name="sqlSessionFactory" ref="sqlSessionFactory" />
+		<property name="mapperInterface" value="com.ihk.property.data.IUnitPayBillMapper" />
+	</bean>	
+	<bean id="propertyUnitDefineMapper" class="org.mybatis.spring.MapperFactoryBean">
+		<property name="sqlSessionFactory" ref="sqlSessionFactory" />
+		<property name="mapperInterface" value="com.ihk.property.data.IPropertyUnitDefineMapper" />
+	</bean>	
+	<bean id="propertyGroupDetailMapper" class="org.mybatis.spring.MapperFactoryBean">
+		<property name="sqlSessionFactory" ref="sqlSessionFactory" />
+		<property name="mapperInterface" value="com.ihk.property.data.IPropertyGroupDetailMapper" />
+	</bean>	
+	<bean id="propertyGroupMapper" class="org.mybatis.spring.MapperFactoryBean">
+		<property name="sqlSessionFactory" ref="sqlSessionFactory" />
+		<property name="mapperInterface" value="com.ihk.property.data.IPropertyGroupMapper" />
+	</bean>	
+	
+	
+	<bean id="appointMapper" class="org.mybatis.spring.MapperFactoryBean">
+		<property name="sqlSessionFactory" ref="sqlSessionFactory" />
+		<property name="mapperInterface" value="com.ihk.saleunit.data.IAppointMapper" />
+	</bean>	
+
+	<bean id="appointCustomerMapper" class="org.mybatis.spring.MapperFactoryBean">
+		<property name="sqlSessionFactory" ref="sqlSessionFactory" />
+		<property name="mapperInterface" value="com.ihk.saleunit.data.IAppointCustomerMapper" />
+	</bean>	
+	<bean id="appointBillMapper" class="org.mybatis.spring.MapperFactoryBean">
+		<property name="sqlSessionFactory" ref="sqlSessionFactory" />
+		<property name="mapperInterface" value="com.ihk.saleunit.data.IAppointBillMapper" />
+	</bean>	
+	<bean id="appointBillDetailMapper" class="org.mybatis.spring.MapperFactoryBean">
+		<property name="sqlSessionFactory" ref="sqlSessionFactory" />
+		<property name="mapperInterface" value="com.ihk.saleunit.data.IAppointBillDetailMapper" />
+	</bean>	
+	<bean id="addonPropertyMapper" class="org.mybatis.spring.MapperFactoryBean">
+		<property name="sqlSessionFactory" ref="sqlSessionFactory" />
+		<property name="mapperInterface" value="com.ihk.saleunit.data.IAddonPropertyMapper" />
+	</bean>	
+	<bean id="changeOutMapper" class="org.mybatis.spring.MapperFactoryBean">
+		<property name="sqlSessionFactory" ref="sqlSessionFactory" />
+		<property name="mapperInterface" value="com.ihk.saleunit.data.IChangeOutMapper" />
+	</bean>	
+	<bean id="changeOwnerMapper" class="org.mybatis.spring.MapperFactoryBean">
+		<property name="sqlSessionFactory" ref="sqlSessionFactory" />
+		<property name="mapperInterface" value="com.ihk.saleunit.data.IChangeOwnerMapper" />
+	</bean>	
+	<bean id="changeOwnerDetailMapper" class="org.mybatis.spring.MapperFactoryBean">
+		<property name="sqlSessionFactory" ref="sqlSessionFactory" />
+		<property name="mapperInterface" value="com.ihk.saleunit.data.IChangeOwnerDetailMapper" />
+	</bean>	
+	<bean id="changePriceMapper" class="org.mybatis.spring.MapperFactoryBean">
+		<property name="sqlSessionFactory" ref="sqlSessionFactory" />
+		<property name="mapperInterface" value="com.ihk.saleunit.data.IChangePriceMapper" />
+	</bean>	
+	<bean id="changeUnitMapper" class="org.mybatis.spring.MapperFactoryBean">
+		<property name="sqlSessionFactory" ref="sqlSessionFactory" />
+		<property name="mapperInterface" value="com.ihk.saleunit.data.IChangeUnitMapper" />
+	</bean>	
+	<bean id="confirmMapper" class="org.mybatis.spring.MapperFactoryBean">
+		<property name="sqlSessionFactory" ref="sqlSessionFactory" />
+		<property name="mapperInterface" value="com.ihk.saleunit.data.IConfirmMapper" />
+	</bean>	
+	<bean id="contractMapper" class="org.mybatis.spring.MapperFactoryBean">
+		<property name="sqlSessionFactory" ref="sqlSessionFactory" />
+		<property name="mapperInterface" value="com.ihk.saleunit.data.IContractMapper" />
+	</bean>	
+	<bean id="contractCustomerMapper" class="org.mybatis.spring.MapperFactoryBean">
+		<property name="sqlSessionFactory" ref="sqlSessionFactory" />
+		<property name="mapperInterface" value="com.ihk.saleunit.data.IContractCustomerMapper" />
+	</bean>
+	<bean id="contractCustomerChangeMapper" class="org.mybatis.spring.MapperFactoryBean">
+		<property name="sqlSessionFactory" ref="sqlSessionFactory" />
+		<property name="mapperInterface" value="com.ihk.saleunit.data.IContractCustomerChangeMapper" />
+	</bean>		
+	<bean id="contractRenovateMapper" class="org.mybatis.spring.MapperFactoryBean">
+		<property name="sqlSessionFactory" ref="sqlSessionFactory" />
+		<property name="mapperInterface" value="com.ihk.saleunit.data.IContractRenovateMapper" />
+	</bean>	
+	<bean id="contractServiceMapper" class="org.mybatis.spring.MapperFactoryBean">
+		<property name="sqlSessionFactory" ref="sqlSessionFactory" />
+		<property name="mapperInterface" value="com.ihk.saleunit.data.IContractServiceMapper" />
+	</bean>
+	<bean id="mortgageMapper" class="org.mybatis.spring.MapperFactoryBean">
+		<property name="sqlSessionFactory" ref="sqlSessionFactory" />
+		<property name="mapperInterface" value="com.ihk.saleunit.data.IMortgageMapper" />
+	</bean>	
+	<bean id="mortgageUnitMapper" class="org.mybatis.spring.MapperFactoryBean">
+		<property name="sqlSessionFactory" ref="sqlSessionFactory" />
+		<property name="mapperInterface" value="com.ihk.saleunit.data.IMortgageUnitMapper" />
+	</bean>	
+	<bean id="payBillMapper" class="org.mybatis.spring.MapperFactoryBean">
+		<property name="sqlSessionFactory" ref="sqlSessionFactory" />
+		<property name="mapperInterface" value="com.ihk.saleunit.data.IPayBillMapper" />
+	</bean>	
+	<bean id="payDetailMapper" class="org.mybatis.spring.MapperFactoryBean">
+		<property name="sqlSessionFactory" ref="sqlSessionFactory" />
+		<property name="mapperInterface" value="com.ihk.saleunit.data.IPayDetailMapper" />
+	</bean>	
+	<bean id="propertyOwnerMapper" class="org.mybatis.spring.MapperFactoryBean">
+		<property name="sqlSessionFactory" ref="sqlSessionFactory" />
+		<property name="mapperInterface" value="com.ihk.saleunit.data.IPropertyOwnerMapper" />
+	</bean>	
+	<bean id="approvalChangeMapper" class="org.mybatis.spring.MapperFactoryBean">
+		<property name="sqlSessionFactory" ref="sqlSessionFactory" />
+		<property name="mapperInterface" value="com.ihk.saleunit.data.IApprovalChangeMapper" />
+	</bean>
+	<bean id="saleDailyMapper" class="org.mybatis.spring.MapperFactoryBean">
+		<property name="sqlSessionFactory" ref="sqlSessionFactory" />
+		<property name="mapperInterface" value="com.ihk.saleunit.data.ISaleDailyMapper" />
+	</bean>
+	<bean id="unitDiscountMapper" class="org.mybatis.spring.MapperFactoryBean">
+		<property name="sqlSessionFactory" ref="sqlSessionFactory" />
+		<property name="mapperInterface" value="com.ihk.saleunit.data.IUnitDiscountMapper" />
+	</bean>	
+	<bean id="unitDiscountDetailMapper" class="org.mybatis.spring.MapperFactoryBean">
+		<property name="sqlSessionFactory" ref="sqlSessionFactory" />
+		<property name="mapperInterface" value="com.ihk.saleunit.data.IUnitDiscountDetailMapper" />
+	</bean>	
+	
+	<bean id="reportDefineColumnMapper" class="org.mybatis.spring.MapperFactoryBean">
+		<property name="sqlSessionFactory" ref="sqlSessionFactory" />
+		<property name="mapperInterface" value="com.ihk.saleunit.data.IReportDefineColumnMapper" />
+	</bean>	
+	<bean id="reportDefineTypeMapper" class="org.mybatis.spring.MapperFactoryBean">
+		<property name="sqlSessionFactory" ref="sqlSessionFactory" />
+		<property name="mapperInterface" value="com.ihk.saleunit.data.IReportDefineTypeMapper" />
+	</bean>	
+	
+	<bean id="saleUnitLogMapper" class="org.mybatis.spring.MapperFactoryBean">
+		<property name="sqlSessionFactory" ref="sqlSessionFactory" />
+		<property name="mapperInterface" value="com.ihk.saleunit.data.ISaleUnitLogMapper" />
+	</bean>
+	
+	<bean id="customerComplaintsMapper" class="org.mybatis.spring.MapperFactoryBean">
+		<property name="sqlSessionFactory" ref="sqlSessionFactory" />
+		<property name="mapperInterface" value="com.ihk.saleunit.data.ICustomerComplaintsMapper" />
+	</bean>
+	<bean id="extensionContractMapper" class="org.mybatis.spring.MapperFactoryBean">
+		<property name="sqlSessionFactory" ref="sqlSessionFactory" />
+		<property name="mapperInterface" value="com.ihk.saleunit.data.IExtensionContractMapper" />
+	</bean>
+	<bean id="unitGiftMapper" class="org.mybatis.spring.MapperFactoryBean">
+		<property name="sqlSessionFactory" ref="sqlSessionFactory" />
+		<property name="mapperInterface" value="com.ihk.saleunit.data.IUnitGiftMapper" />
+	</bean>
+	<bean id="customerEventMapper" class="org.mybatis.spring.MapperFactoryBean">
+		<property name="sqlSessionFactory" ref="sqlSessionFactory" />
+		<property name="mapperInterface" value="com.ihk.saleunit.data.ICustomerEventMapper" />
+	</bean>	
+	<bean id="questionMapper" class="org.mybatis.spring.MapperFactoryBean">
+		<property name="sqlSessionFactory" ref="sqlSessionFactory" />
+		<property name="mapperInterface" value="com.ihk.saleunit.data.IQuestionMapper" />
+	</bean>	
+	<bean id="questionAnswerDetailMapper" class="org.mybatis.spring.MapperFactoryBean">
+		<property name="sqlSessionFactory" ref="sqlSessionFactory" />
+		<property name="mapperInterface" value="com.ihk.saleunit.data.IQuestionAnswerDetailMapper" />
+	</bean>	
+	<bean id="questionAnwserMapper" class="org.mybatis.spring.MapperFactoryBean">
+		<property name="sqlSessionFactory" ref="sqlSessionFactory" />
+		<property name="mapperInterface" value="com.ihk.saleunit.data.IQuestionAnwserMapper" />
+	</bean>	
+	<bean id="questionTopicMapper" class="org.mybatis.spring.MapperFactoryBean">
+		<property name="sqlSessionFactory" ref="sqlSessionFactory" />
+		<property name="mapperInterface" value="com.ihk.saleunit.data.IQuestionTopicMapper" />
+	</bean>	
+	
+	<bean id="saleDefaultQuestionMapper" class="org.mybatis.spring.MapperFactoryBean">
+		<property name="sqlSessionFactory" ref="sqlSessionFactory" />
+		<property name="mapperInterface" value="com.ihk.saleunit.data.ISaleDefaultQuestionMapper" />
+	</bean>	
+	
+	<bean id="unitImageMapper" class="org.mybatis.spring.MapperFactoryBean">
+		<property name="sqlSessionFactory" ref="sqlSessionFactory" />
+		<property name="mapperInterface" value="com.ihk.property.data.IUnitImageMapper" />
+	</bean>
+	
+	<bean id="makeBuildPrice" class="org.mybatis.spring.MapperFactoryBean">
+		<property name="sqlSessionFactory" ref="sqlSessionFactory" />
+		<property name="mapperInterface" value="com.ihk.saleunit.data.IMakeBuildPriceMapper" />
+	</bean>
+	
+	<bean id="makeBuildPriceDetail" class="org.mybatis.spring.MapperFactoryBean">
+		<property name="sqlSessionFactory" ref="sqlSessionFactory" />
+		<property name="mapperInterface" value="com.ihk.saleunit.data.IMakeBuildPriceDetailMapper" />
+	</bean>
+	
+	<bean id="contractRecord" class="org.mybatis.spring.MapperFactoryBean">
+		<property name="sqlSessionFactory" ref="sqlSessionFactory" />
+		<property name="mapperInterface" value="com.ihk.saleunit.data.IContractRecordMapper" />
+	</bean>
+	<bean id="contractRecordDetail" class="org.mybatis.spring.MapperFactoryBean">
+		<property name="sqlSessionFactory" ref="sqlSessionFactory" />
+		<property name="mapperInterface" value="com.ihk.saleunit.data.IContractRecordDetailMapper" />
+	</bean>
+	<bean id="invoice" class="org.mybatis.spring.MapperFactoryBean">
+		<property name="sqlSessionFactory" ref="sqlSessionFactory" />
+		<property name="mapperInterface" value="com.ihk.saleunit.data.IInvoiceMapper" />
+	</bean>
+	<bean id="unitPayDelay" class="org.mybatis.spring.MapperFactoryBean">
+		<property name="sqlSessionFactory" ref="sqlSessionFactory" />
+		<property name="mapperInterface" value="com.ihk.saleunit.data.IUnitPayDelayMapper" />
+	</bean>
+	
+	<bean id="confirmBookMapper" class="org.mybatis.spring.MapperFactoryBean">
+		<property name="sqlSessionFactory" ref="sqlSessionFactory" />
+		<property name="mapperInterface" value="com.ihk.saleunit.data.IConfirmBookMapper" />
+	</bean>
+	
+	<bean id="receiptMapper" class="org.mybatis.spring.MapperFactoryBean">
+		<property name="sqlSessionFactory" ref="sqlSessionFactory" />
+		<property name="mapperInterface" value="com.ihk.saleunit.data.IReceiptMapper" />
+	</bean>
+	
+	<bean id="receiptDetailMapper" class="org.mybatis.spring.MapperFactoryBean">
+		<property name="sqlSessionFactory" ref="sqlSessionFactory" />
+		<property name="mapperInterface" value="com.ihk.saleunit.data.IReceiptDetailMapper" />
+	</bean>	
+	
+	<!-- 
+	<bean id="chipMapper" class="org.mybatis.spring.MapperFactoryBean">
+		<property name="sqlSessionFactory" ref="sqlSessionFactory" />
+		<property name="mapperInterface" value="com.ihk.saleunit.data.IChipMapper" />
+	</bean>	
+	-->
+	
+	<bean id="chipMapper" parent="baseMapper">
+		<property name="mapperInterface" value="com.ihk.saleunit.data.IChipMapper"/>
+	</bean>
+	
+	<bean id="payWayDiscountMapper" parent="baseMapper">
+		<property name="mapperInterface" value="com.ihk.property.data.IPayWayDiscountMapper" />
+	</bean>	
+	
+	<bean id="confirmDiscountMapper" parent="baseMapper">
+		<property name="mapperInterface" value="com.ihk.saleunit.data.IConfirmDiscountMapper" />
+	</bean>	
+	
+	<bean id="projectDiscountMapper" parent="baseMapper">
+		<property name="mapperInterface" value="com.ihk.property.data.IProjectDiscountMapper" />
+	</bean>	
+	
+	<bean id="contractManagerMapper" parent="baseMapper">
+		<property name="mapperInterface" value="com.ihk.property.data.IContractManagerMapper" />
+	</bean>	
+	
+	<bean id="onlyFollowMapper" parent="baseMapper">
+		<property name="mapperInterface" value="com.ihk.customer.data.IOnlyFollowMapper" />
+	</bean>
+	
+	<bean id="contractBarrulesMapper" parent="baseMapper">
+		<property name="mapperInterface" value="com.ihk.property.data.IContractBarrulesMapper" />
+	</bean>	
+	
+	<bean id="otherExpensesMapper" parent="baseMapper">
+		<property name="mapperInterface" value="com.ihk.saleunit.data.IOtherExpensesMapper" />
+	</bean>	
+	
+	<bean id="saleUnitReceiptMapper" parent="baseMapper">
+		<property name="mapperInterface" value="com.ihk.saleunit.data.ISaleUnitReceiptMapper" />
+	</bean>
+	
+	<bean id="midUnitConfirmMapper" parent="baseMapper">
+		<property name="mapperInterface" value="com.ihk.saleunit.data.IMidUnitConfirmMapper" />
+	</bean>	
+	
+	<!-- 挞定 -->
+	<bean id="tartMapper" parent="baseMapper">
+		<property name="mapperInterface" value="com.ihk.saleunit.data.ITartMapper" />
+	</bean>	
+	
+	<!-- 客户更名,未定 -->
+	<bean id="customerRenameMapper" parent="baseMapper" >
+		<property name="mapperInterface" value="com.ihk.saleunit.data.ICustomerRenameMapper" />
+	</bean>	
+	
+	<!-- 换房 -->
+	<bean id="replaceUnitMapper" parent="baseMapper">
+		<property name="mapperInterface" value="com.ihk.saleunit.data.IReplaceUnitMapper" />
+	</bean>	
+	
+	<!-- 退房 -->
+	<bean id="cancelUnitMapper" parent="baseMapper">
+		<property name="mapperInterface" value="com.ihk.saleunit.data.ICancelUnitMapper" />
+	</bean>
+	
+	<!-- 单元操作日志 -->
+	<bean id="unitOperRecordMapper" parent="baseMapper">
+		<property name="mapperInterface" value="com.ihk.saleunit.data.IUnitOperRecordMapper" />
+	</bean>
+	
+	<bean id="apPaymentMapper" class="org.mybatis.spring.MapperFactoryBean">
+		<property name="sqlSessionFactory" ref="sqlSessionFactory" />
+		<property name="mapperInterface" value="com.ihk.saleunit.data.IApPaymentMapper" />
+	</bean>	
+	<bean id="arAmountMapper" class="org.mybatis.spring.MapperFactoryBean">
+		<property name="sqlSessionFactory" ref="sqlSessionFactory" />
+		<property name="mapperInterface" value="com.ihk.saleunit.data.IArAmountMapper" />
+	</bean>	
+	
+	<!-- 报表 -->
+	<bean id="reportUnitAmountMapper" class="org.mybatis.spring.MapperFactoryBean">
+		<property name="sqlSessionFactory" ref="sqlSessionFactory" />
+		<property name="mapperInterface" value="com.ihk.report.data.IReportUnitAmountMapper" />
+	</bean>	
+	<bean id="reportUnitSaleMapper" class="org.mybatis.spring.MapperFactoryBean">
+		<property name="sqlSessionFactory" ref="sqlSessionFactory" />
+		<property name="mapperInterface" value="com.ihk.report.data.IReportUnitSaleMapper" />
+	</bean>	
+	<bean id="reportCommissionMapper" class="org.mybatis.spring.MapperFactoryBean">
+		<property name="sqlSessionFactory" ref="sqlSessionFactory" />
+		<property name="mapperInterface" value="com.ihk.report.data.IReportCommissionMapper" />
+	</bean>	
+	<bean id="reportPreCustomerMapper" class="org.mybatis.spring.MapperFactoryBean">
+		<property name="sqlSessionFactory" ref="sqlSessionFactory" />
+		<property name="mapperInterface" value="com.ihk.report.data.IReportPreCustomerMapper" />
+	</bean>	
+	
+	<!-- 对数表 -->
+	<bean id="checkfeeMapper" parent="baseMapper">
+		<property name="mapperInterface" value="com.ihk.property.data.ICheckfeeMapper" />
+	</bean>	
+	
+	<!-- 对数列表  -->
+	<bean id="checkfeeListMapper" parent="baseMapper">
+		<property name="mapperInterface" value="com.ihk.property.data.ICheckfeeListMapper" />
+	</bean>	
+	
+	<!-- 对佣表 -->
+	<bean id="checkcommissionMapper" parent="baseMapper">
+		<property name="mapperInterface" value="com.ihk.property.data.ICheckcommissionMapper" />
+	</bean>	
+
+	<!-- 对佣列表 -->
+	<bean id="checkcommissionListMapper" parent="baseMapper">
+		<property name="mapperInterface" value="com.ihk.property.data.ICheckcommissionListMapper" />
+	</bean>	
+	
+	<!-- 成交合同销售 -->
+	<bean id="contractSalesmanMapper" parent="baseMapper">
+		<property name="mapperInterface" value="com.ihk.saleunit.data.IContractSalesmanMapper" />
+	</bean>
+	
+	<bean id="checkcommissionListSecMapper" parent="baseMapper">
+		<property name="mapperInterface" value="com.ihk.property.data.ICheckcommissionListSecMapper" />
+	</bean>	
+	
+	<bean id="checkcommissionSecMapper" parent="baseMapper">
+		<property name="mapperInterface" value="com.ihk.property.data.ICheckcommissionSecMapper" />
+	</bean>	
+	
+	<bean id="idcardLocationMapper" parent="baseMapper">
+		<property name="mapperInterface" value="com.ihk.customer.data.IIdcardLocationMapper" />
+	</bean>	
+
+	<!-- 追加 -->
+	<bean id="logMapper" class="org.mybatis.spring.MapperFactoryBean">
+		<property name="sqlSessionFactory" ref="sqlSessionFactory" />
+		<property name="mapperInterface" value="com.ihk.saleunit.log.ILogMapper" />
+	</bean>	
+	
+	<bean id="actionRecordLogMapper" class="org.mybatis.spring.MapperFactoryBean">
+		<property name="sqlSessionFactory" ref="sqlSessionFactory" />
+		<property name="mapperInterface" value="com.ihk.setting.data.IActionRecordLogMapper" />
+	</bean>	
+	
+	<!-- 静态service -->
+	<bean id="compareUtils" class="com.ihk.utils.log.CompareUtils" init-method="init">
+		<property name="logService" ref="logService"></property>
+	</bean>
+	
+
+	
+	
+	<bean id="descUtils" class="com.ihk.utils.DescUtils" init-method="init">
+     <property name="userAccountServices" ref="userAccountServices"/>
+     <property name="codeTypeServices" ref="codeTypeServices"/>
+     <property name="companyServices" ref="companyServices"/>
+     <property name="companyProjectServices" ref="companyProjectServices"/>
+     <property name="customerServices" ref="customerServices"/>
+     <property name="roleServices" ref="roleServices"/>
+     <property name="customerRedServices" ref="customerRedServices"/>
+     <property name="provinceServices" ref="provinceServices" />
+     <property name="cityServices" ref="cityServices" />
+     <property name="regionServices" ref="regionServices"/>
+     
+     <property name="customerKnownServices" ref="customerKnownServices"/>
+     <property name="customerFocusServices" ref="customerFocusServices"/>
+     
+     <property name="propertyProjectServices" ref="propertyProjectServices"/>
+     <property name="propertyAreaServices" ref="propertyAreaServices"/>
+     
+     <property name="appointCustomerServices" ref="appointCustomerServices"/>
+     <property name="contractCustomerServices" ref="contractCustomerServices"/>
+     
+     <property name="appointServices" ref="appointServices"/>
+     <property name="appointBillServices" ref="appointBillServices"/>
+     <property name="appointBillDetailServices" ref="appointBillDetailServices"/>
+     
+     <property name="questionTopicServices" ref="questionTopicServices"/>
+     
+  </bean>
+  
+  <bean id="provinceCityRegionUtils" class="com.ihk.utils.ProvinceCityRegionUtils" init-method="init">
+     <property name="provinceServices" ref="provinceServices" />
+     <property name="cityServices" ref="cityServices" />
+     <property name="regionServices" ref="regionServices"/>
+  </bean>
+  
+	<bean id="permissionUtils" class="com.ihk.permission.PermissionUtils" init-method="init">
+     <property name="userAccountServices" ref="userAccountServices"/>
+     <property name="companyServices" ref="companyServices"/>
+     <property name="companyProjectServices" ref="companyProjectServices"/>
+     <property name="userRoleServices" ref="userRoleServices"/>
+     <property name="roleServices" ref="roleServices"/>
+     <property name="privServices" ref="privServices"/>
+     <property name="rolePrivServices" ref="rolePrivServices"/>
+     <property name="privFuncServices" ref="privFuncServices"/>
+     <property name="funcTreeServices" ref="funcTreeServices"/>
+     <property name="propertyProjectServices" ref="propertyProjectServices"/>
+  </bean>
+  
+  <bean id="hengdaUtils" class="com.ihk.utils.HengDaUtils" init-method="init">
+  	<property name="comProjectServices" ref="companyProjectServices"/>
+  	<property name="companyServices" ref="companyServices"/>
+  	<property name="saleMonitorServices" ref="saleMonitorServices"/>
+  	<property name="saleMonitorWeekServices" ref="saleMonitorWeekServices"/>
+  	<property name="saleMonitorMonthServices" ref="saleMonitorMonthServices"/>
+  	<property name="saleMonitorYearServices" ref="saleMonitorYearServices"/>
+  	<property name="saleMonitorLogbeforeServices" ref="saleMonitorLogbeforeServices"/>
+  	<property name="articleServices" ref="articleServices"/>	
+  </bean>
+  
+  <bean id="GuangZhouUtils" class="com.ihk.utils.GuangZhouUtils" init-method="init">
+  	 <property name="iRoleServices" ref="roleServices"/>
+  	 <property name="iCompanyProjectServices" ref="companyProjectServices"/>
+  </bean>
+  
+  <bean id="propertyUtils" class="com.ihk.utils.saleunit.MyPropertyUtils">
+  
+  	<property name="companyProjectServices" ref="companyProjectServices"/>
+  	<property name="propertyDeveloperServices" ref="propertyDeveloperServices"/>
+  	<property name="propertyProjectServices" ref="propertyProjectServices"/>
+  	<property name="propertyAreaServices" ref="propertyAreaServices"/>
+  	<property name="propertyBuildServices" ref="propertyBuildServices"/>
+  	<property name="propertyUnitServices" ref="propertyUnitServices"/>
+  	<property name="saleUnitLogServices" ref="saleUnitLogServices"/>
+  	<property name="payWayServices" ref="payWayServices"/>
+  	<property name="payWayDetailServices" ref="payWayDetailServices"/>
+  	<property name="unitPayBillServices" ref="unitPayBillServices"/>
+  	
+  	<property name="confirmServices" ref="confirmServices"/>
+  	<property name="contractServices" ref="contractServices"/>
+  	
+  	<property name="confirmBookServices" ref="confirmBookServices"/>
+  	
+  	<property name="propertyGroupServices" ref="propertyGroupServices"/>
+  	<property name="propertyGroupDetailServices" ref="propertyGroupDetailServices"/>
+  	
+  	<property name="propertyPrivServices" ref="propertyPrivServices"/>
+  	<property name="contractCustomerServices" ref="contractCustomerServices"/>
+  	
+  	<property name="chipServices" ref="chipServices"/>
+  	
+  	<property name="companyServices" ref="companyServices"/>
+  	
+  	<property name="projectCodeServices" ref="projectCodeServices"/>
+  	
+  	<property name="extensionContractServices" ref="extensionContractServices"/>
+  	
+  	<property name="userAccountServices" ref="userAccountServices"/>
+  	
+  	<property name="propertyUnitDefineServices" ref="propertyUnitDefineServices"/>
+  	<property name="receiptDetailServices" ref="receiptDetailServices"/>
+  	
+  	<property name="unitOperRecordServices" ref="unitOperRecordServices"/>
+  	<property name="tartServices" ref="tartServices"/>
+  	<property name="replaceUnitServices" ref="replaceUnitServices"/>
+  	<property name="cancelUnitServices" ref="cancelUnitServices"/>
+  	
+  	<property name="checkfeeServices" ref="checkfeeServices"/>
+  	
+  	<property name="customerServices" ref="customerServices"/>
+  	
+  	<property name="provinceServices" ref="provinceServices"/>
+  	<property name="cityServices" ref="cityServices"/>
+  	<property name="regionServices" ref="regionServices"/>
+  	
+  	<property name="questionServices" ref="questionServices"/>
+  	
+  	<property name="operLogServices" ref="operLogServices"/>
+  	
+  	<property name="contractSalesmanServices" ref="contractSalesmanServices"/>
+  	
+  	<property name="actionRecordLogServices" ref="actionRecordLogServices"></property>
+  	
+  </bean>
+  
+  <bean id="oprLogUtils" class="com.ihk.utils.saleunitnew.UnitOprLogUtils">
+  	<property name="operLogServices" ref="operLogServices"/>
+  </bean>
+  
+  <bean id="uploadTmpDir" class="com.ihk.utils.upload.UploadTmpDirClass"/>
+  
+  <bean id="discountManagerUtils" class="com.ihk.utils.saleunitnew.DiscountManagerUtils">
+  	<property name="unitDiscountServices" ref="unitDiscountServices"/>  	
+  	<property name="unitDiscountDetailServices" ref="unitDiscountDetailServices"/>
+  	<property name="unitServices" ref="propertyUnitServices"/>
+  	<property name="payWayDiscountServices" ref="payWayDiscountServices"/>
+  	<property name="projectDiscountServices" ref="projectDiscountServices"/>
+  	<property name="confirmDiscountServices" ref="confirmDiscountServices"/>
+  </bean>
+  
+  <bean id="projectTextUtils" class="com.ihk.utils.projecttext.ProjectTextUtils">
+  	<property name="projectTextServices" ref="projectTextServices"/>
+  </bean>
+  
+  <bean id="financialUtils" class="com.ihk.utils.financial.FinancialUtils">
+  	<property name="receiptDetailServices" ref="receiptDetailServices"/>
+  	<property name="contractManagerServices" ref="contractManagerServices"/>
+  	<property name="contractBarrulesServices" ref="contractBarrulesServices"/>
+  	<property name="unitPayBillServices" ref="unitPayBillServices"/>
+  	<property name="saleUnitReceiptServices" ref="saleUnitReceiptServices"/>
+  </bean>
+  
+  <bean id="customerOnlyFollowUtils" class="com.ihk.utils.onlyfollow.CustomerOnlyFollowUtils">
+  	<property name="onlyFollowServices" ref="onlyFollowServices"/>
+  </bean>
+  
+  <bean class="com.ihk.utils.report.ReportTableUtils">
+  	<property name="propertyUnitServices" ref="propertyUnitServices"/>
+  	<property name="reportDefineColumnServices" ref="reportDefineColumnServices"/>
+  </bean>
+
+</beans>

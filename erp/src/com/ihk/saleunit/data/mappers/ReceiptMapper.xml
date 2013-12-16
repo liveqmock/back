@@ -1,0 +1,193 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.ihk.saleunit.data.IReceiptMapper">
+
+	<resultMap type="Receipt" id="receiptResultMap">
+		<id property="id" column="id" />        
+		<result property="receiptDate" column="receipt_date" />
+		<result property="billNo" column="bill_no" />
+		<result property="payMan" column="pay_man" />
+		<result property="unitId" column="unit_id" />
+		<result property="typeName" column="type_name"/>
+		<result property="feeType" column="fee_type" />
+		<result property="receiptMoney" column="receipt_money" />
+		<result property="cashMoney" column="cash_money" />
+		<result property="cardMoney" column="card_money" />
+		<result property="transferMoney" column="transfer_money" />
+		<result property="checkMoney" column="check_money" />
+		<result property="intoMoney" column="into_money" />
+		<result property="sincerityMoney" column="sincerity_money" />
+		<result property="couponMoney" column="coupon_money" />
+		<result property="otherMoney" column="other_money" />
+		<result property="receiptAddress" column="receipt_address" />
+		<result property="checkNo" column="check_no" />
+		<result property="payType" column="pay_type" />
+		<result property="billType" column="bill_type" />
+		<result property="financeCert" column="finance_cert" />
+		<result property="certDate" column="cert_date" />
+		<result property="recordedBank" column="recorded_bank" />
+		<result property="remark" column="remark" />
+		<result property="isKeep" column="is_keep" />
+		<result property="accountMan" column="account_man" />
+		<result property="cashierMan" column="cashier_man" />
+		<result property="inputMan" column="input_man" />
+		<result property="isDeleted" column="is_deleted" />
+		<result property="createdId" column="created_id" />
+		<result property="createdTime" column="created_time" />
+		<result property="modId" column="mod_id" />
+		<result property="modTime" column="mod_time" />
+	</resultMap>
+
+	<insert id="addReceipt" parameterType="Receipt">
+		 <selectKey resultType="java.lang.Integer" keyProperty="id" order="AFTER" >
+            SELECT @@IDENTITY
+        </selectKey>		
+		insert into receipt(
+		receipt_date,
+		bill_no,
+		pay_man,
+		unit_id,
+		type_name,
+		fee_type,
+		receipt_money,
+		cash_money,
+		card_money,
+		transfer_money,
+		check_money,
+		into_money,
+		sincerity_money,
+		coupon_money,
+		other_money,
+		receipt_address,
+		check_no,
+		pay_type,
+		bill_type,
+		finance_cert,
+		cert_date,
+		recorded_bank,
+		remark,
+		is_keep,
+		account_man,
+		cashier_man,
+		input_man,
+		is_deleted,
+		created_id,
+		created_time,
+		mod_id,
+		mod_time
+		)
+			VALUES(
+		#{receiptDate},
+		#{billNo},
+		#{payMan},
+		#{unitId},
+		#{typeName},
+		#{feeType},
+		#{receiptMoney},
+		#{cashMoney},
+		#{cardMoney},
+		#{transferMoney},
+		#{checkMoney},
+		#{intoMoney},
+		#{sincerityMoney},
+		#{couponMoney},
+		#{otherMoney},
+		#{receiptAddress},
+		#{checkNo},
+		#{payType},
+		#{billType},
+		#{financeCert},
+		#{certDate},
+		#{recordedBank},
+		#{remark},
+		#{isKeep},
+		#{accountMan},
+		#{cashierMan},
+		#{inputMan},
+		#{isDeleted},
+		#{createdId},
+		#{createdTime},
+		#{modId},
+		#{modTime}
+			)
+		
+	</insert>
+	<delete id="deleteReceipt" parameterType="com.ihk.utils.base.PojoDeleteCond">
+	update receipt set is_deleted='1', mod_id=#{modId}, mod_time=#{modTime} where id=#{id};
+	</delete>
+	<update id="updateReceipt" parameterType="int">
+	update receipt set 
+		receipt_date=#{receiptDate},
+		bill_no=#{billNo},
+		pay_man=#{payMan},
+		unit_id=#{unitId},
+		type_name=#{typeName},
+		fee_type=#{feeType},
+		receipt_money=#{receiptMoney},
+		cash_money=#{cashMoney},
+		card_money=#{cardMoney},
+		transfer_money=#{transferMoney},
+		check_money=#{checkMoney},
+		into_money=#{intoMoney},
+		sincerity_money=#{sincerityMoney},
+		coupon_money=#{couponMoney},
+		other_money=#{otherMoney},
+		receipt_address=#{receiptAddress},
+		check_no=#{checkNo},
+		pay_type=#{payType},
+		bill_type=#{billType},
+		finance_cert=#{financeCert},
+		cert_date=#{certDate},
+		recorded_bank=#{recordedBank},
+		remark=#{remark},
+		is_keep=#{isKeep},
+		account_man=#{accountMan},
+		cashier_man=#{cashierMan},
+		input_man=#{inputMan},
+		mod_id=#{modId},
+		mod_time=#{modTime}
+	 where id=#{id}
+	</update>
+	<select id="findReceiptById" resultMap="receiptResultMap">
+	select * from receipt where id=#{id}
+	</select>
+    
+	<sql id="findWhereCond"> 
+		<where>
+        <!--
+			<if test="date1 != null and date1 != ''">
+            </if>    
+            and is_deleted = '0'
+            -->
+		</where>
+	</sql>
+	
+	<select id="findReceiptCount" resultType="int" parameterType="com.ihk.saleunit.data.pojo.ReceiptCond">
+		SELECT count(0) from receipt  
+        <include refid="findWhereCond"/>     
+    </select>
+        
+	<select id="findReceipt" resultMap="receiptResultMap" parameterType="com.ihk.saleunit.data.pojo.ReceiptCond">
+		SELECT * from  receipt 
+        <include refid="findWhereCond"/> 
+		<if test="topNum > 0">
+			limit #{topNum};
+		</if>
+    </select>
+    
+	<select id="findReceiptPage" resultMap="receiptResultMap" parameterType="com.ihk.saleunit.data.pojo.ReceiptCond">
+		SELECT * from  receipt 
+        <include refid="findWhereCond"/> 
+    
+		<if test="startLine >= 0">
+		<if test="pageSize > 0">
+			limit #{startLine},#{pageSize};
+		</if>
+		</if>
+	</select>
+	
+	<select id="findReceiptByUnitId" resultMap="receiptResultMap">
+		select * from receipt where unit_id = #{unitId} and is_deleted = '0';
+	</select>
+	
+</mapper>

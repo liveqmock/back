@@ -1,0 +1,147 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.ihk.user.data.IRoleMapper">
+
+	<resultMap type="Role" id="roleResultMap">
+		<id property="id" column="id" />        
+		<result property="roleName" column="role_name" />
+		<result property="projectId" column="project_id" />
+		<result property="roleDesc" column="role_desc" />
+		<result property="devFlag" column="dev_flag" />
+		<result property="orderIndex" column="order_index" />
+		<result property="companyId" column="company_id" />
+		<result property="isDeleted" column="is_deleted" />
+		<result property="createdId" column="created_id" />
+		<result property="createdTime" column="created_time" />
+		<result property="modId" column="mod_id" />
+		<result property="modTime" column="mod_time" />
+	</resultMap>
+
+	<insert id="addRole" parameterType="Role">
+		 <selectKey resultType="java.lang.Integer" keyProperty="id" order="AFTER" >
+            SELECT @@IDENTITY
+        </selectKey>		
+		insert into role(
+		role_name,
+		project_id,
+		role_desc,
+		dev_flag,
+        order_index,
+        company_id,
+		is_deleted,
+		created_id,
+		created_time,
+		mod_id,
+		mod_time
+		)
+			VALUES(
+		#{roleName},
+		#{projectId},
+		#{roleDesc},
+		#{devFlag},
+		#{orderIndex},
+        #{companyId},
+		#{isDeleted},
+		#{createdId},
+		#{createdTime},
+		#{modId},
+		#{modTime}
+			)
+		
+	</insert>
+	
+	<update id="deleteRole" parameterType="int">
+		update role set is_deleted ='1' where id=#{id};
+	</update>
+	
+	<update id="updateRole" parameterType="int">
+	update role set 
+		role_name=#{roleName},
+		project_id=#{projectId},
+		role_desc=#{roleDesc},
+		dev_flag=#{devFlag},
+		order_index=#{orderIndex},
+		company_id=#{companyId},
+		is_deleted=#{isDeleted},
+
+		mod_id=#{modId},
+		mod_time=#{modTime}
+	 where id=#{id}
+	</update>
+	<select id="findRoleById" resultMap="roleResultMap">
+	select * from role where id=#{id}
+	</select>
+	
+	<select id="findRoleCount" resultType="int" parameterType="com.ihk.user.data.pojo.RoleCond">
+		SELECT count(0) from role  
+    	<where>	
+				<if test="projectId != null and projectId != ''">
+					and project_id = #{projectId, jdbcType=INTEGER}
+				</if>
+	    	<if test="roleIds!=null and roleIds.size() > 0">  
+	            and id in
+	            <foreach  
+	                collection="roleIds"  
+	                item="roleId"  
+	                open="("  
+	                separator=","  
+	                close=")">  
+	                #{roleId}  
+	            </foreach>  
+	        </if> 
+	         <if test="roleName != null and roleName != ''">
+	        	and role_name like concat(concat('%', #{roleName, jdbcType=VARCHAR}), '%')
+	        </if>
+	        and is_deleted = '0'
+      </where> 
+    
+    </select>
+    
+	<select id="findRolePage" resultMap="roleResultMap" parameterType="com.ihk.user.data.pojo.RoleCond">
+		SELECT * from  role 
+    	<where>	
+			<if test="projectId != null and projectId != ''">
+				and project_id = #{projectId, jdbcType=INTEGER}
+			</if>
+	    	<if test="companyId != null and companyId != ''">
+				and (company_id = #{companyId, jdbcType=INTEGER}
+                or company_id is null or company_id ="")
+			</if>
+	    	<if test="roleIds!=null and roleIds.size() > 0">
+	            and id in
+	            <foreach  
+	                collection="roleIds"  
+	                item="roleId"  
+	                open="("  
+	                separator=","  
+	                close=")">  
+	                #{roleId}  
+	            </foreach>  
+	        </if> 
+	        <if test="devFlag != null and devFlag != ''">
+	        	and dev_flag = #{devFlag}
+	        </if>
+	        <if test="roleName != null and roleName != ''">
+	        	and role_name like concat(concat('%', #{roleName, jdbcType=VARCHAR}), '%')
+	        </if>
+	        and is_deleted = '0'
+      </where> 
+        order by order_index asc
+		<if test="startLine >= 0">
+		<if test="pageSize > 0">
+			limit #{startLine},#{pageSize};
+		</if>
+		</if>
+	</select>
+	
+	<select id="findRole" resultMap="roleResultMap">
+		select * from role where is_deleted ="0";
+	</select>
+	
+	<select id="findRolesLikeName" resultMap="roleResultMap">
+		select * from role where is_deleted = '0' and role_name like CONCAT(CONCAT('%', #{name}),'%') order by role_name desc limit 10
+	</select>
+	
+	
+	
+</mapper>

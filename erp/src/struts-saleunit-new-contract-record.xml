@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE struts PUBLIC
+    "-//Apache Software Foundation//DTD Struts Configuration 2.0//EN"
+    "http://struts.apache.org/dtds/struts-2.0.dtd">
+<struts>
+	<package name="saleunit_new_contract_record" extends="struts-default" namespace="/saleunit_new_contract_record/appoint/guangzhou">
+		
+		<action name="addContractRecords" class="com.ihk.saleunit.action.contract_record.ContractRecordForAddAction" method="addContractRecords">
+			<result name="suc">/saleunit_new_contract/guangzhou/contract_record_new_dialog.jsp</result>
+		</action>
+		<action name="addContractRecordsForm" class="com.ihk.saleunit.action.contract_record.ContractRecordForAddAction" method="addContractRecordsForm">
+		</action>
+		
+		<!-- 主要TAB页面信息 -->
+		<action name="showTable" class="com.ihk.saleunit.action.contract_record.ContractRecordForShowAction" method="showTable">
+			<result name="suc">/saleunit_new_contract/guangzhou/contract_record_table.jsp</result>
+		</action>
+		
+		
+		<!--弹出框 持有人变更 -->
+		<action name="handChangeDialog" class="com.ihk.saleunit.action.contract_record.ContractRecordHandChangeAction" method="handChangeDialog">
+			<result name="suc">/saleunit_new_contract/guangzhou/update_handover_user_dialog.jsp</result>
+		</action>
+		<!--提交表单 持有人变更 -->
+		<action name="handChangeDialogForm" class="com.ihk.saleunit.action.contract_record.ContractRecordHandChangeAction" method="handChangeDialogForm">
+			<result name="suc">/saleunit_new_contract/guangzhou/update_handover_user_dialog.jsp</result>
+		</action>
+	</package>
+</struts>
+
+
+

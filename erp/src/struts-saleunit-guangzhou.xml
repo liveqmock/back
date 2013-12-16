@@ -1,0 +1,560 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE struts PUBLIC
+    "-//Apache Software Foundation//DTD Struts Configuration 2.0//EN"
+    "http://struts.apache.org/dtds/struts-2.0.dtd">
+<struts>
+ 	<!-- 仿明源系统时候的action -->
+	<!-- 
+	<package name="saleunit_appoint_guangzhou" extends="struts-base" namespace="/saleunit/appoint/guangzhou">
+	 -->
+	<package name="saleunit_appoint_guangzhou" extends="struts-default" namespace="/saleunit/appoint/guangzhou">
+	
+		<action name="index" class="com.ihk.saleunit.action.GuangZhouAppointSearchAction" method="index">
+			<result name="appointIndex">/saleunit_appoint/guangzhou/index.jsp</result>
+		</action>
+		
+		<action name="searchOrderBy" class="com.ihk.saleunit.action.GuangZhouAppointSearchAction" method="searchOrderBy">
+			<result name="searchAppoint" >/saleunit_appoint/guangzhou/index.jsp</result>
+		</action>
+		
+		<action name="forInput" class="com.ihk.saleunit.action.GuangZhouAppointInputAction" method="doSomeForInputAppoint">
+			<result name="appointForInput">/saleunit_appoint/guangzhou/input_first.jsp</result>
+			<!--<result name="appointForInput">/saleunit_appoint/guangzhou/input.jsp</result>-->
+		</action>
+		
+		<!-- 查询单元 -->
+		<action name="appointInputFirst" class="com.ihk.saleunit.action.GuangZhouAppointInputAction" method="appointInputFirst">
+			<result name="appointInputFirst">/saleunit_appoint/guangzhou/input_first.jsp</result>
+		</action>
+		
+		<action name="changeBuildToSecond" class="com.ihk.saleunit.action.GuangZhouAppointInputAction" method="changeBuildToSecond">
+			<result name="changeBuildToSecond">/saleunit_appoint/guangzhou/input_second.jsp</result>
+		</action>
+		<action name="appointInputSecond" class="com.ihk.saleunit.action.GuangZhouAppointInputAction" method="appointInputSecond">
+			<result name="appointInputSecond">/saleunit_appoint/guangzhou/input_second.jsp</result>
+		</action>
+		
+		<action name="changeUnitToThird" class="com.ihk.saleunit.action.GuangZhouAppointInputAction" method="changeUnitToThird">
+			<result name="changeUnitToThird">/saleunit_appoint/guangzhou/input_third.jsp</result>
+		</action>
+		<action name="noChangeUnitToThird" class="com.ihk.saleunit.action.GuangZhouAppointInputAction" method="noChangeUnitToThird">
+			<result name="noChangeUnitToThird">/saleunit_appoint/guangzhou/input_third.jsp</result>
+		</action>
+		<action name="appointInputThird" class="com.ihk.saleunit.action.GuangZhouAppointInputAction" method="appointInputThird">
+			<result name="appointInputThird">/saleunit_appoint/guangzhou/input_third.jsp</result>
+		</action>
+		
+		<action name="changeCustomerToFourth" class="com.ihk.saleunit.action.GuangZhouAppointInputAction" method="changeCustomerToFourth">
+			<result name="changeCustomerToFourth">/saleunit_appoint/guangzhou/input_fourth.jsp</result>
+		</action>
+		
+		<action name="inputAppoint" class="com.ihk.saleunit.action.GuangZhouAppointInputAction" method="inputAppoint">
+		
+			<interceptor-ref name="defaultStack"/>
+			<interceptor-ref name="token"/>
+			<result name="invalid.token" type="redirectAction">
+				forInput?deleteSession=token
+			</result>
+		
+			<result name="appointInput" type="redirectAction">
+				forInput?deleteSession=false
+			</result>
+		</action>
+		
+		<action name="deleteAppointBill" class="com.ihk.saleunit.action.GuangZhouAppointUpdateAction" method="deleteAppointBill">
+			<result name="deleteAppointBill" type="redirectAction">
+				getById?id=${appointId}&amp;deleteSession=false
+			</result>
+		</action>
+		
+		<action name="deleteAppointDetail" class="com.ihk.saleunit.action.GuangZhouAppointUpdateAction" method="deleteAppointDetail">
+			<result name="deleteAppointDetail" type="redirectAction">
+				getById?id=${appointId}&amp;deleteSession=false
+			</result>
+		</action>
+		
+		<action name="getById" class="com.ihk.saleunit.action.GuangZhouAppointUpdateAction" method="getById">
+			<result name="getById" >/saleunit_appoint/guangzhou/update.jsp</result>
+		</action>
+		
+		<action name="updateAppoint" class="com.ihk.saleunit.action.GuangZhouAppointUpdateAction" method="updateAppoint">
+			<result name="updateAppoint" >/saleunit_appoint/guangzhou/update.jsp</result>
+		</action>
+		
+		<!-- 转认购 -->
+		<action name="changeToConfirm" class="com.ihk.saleunit.action.GuangZhouAppointUpdateAction" method="changeToConfirm"/>
+		
+	</package>
+	
+	<package name="saleunit_appointbill_guangzhou" extends="struts-default" namespace="/saleunit/appointbill/guangzhou">
+		
+		<action name="forInput" class="com.ihk.saleunit.action.GuangZhouAppointBillInputAction" method="doSomeForInputAppointBill">
+			<result name="appointBillForInput">/saleunit_appoint/guangzhou/bill_input.jsp</result>
+		</action>
+		
+		<action name="inputAppointBill" class="com.ihk.saleunit.action.GuangZhouAppointBillInputAction" method="inputAppointBill">
+			<result name="appointBillInput" type="redirectAction">
+				getById?appointBillId=${appointBillId}&amp;deleteSession=false
+			</result>
+		</action>
+		
+		<action name="getById" class="com.ihk.saleunit.action.GuangZhouAppointBillUpdateAction" method="getById">
+			<result name="getById" >/saleunit_appoint/guangzhou/bill_update.jsp</result>
+		</action>
+		
+		<action name="updateAppointBill" class="com.ihk.saleunit.action.GuangZhouAppointBillUpdateAction" method="updateAppointBill">
+			<result name="updateAppointBill" >/saleunit_appoint/guangzhou/bill_update.jsp</result>
+		</action>
+		
+	</package>
+	
+	<package name="saleunit_appointbilldetail_guangzhou" extends="struts-default" namespace="/saleunit/appointbilldetail/guangzhou">
+	
+		<action name="forInput" class="com.ihk.saleunit.action.GuangZhouAppointBillDetailInputAction" method="doSomeForInputAppointBillDetail">
+			<result name="appointBillDetailForInput">/saleunit_appoint/guangzhou/bill_detail_input_dialog.jsp</result>
+		</action>
+		
+		<action name="inputAppointBillDetail" class="com.ihk.saleunit.action.GuangZhouAppointBillDetailInputAction" method="inputAppointBillDetail">
+			<result name="inputAppointBillDetail">/saleunit_appoint/guangzhou/bill_detail_input_dialog.jsp</result>
+		</action>
+		
+		<action name="getById" class="com.ihk.saleunit.action.GuangZhouAppointBillDetailUpdateAction" method="getById">
+			<result name="getById" >/saleunit_appoint/guangzhou/bill_detail_update_dialog.jsp</result>
+		</action>
+		
+		<action name="updateAppointBillDetail" class="com.ihk.saleunit.action.GuangZhouAppointBillDetailUpdateAction" method="updateAppointBillDetail">
+			<result name="updateAppointBillDetail">/saleunit_appoint/guangzhou/bill_detail_update_dialog.jsp</result>
+		</action>
+		
+	</package>
+	
+	<package name="saleunit_confirm_guangzhou" extends="struts-default" namespace="/saleunit/confirm/guangzhou">	
+		<action name="searchList" class="com.ihk.saleunit.action.GuangZhouConfirmSearchListAction" method="searchList">
+			<result name="searchList">/saleunit_confirm/guangzhou/search_list.jsp</result>
+		</action>	
+		
+		<action name="searchOrderBy" class="com.ihk.saleunit.action.GuangZhouConfirmSearchListAction" method="searchOrderBy">
+			<result name="searchList" >/saleunit_confirm/guangzhou/search_list.jsp</result>
+		</action>
+		
+		<action name="forInput" class="com.ihk.saleunit.action.GuangZhouConfirmInputAction" method="forInput">
+			<result name="forInput">/saleunit_confirm/guangzhou/input_first.jsp</result>
+		</action>
+		
+		<action name="confirmInputFirst" class="com.ihk.saleunit.action.GuangZhouConfirmInputAction" method="confirmInputFirst">
+			<result name="confirmInputFirst">/saleunit_confirm/guangzhou/input_first.jsp</result>
+		</action>
+		
+		<action name="changeBuildToSecond" class="com.ihk.saleunit.action.GuangZhouConfirmInputAction" method="changeBuildToSecond">
+			<result name="changeBuildToSecond">/saleunit_confirm/guangzhou/input_second.jsp</result>
+		</action>
+		<action name="confirmInputSecond" class="com.ihk.saleunit.action.GuangZhouConfirmInputAction" method="confirmInputSecond">
+			<result name="confirmInputSecond">/saleunit_confirm/guangzhou/input_second.jsp</result>
+		</action>
+		
+		<action name="changeUnitToThird" class="com.ihk.saleunit.action.GuangZhouConfirmInputAction" method="changeUnitToThird">
+			<result name="changeUnitToThird">/saleunit_confirm/guangzhou/input_third.jsp</result>
+		</action>
+		<action name="confirmInputThird" class="com.ihk.saleunit.action.GuangZhouConfirmInputAction" method="confirmInputThird">
+			<result name="confirmInputThird">/saleunit_confirm/guangzhou/input_third.jsp</result>
+		</action>
+		
+		<action name="changeCustomerToFourth" class="com.ihk.saleunit.action.GuangZhouConfirmInputAction" method="changeCustomerToFourth">
+			<result name="changeCustomerToFourth">/saleunit_confirm/guangzhou/input_fourth.jsp</result>
+		</action>
+		
+		
+		<action name="inputConfirm" class="com.ihk.saleunit.action.GuangZhouConfirmInputAction" method="inputConfirm">
+			<interceptor-ref name="defaultStack"/>
+			<interceptor-ref name="token"/>
+			<result name="invalid.token" type="redirectAction">
+				forInput?deleteSession=token
+			</result>
+			<result name="confirmInput" type="redirectAction">
+				forInput?deleteSession=false
+			</result>
+		</action>
+		
+		<action name="getById" class="com.ihk.saleunit.action.GuangZhouConfirmUpdateAction" method="getById">
+			<result name="getById" >/saleunit_confirm/guangzhou/update.jsp</result>
+		</action>
+		
+		<action name="updateConfirm" class="com.ihk.saleunit.action.GuangZhouConfirmUpdateAction" method="updateConfirm">
+			<result name="updateConfirm" >/saleunit_confirm/guangzhou/update.jsp</result>
+		</action>
+		
+		<!-- 转合同 -->
+		<action name="changeToContract" class="com.ihk.saleunit.action.GuangZhouConfirmUpdateAction" method="changeToContract"/>
+				
+		<!-- 附属房产 -->
+		<action name="searchAddonProperty" class="com.ihk.saleunit.action.confirm.GuangZhouAddonPropertyAction" method="search">
+			<result name="search">/saleunit_confirm/guangzhou/addon_property_search.jsp</result>
+		</action>
+		
+		<!-- 申请更改 认购-->
+		<action name="searchApprovalChange" class="com.ihk.saleunit.action.confirm.GuangZhouAddChangeAction" method="index">
+			<result name="suc">/saleunit_confirm/guangzhou/add_on_change.jsp</result>
+		</action>
+		<action name="searchChangeInfomation" class="com.ihk.saleunit.action.confirm.GuangZhouAddChangeAction" method="approvalInformation">
+			<result name="price">/saleunit_confirm/guangzhou/change/ajax_price_infor.jsp</result>
+			<result name="out">/saleunit_confirm/guangzhou/change/ajax_out_infor.jsp</result>
+			<result name="unit">/saleunit_confirm/guangzhou/change/ajax_unit_infor.jsp</result>
+			<result name="owner">/saleunit_confirm/guangzhou/change/ajax_owner_infor.jsp</result>
+		</action>
+		<action name="addChangeAppIndex" class="com.ihk.saleunit.action.confirm.GuangZhouAddChangeAction" method="addChangeForThisConfirmIndex">
+			<result name="price">/saleunit_confirm/guangzhou/change/ajax_price_form.jsp</result>
+			<result name="out">/saleunit_confirm/guangzhou/change/ajax_out_form.jsp</result>
+			<result name="unit">/saleunit_confirm/guangzhou/change/ajax_unit_form.jsp</result>
+			<result name="owner">/saleunit_confirm/guangzhou/change/ajax_owner_form.jsp</result>
+		</action>
+		
+		<action name="addForChangePrice" class="com.ihk.saleunit.action.confirm.GuangZhouAddChangeAction" method="addChangeForThisConfirmPrice"/>
+		<action name="addForChangeUnit" class="com.ihk.saleunit.action.confirm.GuangZhouAddChangeAction" method="addChangeForThisConfirmUnit"/>
+		<action name="addForChangeOut" class="com.ihk.saleunit.action.confirm.GuangZhouAddChangeAction" method="addChangeForThisConfirmOut"/>
+		<action name="addForChangeOwner" class="com.ihk.saleunit.action.confirm.GuangZhouAddChangeAction" method="addChangeForThisConfirmOwner">
+			<result name="owner">/saleunit_confirm/guangzhou/change/ajax_owner_form.jsp</result>
+		</action>
+					
+		<action name="addForChangeOwner_addOwner" class="com.ihk.saleunit.action.confirm.GuangZhouAddChangeAction" 
+			method="addOwnerForaddChangeForThisConfirmOwner">
+			<result name="owner">/saleunit_confirm/guangzhou/change/ajax_owner_form.jsp</result>
+		</action>
+		<!-- end 申请更改 -->
+		
+		<!-- 附属房产 -->
+		<action name="searchAddonProperty" class="com.ihk.saleunit.action.confirm.GuangZhouAddonPropertyAction" method="search">
+			<result name="search">/saleunit_confirm/guangzhou/addon_property_search.jsp</result>
+		</action>
+		
+		<action name="inputAddonProperty" class="com.ihk.saleunit.action.confirm.GuangZhouAddonPropertyAction" method="input"/>
+		
+		<action name="getAddonProperty" class="com.ihk.saleunit.action.confirm.GuangZhouAddonPropertyAction" method="getId"/>
+		
+		<action name="updateAddonProperty" class="com.ihk.saleunit.action.confirm.GuangZhouAddonPropertyAction" method="update"/>
+		
+		<!-- 付款情况 -->
+		<action name="searchPayDetail" class="com.ihk.saleunit.action.confirm.GuangZhouPayDetailAction" method="search">
+			<result name="search">/saleunit_confirm/guangzhou/pay_detail_search.jsp</result>
+		</action>
+		
+		<action name="forInputPayDetail" class="com.ihk.saleunit.action.confirm.GuangZhouPayDetailAction" method="forInput">
+			<result name="forInput">/saleunit_confirm/guangzhou/pay_detail_input_dialog.jsp</result>
+		</action>
+		
+		<action name="inputPayDetail" class="com.ihk.saleunit.action.confirm.GuangZhouPayDetailAction" method="input">
+			<result name="input">/saleunit_confirm/guangzhou/pay_detail_input_dialog.jsp</result>
+		</action>
+		
+		<action name="getPayDetailId" class="com.ihk.saleunit.action.confirm.GuangZhouPayDetailAction" method="getId">
+			<result name="getId">/saleunit_confirm/guangzhou/pay_detail_update_dialog.jsp</result>
+		</action>
+		
+		<action name="updatePayDetail" class="com.ihk.saleunit.action.confirm.GuangZhouPayDetailAction" method="update">
+			<result name="update">/saleunit_confirm/guangzhou/pay_detail_update_dialog.jsp</result>
+		</action>
+		
+		<!-- 权益人 -->
+		<action name="searchPropertyOwner" class="com.ihk.saleunit.action.confirm.GuangZhouPropertyOwnerAction" method="search">
+			<result name="search">/saleunit_confirm/guangzhou/property_owner_search.jsp</result>
+		</action>
+		
+		<action name="forInputPropertyOwner" class="com.ihk.saleunit.action.confirm.GuangZhouPropertyOwnerAction" method="forInput">
+			<result name="forInput">/saleunit_confirm/guangzhou/property_owner_input_dialog.jsp</result>
+		</action>
+		
+		<action name="inputPropertyOwner" class="com.ihk.saleunit.action.confirm.GuangZhouPropertyOwnerAction" method="input">
+			<result name="input">/saleunit_confirm/guangzhou/property_owner_input_dialog.jsp</result>
+		</action>
+		
+		<action name="getPropertyOwnerId" class="com.ihk.saleunit.action.confirm.GuangZhouPropertyOwnerAction" method="getId">
+			<result name="getId">/saleunit_confirm/guangzhou/property_owner_update_dialog.jsp</result>
+		</action>
+		
+		<action name="updatePropertyOwner" class="com.ihk.saleunit.action.confirm.GuangZhouPropertyOwnerAction" method="update">
+			<result name="update">/saleunit_confirm/guangzhou/property_owner_update_dialog.jsp</result>
+		</action>
+		
+	</package>
+	
+	<package name="saleunit_contract_guangzhou" extends="struts-default" namespace="/saleunit/contract/guangzhou">	
+		<action name="searchList" class="com.ihk.saleunit.action.GuangZhouContractSearchListAction" method="searchList">
+			<result name="searchList">/saleunit_contract/guangzhou/search_list.jsp</result>
+		</action>	
+		
+		<action name="searchOrderBy" class="com.ihk.saleunit.action.GuangZhouContractSearchListAction" method="searchOrderBy">
+			<result name="searchList" >/saleunit_contract/guangzhou/search_list.jsp</result>
+		</action>
+		
+		<action name="forInput" class="com.ihk.saleunit.action.GuangZhouContractInputAction" method="forInput">
+			<result name="forInput" >/saleunit_contract/guangzhou/input_first.jsp</result>
+		</action>		
+		
+		<action name="contractInputFirst" class="com.ihk.saleunit.action.GuangZhouContractInputAction" method="contractInputFirst">
+			<result name="contractInputFirst">/saleunit_contract/guangzhou/input_first.jsp</result>
+		</action>
+		
+		<action name="changeBuildToSecond" class="com.ihk.saleunit.action.GuangZhouContractInputAction" method="changeBuildToSecond">
+			<result name="changeBuildToSecond">/saleunit_contract/guangzhou/input_second.jsp</result>
+		</action>
+		<action name="contractInputSecond" class="com.ihk.saleunit.action.GuangZhouContractInputAction" method="contractInputSecond">
+			<result name="contractInputSecond">/saleunit_contract/guangzhou/input_second.jsp</result>
+		</action>
+		
+		<action name="changeUnitToThird" class="com.ihk.saleunit.action.GuangZhouContractInputAction" method="changeUnitToThird">
+			<result name="changeUnitToThird">/saleunit_contract/guangzhou/input_third.jsp</result>
+		</action>
+		<action name="contractInputThird" class="com.ihk.saleunit.action.GuangZhouContractInputAction" method="contractInputThird">
+			<result name="contractInputThird">/saleunit_contract/guangzhou/input_third.jsp</result>
+		</action>
+		
+		<action name="changeCustomerToFourth" class="com.ihk.saleunit.action.GuangZhouContractInputAction" method="changeCustomerToFourth">
+			<result name="changeCustomerToFourth">/saleunit_contract/guangzhou/input_fourth.jsp</result>
+		</action>
+			
+		<action name="inputContract" class="com.ihk.saleunit.action.GuangZhouContractInputAction" method="inputContract">
+			<interceptor-ref name="defaultStack"/>
+			<interceptor-ref name="token"/>
+			<result name="invalid.token" type="redirectAction">
+				forInput?deleteSession=token
+			</result>
+			<result name="inputContract" type="redirectAction">
+				forInput?deleteSession=false
+			</result>
+		</action>
+				
+		<action name="getById" class="com.ihk.saleunit.action.GuangZhouContractUpdateAction" method="getById">
+			<result name="getById" >/saleunit_contract/guangzhou/update.jsp</result>
+		</action>
+		
+		<action name="updateContract" class="com.ihk.saleunit.action.GuangZhouContractUpdateAction" method="updateContract">
+			<result name="updateContract" >/saleunit_contract/guangzhou/update.jsp</result>
+		</action>
+		
+		<!-- 附属房产 -->
+		<action name="searchAddonProperty" class="com.ihk.saleunit.action.contract.GuangZhouAddonPropertyAction" method="search">
+			<result name="search">/saleunit_contract/guangzhou/addon_property_search.jsp</result>
+		</action>
+		
+		<action name="inputAddonProperty" class="com.ihk.saleunit.action.contract.GuangZhouAddonPropertyAction" method="input"/>
+		
+		<action name="getAddonProperty" class="com.ihk.saleunit.action.contract.GuangZhouAddonPropertyAction" method="getId"/>
+		
+		<action name="updateAddonProperty" class="com.ihk.saleunit.action.contract.GuangZhouAddonPropertyAction" method="update"/>
+		
+		<!-- 付款情况 -->
+		<action name="searchPayDetail" class="com.ihk.saleunit.action.contract.GuangZhouPayDetailAction" method="search">
+			<result name="search">/saleunit_contract/guangzhou/pay_detail_search.jsp</result>
+		</action>
+		
+		<action name="forInputPayDetail" class="com.ihk.saleunit.action.contract.GuangZhouPayDetailAction" method="forInput">
+			<result name="forInput">/saleunit_contract/guangzhou/pay_detail_input_dialog.jsp</result>
+		</action>
+		
+		<action name="inputPayDetail" class="com.ihk.saleunit.action.contract.GuangZhouPayDetailAction" method="input">
+			<result name="input">/saleunit_contract/guangzhou/pay_detail_input_dialog.jsp</result>
+		</action>
+		
+		<action name="getPayDetailId" class="com.ihk.saleunit.action.contract.GuangZhouPayDetailAction" method="getId">
+			<result name="getId">/saleunit_contract/guangzhou/pay_detail_update_dialog.jsp</result>
+		</action>
+		
+		<action name="updatePayDetail" class="com.ihk.saleunit.action.contract.GuangZhouPayDetailAction" method="update">
+			<result name="update">/saleunit_contract/guangzhou/pay_detail_update_dialog.jsp</result>
+		</action>
+		
+		<!-- 权益人 -->
+		<action name="searchPropertyOwner" class="com.ihk.saleunit.action.contract.GuangZhouPropertyOwnerAction" method="search">
+			<result name="search">/saleunit_contract/guangzhou/property_owner_search.jsp</result>
+		</action>
+		
+		<action name="forInputPropertyOwner" class="com.ihk.saleunit.action.contract.GuangZhouPropertyOwnerAction" method="forInput">
+			<result name="forInput">/saleunit_contract/guangzhou/property_owner_input_dialog.jsp</result>
+		</action>
+		
+		<action name="inputPropertyOwner" class="com.ihk.saleunit.action.contract.GuangZhouPropertyOwnerAction" method="input">
+			<result name="input">/saleunit_contract/guangzhou/property_owner_input_dialog.jsp</result>
+		</action>
+		
+		<action name="getPropertyOwnerId" class="com.ihk.saleunit.action.contract.GuangZhouPropertyOwnerAction" method="getId">
+			<result name="getId">/saleunit_contract/guangzhou/property_owner_update_dialog.jsp</result>
+		</action>
+		
+		<action name="updatePropertyOwner" class="com.ihk.saleunit.action.contract.GuangZhouPropertyOwnerAction" method="update">
+			<result name="update">/saleunit_contract/guangzhou/property_owner_update_dialog.jsp</result>
+		</action>
+		
+		<!-- 销售服务 -->
+		<action name="searchContractService" class="com.ihk.saleunit.action.contract.GuangZhouContractServiceAction" method="search">
+			<result name="search">/saleunit_contract/guangzhou/contract_service_search.jsp</result>
+		</action>
+		
+		<action name="forInputContractService" class="com.ihk.saleunit.action.contract.GuangZhouContractServiceAction" method="forInput">
+			<result name="forInput">/saleunit_contract/guangzhou/contract_service_input_dialog.jsp</result>
+		</action>
+		
+		<action name="inputContractService" class="com.ihk.saleunit.action.contract.GuangZhouContractServiceAction" method="input">
+			<result name="input">/saleunit_contract/guangzhou/contract_service_input_dialog.jsp</result>
+		</action>
+		
+		<action name="getContractServiceId" class="com.ihk.saleunit.action.contract.GuangZhouContractServiceAction" method="getId">
+			<result name="getId">/saleunit_contract/guangzhou/contract_service_update_dialog.jsp</result>
+		</action>
+		
+		<action name="updateContractService" class="com.ihk.saleunit.action.contract.GuangZhouContractServiceAction" method="update">
+			<result name="update">/saleunit_contract/guangzhou/contract_service_update_dialog.jsp</result>
+		</action>
+		
+		<!-- 个性装修 -->
+		<action name="searchContractRenovate" class="com.ihk.saleunit.action.contract.GuangZhouContractRenovateAction" method="search">
+			<result name="search">/saleunit_contract/guangzhou/contract_renovate_search.jsp</result>
+		</action>
+		
+		<action name="forInputContractRenovate" class="com.ihk.saleunit.action.contract.GuangZhouContractRenovateAction" method="forInput">
+			<result name="forInput">/saleunit_contract/guangzhou/contract_renovate_input_dialog.jsp</result>
+		</action>
+		
+		<action name="inputContractRenovate" class="com.ihk.saleunit.action.contract.GuangZhouContractRenovateAction" method="input">
+			<result name="input">/saleunit_contract/guangzhou/contract_renovate_input_dialog.jsp</result>
+		</action>
+		
+		<action name="getContractRenovateId" class="com.ihk.saleunit.action.contract.GuangZhouContractRenovateAction" method="getId">
+			<result name="getId">/saleunit_contract/guangzhou/contract_renovate_update_dialog.jsp</result>
+		</action>
+		
+		<action name="updateContractRenovate" class="com.ihk.saleunit.action.contract.GuangZhouContractRenovateAction" method="update">
+			<result name="update">/saleunit_contract/guangzhou/contract_renovate_update_dialog.jsp</result>
+		</action>
+		
+		<!-- 申请变更   contract -->
+		<action name="addChangeIndex" class="com.ihk.saleunit.action.contract.GuangZhouContractChangeAction" method="index">
+			<result name="suc">/saleunit_contract/guangzhou/contract_change.jsp</result>
+		</action>
+		
+		<action name="addChangePrice" class="com.ihk.saleunit.action.contract.GuangZhouContractChangeFormAction" method="priceFormIndex">
+			<result name="suc">/saleunit_contract/guangzhou/change/ajax_price_form.jsp</result>
+		</action>
+		<action name="addChangePriceForm" class="com.ihk.saleunit.action.contract.GuangZhouContractChangeFormAction" method="priceFormSubmit">
+			<result name="suc">/saleunit_contract/guangzhou/change/ajax_price_form.jsp</result>
+		</action>
+		<action name="addChangeUnit" class="com.ihk.saleunit.action.contract.GuangZhouContractChangeFormAction" method="unitFormIndex">
+			<result name="suc">/saleunit_contract/guangzhou/change/ajax_unit_form.jsp</result>
+		</action>
+		<action name="addChangeUnitForm" class="com.ihk.saleunit.action.contract.GuangZhouContractChangeFormAction" method="unitFormSubmit">
+			<result name="suc">/saleunit_contract/guangzhou/change/ajax_unit_form.jsp</result>
+		</action>
+		<action name="addChangeOwner" class="com.ihk.saleunit.action.contract.GuangZhouContractChangeFormAction" method="ownerFormIndex">
+			<result name="suc">/saleunit_contract/guangzhou/change/ajax_owner_form.jsp</result>
+		</action>
+		<action name="addChangeOwnerForm" class="com.ihk.saleunit.action.contract.GuangZhouContractChangeFormAction" method="ownerFormSubmit">
+			<result name="suc">/saleunit_contract/guangzhou/change/ajax_owner_form.jsp</result>
+		</action>
+		<action name="addChangeOut" class="com.ihk.saleunit.action.contract.GuangZhouContractChangeFormAction" method="outFormIndex">
+			<result name="suc">/saleunit_contract/guangzhou/change/ajax_out_form.jsp</result>
+		</action>
+		<action name="addChangeOutForm" class="com.ihk.saleunit.action.contract.GuangZhouContractChangeFormAction" method="outFormSubmit">
+			<result name="suc">/saleunit_contract/guangzhou/change/ajax_out_form.jsp</result>
+		</action>
+		
+		<action name="addForChangeOwner_addOwner" class="com.ihk.saleunit.action.contract.GuangZhouContractChangeFormAction" 
+			method="addOwnerForaddChangeForThisConfirmOwner">
+			<result name="owner">/saleunit_contract/guangzhou/change/ajax_owner_form.jsp</result>
+		</action>
+		
+		
+		<action name="searchChangeInfomation" class="com.ihk.saleunit.action.contract.GuangZhouContractChangeInfoAction" method="infoIndex">
+			<result name="price">/saleunit_contract/guangzhou/change/ajax_price_info.jsp</result>
+			<result name="out">/saleunit_contract/guangzhou/change/ajax_out_info.jsp</result>
+			<result name="unit">/saleunit_contract/guangzhou/change/ajax_unit_info.jsp</result>
+			<result name="owner">/saleunit_contract/guangzhou/change/ajax_owner_info.jsp</result>
+		</action>
+		<!-- 申请变更 end -->
+		
+	</package>
+	
+	<package name="saleunit_log_guangzhou" extends="struts-default" namespace="/saleunit/log/guangzhou">	
+		<action name="searchList" class="com.ihk.saleunit.action.GuangZhouLogSearchListAction" method="searchList">
+			<result name="searchList">/saleunit_log/guangzhou/search_list.jsp</result>
+		</action>
+		
+		<action name="forInput" class="com.ihk.saleunit.action.GuangZhouLogInputAction" method="forInput">
+			<result name="forInput" >/saleunit_log/guangzhou/add.jsp</result>
+		</action>			
+		<action name="inputLog" class="com.ihk.saleunit.action.GuangZhouLogInputAction" method="inputLog">
+			<interceptor-ref name="defaultStack"/>
+			<interceptor-ref name="token"/>
+			<result name="invalid.token" type="redirectAction">
+				forInput?deleteSession=token
+			</result>
+			<result name="inputLog" type="redirectAction">
+				forInput?deleteSession=false
+			</result>
+		</action>
+				
+		<action name="getById" class="com.ihk.saleunit.action.GuangZhouLogUpdateAction" method="getById">
+			<result name="getById" >/saleunit_log/guangzhou/update.jsp</result>
+		</action>
+		<action name="updateSaleDaily" class="com.ihk.saleunit.action.GuangZhouLogUpdateAction" method="updateSaleDaily">
+			<result name="updateSaleDaily" >/saleunit_log/guangzhou/update.jsp</result>
+		</action>	
+	</package>
+	
+	<package name="saleunit_change_guangzhou" extends="struts-default" namespace="/saleunit/change/guangzhou">	
+		<action name="searchList" class="com.ihk.saleunit.action.GuangZhouChangeSearchListAction" method="searchList">
+			<result name="searchList">/saleunit_change/guangzhou/search_list.jsp</result>
+		</action>	
+		<action name="logList" class="com.ihk.saleunit.action.GuangZhouChangeSearchListAction" method="logList">
+			<result name="logList">/saleunit_change/guangzhou/log_list.jsp</result>
+		</action>	
+		
+		<action name="getById" class="com.ihk.saleunit.action.GuangZhouChangeUpdateAction" method="getById">
+			<result name="getById" >/saleunit_change/guangzhou/update.jsp</result>
+		</action>
+		<action name="updateChange" class="com.ihk.saleunit.action.GuangZhouChangeUpdateAction" method="updateChange">
+			<result name="updateChange" >/saleunit_change/guangzhou/update.jsp</result>
+		</action>
+	</package>
+	
+	<package name="saleunit_analysis_guangzhou" extends="struts-default" namespace="/saleunit/analysis/guangzhou">	
+		<action name="searchList" class="com.ihk.saleunit.action.GuangZhouAnalysisSearchListAction" method="searchList">
+			<result name="searchList">/saleunit_analysis/guangzhou/search_list.jsp</result>
+		</action>	
+	</package>
+	
+	<package name="saleunit_mortgage_guangzhou" extends="struts-default" namespace="/saleunit/mortgage/guangzhou">	
+		<action name="searchList" class="com.ihk.saleunit.action.GuangZhouMortgageSearchListAction" method="searchList">
+			<result name="searchList">/saleunit_mortgage/guangzhou/search_list.jsp</result>
+		</action>
+		
+		<action name="forInput" class="com.ihk.saleunit.action.GuangZhouMortgageInputAction" method="forInput">
+			<result name="forInput" >/saleunit_mortgage/guangzhou/input.jsp</result>
+		</action>			
+		<action name="inputMortgage" class="com.ihk.saleunit.action.GuangZhouMortgageInputAction" method="inputMortgage">
+			<interceptor-ref name="defaultStack"/>
+			<interceptor-ref name="token"/>
+			<result name="invalid.token" type="redirectAction">
+				forInput?deleteSession=token
+			</result>
+			<result name="inputMortgage" type="redirectAction">
+				forInput?deleteSession=false
+			</result>
+		</action>
+				
+		<action name="getById" class="com.ihk.saleunit.action.GuangZhouMortgageUpdateAction" method="getById">
+			<result name="getById" >/saleunit_mortgage/guangzhou/update.jsp</result>
+		</action>
+		<action name="updateMortgage" class="com.ihk.saleunit.action.GuangZhouMortgageUpdateAction" method="updateMortgage">
+			<result name="updateMortgage" >/saleunit_mortgage/guangzhou/update.jsp</result>
+		</action>	
+	</package>
+	
+	<!-- 楼盘项目,ared,楼栋的共用action -->
+	<package name="saleunit_property_guangzhou" extends="struts-default" namespace="/saleunit/property/guangzhou">
+	
+		<action name="getAreaListByPropertyId" class="com.ihk.tag.MyPropertyAction" method="getAreaListByPropertyId" />
+		<action name="getBuildListByAreaId" class="com.ihk.tag.MyPropertyAction" method="getBuildListByAreaId" />
+	</package>
+	
+</struts>
+
+
+

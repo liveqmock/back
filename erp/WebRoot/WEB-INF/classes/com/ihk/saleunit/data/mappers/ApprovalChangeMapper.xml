@@ -1,0 +1,122 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.ihk.saleunit.data.IApprovalChangeMapper">
+
+	<resultMap type="ApprovalChange" id="approvalChangeResultMap">
+		<id property="id" column="id" />        
+		<result property="applyId" column="apply_id" />
+		<result property="applyType" column="apply_type" />
+		<result property="approvalDesc" column="approval_desc" />
+		<result property="approvalMan" column="approval_man" />
+		<result property="approvalDate" column="approval_date" />
+		<result property="doMan" column="do_man" />
+		<result property="doDate" column="do_date" />
+		<result property="approvalState" column="approval_state" />
+		<result property="isDeleted" column="is_deleted" />
+		<result property="createdId" column="created_id" />
+		<result property="createdTime" column="created_time" />
+		<result property="modId" column="mod_id" />
+		<result property="modTime" column="mod_time" />
+	</resultMap>
+
+	<insert id="addApprovalChange" parameterType="ApprovalChange">
+		 <selectKey resultType="java.lang.Integer" keyProperty="id" order="AFTER" >
+            SELECT @@IDENTITY
+        </selectKey>		
+		insert into approval_change(
+		apply_id,
+		apply_type,
+		approval_desc,
+		approval_man,
+		approval_date,
+		do_man,
+		do_date,
+		approval_state,
+		is_deleted,
+		created_id,
+		created_time,
+		mod_id,
+		mod_time
+		)
+			VALUES(
+		#{applyId},
+		#{applyType},
+		#{approvalDesc},
+		#{approvalMan},
+		#{approvalDate},
+		#{doMan},
+		#{doDate},
+		#{approvalState},
+		#{isDeleted},
+		#{createdId},
+		#{createdTime},
+		#{modId},
+		#{modTime}
+			)
+		
+	</insert>
+	<delete id="deleteApprovalChange" parameterType="int">
+	update approval_change set is_deleted='1' where id=#{id};
+	</delete>
+	<update id="updateApprovalChange" parameterType="int">
+	update approval_change set 
+		apply_id=#{applyId},
+		apply_type=#{applyType},
+		approval_desc=#{approvalDesc},
+		approval_man=#{approvalMan},
+		approval_date=#{approvalDate},
+		do_man=#{doMan},
+		do_date=#{doDate},
+		approval_state=#{approvalState},
+		is_deleted=#{isDeleted},
+		created_id=#{createdId},
+		created_time=#{createdTime},
+		mod_id=#{modId},
+		mod_time=#{modTime}
+	 where id=#{id}
+	</update>
+	<select id="findApprovalChangeById" resultMap="approvalChangeResultMap">
+	select * from approval_change where id=#{id}
+	</select>
+    
+	<sql id="findWhereCond"> 
+		<where>
+        
+			<if test="applyType != null and applyType != ''">
+				and apply_type = #{applyType}
+            </if> 
+            <if test="approvalState != null and approvalState != ''">
+				and approval_state = #{approvalState}
+            </if>      
+             <if test="doMan != null and doMan != ''">
+				and do_man = #{doMan}
+            </if>  
+            and is_deleted = '0'
+          
+		</where>
+	</sql>
+	
+	<select id="findApprovalChangeCount" resultType="int" parameterType="com.ihk.saleunit.data.pojo.ApprovalChangeCond">
+		SELECT count(0) from approval_change  
+        <include refid="findWhereCond"/>     
+    </select>
+        
+	<select id="findApprovalChange" resultMap="approvalChangeResultMap" parameterType="com.ihk.saleunit.data.pojo.ApprovalChangeCond">
+		SELECT * from  approval_change 
+        <include refid="findWhereCond"/> 
+		<if test="topNum > 0">
+			limit #{topNum};
+		</if>
+    </select>
+    
+	<select id="findApprovalChangePage" resultMap="approvalChangeResultMap" parameterType="com.ihk.saleunit.data.pojo.ApprovalChangeCond">
+		SELECT * from  approval_change 
+        <include refid="findWhereCond"/> 
+    	
+		<if test="startLine >= 0">
+		<if test="pageSize > 0">
+			limit #{startLine},#{pageSize};
+		</if>
+		</if>
+	</select>
+</mapper>

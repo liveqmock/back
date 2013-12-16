@@ -1,0 +1,91 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.kn.data.IKN_KHGXGL_KH_Mapper">
+
+	<resultMap type="KN_KHGXGL_KH" id="knKhgxglKhResultMap">
+		<id property="客户id" column="客户ID" />        
+		<result property="日期" column="日期" />
+		<result property="姓名" column="姓名" />
+		<result property="电话" column="电话" />
+		<result property="住址" column="住址" />
+		<result property="性别" column="性别" />
+		<result property="备注" column="备注" />
+		<result property="认购书id" column="认购书ID" />
+		<result property="邮编" column="邮编" />
+		<result property="身份证号码" column="身份证号码" />
+		<result property="接待员" column="接待员" />
+		<result property="创建人" column="创建人" />
+		<result property="修改人" column="修改人" />
+		<result property="创建时间" column="创建时间" />
+		<result property="修改时间" column="修改时间" />
+		<result property="客户编号" column="客户编号" />
+		<result property="负责人" column="负责人" />
+		<result property="楼盘id" column="楼盘ID" />
+		<result property="移动电话" column="移动电话" />
+		<result property="省" column="省" />
+		<result property="市" column="市" />
+		<result property="县区" column="县区" />
+		<result property="省工作" column="省_工作" />
+		<result property="市工作" column="市_工作" />
+		<result property="县区工作" column="县区_工作" />
+		<result property="邮编工作" column="邮编_工作" />
+		<result property="地址工作" column="地址_工作" />
+		<result property="国籍" column="国籍" />
+		<result property="身份证地址" column="身份证地址" />
+	</resultMap>
+	<sql id="findWhereCond"> 
+		<where>
+        <!--
+			<if test="date1 != null and date1 != ''">
+            </if>    
+            and is_deleted = '0'
+            -->
+		</where>
+	</sql>
+        
+	<select id="findKnKhgxglKh" resultMap="knKhgxglKhResultMap" parameterType="com.kn.data.pojo.KN_KHGXGL_KH_Cond">
+		select t2.* 
+		from (select rownum r,t1.* from climb.客户关系管理_客户 t1 where rownum &lt;= #{limitmax}) t2
+		where t2.r>#{limitmin}
+        <include refid="findWhereCond"/> 
+    </select>
+    
+    <select id="findKnKhgxglKh_quyu" resultMap="knKhgxglKhResultMap">
+    select * from climb.客户关系管理_客户  t where 
+	t.楼盘id in
+	(
+	select 楼盘ID  from climb.楼盘初始_楼盘2 t2 where t2.上级楼盘id in(
+	select 楼盘ID from climb.楼盘初始_楼盘2 t2 where t2.上级楼盘id is null
+	)
+	)
+    </select>
+    
+    <select id="findKnKhgxglKh_by_zrr" resultType="java.util.Map" parameterType="com.kn.data.pojo.KN_KHGXGL_KH_Cond">
+		SELECT 客户ID as ii from  climb.客户关系管理_客户  where 负责人 = #{zrr}
+        <include refid="findWhereCond"/> 
+    </select>
+    
+    
+    <select id="findKN_KHGXGL_KH_byId" resultMap="knKhgxglKhResultMap" >
+		SELECT *  from  climb.客户关系管理_客户  where 客户ID = #{id}
+    </select>
+    <select id="findKN_KHGXGL_KH_forAddcom" resultMap="knKhgxglKhResultMap" >
+    select * from climb.客户关系管理_客户 t where t.地址_工作  is not null
+or t.住址 is not null
+or t.省 is not null
+or t.省_工作 is not null
+or t.市 is not null
+or t.市_工作 is not null
+or t.县区 is not null 
+or t.县区_工作 is not null 
+or t.身份证地址 is not null
+or t.备注 is not null
+    </select>
+    
+    
+    <select id="findwenjuan" resultType="java.util.Map">
+    	select tt.客户ID id,t.字段名称 kwen,tt.值 kda from climb.客户关系管理_调查项目_属性 t,climb.客户关系管理_调查项目_值 tt
+        where t.字段id = tt.字段id and tt.客户id >= 10000000 
+      order by tt.客户id
+    </select>
+</mapper>

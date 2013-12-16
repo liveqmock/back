@@ -1,0 +1,82 @@
+<!DOCTYPE html> 
+<html> 
+<head> 
+	<meta charset="utf-8"> 
+	<meta name="viewport" content="width=device-width, initial-scale=1"> 
+	<title>CRM手机版</title> 
+	<link rel="stylesheet"  href="../js/jquery.mobile-1.0b3.min.css" /> 
+	<link rel="stylesheet" href="../js/jqm-docs.css" /> 
+	<script src="../../js/jquery-1.6.2.min.js"></script> 
+	<script src="../js/jquery.mobile.themeswitcher.js"></script> 
+	<script src="../js/jqm-docs.js"></script> 
+	<script src="../js/jquery.mobile-1.0b3.min.js"></script> 
+	
+</head> 
+<body> 
+<div data-role="page" class="type-home"> 
+	<div data-role="content"> 
+		
+		
+		<div class="content-secondary"> 
+	
+			<div id="jqm-homeheader"> 
+				<h1 id="jqm-logo"><img src="../js/jquery-logo.png" alt="jQuery Mobile Framework" /></h1> 
+<!--					<p>手机CRM系统</p> 
+			<p id="jqm-version">Beta Release</p> 
+			<strong>欢迎.</strong>
+			-->
+			</div> 
+	
+	
+			<p class="intro">使用手机版，随时随地掌握客户情况。</p> 
+			
+			<ul data-role="listview" data-inset="true" data-theme="c" data-dividertheme="f"> 
+				<li data-role="list-divider">统计</li> 
+				<li><a href="list_detail.html">今日新增客户</a></li> 
+				<li><a href="list_detail.html">今日跟进客户</a></li> 
+				<li><a href="list_detail.html">今日销售情况</a></li> 
+				<li><a href="list_detail.html">一周新增客户</a></li> 
+				<li><a href="list_detail.html">一周跟进客户</a></li> 
+				<li><a href="list_detail.html">一周销售情况</a></li> 
+			</ul> 
+			
+		</div><!--/content-primary-->	
+		
+		<!--
+		<div class="content-primary"> 
+			<nav> 
+				
+		
+				<ul data-role="listview" data-inset="true" data-theme="c" data-dividertheme="b"> 
+					<li data-role="list-divider">Components</li> 
+					<li><a href="docs/pages/index.html">Pages &amp; dialogs</a></li> 
+					<li><a href="docs/toolbars/index.html">Toolbars</a></li> 
+					<li><a href="docs/buttons/index.html">Buttons</a></li> 
+					<li><a href="docs/content/index.html">Content formatting</a></li> 
+					<li><a href="docs/forms/index.html">Form elements</a></li> 
+					<li><a href="docs/lists/index.html">List views</a></li> 
+					
+					<li data-role="list-divider">API</li> 
+					<li><a href="docs/api/globalconfig.html">Configuring defaults</a></li> 
+					<li><a href="docs/api/events.html">Events</a></li> 
+					<li><a href="docs/api/methods.html">Methods &amp; Utilities</a></li> 
+					<li><a href="docs/api/mediahelpers.html">Responsive Layout</a></li> 
+					<li><a href="docs/api/themes.html">Theme framework</a></li> 
+		
+				
+				</ul> 
+			</nav> 
+		</div> 
+		
+ 		-->
+		
+ 
+	</div> 
+	
+	<div data-role="footer" class="footer-docs" data-theme="c"> 
+			<p>&copy; 2011 ihk.cn</p> 
+	</div>	
+	
+</div> 
+</body> 
+</html> 

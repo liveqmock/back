@@ -1,0 +1,269 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE struts PUBLIC
+    "-//Apache Software Foundation//DTD Struts Configuration 2.0//EN"
+    "http://struts.apache.org/dtds/struts-2.0.dtd">
+<struts>
+	
+	<package name="sale_hengda" extends="struts-default">
+		<default-action-ref name="actionNotFound"/>
+		<action name="sale_hengda!*" class="com.ihk.sale.action.SaleAction" >
+			<result name="forAddSale">/hengda/sale/input.jsp</result>
+			<result name="forAddSale_admin">/hengda/sale/input_admin.jsp</result>
+			<result name="addSale">/hengda/sale/input.jsp</result>
+			<result name="addSaleAdmin">/hengda/sale/input_admin.jsp</result>
+			<result name="querySaleLimit">/hengda/sale/index.jsp</result>
+			<result name="querySaleMonitorByIdForUpdate">/hengda/sale/update.jsp</result>
+			<result name="forSearchSale">/hengda/sale/index_all.jsp</result>
+			<result name="forSearchSaleWeek">/hengda/sale/index_week.jsp</result>
+			<result name="forSearchSaleMonth">/hengda/sale/index_month.jsp</result>
+			<result name="forSearchSaleAll">/hengda/sale/index_all_only.jsp</result>
+			<result name="deleteSale" type="redirectAction">./sale_hengda!searchSale.action</result>
+			<!-- 
+			<result name="input" type="redirect">/login.jsp</result>
+			<exception-mapping result="input" exception="java.lang.NullPointerException"/>
+			 -->
+		</action>
+		<action name="actionNotFound">
+			<!-- 避免地址栏叠加 -->
+			<result type="redirect">/login.jsp</result>
+		</action>
+		
+	</package>
+	
+	<!-- 查询模块  具体的action要分全国，区域，周，月，总等 --> 
+	<package name="sale_hengda_search" extends="struts-default" namespace="/sale_hengda/search">
+	
+		<action name="all" class="com.ihk.sale.action.SearchAllAction" method="searchAll">
+			<result name="searchAll">/hengda/sale/search_all.jsp</result>
+		</action>
+		
+		<action name="sale" class="com.ihk.sale.action.SearchSaleAction" method="searchSale">
+			<result name="searchSale">/hengda/sale/search_sale.jsp</result>
+		</action>
+		<action name="downLoadSale" class="com.ihk.sale.action.SearchSaleAction" method="downLoadSale"/>
+		
+		<action name="inCount" class="com.ihk.sale.action.SearchInCountAction" method="searchInCount">
+			<result name="searchInCount">/hengda/sale/search_incount.jsp</result>
+		</action>
+		<action name="inCountForm" class="com.ihk.sale.action.SearchInCountAction" method="searchInCountForm">
+			<result name="searchInCountForm">/hengda/sale/search_incount.jsp</result>
+		</action>
+		
+		<action name="week" class="com.ihk.sale.action.SearchWeekAction" method="searchWeek">
+			<result name="searchWeek">/hengda/sale/search_week.jsp</result>
+		</action>
+		<action name="downLoadWeek" class="com.ihk.sale.action.SearchWeekAction" method="downLoadWeek"/>
+		
+		<action name="month" class="com.ihk.sale.action.SearchMonthAction" method="searchMonth">
+			<result name="searchMonth">/hengda/sale/search_month.jsp</result>
+		</action>
+		<action name="downLoadMonth" class="com.ihk.sale.action.SearchMonthAction" method="downLoadMonth"/>
+			
+		<action name="time" class="com.ihk.sale.action.SearchTimeAction" method="searchTime">
+			<result name="searchTime">/hengda/sale/search_time.jsp</result>
+		</action>
+		<action name="downLoadTime" class="com.ihk.sale.action.SearchTimeAction" method="downLoadTime"/>
+		
+		<action name="compro" class="com.ihk.sale.action.CompanyProjectAction" method="getProjectByCompanyId"/>
+		
+	</package>
+	
+	<!-- 客户模块 -->
+	<package name="sale_hengda_customer" extends="struts-default" namespace="/sale_hengda/customer">
+		<action name="forCustomerInput" class="com.ihk.sale.action.CustomerInputAction" method="forCustomerInput">
+			<result name="customerInput">/hengda/sale/customer_input.jsp</result>
+		</action>
+	
+		<action name="input" class="com.ihk.sale.action.CustomerInputAction" method="customerInput">
+			<result name="customerInput">/hengda/sale/customer_input.jsp</result>
+		</action>
+		
+		<!-- 更新 -->
+		<action name="queryCustomerById" class="com.ihk.sale.action.CustomerUpdateAction" method="queryCustomerById">
+			<result name="queryCustomerById">/hengda/sale/customer_update.jsp</result>
+		</action>
+		<action name="update" class="com.ihk.sale.action.CustomerUpdateAction" method="customerUpdate">
+			<result name="customerUpdate" type="redirectAction">
+				<!-- 减少 session -->
+				./sale_hengda/customer/queryCustomerById.action?id=${customer.id}
+			</result>
+		</action>
+		
+
+		<!-- 跟进 -->		
+		<action name="getSomeForAddFollow" class="com.ihk.sale.action.CustomerUpdateAction" method="getSomeForAddFollow"/>
+		<action name="addFollow" class="com.ihk.sale.action.CustomerUpdateAction" method="addFollow">
+			<result name="addFollow" type="redirectAction">./sale_hengda/customer/queryCustomerById.action</result>
+		</action>
+		
+		<action name="index" class="com.ihk.sale.action.CustomerIndexAction" method="customerIndex">
+			<result name="customerIndex">/hengda/sale/customer_index.jsp</result>
+		</action>
+		
+		<action name="all" class="com.ihk.sale.action.CustomerAllAction" method="customerAll">
+			<result name="customerAll">/hengda/sale/customer_all.jsp</result>
+		</action>
+		
+		
+	</package>
+	
+	<!-- 新增 -->
+	<package name="sale_hengda_input" extends="struts-default" namespace="/sale_hengda/input">
+		<action name="for_sale" class="com.ihk.sale.action.InputSaleAction" method="inputForSale">
+			<result name="forInput">/hengda/sale/input_for_sale.jsp</result>
+			<result name="forinputadmin">/hengda/sale/input_for_sale_admin.jsp</result>
+		</action>
+		<action name="sale" class="com.ihk.sale.action.InputSaleAction" method="inputSale">
+			<result name="input">/hengda/sale/input_for_sale.jsp</result>
+			<result name="input_admin">/hengda/sale/input_for_sale_admin.jsp</result>
+		</action>
+		<action name="saleForAdmin" class="com.ihk.sale.action.InputSaleAction" method="inputSaleForAdmin">
+			<result name="input_admin">/hengda/sale/input_for_sale_admin.jsp</result>
+		</action>
+	</package>
+	
+	
+	
+		
+	<!--曲线-->
+	<package name="sale_hengda_chart" extends="struts-default" namespace="/sale_hengda/chart">
+		<action name="all_project" class="com.ihk.sale.action.ChartAllProjectAction" method="getAllProjectMoney">
+			<result name="getAll" >/hengda/sale/chart_all_project.jsp</result>
+		</action>
+		<action name="one_project" class="com.ihk.sale.action.ChartOneProjectAction" method="getOneProjectChart">
+			<result name="getOne" >/hengda/sale/chart_one_project.jsp</result>
+		</action>
+		<action name="project" class="com.ihk.sale.action.ChartProjectAction">
+			<result name="day" >/hengda/sale/chart_project.jsp</result>
+			<result name="week" >/hengda/sale/chart_project.jsp</result>
+			<result name="month" >/hengda/sale/chart_project.jsp</result>
+			<result name="year" >/hengda/sale/chart_project.jsp</result>
+			<result name="dayx" >/hengda/sale/chart_company.jsp</result>
+		</action>
+		<action name="company" class="com.ihk.sale.action.ChartCompanyAction">
+			<result name="day" >/hengda/sale/chart_company.jsp</result>
+			<result name="week" >/hengda/sale/chart_company.jsp</result>
+			<result name="month" >/hengda/sale/chart_company.jsp</result>
+			<result name="year" >/hengda/sale/chart_company.jsp</result>
+		</action>
+		<action name="country" class="com.ihk.sale.action.ChartCountryAction" >
+			<result name="day" >/hengda/sale/chart_country.jsp</result>
+			<result name="week" >/hengda/sale/chart_country.jsp</result>
+			<result name="month" >/hengda/sale/chart_country.jsp</result>
+			<result name="year" >/hengda/sale/chart_country.jsp</result>
+		</action>
+		<action name="customerNum" class="com.ihk.sale.action.ChartCustomerNumAction">
+			<result name="success" >/hengda/sale/chart_customer_num.jsp</result>
+		</action>
+		<action name="customerPie" class="com.ihk.sale.action.ChartCustomerPieAction">
+			<result name="success" >/hengda/sale/chart_customer_pie.jsp</result>
+		</action>
+		
+		<action name="customerTable" class="com.ihk.sale.action.ChartTableAnalysisAction">
+			<result name="success">/hengda/sale/chart_customer_table.jsp</result>
+		</action>
+		<action name="categoryNum" class="com.ihk.sale.action.ChartCategoryNumAction">
+			<result name="success" >/hengda/sale/chart_category_num.jsp</result>
+		</action>
+		
+	</package>
+	<!-- index_sale -->
+	<package name="sale_hengda_index" extends="struts-default" namespace="/sale_hengda/index">
+		<action name="setpwd" class="com.ihk.sale.action.IndexSaleAction" method="firstLogin">
+			<result name="indexForSale">/hengda/userAccount/setpwd.jsp</result>
+		</action>	
+		<action name="for_sale" class="com.ihk.sale.action.IndexSaleAction" method="indexForSale">
+			<result name="indexForSale">/hengda/sale/index_for_sale.jsp</result>
+		</action>	
+	</package>
+	<!-- update_sale -->
+	<package name="sale_hengda_update" extends="struts-default" namespace="/sale_hengda/update">
+		<action name="for_sale" class="com.ihk.sale.action.UpdateSaleAction" method="updateForSale">
+			<result name="updateForSaleJsp">/hengda/sale/update_for_sale.jsp</result>
+			<result name="noAdminUpdateForSaleJsp">/hengda/sale/update_for_sale_noadmin.jsp</result>
+			<result name="adminUpdateForSaleJsp">/hengda/sale/update_for_sale_admin.jsp</result>
+		</action>
+		<action name="for_submit" class="com.ihk.sale.action.UpdateSaleAction" method="updateForSaleSubmit">
+			<result name="updateForSale">/hengda/sale/update_for_sale.jsp</result>
+			<result name="noAdminUpdateForSaleJsp">/hengda/sale/update_for_sale_noadmin.jsp</result>
+			<result name="adminUpdateForSaleJsp">/hengda/sale/update_for_sale_admin.jsp</result>
+		</action>
+	</package>
+	<!-- article_show -->
+	<package name="sale_hengda_article" extends="struts-default" namespace="/sale_hengda/article">
+		<action name="show" class="com.ihk.sale.action.ArticleShowAction" method="articleIndex">
+			<result name="show">/hengda/sale/show_article.jsp</result>
+		</action>
+	</package>
+	<!-- set_role_byus -->
+	<package name="sale_hengda_role" extends="struts-default" namespace="/sale_hengda/role">
+		<action name="index" class="com.ihk.sale.action.SetUserRoleByUserAction" method="search">
+			<result name="setrole">/hengda/sale/set_userRole_byUser.jsp</result>
+		</action>
+		<action name="search" class="com.ihk.sale.action.SetUserRoleByUserAction" method="search">
+			<result name="setrole">/hengda/sale/set_userRole_byUser.jsp</result>
+		</action>
+		<action name="add" class="com.ihk.sale.action.SetUserRoleByUserAction" method="addRole">
+			<result name="setrole">/hengda/sale/set_userRole_byUser.jsp</result>
+		</action>
+		<action name="del" class="com.ihk.sale.action.SetUserRoleByUserAction" method="delRole">
+			<result name="setrole">/hengda/sale/set_userRole_byUser.jsp</result>
+		</action>
+	</package>
+	<!-- set_role_by_project-->
+	<package name="sale_hengda_role_project" extends="struts-default" namespace="/sale_hengda/role_project">
+		<action name="index" class="com.ihk.sale.action.SetUserRoleByProjectAction" method="index">
+			<result name="setrole">/hengda/sale/set_userRole_byProject.jsp</result>
+		</action>
+		<action name="search" class="com.ihk.sale.action.SetUserRoleByProjectAction" method="searchRole">
+			<result name="setrole">/hengda/sale/set_userRole_byProject.jsp</result>
+		</action>
+		<action name="add" class="com.ihk.sale.action.SetUserRoleByProjectAction" method="addUser">
+			<result name="setrole">/hengda/sale/set_userRole_byProject.jsp</result>
+		</action>
+		<action name="del" class="com.ihk.sale.action.SetUserRoleByProjectAction" method="delUser">
+			<result name="setrole">/hengda/sale/set_userRole_byProject.jsp</result>
+		</action>
+	</package>
+	<!-- hengda _ userAccount -->
+	<package name="sale_hengda_userAccount" extends="struts-default" namespace="/sale_hengda/userAccount">
+		<action name="input" class="com.ihk.sale.action.InputUserAccount" method="indexInput">
+			<result name="input">/hengda/userAccount/input_userAccount.jsp</result>
+		</action>
+		<action name="inputform" class="com.ihk.sale.action.InputUserAccount" method="inputUserAccount">
+			<result name="input">/hengda/userAccount/input_userAccount.jsp</result>
+		</action>
+		<action name="update" class="com.ihk.sale.action.UpdateUserAccount" method="indexUpdate">
+			<result name="update">/hengda/userAccount/update_userAccount.jsp</result>
+		</action>
+		<action name="updateform" class="com.ihk.sale.action.UpdateUserAccount" method="updateUser">
+			<result name="update">/hengda/userAccount/update_userAccount.jsp</result>
+		</action>
+		<action name="search" class="com.ihk.sale.action.SearchUserAccount" method="searchUserIndex">
+			<result name="search">/hengda/userAccount/search_userAccount.jsp</result>
+		</action>
+		<action name="searchform" class="com.ihk.sale.action.SearchUserAccount" method="searchUserForm">
+			<result name="search">/hengda/userAccount/search_userAccount.jsp</result>
+		</action>
+		<action name="delete" class="com.ihk.sale.action.SearchUserAccount" method="delUserAccount">
+			<result name="search">/hengda/userAccount/search_userAccount.jsp</result>
+		</action>
+	</package>
+	<!-- set _ project  hengda-->
+	<package name="sale_hengda_project" extends="struts-default" namespace="/sale_hengda/project">
+		<action name="search" class="com.ihk.sale.action.ProjectSearchAction" method="searchProject">
+			<result name="search">/hengda/sale/project_search.jsp</result>
+		</action>
+		<action name="searchform" class="com.ihk.sale.action.ProjectSearchAction" method="searchProjectForm">
+			<result name="search">/hengda/sale/project_search.jsp</result>
+		</action>
+		<action name="update" class="com.ihk.sale.action.ProjectSearchAction" method="updateProject">
+			<result name="update">/hengda/sale/project_update.jsp</result>
+			<result name="search">/hengda/sale/project_search.jsp</result>
+		</action>
+		<action name="updateform" class="com.ihk.sale.action.ProjectSearchAction" method="updateProjectForm">
+			<result name="update">/hengda/sale/project_update.jsp</result>
+			<result name="search">/hengda/sale/project_search.jsp</result>
+		</action>
+	</package>
+</struts>

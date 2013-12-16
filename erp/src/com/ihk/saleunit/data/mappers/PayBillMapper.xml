@@ -1,0 +1,131 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.ihk.saleunit.data.IPayBillMapper">
+
+	<resultMap type="PayBill" id="payBillResultMap">
+		<id property="id" column="id" />        
+		<result property="confirmType" column="confirm_type" />
+		<result property="mainId" column="main_id" />
+		<result property="startSaleDate" column="start_sale_date" />
+		<result property="billType" column="bill_type" />
+		<result property="paperType" column="paper_type" />
+		<result property="billNo" column="bill_no" />
+		<result property="payMoney" column="pay_money" />
+		<result property="payMan" column="pay_man" />
+		<result property="writerId" column="writer_id" />
+		<result property="approvalDate" column="approval_date" />
+		<result property="state" column="state" />
+		<result property="remark" column="remark" />
+		<result property="isDeleted" column="is_deleted" />
+		<result property="createdId" column="created_id" />
+		<result property="createdTime" column="created_time" />
+		<result property="modId" column="mod_id" />
+		<result property="modTime" column="mod_time" />
+	</resultMap>
+
+	<insert id="addPayBill" parameterType="PayBill">
+		 <selectKey resultType="java.lang.Integer" keyProperty="id" order="AFTER" >
+            SELECT @@IDENTITY
+        </selectKey>		
+		insert into pay_bill(
+		confirm_type,
+		main_id,
+		start_sale_date,
+		bill_type,
+		paper_type,
+		bill_no,
+		pay_money,
+		pay_man,
+		writer_id,
+		approval_date,
+		state,
+		remark,
+		is_deleted,
+		created_id,
+		created_time,
+		mod_id,
+		mod_time
+		)
+			VALUES(
+		#{confirmType},
+		#{mainId},
+		#{startSaleDate},
+		#{billType},
+		#{paperType},
+		#{billNo},
+		#{payMoney},
+		#{payMan},
+		#{writerId},
+		#{approvalDate},
+		#{state},
+		#{remark},
+		#{isDeleted},
+		#{createdId},
+		#{createdTime},
+		#{modId},
+		#{modTime}
+			)
+		
+	</insert>
+	<delete id="deletePayBill" parameterType="int">
+	update pay_bill set is_deleted='1' where id=#{id};
+	</delete>
+	<update id="updatePayBill" parameterType="int">
+	update pay_bill set 
+		confirm_type=#{confirmType},
+		main_id=#{mainId},
+		start_sale_date=#{startSaleDate},
+		bill_type=#{billType},
+		paper_type=#{paperType},
+		bill_no=#{billNo},
+		pay_money=#{payMoney},
+		pay_man=#{payMan},
+		writer_id=#{writerId},
+		approval_date=#{approvalDate},
+		state=#{state},
+		remark=#{remark},
+		is_deleted=#{isDeleted},
+		created_id=#{createdId},
+		created_time=#{createdTime},
+		mod_id=#{modId},
+		mod_time=#{modTime}
+	 where id=#{id}
+	</update>
+	<select id="findPayBillById" resultMap="payBillResultMap">
+	select * from pay_bill where id=#{id}
+	</select>
+    
+	<sql id="findWhereCond"> 
+		<where>
+        <!--
+			<if test="date1 != null and date1 != ''">
+            </if>    
+            and is_deleted = '0'
+            -->
+		</where>
+	</sql>
+	
+	<select id="findPayBillCount" resultType="int" parameterType="com.ihk.saleunit.data.pojo.PayBillCond">
+		SELECT count(0) from pay_bill  
+        <include refid="findWhereCond"/>     
+    </select>
+        
+	<select id="findPayBill" resultMap="payBillResultMap" parameterType="com.ihk.saleunit.data.pojo.PayBillCond">
+		SELECT * from  pay_bill 
+        <include refid="findWhereCond"/> 
+		<if test="topNum > 0">
+			limit #{topNum};
+		</if>
+    </select>
+    
+	<select id="findPayBillPage" resultMap="payBillResultMap" parameterType="com.ihk.saleunit.data.pojo.PayBillCond">
+		SELECT * from  pay_bill 
+        <include refid="findWhereCond"/> 
+    
+		<if test="startLine >= 0">
+		<if test="pageSize > 0">
+			limit #{startLine},#{pageSize};
+		</if>
+		</if>
+	</select>
+</mapper>

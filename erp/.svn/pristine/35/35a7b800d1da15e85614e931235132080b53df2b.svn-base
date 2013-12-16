@@ -1,0 +1,119 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.ihk.property.data.IPropertyGroupMapper">
+
+	<resultMap type="PropertyGroup" id="propertyGroupResultMap">
+		<id property="id" column="id" />        
+		<result property="projectId" column="project_id" />
+		<result property="areaId" column="area_id" />
+		<result property="groupName" column="group_name" />
+		<result property="chipType" column="chip_type"/>
+		<result property="remark" column="remark" />
+		<result property="orderIndex" column="order_index" />
+		<result property="isDeleted" column="is_deleted" />
+		<result property="createdId" column="created_id" />
+		<result property="createdTime" column="created_time" />
+		<result property="modId" column="mod_id" />
+		<result property="modTime" column="mod_time" />
+		<result property="companyProject" column="company_project" />
+		
+	</resultMap>
+
+	<insert id="addPropertyGroup" parameterType="PropertyGroup">
+		 <selectKey resultType="java.lang.Integer" keyProperty="id" order="AFTER" >
+            SELECT @@IDENTITY
+        </selectKey>		
+		insert into property_group(
+		project_id,
+		area_id,
+		group_name,
+		chip_type,
+		remark,
+		order_index,
+		is_deleted,
+		created_id,
+		created_time,
+		mod_id,
+		mod_time,
+		company_project
+		)
+			VALUES(
+		#{projectId},
+		#{areaId},
+		#{groupName},
+		#{chipType},
+		#{remark},
+		#{orderIndex},
+		#{isDeleted},
+		#{createdId},
+		#{createdTime},
+		#{modId},
+		#{modTime},
+		#{companyProject}
+			)
+		
+	</insert>
+	<delete id="deletePropertyGroup" parameterType="int">
+	update property_group set is_deleted='1' where id=#{id};
+	</delete>
+	<update id="updatePropertyGroup" parameterType="int">
+	update property_group set 
+		project_id=#{projectId},
+		area_id=#{areaId},
+		group_name=#{groupName},
+		chip_type=#{chipType},
+		remark=#{remark},
+		order_index=#{orderIndex},
+		mod_id=#{modId},
+		mod_time=#{modTime},
+		company_project = #{companyProject}
+		
+	 where id=#{id}
+	</update>
+	<select id="findPropertyGroupById" resultMap="propertyGroupResultMap">
+	select * from property_group where id=#{id} and is_deleted = '0'
+	</select>
+    
+	<sql id="findWhereCond"> 
+		<where>
+       
+			<if test="groupName != null and groupName != ''">
+				and group_name like concat(concat('%', #{groupName, jdbcType=VARCHAR}), '%')  
+            </if>    
+           
+        	 <if test="companyProject != 0">
+				and company_project = #{companyProject}
+            </if>    
+             and is_deleted = '0'
+		</where>
+	</sql>
+	
+	<select id="findPropertyGroupCount" resultType="int" parameterType="com.ihk.property.data.pojo.PropertyGroupCond">
+		SELECT count(0) from property_group  
+        <include refid="findWhereCond"/>     
+    </select>
+        
+	<select id="findPropertyGroup" resultMap="propertyGroupResultMap" parameterType="com.ihk.property.data.pojo.PropertyGroupCond">
+		SELECT * from  property_group 
+        <include refid="findWhereCond"/> 
+		<if test="topNum > 0">
+			limit #{topNum};
+		</if>
+    </select>
+    
+	<select id="findPropertyGroupPage" resultMap="propertyGroupResultMap" parameterType="com.ihk.property.data.pojo.PropertyGroupCond">
+		SELECT * from  property_group 
+        <include refid="findWhereCond"/> 
+    
+		<if test="startLine >= 0">
+		<if test="pageSize > 0">
+			limit #{startLine},#{pageSize};
+		</if>
+		</if>
+	</select>
+	
+	<select id="findPropertyGroupByProjectId" resultMap="propertyGroupResultMap">
+		select * from property_group where project_id = #{projectId} and is_deleted = '0'
+	</select>
+	
+</mapper>

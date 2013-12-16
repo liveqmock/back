@@ -1,0 +1,26 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE struts PUBLIC
+    "-//Apache Software Foundation//DTD Struts Configuration 2.0//EN"
+    "http://struts.apache.org/dtds/struts-2.0.dtd">
+<struts>
+	<package name="user" extends="struts-default">
+	<!-- 用户登录之后的跳转  用来区分去向   现在主要是guangzhou hengda  各自去到广州erp 和恒大crm -->
+		<action name="loginUserAccount" class="com.ihk.user.action.UserAccountAction"
+			method="loginUserAccount">
+			<result name="success" type="redirectAction">${actionFront}!searchCustomer.action</result>
+			<result name="guangzhou" type="redirectAction">customer_guangzhou/index/login_easyui.action</result>
+			<result name="hengda" type="redirectAction">sale_hengda/index/for_sale.action</result>
+			<result name="guangzhoufirstlogin" type="redirectAction">customer_guangzhou/first/setpwd.action</result>
+			<result name="hengdafirstlogin" type="redirectAction">sale_hengda/index/setpwd.action</result>
+			<result name="tree" type="redirectAction">function_tree!tree_list.action</result>
+			<result name="priv" type="redirectAction">user_role_priv!rolePriv_index.action</result>
+			
+			<result name="article" type="redirectAction">article/input/for_article.action</result>
+			<result name="error" type="redirect">/login.jsp</result>
+			<result name="permission" type="redirectAction">userrole!queryRoles.action</result>
+
+		</action>
+		
+	</package>
+	
+</struts>

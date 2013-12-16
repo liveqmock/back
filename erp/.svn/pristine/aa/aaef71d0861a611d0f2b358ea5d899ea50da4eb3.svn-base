@@ -1,0 +1,110 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE struts PUBLIC
+    "-//Apache Software Foundation//DTD Struts Configuration 2.0//EN"
+    "http://struts.apache.org/dtds/struts-2.0.dtd">
+<struts>
+	<package name="saleunit_new_guangzhou_questions" extends="struts-default" namespace="/saleunit_new_questions/appoint/guangzhou">
+		<action name="layout" class="com.ihk.saleunit.action.new_.GuangZhouAppointNewLeftAction" method="layout">
+			<result name="layout">/saleunit_new_questions/guangzhou/layout.jsp</result>
+		</action>
+		
+		<!-- 房间信息 
+		<action name="unitInfo" class="com.ihk.saleunit.action.new_.GuangZhouAppointNewUnitInfoAction" method="unitInfo">
+			<result name="unit_info">/saleunit_new/guangzhou/unit_info.jsp</result>
+		</action>-->
+		
+		<!-- 左边项目,楼栋,分区导航条 -->
+		<action name="layoutLeft" class="com.ihk.saleunit.action.new_.GuangZhouAppointNewLeftAction" method="layoutLeft"/>
+		
+		<!-- 拿到调查表 -->
+		<action name="selectQuestion" class="com.ihk.saleunit.action.new_questions.QuestionAction" method="selectQuestion">
+			<result name="suc">/saleunit_new_questions/guangzhou/question_table.jsp</result>
+		</action>
+		
+		<!--弹出新建 squestion -->
+		<action name="questionDialog" class="com.ihk.saleunit.action.new_questions.QuestionAction" method="newQuestion">
+			<result name="suc">/saleunit_new_questions/guangzhou/question_dialog.jsp</result>
+		</action>
+		<action name="questionDialogForm" class="com.ihk.saleunit.action.new_questions.QuestionAction" method="newQuestionForm">
+			<result name="suc">/saleunit_new_questions/guangzhou/question_dialog.jsp</result>
+		</action>
+		
+		<action name="questionTocTable" class="com.ihk.saleunit.action.new_questions.QuestionAction" method="selectQuestionTopic">
+			<result name="suc">/saleunit_new_questions/guangzhou/question_toc_table.jsp</result>
+		</action>
+		
+		<!-- 新建问题 -->
+		<action name="questionTocAdd" class="com.ihk.saleunit.action.new_questions.QuestionAction" method="questionTocAdd">
+			<result name="suc">/saleunit_new_questions/guangzhou/question_toc_dialog.jsp</result>
+		</action>
+		<action name="questionTocAddForm" class="com.ihk.saleunit.action.new_questions.QuestionAction" method="questionTocAddForm">
+			<result name="suc">/saleunit_new_questions/guangzhou/question_toc_dialog.jsp</result>
+		</action>
+		
+		<!-- 修改问题 -->
+		<action name="questionTocMod" class="com.ihk.saleunit.action.new_questions.QuestionAction" method="questionTocMod">
+			<result name="suc">/saleunit_new_questions/guangzhou/question_toc_dialog_mod.jsp</result>
+		</action>
+		<action name="questionTocModForm" class="com.ihk.saleunit.action.new_questions.QuestionAction" method="questionTocModForm">
+			<result name="suc">/saleunit_new_questions/guangzhou/question_toc_dialog_mod.jsp</result>
+		</action>
+		
+		<!-- 题目排序 -->
+		<action name="customerTopicOrder" class="com.ihk.saleunit.action.new_questions.QuestionAction" method="customerTopicOrder">
+			<result name="suc">/saleunit_new_questions/guangzhou/question_topic_order.jsp</result>
+		</action>
+		<action name="customerTopicOrderForm" class="com.ihk.saleunit.action.new_questions.QuestionAction" method="customerTopicOrderForm">
+			<result name="suc">/saleunit_new_questions/guangzhou/question_topic_order.jsp</result>
+		</action>
+		
+		
+		<!-- 在销售页面使用调查 -->
+		<action name="doQuestionTable" class="com.ihk.saleunit.action.new_questions.NewQuestionAnswerAction" method="showAnwser">
+			<result name="suc">/saleunit_new/guangzhou/quetion_table.jsp</result>
+		</action>
+		
+		<action name="doQuestionAnswerDialog" class="com.ihk.saleunit.action.new_questions.NewQuestionAnswerAction" method="answerDialog">
+			<result name="suc">/saleunit_new_questions/guangzhou/question_anwser_add_dialog.jsp</result>
+		</action>
+		
+		<action name="selectQuestionOption" class="com.ihk.saleunit.action.new_questions.NewQuestionAnswerAction" method="anserDialogSelectChange">
+			<result name="suc">/saleunit_new_questions/guangzhou/question_toc_html.jsp</result>
+			<result name="defaultQuestion">/saleunit_new_questions/guangzhou/default_question_toc_html.jsp</result>
+		</action>
+		
+		<action name="questionAnswerForm" class="com.ihk.saleunit.action.new_questions.NewQuestionAnswerAction" method="dialogForm">
+			<result name="suc">/saleunit_new_questions/guangzhou/question_anwser_add_dialog.jsp</result>
+		</action>
+		
+		<!-- 修改答卷 -->
+		<action name="updateAnswerDialog" class="com.ihk.saleunit.action.new_questions.NewQuestionAnswerAction" method="updateAndShowDialog">
+			<result name="suc">/saleunit_new_questions/guangzhou/update_answer_dialog.jsp</result>
+			<result name="defaultQuestion">/saleunit_new_questions/guangzhou/update_default_question_dialog.jsp</result>
+		</action>
+		<action name="updateForm" class="com.ihk.saleunit.action.new_questions.NewQuestionAnswerAction" method="updateForm">
+			<result name="suc">/saleunit_new_questions/guangzhou/update_answer_dialog.jsp</result>
+		</action>
+		<action name="updateDeForm" class="com.ihk.saleunit.action.new_questions.NewQuestionAnswerAction" method="updateDeForm">
+			<result name="suc">/saleunit_new_questions/guangzhou/update_default_question_dialog.jsp</result>
+		</action>
+		
+		<!-- 删除答卷 -->
+		<action name="delAnser" class="com.ihk.saleunit.action.new_questions.NewQuestionAnswerAction" method="delAnser"/>
+		
+		<!-- 复制问卷 -->
+		<action name="copyDialog" class="com.ihk.saleunit.action.new_questions.QuestionCopyAction" method="copyDialog">
+			<result name="suc">/saleunit_new_questions/guangzhou/dialog_copy_question.jsp</result>
+		</action>
+		<action name="getArea" class="com.ihk.saleunit.action.new_questions.QuestionCopyAction" method="getArea" />
+		
+		<action name="getBuild" class="com.ihk.saleunit.action.new_questions.QuestionCopyAction" method="getBuild" />
+		
+		<action name="copyForm" class="com.ihk.saleunit.action.new_questions.QuestionCopyAction" method="copyForm">
+			<result name="suc">/saleunit_new_questions/guangzhou/dialog_copy_question.jsp</result>
+		</action>
+		
+	</package>
+</struts>
+
+
+

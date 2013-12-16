@@ -1,0 +1,78 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title></title>
+    <style type="text/css">
+            p.l-log-content
+            {
+                margin: 0;
+                padding: 0;
+                padding-left: 20px;
+                line-height: 22px;
+                font-size: 12px;
+            }
+            span.l-log-content-tag
+            {
+                color: #008000;
+                margin-right: 2px;
+                font-weight: bold;
+            }
+
+            h3.l-title
+            {
+                margin: 4px;
+                padding: 0;
+                font-size: 15px;
+                font-weight: bold;
+            }
+
+    </style>
+
+</head>
+<body style="background: white; font-size: 12px;">
+
+    <h3>财务专业术语的定义：</h3>
+    <h3 class="l-title">1.应收金额</h3>
+    <p class="l-log-content">
+        <span class="l-log-content-tag">[系统应收金额]</span><br/>
+        指根据录入系统楼盘代理合同里面的佣金计算规则，系统自动计算应收佣金点数，并根据公式计算出金额。 <br/>
+        单元成交金额指已签合同单元金额。<br/>
+        佣金计算公式：单元成交金额 × 应收佣金点数
+
+        <br/>
+
+        <span class="l-log-content-tag">[实际应收金额]</span><br/>
+        指开发商已确认的佣金金额，结佣管理已经确认的应收款。
+    </p>
+
+    <h3 class="l-title">2.实收金额</h3>
+    <p class="l-log-content">
+    <span class="l-log-content-tag"></span>
+        指开发商已确认的，并已经在结佣管理录入的实收款。
+    </p>
+
+    <h3 class="l-title">3.一二手联动佣金金额</h3>
+    <p class="l-log-content">
+        <span class="l-log-content-tag">[系统应收一二手联动佣金金额]</span>  <br/>
+        指根据一二手联动代理合同的规定，系统自动计算应收佣金点数，并根据公式计算出金额。<br/>
+        单元成交金额指已签合同单元金额。<br/>
+        一二手联动佣金计算公式：单元成交金额 × 一二手联动佣金点数 <br/>
+
+        <span class="l-log-content-tag">[实际应收一二手联动佣金金额]</span><br/>
+        指开发商已确认的一二手联动佣金金额，结佣管理已经确认的应收款。
+    </p>
+
+    <h3 class="l-title">4.关系户佣金金额</h3>
+    <p class="l-log-content">
+        <span class="l-log-content-tag">[系统应收关系户佣金金额]</span><br/>
+        指根据关系户代理合同的规定，系统自动计算应收佣金点数，并根据公式计算出金额。<br/>
+        单元成交金额指已签合同单元金额。<br/>
+        关系户佣金计算公式：单元成交金额 × 关系户佣金点数  或 直接获取合同指定的金额<br/>
+
+        <span class="l-log-content-tag">[实际应收关系户佣金金额]</span><br/>
+        指开发商已确认的关系户佣金金额，结佣管理已经确认的应收款。
+    </p>
+
+
+</body>
+</html>

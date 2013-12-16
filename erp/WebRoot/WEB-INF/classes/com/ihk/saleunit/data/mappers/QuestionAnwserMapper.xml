@@ -1,0 +1,110 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.ihk.saleunit.data.IQuestionAnwserMapper">
+
+	<resultMap type="QuestionAnwser" id="questionAnwserResultMap">
+		<id property="id" column="id" />        
+		<result property="questionId" column="question_id" />
+		<result property="unitId" column="unit_id" />
+		<result property="preCustomerId" column="pre_customer_id" />
+		<result property="customerId" column="customer_id" />
+		<result property="remark" column="remark" />
+		<result property="isDeleted" column="is_deleted" />
+		<result property="createdId" column="created_id" />
+		<result property="createdTime" column="created_time" />
+		<result property="modId" column="mod_id" />
+		<result property="modTime" column="mod_time" />
+		<result property="customerName" column="customer_name" />
+		
+	</resultMap>
+
+	<insert id="addQuestionAnwser" parameterType="QuestionAnwser">
+		 <selectKey resultType="java.lang.Integer" keyProperty="id" order="AFTER" >
+            SELECT @@IDENTITY
+        </selectKey>		
+		insert into question_anwser(
+		question_id,
+		unit_id,
+		pre_customer_id,
+		customer_id,
+		remark,
+		is_deleted,
+		created_id,
+		created_time,
+		mod_id,
+		mod_time,
+		customer_name
+		)
+			VALUES(
+		#{questionId},
+		#{unitId},
+		#{preCustomerId},
+		#{customerId},
+		#{remark},
+		#{isDeleted},
+		#{createdId},
+		#{createdTime},
+		#{modId},
+		#{modTime},
+		#{customerName}
+			)
+		
+	</insert>
+	<delete id="deleteQuestionAnwser" parameterType="int">
+	update question_anwser set is_deleted='1' where id=#{id};
+	</delete>
+	<update id="updateQuestionAnwser" parameterType="int">
+	update question_anwser set 
+		question_id=#{questionId},
+		unit_id=#{unitId},
+		pre_customer_id=#{preCustomerId},
+		customer_id=#{customerId},
+		remark=#{remark},
+		mod_id=#{modId},
+		mod_time=#{modTime},
+		customer_name=${customerName}
+	 where id=#{id}
+	</update>
+	<select id="findQuestionAnwserById" resultMap="questionAnwserResultMap">
+	select * from question_anwser where id=#{id}
+	</select>
+    
+	<sql id="findWhereCond"> 
+		<where>
+			<if test="questionId != null and questionId != ''">
+			and question_id = #{questionId}
+            </if> 
+			<if test="preCustomerId != null and preCustomerId != ''">
+			and pre_customer_id = #{preCustomerId}
+            </if>   
+            <if test="unitId != null and unitId != ''">
+			and unit_id = #{unitId}
+            </if>     
+            and is_deleted = '0'
+		</where>
+	</sql>
+	
+	<select id="findQuestionAnwserCount" resultType="int" parameterType="com.ihk.saleunit.data.pojo.QuestionAnwserCond">
+		SELECT count(0) from question_anwser  
+        <include refid="findWhereCond"/>     
+    </select>
+        
+	<select id="findQuestionAnwser" resultMap="questionAnwserResultMap" parameterType="com.ihk.saleunit.data.pojo.QuestionAnwserCond">
+		SELECT * from  question_anwser 
+        <include refid="findWhereCond"/> 
+		<if test="topNum > 0">
+			limit #{topNum};
+		</if>
+    </select>
+    
+	<select id="findQuestionAnwserPage" resultMap="questionAnwserResultMap" parameterType="com.ihk.saleunit.data.pojo.QuestionAnwserCond">
+		SELECT * from  question_anwser 
+        <include refid="findWhereCond"/> 
+    
+		<if test="startLine >= 0">
+		<if test="pageSize > 0">
+			limit #{startLine},#{pageSize};
+		</if>
+		</if>
+	</select>
+</mapper>

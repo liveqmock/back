@@ -1,0 +1,54 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.dou.book.data.ISBookMapper">
+
+	<resultMap type="SBook" id="sBookResultMap">
+		<id property="id" column="id" />
+		<result property="title" column="title" />
+		<result property="author" column="author" />
+		<result property="total" column="total" />
+		<result property="price" column="price" />
+		<result property="isbn" column="isbn" />
+		<result property="publisher" column="publisher" />		
+	</resultMap>
+
+
+	<!-- 查询班级list -->
+	<select id="findAllBook" resultMap="sBookResultMap">
+		SELECT * from sbook;
+	</select>
+
+	<insert id="saveBook" parameterType="SBook">
+		<selectKey keyProperty="id" resultType="int" order="BEFORE">
+			SELECT LAST_INSERT_ID() AS VALUE
+		</selectKey>
+		
+		INSERT INTO sbook(
+		 title
+		,author
+		,total
+		,price
+		,isbn
+		,publisher
+		)
+			VALUES(
+			#{title}
+			,#{author}
+			,#{total}
+			,#{price}
+			,#{isbn}
+			,#{publisher}
+			)
+		
+	</insert>
+	<delete id="deleteBook" parameterType="int">
+	delete from sbook where id=#{id};
+	</delete>
+	<update id="updateBook" parameterType="int">
+	update sbook set title=#{title},author=#{author},total=#{total},
+	price=#{price},isbn=#{isbn},publisher=#{publisher} where id=#{id}
+	</update>
+	<select id="findBookById" resultMap="sBookResultMap">
+	select * from sbook where id=#{id}
+	</select>
+</mapper>

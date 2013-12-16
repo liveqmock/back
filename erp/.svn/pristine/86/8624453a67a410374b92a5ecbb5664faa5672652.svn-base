@@ -1,0 +1,13 @@
+# 项目id,用来替代com.ihk.constanttype.ContProjectId中的硬代码
+GUANG_ZHOU = 5
+HENG_DA = 7
+CRM_CODE_PROJECT = 8
+OLD_HUI_JING = 53
+QIAO_XIN = 66
+# 中信山语湖
+SHAN_YU_HU = 188
+GZ_TEST_1 = 80
+GZ_TEST_2 = 79
+GZ_TEST_3 =69
+# 安徽默认项目,本地为75,服务器上为82(同步下来后,二者都是82)
+DEFALUT_AN_HUI =82 

@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.kn.data.IKN_LPCS_LP_OLD_Mapper">
+	<resultMap type="KN_LPCS_LP_OLD" id="kN_LPCS_LP_OLD_ResultMap">
+		<id property="楼盘id" column="楼盘ID" />        
+		<result property="楼盘名称" column="楼盘名称" />
+		<result property="楼盘街区" column="楼盘街区" />
+		<result property="楼盘地址" column="楼盘地址" />
+		<result property="地号" column="地号" />
+		<result property="隶属" column="隶属" />
+		<result property="建设工程规划许可证" column="建设工程规划许可证" />
+		<result property="建设用地规划许可证" column="建设用地规划许可证" />
+		<result property="备注" column="备注" />
+		<result property="审核" column="审核" />
+		<result property="认购书格式id" column="认购书格式ID" />
+		<result property="开发商名称" column="开发商名称" />
+		<result property="位置" column="位置" />
+		<result property="dataLab" column="DATA_LAB" />
+		<result property="付款参考报表名称" column="付款参考报表名称" />
+		<result property="认购书报表名称" column="认购书报表名称" />
+		<result property="收据报表名称" column="收据报表名称" />
+		<result property="代付费单据报表名称" column="代付费单据报表名称" />
+		<result property="流水号认购书编号" column="流水号_认购书编号" />
+		<result property="流水号合同编号" column="流水号_合同编号" />
+		<result property="流水号单据编号" column="流水号_单据编号" />
+		<result property="流水号税费单据编号" column="流水号_税费单据编号" />
+		<result property="流水号租赁合同编号" column="流水号_租赁合同编号" />
+		<result property="流水号租赁单据编号" column="流水号_租赁单据编号" />
+		<result property="租赁收据报表名称" column="租赁收据报表名称" />
+		<result property="类型" column="类型" />
+	</resultMap> 
+
+	<select id="findKN_LPCS_LP_OLD" resultMap="kN_LPCS_LP_OLD_ResultMap" parameterType="com.kn.data.pojo.KN_LPCS_LP_OLD_Cond">
+		SELECT * from  climb.楼盘初始_楼盘_OLD  
+		<where>
+		</where>	
+    </select>
+</mapper>

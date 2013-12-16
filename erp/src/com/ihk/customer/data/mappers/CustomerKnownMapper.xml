@@ -1,0 +1,80 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.ihk.customer.data.ICustomerKnownMapper">
+
+	<resultMap type="CustomerKnown" id="customerKnownResultMap">
+		<id property="id" column="id" />        
+		<result property="customerId" column="customer_id" />
+		<result property="knownFrom" column="known_from" />
+	</resultMap>
+
+	<insert id="addCustomerKnown" parameterType="CustomerKnown">
+		 <selectKey resultType="java.lang.Integer" keyProperty="id" order="AFTER" >
+            SELECT @@IDENTITY
+        </selectKey>		
+		insert into customer_known(
+		customer_id,
+		known_from
+		)
+			VALUES(
+		#{customerId},
+		#{knownFrom}
+			)
+		
+	</insert>
+	<delete id="deleteCustomerKnown" parameterType="int">
+	delete from customer_known where id=#{id};
+	</delete>
+	<update id="updateCustomerKnown" parameterType="int">
+	update customer_known set 
+		customer_id=#{customerId},
+		known_from=#{knownFrom}
+	 where id=#{id}
+	</update>
+	<select id="findCustomerKnownById" resultMap="customerKnownResultMap">
+	select * from customer_known where id=#{id}
+	</select>
+	
+	<select id="findAllCustomerKnown" resultMap="customerKnownResultMap">
+	select * from customer_known 
+	</select>
+	
+	<select id="findCustomerKnownCount" resultType="int" parameterType="com.ihk.customer.data.pojo.CustomerKnownCond">
+		SELECT count(0) from customer_known  
+<!--
+    	<where>			
+	    <if test="studentName!=null and studentName!='' ">  
+	        STUDENT_NAME LIKE CONCAT(CONCAT('%', #{studentName}),'%')   
+	    </if>  
+    </where>
+    -->
+    
+    </select>
+    
+	<select id="findCustomerKnownPage" resultMap="customerKnownResultMap" parameterType="com.ihk.customer.data.pojo.CustomerKnownCond">
+		SELECT * from  customer_known 
+        <!--
+    	<where>			
+	    <if test="studentName!=null and studentName!='' ">  
+	        STUDENT_NAME LIKE CONCAT(CONCAT('%', #{studentName}),'%')   
+	    </if>  
+    </where>
+    -->
+    
+		<if test="startLine >= 0">
+		<if test="pageSize > 0">
+			limit #{startLine},#{pageSize};
+		</if>
+		</if>
+	</select>
+	
+	<select id="findCustomerKnownByCustomerId" resultMap="customerKnownResultMap">
+		select * from customer_known where customer_id=#{id}
+	</select>
+	
+	<delete id="deleteCustomerKnownByCustomerId" parameterType="int">
+	delete from customer_known where customer_id=#{id};
+	</delete>
+	
+	
+</mapper>

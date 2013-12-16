@@ -1,0 +1,1022 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.ihk.saleunit.data.IConfirmMapper">
+
+	<resultMap type="Confirm" id="confirmResultMap">
+		<id property="id" column="id" />
+        <result property="buildId" column="build_id" />
+		<result property="customerId" column="customer_id" />
+		<result property="phone" column="phone" />
+		<result property="unitId" column="unit_id" />
+		<result property="priceWay" column="price_way" />
+		<result property="payWayId" column="pay_way_id" />
+		<result property="discountPercent" column="discount_percent" />
+		<result property="buildPrice" column="build_price" />
+		<result property="insideUnitPrice" column="inside_unit_price" />
+		<result property="discountDesc" column="discount_desc" />
+		<result property="sumMoney" column="sum_money" />
+		<result property="renovateDesc" column="renovate_desc" />
+		<result property="renovatePrice" column="renovate_price" />
+		<result property="isMerge" column="is_merge" />
+		<result property="isSecondConfirm" column="is_second_confirm" />
+		<result property="isSecondLinkage" column="is_second_linkage" />
+		<result property="isRelation" column="is_relation" />
+		<result property="renovateMoney" column="renovate_money" />
+		<result property="agreeNo" column="agree_no" />
+		<result property="shouldDeposit" column="should_deposit" />
+		<result property="agreeMoney" column="agree_money" />
+		<result property="signDate" column="sign_date" />
+		<result property="workDate" column="work_date" />
+		<result property="endDate" column="end_date" />
+		<result property="auxiliaryProduct" column="auxiliary_product" />
+		<result property="recommendMan" column="recommend_man" />
+		<result property="salesId" column="sales_id" />
+		<result property="deliveryDate" column="delivery_date" />
+		<result property="refUnitId" column="ref_unit_id" />
+		<result property="contractId" column="contract_id" />
+		<result property="remark" column="remark" />
+		<result property="companyProjectId" column="company_project_id" />
+		<result property="propertyProjectId" column="property_project_id"/>
+		<result property="shouldAmount" column="should_amount" />
+		<result property="paymentAmount" column="payment_amount" />
+		<result property="isDeleted" column="is_deleted" />
+		<result property="createdId" column="created_id" />
+		<result property="createdTime" column="created_time" />
+		<result property="modId" column="mod_id" />
+		<result property="modTime" column="mod_time" />
+		<result property="buildArea" column="build_Area" />
+	</resultMap>
+
+	<insert id="addConfirm" parameterType="Confirm">
+		 <selectKey resultType="java.lang.Integer" keyProperty="id" order="AFTER" >
+            SELECT @@IDENTITY
+        </selectKey>		
+		insert into confirm(
+		customer_id,
+		phone,
+		unit_id,
+		price_way,
+		pay_way_id,
+		discount_percent,
+		build_price,
+		inside_unit_price,
+		discount_desc,
+		sum_money,
+		renovate_desc,
+		renovate_price,
+		is_merge,
+		is_second_confirm,
+		is_second_linkage,
+		is_relation,
+		renovate_money,
+		agree_no,
+		should_deposit,
+		agree_money,
+		sign_date,
+		work_date,
+		end_date,
+		auxiliary_product,
+		recommend_man,
+		sales_id,
+		delivery_date,
+		ref_unit_id,
+		contract_id,
+		remark,
+		company_project_id,
+		property_project_id,
+		should_amount,
+		payment_amount,
+		is_deleted,
+		created_id,
+		created_time,
+		mod_id,
+		mod_time
+		)
+			VALUES(
+		#{customerId},
+		#{phone},
+		#{unitId},
+		#{priceWay},
+		#{payWayId},
+		#{discountPercent},
+		#{buildPrice},
+		#{insideUnitPrice},
+		#{discountDesc},
+		#{sumMoney},
+		#{renovateDesc},
+		#{renovatePrice},
+		#{isMerge},
+		#{isSecondConfirm},
+		#{isSecondLinkage},
+		#{isRelation},
+		#{renovateMoney},
+		#{agreeNo},
+		#{shouldDeposit},
+		#{agreeMoney},
+		#{signDate},
+		#{workDate},
+		#{endDate},
+		#{auxiliaryProduct},
+		#{recommendMan},
+		#{salesId},
+		#{deliveryDate},
+		#{refUnitId},
+		#{contractId},
+		#{remark},
+		#{companyProjectId},
+		#{propertyProjectId},
+		#{shouldAmount},
+		#{paymentAmount},
+		#{isDeleted},
+		#{createdId},
+		#{createdTime},
+		#{modId},
+		#{modTime}
+			)
+		
+	</insert>
+	<delete id="deleteConfirm" parameterType="com.ihk.utils.base.PojoDeleteCond">
+	update confirm set is_deleted='1', mod_id=#{modId}, mod_time=#{modTime} where id=#{id};
+	</delete>
+	
+	<delete id="reloadConfirm" parameterType="com.ihk.utils.base.PojoDeleteCond">
+	update confirm set is_deleted='0', mod_id=#{modId}, mod_time=#{modTime} where id=#{id};
+	</delete>
+	
+	<update id="updateConfirm" parameterType="int">
+	update confirm set 
+		customer_id=#{customerId},
+		phone=#{phone},
+		unit_id=#{unitId},
+		price_way=#{priceWay},
+		pay_way_id=#{payWayId},
+		discount_percent=#{discountPercent},
+		build_price=#{buildPrice},
+		inside_unit_price=#{insideUnitPrice},
+		discount_desc=#{discountDesc},
+		sum_money=#{sumMoney},
+		renovate_desc=#{renovateDesc},
+		renovate_price=#{renovatePrice},
+		is_merge=#{isMerge},
+		is_second_confirm=#{isSecondConfirm},
+		is_second_linkage=#{isSecondLinkage},
+		is_relation=#{isRelation},
+		renovate_money=#{renovateMoney},
+		agree_no=#{agreeNo},
+		should_deposit=#{shouldDeposit},
+		agree_money=#{agreeMoney},
+		sign_date=#{signDate},
+		work_date=#{workDate},
+		end_date=#{endDate},
+		auxiliary_product=#{auxiliaryProduct},
+		recommend_man=#{recommendMan},
+		sales_id=#{salesId},
+		delivery_date=#{deliveryDate},
+		ref_unit_id=#{refUnitId},
+		contract_id=#{contractId},
+		remark=#{remark},
+		company_project_id=#{companyProjectId},
+		property_project_id=#{propertyProjectId},
+		should_amount=#{shouldAmount},
+		payment_amount=#{paymentAmount},
+		mod_id=#{modId},
+		mod_time=#{modTime}
+	 where id=#{id}
+	</update>
+	
+	<select id="findConfirmById" resultMap="confirmResultMap">
+	select * from confirm where id=#{id}
+	</select>
+	
+	<select id="findConfirmByProjectId" resultMap="confirmResultMap">
+	select * from confirm where company_project_id = #{projectId}
+	</select>
+    
+	<sql id="findWhereCond"> 
+		<where>
+		
+			<if test="unitIds !=null and unitIds.size() > 0">  
+	            and unit_id in
+	            <foreach  
+	                collection="unitIds"  
+	                item="uId"  
+	                open="("  
+	                separator=","  
+	                close=")">  
+	                #{uId}  
+	            </foreach>  
+	        </if>
+
+			<if test="payWayId != 0">
+				and pay_way_id = #{payWayId}
+			</if>
+			
+			<if test="unitId != null and unitId != ''">
+				and unit_id = #{unitId}
+			</if>
+			
+			 <if test="customerId != null and customerId != ''">
+				and customer_id = #{customerId}
+			</if>
+			
+	        <if test="salesIds !=null and salesIds.size() > 0">  
+	            and sales_id in
+	            <foreach  
+	                collection="salesIds"  
+	                item="sId"  
+	                open="("  
+	                separator=","  
+	                close=")">  
+	                #{sId}  
+	            </foreach>  
+	        </if> 
+	        
+	        <if test="salesId != null and salesId != ''">
+				and sales_id = #{salesId}
+			</if>
+	        
+	         and is_deleted = '0' 
+		</where>
+	</sql>
+	
+	<select id="findConfirmCount" resultType="int" parameterType="com.ihk.saleunit.data.pojo.ConfirmCond">
+		SELECT count(0) from confirm  
+        <include refid="findWhereCond"/>     
+    </select>
+        
+	<select id="findConfirm" resultMap="confirmResultMap" parameterType="com.ihk.saleunit.data.pojo.ConfirmCond">
+		SELECT * from  confirm 
+        <include refid="findWhereCond"/> 
+		<if test="topNum > 0">
+			limit #{topNum};
+		</if>
+    </select>
+    
+	<select id="findConfirmPage" resultMap="confirmResultMap" parameterType="com.ihk.saleunit.data.pojo.ConfirmCond">
+		SELECT * from  confirm 
+        <include refid="findWhereCond"/> 
+        
+        <if test="orderByFiled == null or orderByFiled == ''">
+			order by id desc
+		</if>
+		<if test="orderByFiled=='11'">
+			order by sign_date desc 
+		</if>
+		<if test="orderByFiled=='12'">
+			order by sign_date 
+		</if>
+    
+		<if test="startLine >= 0">
+		<if test="pageSize > 0">
+			limit #{startLine},#{pageSize};
+		</if>
+		</if>
+	</select>
+	
+	<update id="updateConfirmSetContractId" parameterType="map">
+		
+		update confirm set contract_id = #{contractId} where id = #{confirmId}
+	</update>
+	
+	<select id="findCompanyReport" resultType="map" parameterType="com.ihk.saleunit.data.pojo.ConfirmCond">
+	
+		select tmp2.pId, sum(cou) as cou, sum(depMoney) as depMoney, sum(agrMoney) as agrMoney from 
+		(
+			select b.property_id as pId, tmp.cou, tmp.depMoney, tmp.agrMoney from property_unit u
+			inner join 
+				(
+					select unit_id as uId, count(1) as cou, sum(should_deposit) as depMoney,
+					sum(agree_money) as agrMoney
+					from confirm
+					<where>
+						<if test="date1 != null and date1 != ''">
+							and sign_date &gt;= #{date1}
+						</if>
+						<if test="date2 != null and date2 != ''">
+							and sign_date &lt; date_add(#{date2},interval 1 day)
+						</if>
+						
+							and is_deleted = '0'
+					</where>
+					group by unit_id
+					order by cou
+				)tmp 
+			on u.id = tmp.uId
+			inner join property_build b
+			on b.id = u.build_id
+			
+		) tmp2
+		group by tmp2.pId
+			
+	</select>
+
+    <!-- 按公司统计认购成交金额（首页用）-->
+
+    <select id="sumCompanyReport" resultType="map" parameterType="com.ihk.saleunit.data.pojo.ConfirmCond">
+
+		select f.company_name as company, ROUND(sum(a.sum_money)/100000000,3) as sum_money
+		from confirm a,property_unit b,property_build c,property_project d ,company_project e,company f
+		where a.unit_id = b.id
+		and b.build_id = c.id
+		and c.property_id = d.id
+		and d.company_project_id = e.id
+		and e.company_id = f.id
+		and a.is_deleted='0'
+		and b.is_deleted='0'
+		and c.is_deleted='0'
+		and d.is_deleted='0'
+		and e.is_deleted='0'
+		and f.is_deleted='0'
+
+		group by f.company_name
+		order by sum_money desc
+
+	</select>
+
+    <!-- 结佣明细表按单元列表 -->
+
+    <select id="commissionReportUnit" resultType="map" parameterType="com.ihk.saleunit.data.pojo.ConfirmCond">
+
+        select a.*,cc.*,d.*,e.*,f.*,c.*,h.pay_name as confirm_pay_name,i.pay_name as contract_pay_name
+        from property_build c,property_project d ,company_project e,company f ,v_confirm_contract a
+        LEFT JOIN pay_way h ON a.confirm_pay_way_id=h.id
+        LEFT JOIN pay_way i ON a.contract_pay_way_id=i.id
+        LEFT JOIN v_checkcommission cc ON cc.unit_id=a.unit_id
+
+        where a.build_id = c.id
+        and c.property_id = d.id
+        and d.company_project_id = e.id
+        and e.company_id = f.id
+        and c.is_deleted='0'
+        and d.is_deleted='0'
+        and e.is_deleted='0'
+        and f.is_deleted='0'
+
+        <if test="projectIds != null and projectIds.size() > 0">
+                and d.id in
+                <foreach
+                        collection="projectIds"
+                        item="pId"
+                        open="("
+                        separator=","
+                        close=")">
+                    #{pId}
+                </foreach>
+            </if>
+            <if test="buildId != null and buildId !=''">
+                and c.id = #{buildId}
+            </if>
+            <if test="areaId != null and areaId !=''">
+                and c.area_id = #{areaId}
+            </if>
+
+
+    		order by a.unit_id asc
+
+    </select>
+
+    <!-- 结佣明细表按项目列表 -->
+    <select id="commissionReportPrj" resultType="map" parameterType="com.ihk.saleunit.data.pojo.ConfirmCond">
+
+        SELECT 	unit_id,property_name,sale_state,sum_money,build_price,contract_sum_money,work_date,payment_amount,a.build_area as build_area,a.is_relation as is_relation,a.is_second_linkage as is_second_linkage
+              FROM v_confirm_contract a,property_build c,property_project d ,company_project e,company f
+              WHERE  a.build_id = c.id
+                      AND c.property_id = d.id
+                      AND d.company_project_id = e.id
+                      AND e.company_id = f.id
+                      AND c.is_deleted='0'
+                      AND d.is_deleted='0'
+                      AND e.is_deleted='0'
+                      AND f.is_deleted='0'
+                      AND d.id = #{propertyId}
+
+    </select>
+
+    <!-- 按公司列项目 -->
+    <select id="listCompanyProject" resultType="map" parameterType="com.ihk.saleunit.data.pojo.ConfirmCond">
+         SELECT * FROM v_company WHERE company_id = #{companyId}
+    </select>
+
+    <!-- 结佣明细表按公司列表 -->
+    <select id="commissionReportCompany" resultType="map" parameterType="com.ihk.saleunit.data.pojo.ConfirmCond">
+
+        SELECT *
+              FROM v_confirm_contract a,property_build c,v_company d
+              WHERE  a.build_id = c.id
+                      AND c.property_id = d.property_project_id
+                      AND c.is_deleted='0'
+                      AND d.company_id = #{companyId}
+
+    </select>
+
+    <!--- Calling stored procedure -->
+    <!-- 销售住宅建筑面积总和 -->
+    <select id="getSumBuildArea" resultType="map" statementType="CALLABLE" parameterType="com.ihk.saleunit.data.pojo.ConfirmCond">
+        {
+        call sp_salesBuildArea(
+        <if test="propertyId != null and propertyId !=''">
+            #{propertyId}
+        </if>
+        <if test="propertyId == null or propertyId ==''">
+            <foreach
+                    collection="projectIds"
+                    item="pId"
+                    open=""
+                    separator=","
+                    close="">
+                #{pId}
+            </foreach>
+        </if>,
+        <if test="areaId != null and areaId !=''">#{areaId}</if>
+        <if test="areaId == null or areaId ==''">0</if>,
+
+        <if test="buildId != null and buildId !=''">#{buildId}</if>
+        <if test="buildId == null or buildId ==''">0</if>,
+        #{startDate} ,
+        #{endDate} ,
+        #{managerType},
+        #{SUM_salesBuildArea,mode=OUT,jdbcType=DECIMAL}
+        )
+        }
+    </select>
+
+    <!-- 推货面积 -->
+    <select id="getTotalBuildArea" resultType="map" statementType="CALLABLE" parameterType="com.ihk.saleunit.data.pojo.ConfirmCond">
+        {
+        call sp_totalBuildArea(
+        <if test="propertyId != null and propertyId !=''">
+            #{propertyId}
+        </if>
+        <if test="propertyId == null or propertyId ==''">
+            <foreach
+                    collection="projectIds"
+                    item="pId"
+                    open=""
+                    separator=","
+                    close="">
+                #{pId}
+            </foreach>
+        </if>,
+
+        <if test="areaId != null and areaId !=''">
+            #{areaId}
+        </if>
+        <if test="areaId == null or areaId ==''">
+            0
+        </if>
+        ,
+        <if test="buildId != null and buildId !=''">
+            #{buildId}
+        </if>
+        <if test="buildId == null or buildId ==''">
+            0
+        </if>
+        ,
+        #{SUM_totalBuildArea,mode=OUT,jdbcType=DECIMAL}
+        )
+        }
+    </select>
+
+    <!-- 销售面积 -->
+    <select id="getContractBuildArea" resultType="map" statementType="CALLABLE" parameterType="com.ihk.saleunit.data.pojo.ConfirmCond">
+        {
+        call sp_contractBuildArea(
+        <if test="propertyId != null and propertyId !=''">
+            #{propertyId}
+        </if>
+        <if test="propertyId == null or propertyId ==''">
+            <foreach
+                    collection="projectIds"
+                    item="pId"
+                    open=""
+                    separator=","
+                    close="">
+                #{pId}
+            </foreach>
+        </if>,
+
+        <if test="areaId != null and areaId !=''">
+            #{areaId}
+        </if>
+        <if test="areaId == null or areaId ==''">
+            0
+        </if>
+        ,
+        <if test="buildId != null and buildId !=''">
+            #{buildId}
+        </if>
+        <if test="buildId == null or buildId ==''">
+            0
+        </if>
+        ,
+        #{startDate} ,
+        #{endDate} ,
+
+        #{SUM_contractBuildArea,mode=OUT,jdbcType=DECIMAL}
+        )
+        }
+    </select>
+    <!-- 销售金额 -->
+    <select id="getContractPrice" resultType="map" statementType="CALLABLE" parameterType="com.ihk.saleunit.data.pojo.ConfirmCond">
+        {
+        call sp_contractPrice(
+        <if test="propertyId != null and propertyId !=''">
+            #{propertyId}
+        </if>
+        <if test="propertyId == null or propertyId ==''">
+            <foreach
+                    collection="projectIds"
+                    item="pId"
+                    open=""
+                    separator=","
+                    close="">
+                #{pId}
+            </foreach>
+        </if>,
+
+        <if test="areaId != null and areaId !=''">
+            #{areaId}
+        </if>
+        <if test="areaId == null or areaId ==''">
+            0
+        </if>
+        ,
+        <if test="buildId != null and buildId !=''">
+            #{buildId}
+        </if>
+        <if test="buildId == null or buildId ==''">
+            0
+        </if>
+        ,
+        #{startDate} ,
+        #{endDate} ,
+        #{managerType},
+        #{SUM_contractPrice,mode=OUT,jdbcType=DECIMAL}
+        )
+        }
+    </select>
+    <!-- 签约销售套数 -->
+    <select id="getContractSets" resultType="map" statementType="CALLABLE" parameterType="com.ihk.saleunit.data.pojo.ConfirmCond">
+        {
+        call sp_contractSets(
+        <if test="propertyId != null and propertyId !=''">
+            #{propertyId}
+        </if>
+        <if test="propertyId == null or propertyId ==''">
+            <foreach
+                    collection="projectIds"
+                    item="pId"
+                    open=""
+                    separator=","
+                    close="">
+                #{pId}
+            </foreach>
+        </if>,
+
+        <if test="areaId != null and areaId !=''">
+            #{areaId}
+        </if>
+        <if test="areaId == null or areaId ==''">
+            0
+        </if>
+        ,
+        <if test="buildId != null and buildId !=''">
+            #{buildId}
+        </if>
+        <if test="buildId == null or buildId ==''">
+            0
+        </if>
+        ,
+        #{startDate} ,
+        #{endDate} ,
+        #{managerType},
+        #{Count_Sets,mode=OUT,jdbcType=INTEGER}
+        )
+        }
+    </select>
+
+    <!-- 成交销售套数 -->
+    <select id="getConfirmSets" resultType="map" statementType="CALLABLE" parameterType="com.ihk.saleunit.data.pojo.ConfirmCond">
+        {
+        call sp_confirmSets(
+        <if test="propertyId != null and propertyId !=''">
+            #{propertyId}
+        </if>
+        <if test="propertyId == null or propertyId ==''">
+            <foreach
+                    collection="projectIds"
+                    item="pId"
+                    open=""
+                    separator=","
+                    close="">
+                #{pId}
+            </foreach>
+        </if>,
+
+        <if test="areaId != null and areaId !=''">
+            #{areaId}
+        </if>
+        <if test="areaId == null or areaId ==''">
+            0
+        </if>
+        ,
+        <if test="buildId != null and buildId !=''">
+            #{buildId}
+        </if>
+        <if test="buildId == null or buildId ==''">
+            0
+        </if>
+        ,
+        #{startDate} ,
+        #{endDate} ,
+        #{managerType},
+        #{Count_ConfirmSets,mode=OUT,jdbcType=INTEGER}
+        )
+        }
+    </select>
+    <!-- 可售货量套数 -->
+    <select id="getAllUnitSets" resultType="map" statementType="CALLABLE" parameterType="com.ihk.saleunit.data.pojo.ConfirmCond">
+        {
+        call sp_allUnitCount(
+        <if test="propertyId != null and propertyId !=''">
+            #{propertyId}
+        </if>
+        <if test="propertyId == null or propertyId ==''">
+            <foreach
+                    collection="projectIds"
+                    item="pId"
+                    open=""
+                    separator=","
+                    close="">
+                #{pId}
+            </foreach>
+        </if>,
+
+        #{Count_AllUnit,mode=OUT,jdbcType=INTEGER}
+        )
+        }
+    </select>
+
+	<select id="listProjectReport" resultType="map" parameterType="com.ihk.saleunit.data.pojo.ConfirmCond">
+
+		select f.company_name as company, d.property_name as project, sum(a.sum_money) as sum_money
+		from confirm a,property_unit b,property_build c,property_project d ,company_project e,company f
+		where a.unit_id = b.id
+		and b.build_id = c.id
+		and c.property_id = d.id
+		and d.company_project_id = e.id
+		and e.company_id = f.id
+		and a.is_deleted='0'
+		and b.is_deleted='0'
+		and c.is_deleted='0'
+		and d.is_deleted='0'
+		and e.is_deleted='0'
+		and f.is_deleted='0'
+		group by company,project
+		order by company ,sum_money desc
+
+	</select>
+
+	<select id="findPropertyReport" resultType="map" parameterType="com.ihk.saleunit.data.pojo.ConfirmCond">
+	
+		select tmp2.bId as bId, sum(tmp2.cou) as cou, sum(tmp2.depMoney) as depMoney, sum(tmp2.agrMoney) as agrMoney from
+		(
+		select  u.build_id as bId, tmp.cou, tmp.depMoney, tmp.agrMoney from property_unit u
+		inner join 
+		    (
+		    select unit_id as uId, count(1) as cou, sum(should_deposit) as depMoney,
+		    sum(agree_money) as agrMoney
+		    from confirm
+			 <where>
+				<if test="date1 != null and date1 != ''">
+					and sign_date &gt;= #{date1}
+				</if>
+				<if test="date2 != null and date2 != ''">
+					and sign_date &lt; date_add(#{date2},interval 1 day)
+				</if>
+				
+					and is_deleted = '0'
+			</where>
+		    group by unit_id
+		    order by cou
+		    )tmp 
+		on u.id = tmp.uId
+		inner join property_build b
+		on b.id = u.build_id
+		<where>
+			<if test="propertyId != null and propertyId != ''">
+				b.property_id = #{propertyId}
+			</if>
+		</where>
+		
+		) tmp2
+		group by tmp2.bId
+			
+	</select>
+	
+	<select id="findConfirmByUnitId" resultMap="confirmResultMap">
+		select * from confirm where unit_id = #{unitId} and is_deleted = '0' order by mod_time desc limit 1
+	</select>
+	
+	<select id="findConfirmByUnitIdIncludeIsDeleted" resultMap="confirmResultMap">
+		select * from confirm where unit_id = #{unitId}  order by mod_time desc limit 1
+	</select>
+	
+	<update id="updateConfirmSetCustomerIdById" parameterType="java.util.Map">
+		update confirm set customer_id = #{customerId} where id = #{myId}
+	</update>
+	
+	<!-- 成交单元管理的汇总,根据楼盘项目id,saleState -->
+	<select id="findGatherByPropertyProjectIdAndSaleState" resultMap="confirmContractGatherResultMap" 
+		parameterType="com.ihk.saleunit.data.pojo.ConfirmContractGatherCond" statementType="STATEMENT">
+		
+		select count(1) as count,tmp.bId as build_id, sum(tmp.build_area) as build_area, sum(build_price) as build_price, 
+		sum(tmp.baseprice) as baseprice, sum(tmp.total_baseprice) as total_baseprice,
+		sum(inside_unit_price) as inside_unit_price, sum(sum_money) as sum_money, sum(should_amount) as should_amount, sum(payment_amount) as payment_amount
+		from
+		(
+		select c.unit_id, b.id as bId, u.build_area, c.build_price,
+		u.baseprice, u.total_baseprice, 
+		c.inside_unit_price,c.sum_money,
+		c.should_amount, c.payment_amount
+		 from ${type} c
+		inner join property_unit u
+		on c.unit_id = u.id
+		inner join property_build b
+		on u.build_id = b.id
+		inner join property_project p
+		on b.property_id = p.id
+		where p.id = ${propertyProjectId}
+		and c.is_deleted = '0' 
+		and u.is_deleted = '0' 
+		and b.is_deleted = '0' 
+		and p.is_deleted = '0' 
+		and u.sale_state = ${saleState}
+		order by c.unit_id desc
+		) tmp
+		group by tmp.bId
+		
+	</select>
+
+    <!-- 合同+成交 汇总 -->
+    <select id="findGatherByConfirmContract" resultMap="confirmContractGatherResultMap"
+            parameterType="com.ihk.saleunit.data.pojo.ConfirmContractGatherCond" statementType="STATEMENT">
+
+		select count(1) as count,tmp.property_id ,tmp.area_id ,tmp.bId as build_id, sum(tmp.build_area) as build_area, sum(build_price) as build_price,
+		sum(tmp.baseprice) as baseprice, sum(tmp.total_baseprice) as total_baseprice, sum(amount) as payment_amount,
+	    sum(sum_money) as sum_money ,is_relation,is_second_linkage
+		from
+		(
+		select p.id AS property_id,b.area_id ,c.unit_id, b.id as bId, c.build_area, c.build_price,
+		c.baseprice, c.total_baseprice,c.sum_money ,ap.amount as amount,is_relation,is_second_linkage
+
+		from v_confirm_contract c
+
+		inner join property_build b on c.build_id = b.id
+		inner join property_project p on b.property_id = p.id
+        left join ap_payment ap ON b.property_id = ap.property_id
+
+		where p.id = ${propertyProjectId}
+
+		and b.is_deleted = '0'
+		and p.is_deleted = '0'
+
+		order by c.unit_id desc
+		) tmp
+		group by tmp.bId ,is_relation,is_second_linkage
+
+	</select>
+
+    <resultMap type="ConfirmContractGather" id="confirmContractGatherResultMap">
+		<result property="propertyId" column="property_id" />
+		<result property="areaId" column="area_id" />
+		<result property="buildId" column="build_id" />
+		<result property="count" column="count"/>
+		<result property="buildArea" column="build_area" />
+		<result property="buildPrice" column="build_price" />
+		<result property="insideUnitPrice" column="inside_unit_price" />
+		<result property="sumMoney" column="sum_money" />
+		<result property="shouldAmount" column="should_amount" />
+		<result property="paymentAmount" column="payment_amount" />
+		<result property="baseprice" column="baseprice" />
+		<result property="totalBaseprice" column="total_baseprice" />
+		<result property="isRelation" column="is_relation" />
+		<result property="isSecondLinkage" column="is_second_linkage" />
+	</resultMap>
+
+
+    <select id="findConfirmUnit"  resultMap="confirmResultMap" parameterType="com.ihk.saleunit.data.pojo.ConfirmCond">
+        SELECT a.*,b.build_id,b.build_area from  confirm a,property_unit b
+        where a.unit_id = b.id
+        and b.build_id = #{buildId}
+        and a.is_deleted = 0
+        order by unit_id asc
+        <!--<include refid="findWhereCond"/>-->
+        <if test="topNum > 0">
+            limit #{topNum};
+        </if>
+    </select>
+
+    <!-- 对数筛选数据、对数表查询用 -->
+    <select id="checkFeeList" resultType="map" parameterType="com.ihk.saleunit.data.pojo.ConfirmCond">
+
+        select a.*,d.*,e.*,f.*,c.*,h.pay_name as confirm_pay_name,i.pay_name as contract_pay_name
+        from property_build c,property_project d ,company_project e,company f ,v_confirm_contract a
+        LEFT JOIN pay_way h ON a.confirm_pay_way_id=h.id
+        LEFT JOIN pay_way i ON a.contract_pay_way_id=i.id
+
+        where a.build_id = c.id
+        and c.property_id = d.id
+        and d.company_project_id = e.id
+        and e.company_id = f.id
+        and c.is_deleted='0'
+        and d.is_deleted='0'
+        and e.is_deleted='0'
+        and f.is_deleted='0'
+
+
+        <if test="saleState != null and saleState !='' and saleState != 'null'">
+            and sale_state = #{saleState}
+        </if>
+        <if test="projectIds != null and projectIds.size() > 0">
+            and d.id in
+            <foreach
+                    collection="projectIds"
+                    item="pId"
+                    open="("
+                    separator=","
+                    close=")">
+                #{pId}
+            </foreach>
+        </if>
+        <if test="buildId != null and buildId !=''">
+            and c.id = #{buildId}
+        </if>
+        <if test="areaId != null and areaId !=''">
+            and c.area_id = #{areaId}
+        </if>
+        <if test="checkFeeDate != null and checkFeeDate !=''">
+            and checkfee_date = #{checkFeeDate}
+        </if>
+        <if test="date1 != null and date1 !=''">
+            and sign_date &gt;= #{date1}
+        </if>
+        <if test="date2 != null and date2 !=''">
+            and sign_date &lt; #{date2}
+        </if>
+        <if test="startDate != null and startDate !=''">
+            and work_date &gt;= #{startDate}
+        </if>
+        <if test="endDate != null and endDate !=''">
+            and work_date &lt; #{endDate}
+        </if>
+        <if test="checkFeeType != null and checkFeeType !=''">
+            and checkfee_type = #{checkFeeType}
+        </if>
+        order by unit_id asc
+
+    </select>
+
+    <!-- 对数表查询（对数中、已对数）用 -->
+    <select id="checkFeeListByType" resultType="map" parameterType="com.ihk.saleunit.data.pojo.ConfirmCond">
+
+        select k.ID as checkfeeID,k.*,a.*,d.*,e.*,f.*,c.*,h.pay_name as confirm_pay_name,i.pay_name as contract_pay_name
+        from property_build c,property_project d ,company_project e,company f ,v_confirm_contract a
+        LEFT JOIN pay_way h ON a.confirm_pay_way_id=h.id
+        LEFT JOIN pay_way i ON a.contract_pay_way_id=i.id
+        LEFT JOIN checkfee k ON a.unit_id=k.unit_id
+        where a.build_id = c.id
+        and c.property_id = d.id
+        and d.company_project_id = e.id
+        and e.company_id = f.id
+        and c.is_deleted='0'
+        and d.is_deleted='0'
+        and e.is_deleted='0'
+        and f.is_deleted='0'
+        AND k.is_deleted='0'
+
+        <if test="saleState != null and saleState !='' and saleState != 'null'">
+            and sale_state = #{saleState}
+        </if>
+        <if test="projectIds != null and projectIds.size() > 0">
+            and d.id in
+            <foreach
+                    collection="projectIds"
+                    item="pId"
+                    open="("
+                    separator=","
+                    close=")">
+                #{pId}
+            </foreach>
+        </if>
+        <if test="buildId != null and buildId !=''">
+            and c.id = #{buildId}
+        </if>
+        <if test="areaId != null and areaId !=''">
+            and c.area_id = #{areaId}
+        </if>
+        <if test="checkFeeDate != null and checkFeeDate !=''">
+            and k.checkfee_date = #{checkFeeDate}
+        </if>
+        <if test="date1 != null and date1 !=''">
+            and sign_date &gt;= #{date1}
+        </if>
+        <if test="date2 != null and date2 !=''">
+            and sign_date &lt; #{date2}
+        </if>
+        <if test="startDate != null and startDate !=''">
+            and work_date &gt;= #{date1}
+        </if>
+        <if test="endDate != null and endDate !=''">
+            and work_date &lt; #{date2}
+        </if>
+
+
+        <if test="checkFeeType != null and checkFeeType !=''">
+            and k.checkfee_type = #{checkFeeType}
+        </if>
+        order by a.unit_id asc
+
+    </select>
+
+    <!-- 对数表筛选（部分回款） -->
+    <select id="checkFeeListByAdd" resultType="map" parameterType="com.ihk.saleunit.data.pojo.ConfirmCond">
+        select j.*,a.*,d.*,e.*,f.*,c.*,h.pay_name as confirm_pay_name,i.pay_name as contract_pay_name
+        from property_build c,property_project d ,company_project e,company f ,v_confirm_contract a
+        LEFT JOIN pay_way h ON a.confirm_pay_way_id=h.id
+        LEFT JOIN pay_way i ON a.contract_pay_way_id=i.id
+        LEFT JOIN sale_unit_receipt j ON a.unit_id=j.unit_id
+        where a.build_id = c.id
+        and c.property_id = d.id
+        and d.company_project_id = e.id
+        and e.company_id = f.id
+        and c.is_deleted='0'
+        and d.is_deleted='0'
+        and e.is_deleted='0'
+        and f.is_deleted='0'
+        and j.is_deleted='0'
+        and (j.checkfee_id=0 or j.checkfee_id is null)
+
+        <if test="saleState != null and saleState !='' and saleState != 'null'">
+            and sale_state = #{saleState}
+        </if>
+        <if test="projectIds != null and projectIds.size() > 0">
+            and d.id in
+            <foreach
+                    collection="projectIds"
+                    item="pId"
+                    open="("
+                    separator=","
+                    close=")">
+                #{pId}
+            </foreach>
+        </if>
+        <if test="buildId != null and buildId !=''">
+            and c.id = #{buildId}
+        </if>
+        <if test="areaId != null and areaId !=''">
+            and c.area_id = #{areaId}
+        </if>
+
+        <if test="date1 != null and date1 !=''">
+            and j.receipt_date &gt;= #{date1}
+        </if>
+        <if test="date2 != null and date2 !=''">
+            and j.receipt_date &lt; #{date2}
+        </if>
+
+
+        GROUP BY a.unit_id
+        ORDER BY a.unit_id ASC
+
+
+    </select>
+
+    <select id="checkFeeDateList" resultType="map" parameterType="com.ihk.saleunit.data.pojo.ConfirmCond">
+        SELECT  checkfee_date
+        FROM v_confirm_contract a,property_build c
+        WHERE a.build_id = c.id
+        AND c.is_deleted='0'
+        and checkfee_date is not null
+        <if test="checkFeeType != null and checkFeeType !=''">
+            AND a.checkfee_type=#{checkFeeType}
+        </if>
+        <if test="propertyId != null and propertyId !=''">
+            AND c.property_id=#{propertyId}
+        </if>
+
+        GROUP BY checkfee_date
+    </select>
+	<!-- end -->
+	
+	<!-- 根据单元id获取视图v_confirm_contract -->
+	<select id="findCheckFeeDataByUnitId" resultType="map">
+		select * from v_confirm_contract where unit_id = #{unitId}
+	</select>
+	
+	<!-- 修改对应成交单的payWayId -->
+	<update id="updateConfirmPayWayId" parameterType="map">
+		update confirm set pay_way_id = #{payWayId} where id = #{id}
+	</update>
+	
+</mapper>

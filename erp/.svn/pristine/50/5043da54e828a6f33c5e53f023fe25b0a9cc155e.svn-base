@@ -1,0 +1,45 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.kn.data.IKN_RGS_YZ_Mapper">
+
+	<resultMap type="KN_RGS_YZ" id="KN_RGS_YZResultMap">
+		<id property="业主id" column="业主ID" />        
+		<result property="认购书id" column="认购书ID" />
+		<result property="业主姓名" column="业主姓名" />
+		<result property="生日" column="生日" />
+		<result property="电话" column="电话" />
+		<result property="移动电话" column="移动电话" />
+		<result property="email" column="EMAIL" />
+		<result property="地址" column="地址" />
+		<result property="邮编" column="邮编" />
+		<result property="身份证号" column="身份证号" />
+		<result property="国籍" column="国籍" />
+		<result property="性别" column="性别" />
+		<result property="法人代表" column="法人代表" />
+		<result property="公司注册编号" column="公司注册编号" />
+		<result property="法人身份证号" column="法人身份证号" />
+		<result property="委托代理人" column="委托代理人" />
+		<result property="委托代理人国籍" column="委托代理人国籍" />
+		<result property="委托代理人身份证号" column="委托代理人身份证号" />
+		<result property="委托代理人地址" column="委托代理人地址" />
+		<result property="所占份额" column="所占份额" />
+		<result property="委托代理人电话" column="委托代理人电话" />
+		<result property="其他证件名称" column="其他证件名称" />
+		<result property="其他证件号码" column="其他证件号码" />
+		<result property="身份证地址" column="身份证地址" />
+	</resultMap>
+
+	<select id="findKN_RGS_YZ" resultMap="KN_RGS_YZResultMap" parameterType="com.kn.data.pojo.KN_RGS_YZ_Cond">
+		SELECT * from  climb.认购书_业主 
+		<where>
+		</where>	
+    </select>
+    
+    
+    <select id="findUser" resultType="java.util.Map">
+		select 创建人 as name from climb.客户关系管理_客户 group by 创建人
+		<where>
+		</where>	
+    </select>
+    
+</mapper>

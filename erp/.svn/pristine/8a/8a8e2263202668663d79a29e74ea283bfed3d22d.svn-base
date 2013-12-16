@@ -1,0 +1,226 @@
+@charset "utf-8";
+/* nav */
+body{ background:#688fdc; font-size:14px; font-family:"微软雅黑", "宋体"; color:#777; margin-top:0px;}
+.boxnavtop{background:url(../images/blue/topright.jpg) no-repeat right;height:130px;}
+.boxnav{background:#fff; margin-top:21px; height:auto;}
+.l{float:left;}
+.r{float:right;}
+.c{clear:both;}
+.iconbg{background:url(../images/blue/icon.gif) no-repeat; width:67px; height:27px; text-align:center; line-height:27px; font-size:12px; cursor:pointer;}
+.iconbg2{width:auto; height:27px; text-align:center; line-height:27px; font-size:12px; cursor:pointer;}
+.blank{ margin:5px; overflow:hidden; clear:both;}
+.iconbg1{background:url(../images/blue/icons.gif) no-repeat; width:67px; height:27px; text-align:center; line-height:27px; font-size:12px; cursor:pointer; }
+
+/* top */
+.logo{ margin:25px; float:left;}
+.logoword{ font-size:18px; font-family:"微软雅黑", "黑体"; margin-top:40px; color:#fff; float:left;}
+.welcome{ margin-top:35px;float:right; height:32px; min-width:200px; max-width:400px;}
+.welcome01{background:url(../images/blue/welcomebg.gif) no-repeat; width:8px; height:32px; float:left;}
+.welcome02{background:url(../images/blue/welcomebgc.gif) repeat-x; height:32px; float:left; line-height:32px; font-size:12px; padding-left:10px; padding-right:15px;}
+
+/*--font--*/
+a:link {color:#777; text-decoration:none;}
+a:visited {color:#777; text-decoration:none;}
+a:hover {color:#777; text-decoration:underline;}
+.fontblue{ color:#5482de;}
+.fontblue a:link{color:#5482de; text-decoration:none;}
+.fontblue a:visited{color:#5482de; text-decoration:none;}
+.fontblue a:hover{color:#5482de; text-decoration:none;}
+
+/*--menu--*/
+.nav {
+height:32px; 
+width:100%; 
+z-index:100;
+padding:0;
+}
+
+.nav .table {
+display:table; 
+margin:0;
+}
+
+.nav .select,
+.nav .current {
+margin:0; 
+padding:0; 
+list-style:none; 
+display:table-cell; 
+white-space:nowrap;
+}
+
+.nav li {
+margin:0; 
+padding:0; 
+height:32px; 
+float:left;
+}
+
+.nav .select a {
+display:block; 
+height:32px; 
+float:left; 
+font-weight:bold;
+padding:0 10px 0 10px; 
+text-decoration:none; 
+line-height:32px; 
+white-space:nowrap; 
+color:#fff;
+}
+
+
+.nav .select a:hover, 
+.nav .select li:hover a {
+background:#202020; 
+padding:0px; 
+cursor:pointer; 
+color:#fdfa00;
+}
+
+.nav .select a b{
+	font-weight:bold;
+	}
+
+.nav .select a:hover b, 
+.nav .select li:hover a b {
+display:block; 
+float:left; 
+padding:0 10px 0 10px; 
+background:none; 
+cursor:pointer;
+}
+
+.nav .select_sub {
+display:none;
+}
+
+/* IE6 only */
+.nav table {
+border-collapse:collapse; 
+margin:-1px; 
+font-size:1em; 
+width:0; 
+height:0;
+}
+
+.nav .sub {
+display:table; 
+margin:0; 
+padding:0; 
+list-style:none;
+font-size:12px;
+}
+
+.nav .sub_active .current_sub a, 
+.nav .sub_active a:hover {
+background:transparent; 
+color:#fff;
+}
+
+.nav .select :hover .select_sub, 
+.nav .current .show {
+display:block; 
+position:absolute; 
+width:100%; 
+top:116px; 
+background:none; 
+padding:0; 
+z-index:100; 
+left:0; 
+text-align:left;
+}
+
+.nav .current .show {
+z-index:10;
+}
+
+.nav .select :hover .sub li a, 
+.nav .current .show .sub li a {
+display:block; 
+float:left; 
+background:none; 
+padding:0 5px 0 5px; 
+margin:5px;
+white-space:nowrap; 
+border:0; 
+color:#fff;
+}
+
+.nav .current .sub li.sub_show a {
+color:#fff; 
+cursor:default; 
+}
+
+.nav .select .sub li a {
+	font-weight:normal;
+}
+
+.nav .select :hover .sub li a:hover, 
+.nav .current .sub li a:hover {
+visibility:visible; 
+color:#fdfa00; 
+}
+.blackline{height:32px;background:#202020; overflow:hidden; margin:0; padding:0;}
+
+/*left*/
+.leftbg{float:left; background:url(../images/blue/leftbg.gif) repeat-y; height:auto; width:290px;}
+.lefticonopen{ float:right; height:auto;  overflow:hidden;}
+.lefticonopen img{position:static;+position:relative;top:-50%;left:-50%;}
+.leftmain{width:240px; float:left; margin-left:15px;}
+.leftside{ float:left; vertical-align:middle;}
+.lefttitle{margin-top:27px; line-height:24px; border-bottom:1px dashed #d3d3d3; margin-bottom:10px;}
+.leftopenboxtitle{border:1px #8b99a3 solid; width:222px; padding:8px; line-height:18px; background:#688fdc; color:#FFF;}
+.leftopenbox{border:1px solid #f0f0f0; border-top:none; background:url(../images/blue/boxbg.gif) repeat-x; width:99%; overflow:hidden; margin-bottom:10px;}
+.leftopenbox ul li{line-height:28px; list-style:none;}
+.leftopenbox li{ margin-left:16px;}
+.leftopenboxtitle01{border:1px #f0f0f0 solid; width:222px; padding:8px; line-height:18px; background:url(../images/blue/boxbg01.gif) repeat-x; height:23px;}
+.leftcreate{ float:left; margin-left:10px; width:60px; font-size:12px; line-height:30px;}
+.leftcreatebox{ float:left;background:url(../images/blue/inputbox.gif) no-repeat; width:141px; height:30px; line-height:30px;}
+.leftcreateinputbox{ line-height:20px; margin:4px; border:none; width:130px; height:20px; background:#e9f5fe;}
+.leftcreatenav{clear:both; padding:5px; width:100%;}
+.leftcreatesave{margin-left:70px; float:left;}
+.leftclosebg{background:url(../images/blue/closebg.gif) repeat-y; width:35px; float:left; height:auto; min-height:300px;}
+
+/*right*/
+.rightnav{ float:left; margin:33px; margin-bottom:10px; width:90%;}
+.rightnav1{ float:left; margin-left:33px; margin-top:0px; margin-right:0px; width:35%;}
+.rightnav2{ float:left; margin-left:24px; margin-top:0px; margin-right:0px; width:25%;}
+.righttitle{ float:left;font-size:24px;}
+.rightword01{ float:right;line-height:32px; width:300px;}
+.rightbox{ margin-top:3px; float:left;}
+.rightboxnone{float:left;}
+.rightboxl{ background:url(../images/blue/boxl.gif) no-repeat; height:26px; width:6px; float:left; margin-left:5px;}
+.rightboxm{ float:left;border:none;border-top:#cdcdcb 1px solid; border-bottom:#cdcdcb 1px solid; padding:2px;_padding:0px; line-height:20px;_line-height:13px; height:20px;_height:13px;}
+.rightboxr{ float:left;background:url(../images/blue/boxr.gif) no-repeat; height:26px; width:6px; margin-right:5px;}
+.rightinputbox{color:#707070; font-family:"微软雅黑", "宋体"; overflow:hidden; margin:5px; margin-top:0px;}
+.rightlineg{ background:#eee; height:1px;  margin-top:20px;*_margin-top:0px;_margin-top:0px; margin-bottom:10px;clear:both; width:100%;overflow:hidden;}
+.rightboxn{border:#eee 1px solid; padding:15px; width:95%;}
+.righttitleword{font-size:16px; float:left;}
+.lefts{margin-left:20px; float:left;}
+.tableword{padding-left:10px; padding-right:10px; font-size:12px; float:left;}
+.tablebg01{background:url(../images/blue/icon_sl.gif) no-repeat; width:38px; height:22px; margin-left:5px;}
+.rightboxn ul li{ list-style:none; line-height:24px; padding:0px;}
+
+.footer{background:url(../images/blue/footer.gif) repeat-x; height:34px; line-height:34px; text-align:center; font-size:12px;}
+
+/*input*/
+.leftcreatesave01{margin-left:70px; float:left; margin-bottom:10px;}
+.righttitleword01{font-size:16px; float:left; margin-right:10px; line-height:30px;}
+.leftcreateinputbox01{ line-height:20px; margin:4px;*margin:0px;_margin:0px; margin-top:0px; border:none; width:160px; height:20px;background:#fff; overflow:hidden;}
+.leftcreateinputbox02{ line-height:20px; margin:4px;*margin:0px;_margin:0px; margin-top:0px; border:none; width:500px; height:20px; background:#fff; overflow:hidden;}
+.leftv{width:31%; float:left;} /*width:30% 或  width:300px*/
+.leftv2{width:100%; float:left;} /*width:30% 或  width:300px*/
+.leftv3{width:20%; float:left;} /*width:30% 或  width:300px*/
+.inputicon{line-height:30px; margin-right:5px; float:left;}
+.rightboxm01{ float:left;border:none;border-top:#cdcdcb 1px solid; border-bottom:#cdcdcb 1px solid; padding:2px; line-height:20px;height:20px; overflow:hidden;}
+.rightboxm02{ float:left;border:none;border-top:#cdcdcb 1px solid; border-bottom:#cdcdcb 1px solid; padding:2px; line-height:20px;height:auto; overflow:hidden;}
+
+/*login*/
+.loginbg{background:url(../images/blue/loginbg.jpg) no-repeat;}
+.logintitle{margin-left:auto; margin-right:auto; margin-top:60px; background:url(../images/blue/titlebg.png) no-repeat center; width:410px; height:144px;}
+.loginbox{ margin-top:10px;margin-left:auto; margin-right:auto; background:url(../images/blue/loginbg.png) no-repeat center; width:341px; height:372px;}
+.loginboxinput{border:none; margin-left:120px; margin-top:47px;*margin-top:45px; width:150px; background:#dde6ef;}
+.loginboxinput1{border:none; margin-left:120px; margin-top:29px;*margin-top:28px; width:150px; background:#dde6ef;}
+.loginboxinput2{border:none; margin-left:120px; margin-top:31px; width:80px; background:#dde6ef; float:left;}
+.loginboxcode{margin-left:20px; float:left; margin-top:28px;}
+.loginboxicon{ margin-top:22px; margin-left:112px;}

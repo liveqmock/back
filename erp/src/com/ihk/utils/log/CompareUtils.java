@@ -1,0 +1,410 @@
+package com.ihk.utils.log;
+
+import java.io.Serializable;
+import java.math.BigDecimal;
+import java.net.InetAddress;
+import java.util.ArrayList;
+import java.util.Date;
+import java.util.HashMap;
+import java.util.LinkedHashMap;
+import java.util.List;
+import java.util.Map;
+import java.util.Map.Entry;
+import java.util.Properties;
+import java.util.Set;
+
+import javax.servlet.http.HttpServletRequest;
+
+import org.apache.commons.beanutils.PropertyUtils;
+import org.springframework.util.ObjectUtils;
+
+import com.ihk.constanttype.EnumCodeTypeName;
+import com.ihk.property.data.pojo.PropertyUnit;
+import com.ihk.saleunit.log.services.ILogService;
+import com.ihk.utils.CommonUtils;
+import com.ihk.utils.DescUtils;
+import com.ihk.utils.SessionUser;
+import com.ihk.utils.request.HttpRequestUtils;
+import com.ihk.utils.saleunit.PayWayUtils;
+
+/**
+ * 用于比较数据变化的帮助类，主要用于日记采集
+ * 
+ * @author Administrator
+ * 
+ */
+@SuppressWarnings({ "rawtypes", "unchecked", "static-access" })
+public class CompareUtils {
+	/**
+	 * 比较前后的客户变化
+	 * 
+	 * @return
+	 */
+
+	private static ILogService logService;
+
+	private static CompareUtils compareUtils;
+
+	public void init() {
+		compareUtils = this;
+		compareUtils.logService = this.logService;
+	}
+
+	public static String compareCustomerId(String last, String now) {
+		Map<String, List<Integer>> changeMap = change(last, now);
+		StringBuffer change = new StringBuffer();
+		for (Integer i : changeMap.get("add")) {
+			change.append("增加的客户："
+					+ DescUtils.findContractCustomerById(i).getCustomerName()
+					+ ";");
+		}
+		for (Integer i : changeMap.get("delete")) {
+			change.append("删除的客户："
+					+ DescUtils.findContractCustomerById(i).getCustomerName()
+					+ ";");
+		}
+		return change.toString();
+	}
+
+	/**
+	 * 比较套内面积
+	 * 
+	 * @return
+	 */
+	public static String compareUnitInsideArea(BigDecimal nowUnitInsideArea,
+			BigDecimal lastUnitInsideArea) {
+		String unitInsidAreaChange = equals(lastUnitInsideArea,
+				nowUnitInsideArea);
+		if (!"".equals(unitInsidAreaChange)) {
+			return unitInsidAreaChange;
+		}
+		return null;
+	}
+
+	/**
+	 * 比较付款方式，传入id，返回修改的付款类型
+	 * 
+	 * @param last
+	 * @param now
+	 * @param unitId
+	 *            单元Id，用于得到付款类型
+	 * @return
+	 */
+	public static String comparePayType(int last, int now, int unitId) {
+		Map<String, String> selPayType = PayWayUtils
+				.getSelPayWayByUnitId(unitId);
+		if (last != now) {
+			return selPayType.get(last + "") + ">>" + selPayType.get(now + "");
+		}
+		return null;
+	}
+
+	/**
+	 * 比较两个id比否一致，返回增加和删除的id列表
+	 * 
+	 * @param last
+	 * @param now
+	 * @return
+	 */
+	private static Map<String, List<Integer>> change(String last, String now) {
+		Map<String, List<Integer>> changeMap = new HashMap<String, List<Integer>>();
+
+		String[] lastIds = last.split(",");
+		String[] nowIds = now.split(",");
+
+		List<Integer> oldIdList = new ArrayList<Integer>();
+
+		for (int i = 0; i < lastIds.length; i++) {
+			if (!"".equals(lastIds[i])) {
+				oldIdList.add(Integer.parseInt(lastIds[i]));
+			}
+		}
+
+		List<Integer> nowIdList = new ArrayList<Integer>();
+
+		for (int i = 0; i < nowIds.length; i++) {
+			if (!"".equals(nowIds[i])) {
+				nowIdList.add(Integer.parseInt(nowIds[i]));
+			}
+		}
+
+		List<Integer> noChange = new ArrayList<Integer>();
+
+		noChange.addAll(oldIdList);// 复制
+
+		noChange.retainAll(nowIdList);// 交集
+
+		oldIdList.removeAll(noChange);// 删除
+
+		nowIdList.removeAll(noChange);// 新增
+
+		changeMap.put("add", nowIdList);
+
+		changeMap.put("delete", oldIdList);
+
+		return changeMap;
+	}
+
+	/**
+	 * 比较两个对象的属性
+	 * 
+	 * @param o1
+	 *            原数据
+	 * @param o2
+	 *            提交的新数据
+	 * @return 有变化返回 原>>变化后 ，无变化返回""
+	 */
+	public static String equals(Object o1, Object o2) {
+		if (o1 == null && o2 == null)
+			return "";
+		if (o1 instanceof BigDecimal) {
+			BigDecimal b1 = (BigDecimal) o1;
+			BigDecimal b2 = (BigDecimal) o2;
+			if (b1 == null && b2 != null)
+				return "空>>" + b2.toString();
+			else if (b1 != null && b2 == null)
+				return b1.toString() + ">>空";
+			else if (b1.compareTo(b2) != 0)
+				return b1.toString() + ">>" + b2.toString();
+			return "";
+		}
+		if (o1 instanceof Date) {
+			Date d1 = (Date) o1;
+			Date d2 = (Date) o2;
+			if (d1 == null && d2 != null)
+				return "空>>" + CommonUtils.getDateString(d2);// d2.toLocaleString();
+			else if (d1 != null && d2 == null)
+				return CommonUtils.getDateString(d1) + ">>空";
+			else if (d1.compareTo(d2) != 0)
+				return CommonUtils.getDateString(d1) + ">>"
+						+ CommonUtils.getDateString(d2);
+			return "";
+		}
+		if (!ObjectUtils.nullSafeEquals(o1, o2))
+			return (o1 == null ? "空" : o1.toString()) + ">>"
+					+ (o2 == null ? "空" : o2.toString());
+		return "";
+	}
+
+	public static String compareIsRelation(String last, String now) {
+		Map<String, String> type = new HashMap<String, String>();
+		type.put("0", "否");
+		type.put("1", "是");
+		if(!ObjectUtils.nullSafeEquals(last,now)){
+			return type.get(last) + ">>" + type.get(now);
+		}
+		return null;
+	}
+
+	/**
+	 * 比较销售人员的变动
+	 * 
+	 * @param last
+	 * @param now
+	 * @return
+	 */
+	public static String compareSalesId(String last, String now) {
+		Map<String, List<Integer>> changeMap = change(last, now);
+		StringBuffer change = new StringBuffer();
+		List<Integer> addList = changeMap.get("add");
+		List<Integer> deleteList = changeMap.get("delete");
+		if (!addList.isEmpty()) {
+			change.append("增加的销售：");
+			for (Integer i : addList) {
+				change.append(DescUtils.getUserRealName(i) + "、");
+			}
+			change.replace(change.length() - 1, change.length(), "<br/>");
+		}
+		if (!deleteList.isEmpty()) {
+			change.append("删除的销售：");
+			for (Integer i : deleteList) {
+				change.append(DescUtils.getUserRealName(i) + "、");
+			}
+			change.replace(change.length() - 1, change.length(), "<br/>");
+		}
+
+		return change.toString();
+
+	}
+
+	/**
+	 * 创建变动明细
+	 * 
+	 * @param changeMap
+	 * @return
+	 */
+	public static String createChange(Map<String, String> changeMap) {
+		if (changeMap.isEmpty())
+			return null;
+		Set<Entry<String, String>> set = changeMap.entrySet();
+		StringBuffer buffer = new StringBuffer();
+		for (Entry<String, String> entry : set) {
+			buffer.append(entry.getKey() + ":" + entry.getValue() + "<br/>");
+		}
+		buffer.delete(buffer.lastIndexOf("<br/>"), buffer.length());
+		return buffer.toString();
+	}
+
+	public static void initPojoCommonFiled(Serializable pojo) throws Exception {
+
+		Date date = new Date();
+		// TODO 获取计算机信息
+		String str = getIpAddr();
+		int userId = -1;
+		try {
+			userId = SessionUser.getUserId();
+		} catch (NullPointerException e) {
+		}
+
+		PropertyUtils.setProperty(pojo, "isDeleted", CommonUtils.NORMAL);
+		PropertyUtils.setProperty(pojo, "createdId", userId);
+		PropertyUtils.setProperty(pojo, "createdTime", date);
+		PropertyUtils.setProperty(pojo, "modId", userId);
+		PropertyUtils.setProperty(pojo, "modTime", date);
+		PropertyUtils.setProperty(pojo, "computerInformationl", str);
+		PropertyUtils.setProperty(pojo, "modul", "单元");
+	}
+
+	public static String getIpAddr() {
+		HttpServletRequest request = HttpRequestUtils.getRequest();
+		String ip = request.getHeader("x-forwarded-for");
+		if (ip == null || ip.length() == 0 || "unknown".equalsIgnoreCase(ip)) {
+			ip = request.getHeader("Proxy-Client-IP");
+		}
+		if (ip == null || ip.length() == 0 || "unknown".equalsIgnoreCase(ip)) {
+			ip = request.getHeader("WL-Proxy-Client-IP");
+		}
+		if (ip == null || ip.length() == 0 || "unknown".equalsIgnoreCase(ip)) {
+			ip = request.getRemoteAddr();
+		}
+		return "ip = " + ip;
+	}
+
+	/**
+	 * 用于过滤器等无法从ActionContext取request
+	 * @param request
+	 * @return
+	 */
+	public static String getIpAddr(HttpServletRequest request) {
+		String ip = request.getHeader("x-forwarded-for");
+		if (ip == null || ip.length() == 0 || "unknown".equalsIgnoreCase(ip)) {
+			ip = request.getHeader("Proxy-Client-IP");
+		}
+		if (ip == null || ip.length() == 0 || "unknown".equalsIgnoreCase(ip)) {
+			ip = request.getHeader("WL-Proxy-Client-IP");
+		}
+		if (ip == null || ip.length() == 0 || "unknown".equalsIgnoreCase(ip)) {
+			ip = request.getRemoteAddr();
+		}
+		return "ip = " + ip;
+	}
+	
+	
+	/**
+	 * 未测试
+	 * 
+	 * @return
+	 * @throws Exception
+	 */
+	public static String getUsername() throws Exception {
+		InetAddress addr = InetAddress.getLocalHost();
+		String ip = addr.getHostAddress().toString(); // 获取本机ip
+		String hostName = addr.getHostName().toString(); // 获取本机计算机名称
+		System.out.println("本机IP：" + ip + "\n本机名称:" + hostName);
+		Properties props = System.getProperties();
+		String str = props.getProperty("user.name");
+		return str;
+	}
+
+	/**
+	 * 计较朝向
+	 * 
+	 * @param last
+	 * @param now
+	 * @return
+	 */
+	public static String compareOrientation(String last, String now) {
+		if(last!=null)
+		if (!last.equals(now)) {
+			LinkedHashMap selOrientation = null;
+			selOrientation = DescUtils.getInitSelForGuangZhou(selOrientation,
+					EnumCodeTypeName.PROPERTY_ORIENTATION, true);
+			
+			return selOrientation.get(last).toString() + ">>"
+					+ selOrientation.get(now).toString();
+		}
+		return "";
+	}
+
+	/**
+	 * 得到房间的结构
+	 * 
+	 * @param o1
+	 * @param o2
+	 * @return
+	 */
+	public static String compareRoomStructure(PropertyUnit last,
+			PropertyUnit now) {
+		if (last.getRoomNum() != now.getRoomNum()
+				|| last.getHallNum() != now.getHallNum()
+				|| last.getToiletNum() != now.getToiletNum()) {
+			StringBuilder lastSb = new StringBuilder(" 房 厅 卫");
+			StringBuilder nowSb = new StringBuilder(" 房 厅 卫");
+			lastSb.replace(0, 1, last.getRoomNum() + "");
+			lastSb.replace(2, 3, last.getHallNum() + "");
+			lastSb.replace(4, 5, last.getToiletNum() + "");
+			nowSb.replace(0, 1, now.getRoomNum() + "");
+			nowSb.replace(2, 3, now.getHallNum() + "");
+			nowSb.replace(4, 5, now.getToiletNum() + "");
+			return lastSb.toString() + ">>" + nowSb.toString();
+		}
+
+		return "";
+	}
+
+	/**
+	 * 比较产品类型
+	 * 
+	 * @param last
+	 * @param now
+	 * @return
+	 */
+	public static String compareselProductType(String last, String now) {
+
+		if (last.equals(now)) {
+			LinkedHashMap selProductType = null;
+			selProductType = DescUtils.getInitSelForGuangZhou(selProductType,
+					EnumCodeTypeName.PROPERTY_PRODUCT_TYPE, true);
+			return selProductType.get(last).toString() + ">>"
+					+ selProductType.get(now).toString();
+		}
+		return "";
+	}
+
+	/**
+	 * 理论可以，不过速度太慢了。 使用137端口发送udp解析主机的NetBIOS。
+	 * 
+	 * @param ip
+	 * @return
+	 * @throws Exception
+	 */
+	public static String getMac(String ip) throws Exception {
+		GetUserComputerInformationlUtils utils = new GetUserComputerInformationlUtils(
+				ip);
+		return utils.GetRemoteMacAddr();
+	}
+
+	public static String getRequestActionName() {
+		String str = HttpRequestUtils.getRequest().getRequestURI();
+		return null;
+	}
+
+	public static ILogService getLogService() {
+		return logService;
+	}
+
+	public void setLogService(ILogService logService) {
+		CompareUtils.logService = logService;
+	}
+
+}

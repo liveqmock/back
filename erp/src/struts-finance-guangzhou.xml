@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE struts PUBLIC
+    "-//Apache Software Foundation//DTD Struts Configuration 2.0//EN"
+    "http://struts.apache.org/dtds/struts-2.0.dtd">
+<struts>
+
+	<package name="finance_guangzhou" extends="struts-default" namespace="/finance/guangzhou">
+	
+		<!-- 财务列表 -->
+		<action name="searchList" class="com.ihk.finance.action.GuangZhouFinanceSearchListAction" method="searchList">
+			<result name="searchList">/finance/guangzhou/search_list.jsp</result>
+		</action>
+		
+		<!-- 找不到该action -->
+		<action name="searchOrderBy" class="com.ihk.finance.action.GuangZhouAppointSearchAction" method="searchOrderBy">
+			<result name="searchAppoint" >/saleunit_appoint/guangzhou/index.jsp</result>
+		</action>
+		
+		<!-- 财务分析 -->
+		<action name="analysis" class="com.ihk.finance.action.GuangZhouAnalysisSearchListAction" method="analysis">
+			<result name="analysis">/finance/guangzhou/analysis_list.jsp</result>
+		</action>
+		
+		
+	</package>
+	
+</struts>
+
+
+

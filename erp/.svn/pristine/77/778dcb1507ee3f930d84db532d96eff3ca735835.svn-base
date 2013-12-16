@@ -1,0 +1,125 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.ihk.setting.data.IOperLogMapper">
+
+	<resultMap type="OperLog" id="operLogResultMap">
+		<id property="id" column="id" />        
+		<result property="devFlag" column="dev_flag" />
+		<result property="logType" column="log_type" />
+		<result property="logDesc" column="log_desc" />
+		<result property="projectId" column="project_id" />
+		<result property="userId" column="user_id" />
+		<result property="logTime" column="log_time" />
+	</resultMap>
+	
+	<resultMap type="java.util.Map" id="findByUserIdAndLogCountMap">
+		<result property="count" column="count" />
+		<result property="userId" column="user_id" />
+		<result property="logType" column="log_type" />		
+		<result property="projectId" column="project_id" />		
+	</resultMap>
+	<resultMap type="java.util.Map" id="findByProjectIdMap">
+		<result property="count" column="count" />
+		<result property="logType" column="log_type" />		
+		<result property="projectId" column="project_id" />		
+	</resultMap>
+
+	<insert id="addOperLog" parameterType="OperLog">
+		 <selectKey resultType="java.lang.Integer" keyProperty="id" order="AFTER" >
+            SELECT @@IDENTITY
+        </selectKey>		
+		insert into oper_log(
+		dev_flag,
+		log_type,
+		log_desc,
+		project_id,
+		user_id,
+		log_time
+		)
+			VALUES(
+		#{devFlag},
+		#{logType},
+		#{logDesc},
+		#{projectId},
+		#{userId},
+		#{logTime}
+			)
+		
+	</insert>
+	<delete id="deleteOperLog" parameterType="int">
+	update oper_log set is_deleted='1' where id=#{id};
+	</delete>
+	<update id="updateOperLog" parameterType="int">
+	update oper_log set 
+		dev_flag=#{devFlag},
+		log_type=#{logType},
+		log_desc=#{logDesc},
+		project_id=#{projectId},
+		user_id=#{userId},
+		log_time=#{logTime}
+	 where id=#{id}
+	</update>
+	<select id="findOperLogById" resultMap="operLogResultMap">
+	select * from oper_log where id=#{id}
+	</select>
+    
+	<sql id="findWhereCond"> 
+		<where>
+        	
+			 
+           <if test="projectId != null and projectId != '' and projectId !='0'">
+           	project_id = #{projectId}
+            </if> 
+           
+            <if test="searchName != null and searchName != ''">
+        	   and user_id in (select id from user_account where real_name like CONCAT(CONCAT('%', #{searchName}),'%') and is_deleted = '0')
+            </if> 
+            <if test="devFlag != null and devFlag != '' ">
+				and dev_flag = #{devFlag}
+			</if>
+            <if test="date1 != null and date1 != '' ">
+				and log_time &gt;= #{date1}
+			</if>
+			<if test="date2 != null and date2 != ''">
+				and log_time &lt; date_add(#{date2},interval 1 day)
+			</if>
+		</where>
+	</sql>
+	
+	<select id="findOperLogCount" resultType="int" parameterType="com.ihk.setting.data.pojo.OperLogCond">
+		SELECT count(0) from oper_log  
+        <include refid="findWhereCond"/>     
+    </select>
+        
+	<select id="findOperLog" resultMap="operLogResultMap" parameterType="com.ihk.setting.data.pojo.OperLogCond">
+		SELECT * from  oper_log 
+        <include refid="findWhereCond"/> 
+		<if test="topNum > 0">
+			limit #{topNum};
+		</if>
+    </select>
+    
+	<select id="findOperLogPage" resultMap="operLogResultMap" parameterType="com.ihk.setting.data.pojo.OperLogCond">
+		SELECT * from  oper_log 
+        <include refid="findWhereCond"/> 
+    	order by id desc 
+		<if test="startLine >= 0">
+		<if test="pageSize > 0">
+			limit #{startLine},#{pageSize};
+		</if>
+		</if>
+		
+	</select>
+	
+	<select id="findByUserIdAndLogCount" resultMap="findByUserIdAndLogCountMap" parameterType="com.ihk.setting.data.pojo.OperLogCond">
+		select project_id, user_id,count(1) as count,log_type from oper_log  
+        <include refid="findWhereCond"/>
+		group by log_type , user_id ,project_id order by user_id
+	</select>
+	
+	<select id="findByProjectId" resultMap="findByProjectIdMap" parameterType="com.ihk.setting.data.pojo.OperLogCond">
+		select project_id,count(1) as count,log_type from oper_log  
+		 <include refid="findWhereCond"/>
+		group by log_type ,project_id order by project_id
+	</select>
+</mapper>

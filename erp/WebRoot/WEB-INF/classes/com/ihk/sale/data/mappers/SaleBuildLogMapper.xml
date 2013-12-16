@@ -1,0 +1,79 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.ihk.sale.data.ISaleBuildLogMapper">
+
+	<resultMap type="SaleBuildLog" id="saleBuildLogResultMap">
+		<id property="id" column="id" />        
+		<result property="fromDate" column="from_date" />
+		<result property="toDate" column="to_date" />
+		<result property="buildTime" column="build_time" />
+		<result property="isSucess" column="is_sucess" />
+	</resultMap>
+
+	<insert id="addSaleBuildLog" parameterType="SaleBuildLog">
+		 <selectKey resultType="java.lang.Integer" keyProperty="id" order="AFTER" >
+            SELECT @@IDENTITY
+        </selectKey>		
+		insert into sale_build_log(
+		from_date,
+		to_date,
+		build_time,
+		is_sucess
+		)
+			VALUES(
+		#{fromDate},
+		#{toDate},
+		#{buildTime},
+		#{isSucess}
+			)
+		
+	</insert>
+	<delete id="deleteSaleBuildLog" parameterType="int">
+	update sale_build_log set is_deleted='1' where id=#{id};
+	</delete>
+	<update id="updateSaleBuildLog" parameterType="int">
+	update sale_build_log set 
+		from_date=#{fromDate},
+		to_date=#{toDate},
+		build_time=#{buildTime},
+		is_sucess=#{isSucess}
+	 where id=#{id}
+	</update>
+	<select id="findSaleBuildLogById" resultMap="saleBuildLogResultMap">
+	select * from sale_build_log where id=#{id}
+	</select>
+    
+	<sql id="findWhereCond"> 
+		<where>
+        <!--
+			<if test="date1 != null and date1 != ''">
+            </if>    
+            and is_deleted = '0'
+            -->
+		</where>
+	</sql>
+	
+	<select id="findSaleBuildLogCount" resultType="int" parameterType="com.ihk.sale.data.pojo.SaleBuildLogCond">
+		SELECT count(0) from sale_build_log  
+        <include refid="findWhereCond"/>     
+    </select>
+        
+	<select id="findSaleBuildLog" resultMap="saleBuildLogResultMap" parameterType="com.ihk.sale.data.pojo.SaleBuildLogCond">
+		SELECT * from  sale_build_log 
+        <include refid="findWhereCond"/> 
+		<if test="topNum > 0">
+			limit #{topNum};
+		</if>
+    </select>
+    
+	<select id="findSaleBuildLogPage" resultMap="saleBuildLogResultMap" parameterType="com.ihk.sale.data.pojo.SaleBuildLogCond">
+		SELECT * from  sale_build_log 
+        <include refid="findWhereCond"/> 
+    
+		<if test="startLine >= 0">
+		<if test="pageSize > 0">
+			limit #{startLine},#{pageSize};
+		</if>
+		</if>
+	</select>
+</mapper>

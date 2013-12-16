@@ -1,0 +1,7 @@
+# 公司id,用来替代com.ihk.constanttype.ContCompanyId中的硬代码
+HENG_DA=16
+GUANG_ZHOU=17
+# 本地安徽公司的id为20,服务器为21(同步下来后,二者都是21)
+AN_HUI=21
+#东莞公司
+DONGGUAN=28

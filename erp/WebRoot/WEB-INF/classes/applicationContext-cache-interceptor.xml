@@ -1,0 +1,313 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<beans xmlns="http://www.springframework.org/schema/beans"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:aop="http://www.springframework.org/schema/aop"
+	xmlns:tx="http://www.springframework.org/schema/tx" xmlns:jdbc="http://www.springframework.org/schema/jdbc"
+	xmlns:context="http://www.springframework.org/schema/context"
+	xsi:schemaLocation="       
+      http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context-3.0.xsd       
+      http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-3.0.xsd       
+      http://www.springframework.org/schema/jdbc http://www.springframework.org/schema/jdbc/spring-jdbc-3.0.xsd       
+      http://www.springframework.org/schema/tx http://www.springframework.org/schema/tx/spring-tx-3.0.xsd       
+      http://www.springframework.org/schema/aop http://www.springframework.org/schema/aop/spring-aop-3.0.xsd
+      http://www.springframework.org/schema/task http://www.springframework.org/schema/task/spring-task-3.0.xsd"
+      default-autowire="byName">
+	
+	<!-- 1. funcTree -->
+	<bean id="funcTreeMethodInterceptor" class="com.ihk.interceptor.FuncTreeMethodInterceptor"/>
+	
+	<bean id="funcTreeMethodPointCut" class="org.springframework.aop.support.RegexpMethodPointcutAdvisor">
+		<property name="advice">
+			<ref local="funcTreeMethodInterceptor"/>
+		</property>
+		
+		<property name="patterns">
+			<list>
+				<value>.*</value>
+				<!-- 
+				<value>.*add.*</value>
+				<value>.*delete.*</value>
+				<value>.*update.*</value>
+				<value>.*find.*</value>
+				 -->
+			</list>
+		</property>
+		
+	</bean>
+	
+	<!-- FuncTreeServices 中  @Service("funcTreeServices")声明已经不起作用,下面的配置会覆盖该注解 -->
+	<bean id="funcTreeServices" class="org.springframework.aop.framework.ProxyFactoryBean">
+		<property name="interfaces" value="com.ihk.user.data.services.IFuncTreeServices"/> <!-- 可以不指定 -->
+	
+		<property name="target">
+			<bean class="com.ihk.user.data.services.impl.FuncTreeServices"/>  
+		</property>
+		
+		<property name="interceptorNames">
+			<list>
+				<value>funcTreeMethodPointCut</value>
+			</list>
+		</property>
+	</bean>
+	
+	<!-- 2. userRole -->
+	<bean id="userRoleMethodInterceptor" class="com.ihk.interceptor.UserRoleMethodInterceptor">
+		<property name="cache" ref="cacheFactory"/>
+		<!-- 过滤所有的方法,相当于针对该拦截器的缓存没有起作用
+		<property name="exPatternInterceptor" value=".*"/>
+		 -->
+	</bean>
+	
+	<bean id="userRoleMethodPointCut" class="org.springframework.aop.support.RegexpMethodPointcutAdvisor">
+		<property name="advice">
+			<ref local="userRoleMethodInterceptor"/>
+		</property>
+		
+		<property name="patterns">
+			<list>
+				<value>.*</value>
+				<!-- 
+				<value>.*add.*</value>
+				<value>.*delete.*</value>
+				<value>.*update.*</value>
+				<value>.*find.*</value>
+				 -->
+			</list>
+		</property>
+		
+	</bean>
+	
+	<bean id="userRoleServices" class="org.springframework.aop.framework.ProxyFactoryBean">
+		<property name="interfaces" value="com.ihk.user.data.services.IUserRoleServices"/> <!-- 可以不指定 -->
+	
+		<property name="target">
+			<bean class="com.ihk.user.data.services.impl.UserRoleServices"/>  
+		</property>
+		
+		<property name="interceptorNames">
+			<list>
+				<value>userRoleMethodPointCut</value>
+			</list>
+		</property>
+	</bean>
+		
+	<!-- 3. role -->
+	<bean id="roleMethodInterceptor" class="com.ihk.interceptor.RoleMethodInterceptor">
+		<property name="cache" ref="cacheFactory"/>
+	</bean>
+	
+	<bean id="roleMethodPointCut" class="org.springframework.aop.support.RegexpMethodPointcutAdvisor">
+		<property name="advice">
+			<ref local="roleMethodInterceptor"/>
+		</property>
+		
+		<property name="patterns">
+			<list>
+				<value>.*</value>
+			</list>
+		</property>
+		
+	</bean>
+	
+	<bean id="roleServices" class="org.springframework.aop.framework.ProxyFactoryBean">
+		<property name="interfaces" value="com.ihk.user.data.services.IRoleServices"/> <!-- 可以不指定 -->
+	
+		<property name="target">
+			<bean class="com.ihk.user.data.services.impl.RoleServices"/>  
+		</property>
+		
+		<property name="interceptorNames">
+			<list>
+				<value>roleMethodPointCut</value>
+			</list>
+		</property>
+	</bean>
+	
+	<!-- 4. priv -->
+	<bean id="privMethodInterceptor" class="com.ihk.interceptor.PrivMethodInterceptor">
+		<property name="cache" ref="cacheFactory"/>
+	</bean>
+	
+	<bean id="privMethodPointCut" class="org.springframework.aop.support.RegexpMethodPointcutAdvisor">
+		<property name="advice">
+			<ref local="privMethodInterceptor"/>
+		</property>
+		
+		<property name="patterns">
+			<list>
+				<value>.*</value>
+			</list>
+		</property>
+		
+	</bean>
+	
+	<bean id="privServices" class="org.springframework.aop.framework.ProxyFactoryBean">
+		<property name="interfaces" value="com.ihk.user.data.services.IPrivServices"/> <!-- 可以不指定 -->
+	
+		<property name="target">
+			<bean class="com.ihk.user.data.services.impl.PrivServices"/>  
+		</property>
+		
+		<property name="interceptorNames">
+			<list>
+				<value>privMethodPointCut</value>
+			</list>
+		</property>
+	</bean>
+	
+	<!-- 5. role_priv 这个类有点乱,暂不缓存 -->
+	<bean id="rolePrivMethodInterceptor" class="com.ihk.interceptor.RolePrivMethodInterceptor">
+		<property name="cache" ref="cacheFactory"/>
+		<property name="exPatternInterceptor" value=".*"/>
+	</bean>
+	
+	<bean id="rolePrivMethodPointCut" class="org.springframework.aop.support.RegexpMethodPointcutAdvisor">
+		<property name="advice">
+			<ref local="rolePrivMethodInterceptor"/>
+		</property>
+		
+		<property name="patterns">
+			<list>
+				<value>.*</value>
+			</list>
+		</property>
+		
+	</bean>
+	
+	<bean id="rolePrivServices" class="org.springframework.aop.framework.ProxyFactoryBean">
+		<property name="interfaces" value="com.ihk.user.data.services.IRolePrivServices"/> <!-- 可以不指定 -->
+	
+		<property name="target">
+			<bean class="com.ihk.user.data.services.impl.RolePrivServices"/>  
+		</property>
+		
+		<property name="interceptorNames">
+			<list>
+				<value>rolePrivMethodPointCut</value>
+			</list>
+		</property>
+	</bean>
+	
+	<!-- 6. company_project -->
+	<bean id="companyProjectMethodInterceptor" class="com.ihk.interceptor.CompanyProjectMethodInterceptor">
+		<property name="cache" ref="cacheFactory"/>
+		<property name="exPatternInterceptor"><!-- 不拦截的方法部分 -->
+			<list>
+				<value>is.*</value>
+				<value>findCompanyProjectIsExistsByProjectNameAndCompanyId</value>
+				<value>findCompanyProjectsLikeNameAndCompanyId</value>
+				<value>findCompanyProjectForHengDaByParentId</value>
+				<!-- <value>findCompanyProjectById</value> 20130529注释,要注意是否会出问题-->
+			</list>
+		</property>
+	</bean>
+	
+	<bean id="companyProjectMethodPointCut" class="org.springframework.aop.support.RegexpMethodPointcutAdvisor">
+		<property name="advice">
+			<ref local="companyProjectMethodInterceptor"/>
+		</property>
+		
+		<property name="patterns">
+			<list>
+				<value>.*</value>
+				<!-- 
+				<value>.*add.*</value>
+				<value>.*delete.*</value>
+				<value>.*update.*</value>
+				<value>.*find.*</value>
+				 -->
+			</list>
+		</property>
+		
+	</bean>
+	
+	<bean id="companyProjectServices" class="org.springframework.aop.framework.ProxyFactoryBean">
+		<property name="interfaces" value="com.ihk.user.data.services.ICompanyProjectServices"/> <!-- 可以不指定 -->
+	
+		<property name="target">
+			<bean class="com.ihk.user.data.services.impl.CompanyProjectServices"/>  
+		</property>
+		
+		<property name="interceptorNames">
+			<list>
+				<value>companyProjectMethodPointCut</value>
+			</list>
+		</property>
+	</bean>
+	
+	<!-- 7. company -->
+	<bean id="companyMethodInterceptor" class="com.ihk.interceptor.CompanyMethodInterceptor">
+		<property name="cache" ref="cacheFactory"/>
+	</bean>
+	
+	<bean id="companyMethodPointCut" class="org.springframework.aop.support.RegexpMethodPointcutAdvisor">
+		<property name="advice">
+			<ref local="companyMethodInterceptor"/>
+		</property>
+		
+		<property name="patterns">
+			<list>
+				<value>.*</value>
+				<!-- 
+				<value>.*add.*</value>
+				<value>.*delete.*</value>
+				<value>.*update.*</value>
+				<value>.*find.*</value>
+				 -->
+			</list>
+		</property>
+		
+	</bean>
+	
+	<bean id="companyServices" class="org.springframework.aop.framework.ProxyFactoryBean">
+		<property name="interfaces" value="com.ihk.user.data.services.ICompanyServices"/> <!-- 可以不指定 -->
+	
+		<property name="target">
+			<bean class="com.ihk.user.data.services.impl.CompanyServices"/>  
+		</property>
+		
+		<property name="interceptorNames">
+			<list>
+				<value>companyMethodPointCut</value>
+			</list>
+		</property>
+	</bean>
+		
+	<!-- 8. codeTypeServices -->
+	<bean id="codeTypeMethodInterceptor" class="com.ihk.interceptor.CodeTypeMethodInterceptor" >
+		<property name="exPatternInterceptor">
+			<list>
+				<value>findCodeDescByCodeVal</value>
+			</list>
+		</property>
+	</bean>
+	
+	<bean id="codeTypeMethodPointCut" class="org.springframework.aop.support.RegexpMethodPointcutAdvisor">
+		<property name="advice">
+			<ref local="codeTypeMethodInterceptor"/>
+		</property>
+		
+		<property name="patterns">
+			<list>
+				<value>.*</value>
+			</list>
+		</property>
+		
+	</bean>
+	
+	<bean id="codeTypeServices" class="org.springframework.aop.framework.ProxyFactoryBean">
+	
+		<property name="target">
+			<bean class="com.ihk.setting.data.services.impl.CodeTypeServices"/>  
+		</property>
+		
+		<property name="interceptorNames">
+			<list>
+				<value>codeTypeMethodPointCut</value>
+			</list>
+		</property>
+	</bean>
+	
+	<!-- 9.customer_focus customer_known 暂不缓存-->
+
+</beans>

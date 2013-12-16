@@ -1,0 +1,132 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.ihk.saleunit.data.IAppointBillMapper">
+
+	<resultMap type="AppointBill" id="appointBillResultMap">
+		<id property="id" column="id" />        
+		<result property="appointId" column="appoint_id" />
+		<result property="unitId" column="unit_id" />
+		<result property="payMan" column="pay_man" />
+		<result property="writerId" column="writer_id" />
+		<result property="payDate" column="pay_date" />
+		<result property="billType" column="bill_type" />
+		<result property="batchNo" column="batch_no" />
+		<result property="billNo" column="bill_no" />
+		<result property="approvalUserid" column="approval_userid" />
+		<result property="approvalDate" column="approval_date" />
+		<result property="writeDate" column="write_date" />
+		<result property="remark" column="remark" />
+		<result property="isDeleted" column="is_deleted" />
+		<result property="createdId" column="created_id" />
+		<result property="createdTime" column="created_time" />
+		<result property="modId" column="mod_id" />
+		<result property="modTime" column="mod_time" />
+	</resultMap>
+
+	<insert id="addAppointBill" parameterType="AppointBill">
+		 <selectKey resultType="java.lang.Integer" keyProperty="id" order="AFTER" >
+            SELECT @@IDENTITY
+        </selectKey>		
+		insert into appoint_bill(
+		appoint_id,
+		unit_id,
+		pay_man,
+		writer_id,
+		pay_date,
+		bill_type,
+		batch_no,
+		bill_no,
+		approval_userid,
+		approval_date,
+		write_date,
+		remark,
+		is_deleted,
+		created_id,
+		created_time,
+		mod_id,
+		mod_time
+		)
+			VALUES(
+		#{appointId},
+		#{unitId},
+		#{payMan},
+		#{writerId},
+		#{payDate},
+		#{billType},
+		#{batchNo},
+		#{billNo},
+		#{approvalUserid},
+		#{approvalDate},
+		#{writeDate},
+		#{remark},
+		#{isDeleted},
+		#{createdId},
+		#{createdTime},
+		#{modId},
+		#{modTime}
+			)
+		
+	</insert>
+	<delete id="deleteAppointBill" parameterType="int">
+	update appoint_bill set is_deleted='1' where id=#{id};
+	</delete>
+	<update id="updateAppointBill" parameterType="int">
+	update appoint_bill set 
+		appoint_id=#{appointId},
+		unit_id=#{unitId},
+		pay_man=#{payMan},
+		writer_id=#{writerId},
+		pay_date=#{payDate},
+		bill_type=#{billType},
+		batch_no=#{batchNo},
+		bill_no=#{billNo},
+		approval_userid=#{approvalUserid},
+		approval_date=#{approvalDate},
+		write_date=#{writeDate},
+		remark=#{remark},
+		is_deleted=#{isDeleted},
+		created_id=#{createdId},
+		created_time=#{createdTime},
+		mod_id=#{modId},
+		mod_time=#{modTime}
+	 where id=#{id}
+	</update>
+	<select id="findAppointBillById" resultMap="appointBillResultMap">
+	select * from appoint_bill where id=#{id}
+	</select>
+    
+	<sql id="findWhereCond"> 
+		<where>
+            is_deleted = '0'
+		</where>
+	</sql>
+	
+	<select id="findAppointBillCount" resultType="int" parameterType="com.ihk.saleunit.data.pojo.AppointBillCond">
+		SELECT count(0) from appoint_bill  
+        <include refid="findWhereCond"/>     
+    </select>
+        
+	<select id="findAppointBill" resultMap="appointBillResultMap" parameterType="com.ihk.saleunit.data.pojo.AppointBillCond">
+		SELECT * from  appoint_bill 
+        <include refid="findWhereCond"/> 
+		<if test="topNum > 0">
+			limit #{topNum};
+		</if>
+    </select>
+    
+	<select id="findAppointBillPage" resultMap="appointBillResultMap" parameterType="com.ihk.saleunit.data.pojo.AppointBillCond">
+		SELECT * from  appoint_bill 
+        <include refid="findWhereCond"/> 
+    
+		<if test="startLine >= 0">
+		<if test="pageSize > 0">
+			limit #{startLine},#{pageSize};
+		</if>
+		</if>
+	</select>
+	
+	<select id="findAppointBillByAppointId" resultMap="appointBillResultMap">
+		SELECT * from  appoint_bill where appoint_id = #{appointId}  and is_deleted = '0' 
+	</select>
+	
+</mapper>

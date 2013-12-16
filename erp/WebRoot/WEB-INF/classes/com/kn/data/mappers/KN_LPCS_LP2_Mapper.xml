@@ -1,0 +1,50 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.kn.data.IKN_LPCS_LP2_Mapper">
+	<resultMap type="KN_LPCS_LP2" id="knLpcsLp2ResultMap">
+		<id property="楼盘id" column="楼盘ID" />
+		<result property="名称" column="名称" />
+		<result property="顺序" column="顺序" />
+		<result property="上级楼盘id" column="上级楼盘ID" />
+		<result property="备注" column="备注" />
+		<result property="dataLab" column="DATA_LAB" />
+		<result property="dbId" column="DB_ID" />
+	</resultMap>
+
+	<select id="findKN_LPCS_LP2" resultMap="knLpcsLp2ResultMap"
+		parameterType="com.kn.data.pojo.KN_LPCS_LP2_Cond">
+		SELECT * from climb.楼盘初始_楼盘2
+		<where>
+			<if test="上级楼盘ID为空 == true">
+				and 上级楼盘ID is null
+		</if>
+			<if test="上级楼盘ID > 0">
+				and 上级楼盘ID = #{上级楼盘ID}
+		</if>
+			<if test="dbId > 0">
+				and db_id = #{dbId}
+		</if>
+		</where>
+	</select>
+
+	<select id="findKN_LPCS_LP2_byId" resultMap="knLpcsLp2ResultMap" parameterType="int">
+		SELECT * from climb.楼盘初始_楼盘2 t where t.楼盘ID = #{id}
+    </select>
+
+	<select id="findKN_LPCS_LP2_4ceng" resultMap="knLpcsLp2ResultMap">
+		SELECT * from climb.楼盘初始_楼盘2 t where t.上级楼盘ID in (
+		SELECT t.楼盘ID from climb.楼盘初始_楼盘2 t where t.上级楼盘ID in (
+		SELECT t.楼盘ID from climb.楼盘初始_楼盘2 t where t.上级楼盘ID in (
+		SELECT t.楼盘ID from climb.楼盘初始_楼盘2 t where t.上级楼盘ID is null
+		)))
+    </select>
+    
+    <select id="findKN_LPCS_LP2_5ceng" resultMap="knLpcsLp2ResultMap">
+		SELECT * from climb.楼盘初始_楼盘2 t where t.上级楼盘ID in (
+		SELECT t.楼盘ID from climb.楼盘初始_楼盘2 t where t.上级楼盘ID in (
+		SELECT t.楼盘ID from climb.楼盘初始_楼盘2 t where t.上级楼盘ID in (
+		SELECT t.楼盘ID from climb.楼盘初始_楼盘2 t where t.上级楼盘ID in (
+		SELECT t.楼盘ID from climb.楼盘初始_楼盘2 t where t.上级楼盘ID is null
+		))))
+    </select>
+</mapper>

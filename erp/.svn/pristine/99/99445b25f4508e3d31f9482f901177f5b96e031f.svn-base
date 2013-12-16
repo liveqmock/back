@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE struts PUBLIC
+    "-//Apache Software Foundation//DTD Struts Configuration 2.0//EN"
+    "http://struts.apache.org/dtds/struts-2.0.dtd">
+<struts>
+  
+	<package name="saleunit_scene_guangzhou" extends="struts-base" namespace="/saleunit/scene/guangzhou">
+	
+		<!-- 现场销控情况 -->
+		<action name="layoutScene"  class="com.ihk.saleunit.action.new_.GuangZhouAppointNewLeftAction" method="layout">
+			<result name="layout">/saleunit_new/scene/layout_scene.jsp</result>
+		</action>
+		
+		<action name="getUnit" class="com.ihk.saleunit.action.new_.GuangZhouSceneAction" method="getUnit">
+			<result name="getUnit">/saleunit_new/scene/unit.jsp</result>
+		</action>
+		<action name="getAreaUnit" class="com.ihk.saleunit.action.new_.GuangZhouSceneAction" method="getAreaUnit">
+			<result name="getAreaUnit">/saleunit_new/scene/unit.jsp</result>
+		</action>
+		<action name="getGroup" class="com.ihk.saleunit.action.new_.GuangZhouSceneAction" method="getGroup">
+			<result name="getGroup">/saleunit_new/scene/unit.jsp</result>
+		</action>
+	
+	</package>
+	
+</struts>
+
+
+

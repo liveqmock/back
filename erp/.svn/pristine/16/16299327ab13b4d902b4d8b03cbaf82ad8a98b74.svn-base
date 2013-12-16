@@ -1,0 +1,186 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.kn.data.IKNLOG_XSGL_RGS_Mapper">
+
+	<resultMap type="KNLOG_XSGL_RGS" id="KNLOG_XSGL_RGSResultMap">
+		<id property="id" column="id" />        
+		<result property="认购书id" column="认购书ID" />
+		<result property="认购书号" column="认购书号" />
+		<result property="业主姓名" column="业主姓名" />
+		<result property="电话" column="电话" />
+		<result property="email" column="EMAIL" />
+		<result property="地址" column="地址" />
+		<result property="邮编" column="邮编" />
+		<result property="身份证号" column="身份证号" />
+		<result property="国籍" column="国籍" />
+		<result property="认购日期" column="认购日期" />
+		<result property="售楼处" column="售楼处" />
+		<result property="折扣批准人" column="折扣批准人" />
+		<result property="成交总价" column="成交总价" />
+		<result property="成交币种" column="成交币种" />
+		<result property="汇率" column="汇率" />
+		<result property="本位币成交总价" column="本位币成交总价" />
+		<result property="付款方式" column="付款方式" />
+		<result property="付款方式种类" column="付款方式种类" />
+		<result property="备注" column="备注" />
+		<result property="订房截止日期" column="订房截止日期" />
+		<result property="状态" column="状态" />
+		<result property="单元id" column="单元ID" />
+		<result property="审核" column="审核" />
+		<result property="生日" column="生日" />
+		<result property="服务佣金" column="服务佣金" />
+		<result property="购买方式" column="购买方式" />
+		<result property="rgTime" column="RG_TIME" />
+		<result property="delInterval" column="DEL_INTERVAL" />
+		<result property="附加总价" column="附加总价" />
+		<result property="附加价原因" column="附加价原因" />
+		<result property="优惠减价" column="优惠减价" />
+		<result property="dataLab" column="DATA_LAB" />
+		<result property="创建人" column="创建人" />
+		<result property="创建时间" column="创建时间" />
+		<result property="修改人" column="修改人" />
+		<result property="修改时间" column="修改时间" />
+		<result property="折扣id" column="折扣ID" />
+		<result property="价格id" column="价格ID" />
+		<result property="移动电话" column="移动电话" />
+		<result property="折扣计算方式" column="折扣计算方式" />
+		<result property="原价" column="原价" />
+		<result property="预约签合同时间" column="预约签合同时间" />
+		<result property="认购交楼日期" column="认购交楼日期" />
+		<result property="其他证件名称" column="其他证件名称" />
+		<result property="其他证件号码" column="其他证件号码" />
+		<result property="认购时间" column="认购时间" />
+		<result property="折扣规则id" column="折扣规则ID" />
+		<result property="身份证地址" column="身份证地址" />
+		<result property="销售代理商" column="销售代理商" />
+		<result property="打印次数" column="打印次数" />
+	</resultMap>
+
+	<insert id="addKNLOG_XSGL_RGS" parameterType="KNLOG_XSGL_RGS">
+		 <selectKey resultType="java.lang.Integer" keyProperty="id" order="AFTER" >
+            SELECT @@IDENTITY
+        </selectKey>		
+		insert into knlog_xsgl_rgs(
+		认购书ID,
+		认购书号,
+		业主姓名,
+		电话,
+		EMAIL,
+		地址,
+		邮编,
+		身份证号,
+		国籍,
+		认购日期,
+		售楼处,
+		折扣批准人,
+		成交总价,
+		成交币种,
+		汇率,
+		本位币成交总价,
+		付款方式,
+		付款方式种类,
+		备注,
+		订房截止日期,
+		状态,
+		单元ID,
+		审核,
+		生日,
+		服务佣金,
+		购买方式,
+		RG_TIME,
+		DEL_INTERVAL,
+		附加总价,
+		附加价原因,
+		优惠减价,
+		DATA_LAB,
+		创建人,
+		创建时间,
+		修改人,
+		修改时间,
+		折扣ID,
+		价格ID,
+		移动电话,
+		折扣计算方式,
+		原价,
+		预约签合同时间,
+		认购交楼日期,
+		其他证件名称,
+		其他证件号码,
+		认购时间,
+		折扣规则ID,
+		身份证地址,
+		销售代理商,
+		打印次数
+		)
+			VALUES(
+		#{认购书id},
+		#{认购书号},
+		#{业主姓名},
+		#{电话},
+		#{email},
+		#{地址},
+		#{邮编},
+		#{身份证号},
+		#{国籍},
+		#{认购日期},
+		#{售楼处},
+		#{折扣批准人},
+		#{成交总价},
+		#{成交币种},
+		#{汇率},
+		#{本位币成交总价},
+		#{付款方式},
+		#{付款方式种类},
+		#{备注},
+		#{订房截止日期},
+		#{状态},
+		#{单元id},
+		#{审核},
+		#{生日},
+		#{服务佣金},
+		#{购买方式},
+		#{rgTime},
+		#{delInterval},
+		#{附加总价},
+		#{附加价原因},
+		#{优惠减价},
+		#{dataLab},
+		#{创建人},
+		#{创建时间},
+		#{修改人},
+		#{修改时间},
+		#{折扣id},
+		#{价格id},
+		#{移动电话},
+		#{折扣计算方式},
+		#{原价},
+		#{预约签合同时间},
+		#{认购交楼日期},
+		#{其他证件名称},
+		#{其他证件号码},
+		#{认购时间},
+		#{折扣规则id},
+		#{身份证地址},
+		#{销售代理商},
+		#{打印次数}
+			)
+		
+	</insert>
+	<select id="findKNLOG_XSGL_RGSById" resultMap="KNLOG_XSGL_RGSResultMap">
+	select * from knlog_xsgl_rgs where id=#{id}
+	</select>
+    
+	<sql id="findWhereCond"> 
+		<where>
+		</where>
+	</sql>
+        
+	<select id="findKNLOG_XSGL_RGS" resultMap="KNLOG_XSGL_RGSResultMap">
+		SELECT * from  knlog_xsgl_rgs 
+        <include refid="findWhereCond"/> 
+		<if test="topNum > 0">
+			limit #{topNum};
+		</if>
+    </select>
+    
+</mapper>

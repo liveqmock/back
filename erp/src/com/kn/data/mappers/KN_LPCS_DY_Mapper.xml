@@ -1,0 +1,64 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.kn.data.IKN_LPCS_DY_Mapper">
+	<resultMap type="KN_LPCS_DY" id="kN_LPCS_DY_ResultMap">
+		<id property="单元id" column="单元ID" />        
+		<result property="楼梯id" column="楼梯ID" />
+		<result property="单元编号" column="单元编号" />
+		<result property="楼层" column="楼层" />
+		<result property="楼阁id" column="楼阁ID" />
+		<result property="房号" column="房号" />
+		<result property="规格" column="规格" />
+		<result property="套内面积" column="套内面积" />
+		<result property="建筑面积" column="建筑面积" />
+		<result property="朝向" column="朝向" />
+		<result property="功能" column="功能" />
+		<result property="总价" column="总价" />
+		<result property="币种" column="币种" />
+		<result property="附加面积" column="附加面积" />
+		<result property="装修标准" column="装修标准" />
+		<result property="备注" column="备注" />
+		<result property="状态" column="状态" />
+		<result property="图片id" column="图片ID" />
+		<result property="审核" column="审核" />
+		<result property="sell1" column="SELL1" />
+		<result property="sell2" column="SELL2" />
+		<result property="sell3" column="SELL3" />
+		<result property="sell4" column="SELL4" />
+		<result property="price" column="PRICE" />
+		<result property="opendatetime" column="OPENDATETIME" />
+		<result property="dataLab" column="DATA_LAB" />
+		<result property="户型" column="户型" />
+		<result property="显示楼层" column="显示楼层" />
+		<result property="分摊面积" column="分摊面积" />
+		<result property="作废时间" column="作废时间" />
+		<result property="启用时间" column="启用时间" />
+		<result property="创建人" column="创建人" />
+		<result property="创建时间" column="创建时间" />
+		<result property="修改人" column="修改人" />
+		<result property="修改时间" column="修改时间" />
+	</resultMap> 
+
+	<select id="findKN_LPCS_DY" resultMap="kN_LPCS_DY_ResultMap" parameterType="com.kn.data.pojo.KN_LPCS_DY_Cond">
+		SELECT * from  climb.楼盘初始_单元  
+		<where>
+		<if test="楼阁ID > 0 ">
+			楼阁ID = #{楼阁ID}
+		</if>
+		<if test="状态 !=null and 状态 != '' ">
+			状态 = #{状态}
+		</if>
+		</where>	
+    </select>
+    
+    <select id="findKN_LPCS_DY_xqmj" resultType="java.util.Map">
+		 select tt.客户ID id,tt.值 val from climb.客户关系管理_调查项目_属性 t,climb.客户关系管理_调查项目_值 tt
+ 		 where t.字段名称 like '%面积%' and t.字段id = tt.字段id
+    </select>
+    <select id="findKN_LPCS_DY_xqjg" resultType="java.util.Map">
+		 select tt.客户ID id,tt.值 val from climb.客户关系管理_调查项目_属性 t,climb.客户关系管理_调查项目_值 tt
+ 		 where  t.字段id = tt.字段id
+    	 and (t.字段名称 like '%价%' and t.字段名称 not like '%单%')
+    </select>
+    
+</mapper>

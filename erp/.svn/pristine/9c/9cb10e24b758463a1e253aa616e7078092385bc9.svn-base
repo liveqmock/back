@@ -1,0 +1,168 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.ihk.saleunit.data.IReportDefineColumnMapper">
+
+	<resultMap type="ReportDefineColumn" id="reportDefineColumnResultMap">
+		<id property="id" column="id" />        
+		<result property="typeId" column="type_id" />
+		<result property="showName" column="show_name" />
+		<result property="methodSql" column="method_sql" />
+		<result property="orderIndex" column="order_index" />
+		<result property="isDeleted" column="is_deleted" />
+		<result property="createdId" column="created_id" />
+		<result property="createdTime" column="created_time" />
+		<result property="modId" column="mod_id" />
+		<result property="modTime" column="mod_time" />
+	</resultMap>
+	
+	<resultMap type="ReportDefineColumn" id="reportDefineColumnTypeResultMap">
+		<id property="id" column="id" />        
+		<result property="typeId" column="type_id" />
+		<result property="showName" column="show_name" />
+		<result property="methodSql" column="method_sql" />
+		<result property="orderIndex" column="order_index" />
+		<result property="isDeleted" column="is_deleted" />
+		<result property="createdId" column="created_id" />
+		<result property="createdTime" column="created_time" />
+		<result property="modId" column="mod_id" />
+		<result property="modTime" column="mod_time" />
+		<result property="typeName" column="type_name" />
+	</resultMap>
+	
+	<resultMap type="java.util.Map" id="ReportDefineColumnAndTypeMap">
+		<id property="id" column="id" />
+		<result property="showName" column="show_name" />
+		<result property="typeName" column="type_name" />
+		<result property="companyId" column="company_id" />
+		<result property="projectId" column="project_id" />
+ 	</resultMap>
+
+	<insert id="addReportDefineColumn" parameterType="ReportDefineColumn">
+		 <selectKey resultType="java.lang.Integer" keyProperty="id" order="AFTER" >
+            SELECT @@IDENTITY
+        </selectKey>		
+		insert into report_define_column(
+		type_id,
+		show_name,
+		method_sql,
+		order_index,
+		is_deleted,
+		created_id,
+		created_time,
+		mod_id,
+		mod_time
+		)
+			VALUES(
+		#{typeId},
+		#{showName},
+		#{methodSql},
+		#{orderIndex},
+		#{isDeleted},
+		#{createdId},
+		#{createdTime},
+		#{modId},
+		#{modTime}
+			)
+		
+	</insert>
+	<delete id="deleteReportDefineColumn" parameterType="com.ihk.utils.base.PojoDeleteCond">
+	update report_define_column set is_deleted='1', mod_id=#{modId}, mod_time=#{modTime} where id=#{id};
+	</delete>
+	<update id="updateReportDefineColumn" parameterType="int">
+	update report_define_column set 
+		type_id=#{typeId},
+		show_name=#{showName},
+		method_sql=#{methodSql},
+		order_index=#{orderIndex},
+		mod_id=#{modId},
+		mod_time=#{modTime}
+	 where id=#{id}
+	</update>
+	<select id="findReportDefineColumnById" resultMap="reportDefineColumnResultMap">
+	select * from report_define_column where id=#{id}
+	</select>
+    
+	<sql id="findWhereCond"> 
+		<where>
+			<if test="typeIds !=null and typeIds.size() > 0">  
+	            and type_id in
+	            <foreach  
+	                collection="typeIds"  
+	                item="tId"  
+	                open="("  
+	                separator=","  
+	                close=")">  
+	                #{tId}  
+	            </foreach>  
+	        </if> 
+            and is_deleted = '0'
+        <!--
+			<if test="date1 != null and date1 != ''">
+            </if>    
+            -->
+		</where>
+	</sql>
+	
+	<select id="findReportDefineColumnCount" resultType="int" parameterType="com.ihk.saleunit.data.pojo.ReportDefineColumnCond">
+		SELECT count(0) from report_define_column  
+        <include refid="findWhereCond"/>     
+    </select>
+        
+	<select id="findReportDefineColumn" resultMap="reportDefineColumnResultMap" parameterType="com.ihk.saleunit.data.pojo.ReportDefineColumnCond">
+		SELECT * from  report_define_column 
+        <include refid="findWhereCond"/> 
+		<if test="topNum > 0">
+			limit #{topNum};
+		</if>
+    </select>
+    
+	<select id="findReportDefineColumnForY" resultMap="reportDefineColumnTypeResultMap" parameterType="com.ihk.saleunit.data.pojo.ReportDefineColumnCond">
+		select a.*,b.type_name from report_define_column a inner join report_define_type b where b.report_name = #{reportName} and a.type_id=b.id 		
+			<if test="projectId != null and projectId != ''">
+			and b.project_id=#{projectId}  
+            </if> 
+            <if test="companyId != null and companyId != ''">
+			and b.company_id=#{companyId}  
+            </if> 
+		and a.is_deleted='0' 
+		order by b.order_index,a.order_index
+    </select>
+    
+	<select id="findReportDefineColumnPage" resultMap="reportDefineColumnResultMap" parameterType="com.ihk.saleunit.data.pojo.ReportDefineColumnCond">
+		SELECT * from  report_define_column 
+        <include refid="findWhereCond"/> 
+    
+		<if test="startLine >= 0">
+		<if test="pageSize > 0">
+			limit #{startLine},#{pageSize};
+		</if>
+		</if>
+	</select>
+	
+	<select id="findReportDefineColumnAndType" resultMap="ReportDefineColumnAndTypeMap" parameterType="com.ihk.saleunit.data.pojo.ReportDefineColumnCond" >
+		select c.id,c.show_name,t.type_name,t.company_id,t.project_id from report_define_column c , report_define_type t,company_project p WHERE  c.type_id=t.id  AND  t.project_id=p.id
+		<if test="projectId != null and projectId != ''">
+			and t.project_id=#{projectId}  
+            </if> 
+            <if test="companyId != null and companyId != ''">
+			and t.company_id=#{companyId}  
+            </if>
+            <if test="reportName != null and reportName != ''">
+			and t.report_name=#{reportName}  
+            </if>
+            <if test="projectIds!=null and projectIds.size() > 0">  
+	            and t.project_id in
+	            <foreach  
+	                collection="projectIds"  
+	                item="projectId"  
+	                open="("  
+	                separator=","  
+	                close=")">  
+	                #{projectId}  
+	            </foreach>  
+        	</if> 
+		and c.is_deleted='0' 
+	</select>
+	
+	
+</mapper>

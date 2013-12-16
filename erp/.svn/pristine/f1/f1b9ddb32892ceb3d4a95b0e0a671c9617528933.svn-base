@@ -1,0 +1,126 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.ihk.saleunit.data.IChangeUnitMapper">
+
+	<resultMap type="ChangeUnit" id="changeUnitResultMap">
+		<id property="id" column="id" />        
+		<result property="confirmType" column="confirm_type" />
+		<result property="mainId" column="main_id" />
+		<result property="unitId1" column="unit_id1" />
+		<result property="unitId2" column="unit_id2" />
+		<result property="resonType" column="reson_type" />
+		<result property="handFee" column="hand_fee" />
+		<result property="resonDesc" column="reson_desc" />
+		<result property="applyUser" column="apply_user" />
+		<result property="applyDate" column="apply_date" />
+		<result property="isDeleted" column="is_deleted" />
+		<result property="createdId" column="created_id" />
+		<result property="createdTime" column="created_time" />
+		<result property="modId" column="mod_id" />
+		<result property="modTime" column="mod_time" />
+	</resultMap>
+
+	<insert id="addChangeUnit" parameterType="ChangeUnit">
+		 <selectKey resultType="java.lang.Integer" keyProperty="id" order="AFTER" >
+            SELECT @@IDENTITY
+        </selectKey>		
+		insert into change_unit(
+		confirm_type,
+		main_id,
+		unit_id1,
+		unit_id2,
+		reson_type,
+		hand_fee,
+		reson_desc,
+		apply_user,
+		apply_date,
+		is_deleted,
+		created_id,
+		created_time,
+		mod_id,
+		mod_time
+		)
+			VALUES(
+		#{confirmType},
+		#{mainId},
+		#{unitId1},
+		#{unitId2},
+		#{resonType},
+		#{handFee},
+		#{resonDesc},
+		#{applyUser},
+		#{applyDate},
+		#{isDeleted},
+		#{createdId},
+		#{createdTime},
+		#{modId},
+		#{modTime}
+			)
+		
+	</insert>
+	<delete id="deleteChangeUnit" parameterType="int">
+	update change_unit set is_deleted='1' where id=#{id};
+	</delete>
+	<update id="updateChangeUnit" parameterType="int">
+	update change_unit set 
+		confirm_type=#{confirmType},
+		main_id=#{mainId},
+		unit_id1=#{unitId1},
+		unit_id2=#{unitId2},
+		reson_type=#{resonType},
+		hand_fee=#{handFee},
+		reson_desc=#{resonDesc},
+		apply_user=#{applyUser},
+		apply_date=#{applyDate},
+		is_deleted=#{isDeleted},
+		created_id=#{createdId},
+		created_time=#{createdTime},
+		mod_id=#{modId},
+		mod_time=#{modTime}
+	 where id=#{id}
+	</update>
+	<select id="findChangeUnitById" resultMap="changeUnitResultMap">
+	select * from change_unit where id=#{id}
+	</select>
+    
+	<sql id="findWhereCond"> 
+		<where>
+        <!--
+			<if test="date1 != null and date1 != ''">
+            </if>    
+            and is_deleted = '0'
+            -->
+           <if test="mainId != 0">
+           	and main_id = #{mainId}
+            </if>   
+             <if test="confirmType != null and confirmType != ''">
+           	and confirm_type = #{confirmType}
+            </if>  
+            and is_deleted = '0'
+		</where>
+	</sql>
+	
+	<select id="findChangeUnitCount" resultType="int" parameterType="com.ihk.saleunit.data.pojo.ChangeUnitCond">
+		SELECT count(0) from change_unit  
+        <include refid="findWhereCond"/>     
+    </select>
+        
+	<select id="findChangeUnit" resultMap="changeUnitResultMap" parameterType="com.ihk.saleunit.data.pojo.ChangeUnitCond">
+		SELECT * from  change_unit 
+        <include refid="findWhereCond"/> 
+		<if test="topNum > 0">
+			limit #{topNum};
+		</if>
+    </select>
+    
+	<select id="findChangeUnitPage" resultMap="changeUnitResultMap" parameterType="com.ihk.saleunit.data.pojo.ChangeUnitCond">
+		SELECT * from  change_unit 
+        <include refid="findWhereCond"/> 
+    
+		<if test="startLine >= 0">
+		<if test="pageSize > 0">
+			limit #{startLine},#{pageSize};
+		</if>
+		</if>
+	</select>
+</mapper>

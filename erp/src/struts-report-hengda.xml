@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE struts PUBLIC
+    "-//Apache Software Foundation//DTD Struts Configuration 2.0//EN"
+    "http://struts.apache.org/dtds/struts-2.0.dtd">
+<struts>
+	
+	<package name="report_hengda" extends="json-default" >
+		<action name="report_hengda!*" class="com.ihk.sale.action.SaleReportAction" >
+			
+			<result name="salereportlist" >/hengda/sale/sale_report_list.jsp</result>
+			<result name="salereporttargetlist" >/hengda/sale/sale_report_list.jsp</result>
+			<result name="testResult" >/hengda/sale/testResult.jsp</result>
+		</action>
+		
+	</package>
+
+</struts>

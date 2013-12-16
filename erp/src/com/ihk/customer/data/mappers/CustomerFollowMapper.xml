@@ -1,0 +1,678 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.ihk.customer.data.ICustomerFollowMapper">
+
+	<resultMap type="CustomerFollow" id="customerFollowResultMap">
+		<id property="id" column="customer_follow.id" />        
+		<result property="customerId" column="customer_id" />
+		<result property="followType" column="follow_type" />
+		<result property="followUser" column="follow_user" />
+		<result property="followDesc" column="follow_desc" />
+		<result property="isDeleted" column="is_deleted" />
+		<result property="createdId" column="created_id" />
+		<result property="createdTime" column="created_time" />
+		<result property="modId" column="mod_id" />
+		<result property="modTime" column="mod_time" />
+	</resultMap>
+	<resultMap type="java.lang.Integer" id="followCustomerId">
+		<id property="customer_id" column="customer_id" /> 
+	</resultMap>
+	<resultMap type="java.util.Map" id="companyPhoneVisitNum">
+		<result property="companyId" column="company_id" />
+		<result property="companyName" column="company_name" />
+		<result property="phoneCount" column="phone_count" />
+		<result property="visitCount" column="visit_count" />
+		<!-- 追加 -->
+		<result property="purchasedCount" column="purchased_count" /><!-- 已购买次数 -->
+		<result property="phone2visitCount" column="phone2visit_count" /><!-- 电转访 次数 -->
+		<result property="identificationChipsCount" column="identificationChips_count" /><!-- 认筹 -->
+		<result property="initiationCount" column="initiation_count" /><!-- 入会 -->
+		<result property="homeExhibitionsWillCount" column="homeExhibitionsWill_count" /><!-- 房展会 -->
+		<result property="externalExhibitionCount" column="externalExhibitionWill_count" /><!-- 外展场 -->
+		<result property="leafletCount" column="leaflet_count" /><!-- 派单 -->
+	</resultMap>
+	<resultMap type="java.util.Map" id="projectPhoneVisitNum">
+		<result property="projectId" column="project_id" />
+		<result property="projectName" column="project_name" />
+		<result property="phoneCount" column="phone_count" />
+		<result property="visitCount" column="visit_count" />
+		<!-- 追加 -->
+		<result property="purchasedCount" column="purchased_count" /><!-- 已购买次数 -->
+		<result property="phone2visitCount" column="phone2visit_count" /><!-- 电转访 次数 -->
+		<result property="identificationChipsCount" column="identificationChips_count" /><!-- 认筹 -->
+		<result property="initiationCount" column="initiation_count" /><!-- 入会 -->
+		<result property="homeExhibitionsWillCount" column="homeExhibitionsWill_count" /><!-- 房展会 -->
+		<result property="externalExhibitionCount" column="externalExhibitionWill_count" /><!-- 外展场 -->
+		<result property="leafletCount" column="leaflet_count" /><!-- 派单 -->
+	</resultMap>
+	<resultMap type="java.util.Map" id="userPhoneVisitNum">
+		<result property="projectId" column="project_id" />
+		<result property="projectName" column="project_name" />
+		<result property="userId" column="user_id" />
+		<result property="realName" column="real_name" />
+		<result property="phoneCount" column="phone_count" />
+		<result property="visitCount" column="visit_count" />
+		<!-- 追加 -->
+		<result property="purchasedCount" column="purchased_count" /><!-- 已购买次数 -->
+		<result property="phone2visitCount" column="phone2visit_count" /><!-- 电转访 次数 -->
+		<result property="identificationChipsCount" column="identificationChips_count" /><!-- 认筹 -->
+		<result property="initiationCount" column="initiation_count" /><!-- 入会 -->
+		<result property="homeExhibitionsWillCount" column="homeExhibitionsWill_count" /><!-- 房展会 -->
+		<result property="externalExhibitionCount" column="externalExhibitionWill_count" /><!-- 外展场 -->
+		<result property="leafletCount" column="leaflet_count" /><!-- 派单 -->
+	</resultMap>
+	
+	<!--跟进客户信息-->
+	<resultMap type="java.util.Map" id="CustomerList">
+		<id property="id" column="id" />  
+		<result property="customerName" column="customer_name" />
+		<result property="homePhone" column="home_phone" />
+		<result property="phone" column="phone" />
+		<result property="userId" column="user_id" />
+		<result property="areaNum" column="area_num" />
+		<result property="priceNum" column="price_num" />
+		<result property="createdTime" column="created_time" javaType="java.util.Date"/>
+		<result property="projectName" column="project_name" />
+		
+	</resultMap>
+
+	<insert id="addCustomerFollow" parameterType="CustomerFollow">
+		 <selectKey resultType="java.lang.Integer" keyProperty="id" order="AFTER" >
+            SELECT @@IDENTITY
+        </selectKey>		
+		insert into customer_follow(
+		customer_id,
+		follow_type,
+		follow_user,
+		follow_desc,
+		is_deleted,
+		created_id,
+		created_time,
+		mod_id,
+		mod_time
+		)
+			VALUES(
+		#{customerId},
+		#{followType},
+		#{followUser},
+		#{followDesc},
+		#{isDeleted},
+		#{createdId},
+		#{createdTime},
+		#{modId},
+		#{modTime}
+			)
+		
+	</insert>
+	<delete id="deleteCustomerFollow" parameterType="int">
+	delete from customer_follow where id=#{id};
+	</delete>
+	<update id="updateCustomerFollow" parameterType="int">
+	update customer_follow set 
+		customer_id=#{customerId},
+		follow_type=#{followType},
+		follow_user=#{followUser},
+		follow_desc=#{followDesc},
+		is_deleted=#{isDeleted},
+		created_id=#{createdId},
+		created_time=#{createdTime},
+		mod_id=#{modId},
+		mod_time=#{modTime}
+	 where id=#{id}
+	</update>
+	<select id="findCustomerFollowById" resultMap="customerFollowResultMap">
+	select * from customer_follow where id=#{id}
+	</select>
+	
+	<select id="findCustomerFollowCount" resultType="int" parameterType="com.ihk.customer.data.pojo.CustomerFollowCond">
+		SELECT count(0) from customer_follow  
+<!--
+    	<where>			
+	    <if test="studentName!=null and studentName!='' ">  
+	        STUDENT_NAME LIKE CONCAT(CONCAT('%', #{studentName}),'%')   
+	    </if>  
+    </where>
+    -->
+    
+    </select>
+    
+	<select id="findCustomerFollowPage" resultMap="customerFollowResultMap" parameterType="com.ihk.customer.data.pojo.CustomerFollowCond">
+		SELECT * from  customer_follow 
+        <!--
+    	<where>			
+	    <if test="studentName!=null and studentName!='' ">  
+	        STUDENT_NAME LIKE CONCAT(CONCAT('%', #{studentName}),'%')   
+	    </if>  
+    </where>
+    -->
+    
+		<if test="startLine >= 0">
+		<if test="pageSize > 0">
+			limit #{startLine},#{pageSize};
+		</if>
+		</if>
+	</select>
+	
+	<select id="findCustomerFollowByCustomerId" resultMap="customerFollowResultMap">
+	select * from customer_follow where customer_id=#{id}
+	</select>
+	
+	<select id="findCustomerFollowByCustomerIdForIndex" resultMap="customerFollowResultMap">
+		select * from customer_follow where customer_id=#{id} and is_deleted = '0' order by mod_time desc limit 3
+	</select>
+	
+	<select id="findCustomerFollowByCustomerIdNewestRecord" resultMap="customerFollowResultMap">
+		select * from customer_follow where customer_id=#{customerId} and is_deleted = '0' order by created_time desc limit 1
+	</select>
+	
+	<select id="findCountByFollowUser" resultType="int" parameterType="int">
+		select count(id) from customer_follow where follow_user = #{followUser} and is_deleted = '0'
+	</select>
+	<select id="findCustomerFollowCustomerIds" resultMap="followCustomerId" parameterType="com.ihk.customer.data.pojo.CustomerFollowCond">
+		select customer_id from customer_follow
+		<where>
+		 	<if test="date1 != null and date1 != '' ">
+			 created_time &gt;= #{date1}
+			</if>
+			<if test="date2 != null and date2 != '' ">
+				and created_time &lt;= date_add(#{date2},interval 1 day)
+			</if>
+			
+			and is_deleted = '0'
+		</where>
+		
+	</select>
+	
+	<sql id="findWhereCond_Report"> 
+		<if test="projectIds!=null and projectIds.size() > 0">  
+           and p.id in
+           <foreach  
+               collection="projectIds"  
+               item="prId"  
+               open="("  
+               separator=","  
+               close=")">  
+               #{prId} 
+           </foreach>  
+        </if>        
+        <if test="companyProjectIds != null and companyProjectIds.size() > 0">
+            and p.id in
+            <foreach collection="companyProjectIds" item="pId" open="(" separator="," close=")">
+                #{pId}
+            </foreach>
+        </if>
+        <if test="searchCompanyIds != null and searchCompanyIds.size() > 0">
+            and p.company_id in
+            <foreach collection="searchCompanyIds" item="cId" open="(" separator="," close=")">
+                #{cId}
+            </foreach>
+        </if>
+		<if test="projectId != null and projectId != 0 and projectId != ''">
+		and p.id = #{projectId}
+		</if>
+		<if test="date1 != null and date1 != '' ">
+			and f.created_time &gt;= #{date1}
+		</if>
+		<if test="date2 != null and date2 != '' ">
+			and f.created_time &lt; date_add(#{date2},interval 1 day)
+		</if>
+	</sql>
+	
+	<select id="findReportSumGroupByCompany" resultMap="companyPhoneVisitNum" parameterType="com.ihk.customer.data.pojo.CustomerFollowCond">
+	select company_id,company_name,sum(phone_count) as phone_count,sum(visit_count) as visit_count ,sum(purchased_count) as purchased_count,
+	 sum(phone2visit_count) as phone2visit_count ,sum(identificationChips_count) as identificationChips_count,sum(initiation_count) as initiation_count,
+	 sum(homeExhibitionsWill_count) as homeExhibitionsWill_count, sum(externalExhibitionWill_count) as externalExhibitionWill_count,sum(leaflet_count) as leaflet_count from 
+	(
+	<!-- 电话 -->
+	select  c.company_id , company.company_name, count(c.id) as phone_count,0 as visit_count ,0 as purchased_count,0 as phone2visit_count ,
+		0 as identificationChips_count, 0 as initiation_count, 0 as homeExhibitionsWill_count, 0 as externalExhibitionWill_count,0 as leaflet_count from 
+	customer_follow f,customer c ,company ,company_project p
+	where p.dev_code =  'customer_guangzhou' and c.is_deleted = '0' and f.customer_id=c.id and f.follow_type='1' and p.company_id=company.id
+     <include refid="findWhereCond_Report"/>   
+	 and c.project_id = p.id group by c.company_id,f.follow_type 
+	union all
+	<!-- 回访 -->
+	select  c.company_id , company.company_name, 0 as phone_count,count(c.id) as visit_count ,0 as purchased_count,0 as phone2visit_count ,
+		0 as identificationChips_count, 0 as initiation_count, 0 as homeExhibitionsWill_count, 0 as externalExhibitionWill_count,0 as leaflet_count from 
+	customer_follow f,customer c ,company ,company_project p
+	where p.dev_code =  'customer_guangzhou' and c.is_deleted = '0' and f.customer_id=c.id and f.follow_type='2' and p.company_id=company.id
+     <include refid="findWhereCond_Report"/>   
+	 and c.project_id = p.id group by c.company_id,f.follow_type 
+	union all	 
+	<!-- 已购买 -->
+	select  c.company_id , company.company_name, 0 as phone_count,0 as visit_count ,count(c.id) as purchased_count,0 as phone2visit_count ,
+		0 as identificationChips_count, 0 as initiation_count, 0 as homeExhibitionsWill_count, 0 as externalExhibitionWill_count,0 as leaflet_count from 
+	customer_follow f,customer c ,company ,company_project p
+	where p.dev_code =  'customer_guangzhou' and c.is_deleted = '0' and f.customer_id=c.id and f.follow_type='3' and p.company_id=company.id
+     <include refid="findWhereCond_Report"/>   
+	 and c.project_id = p.id group by c.company_id,f.follow_type
+	union all
+	<!-- 电转访 -->
+	select  c.company_id , company.company_name, 0 as phone_count,0 as visit_count ,0 as purchased_count,count(c.id) as phone2visit_count ,
+		0 as identificationChips_count, 0 as initiation_count, 0 as homeExhibitionsWill_count, 0 as externalExhibitionWill_count,0 as leaflet_count from 
+	customer_follow f,customer c ,company ,company_project p
+	where p.dev_code =  'customer_guangzhou' and c.is_deleted = '0' and f.customer_id=c.id and f.follow_type='4' and p.company_id=company.id
+     <include refid="findWhereCond_Report"/>   
+	 and c.project_id = p.id group by c.company_id,f.follow_type
+	union all
+	<!-- 认筹 -->
+	select  c.company_id , company.company_name, 0 as phone_count,0 as visit_count ,0 as purchased_count,0 as phone2visit_count ,
+		count(c.id) as identificationChips_count, 0 as initiation_count, 0 as homeExhibitionsWill_count, 0 as externalExhibitionWill_count,0 as leaflet_count from 
+	customer_follow f,customer c ,company ,company_project p
+	where p.dev_code =  'customer_guangzhou' and c.is_deleted = '0' and f.customer_id=c.id and f.follow_type='5' and p.company_id=company.id
+     <include refid="findWhereCond_Report"/>   
+	 and c.project_id = p.id group by c.company_id,f.follow_type
+    union all	 
+	<!-- 入会 -->
+	select  c.company_id , company.company_name, 0 as phone_count,0 as visit_count ,0 as purchased_count,0 as phone2visit_count ,
+		0 as identificationChips_count, count(c.id) as initiation_count, 0 as homeExhibitionsWill_count, 0 as externalExhibitionWill_count,0 as leaflet_count from 
+	customer_follow f,customer c ,company ,company_project p
+	where p.dev_code =  'customer_guangzhou' and c.is_deleted = '0' and f.customer_id=c.id and f.follow_type='6' and p.company_id=company.id
+     <include refid="findWhereCond_Report"/>   
+	 and c.project_id = p.id group by c.company_id,f.follow_type
+    union all		
+	<!-- 房展会 -->	
+	select  c.company_id , company.company_name, 0 as phone_count,0 as visit_count ,0 as purchased_count,0 as phone2visit_count ,
+		0 as identificationChips_count, 0 as initiation_count, count(c.id) as homeExhibitionsWill_count, 0 as externalExhibitionWill_count,0 as leaflet_count from 
+	customer_follow f,customer c ,company ,company_project p
+	where p.dev_code =  'customer_guangzhou' and c.is_deleted = '0' and f.customer_id=c.id and f.follow_type='7' and p.company_id=company.id
+     <include refid="findWhereCond_Report"/>   
+	 and c.project_id = p.id group by c.company_id,f.follow_type
+    union all			
+	<!-- 外展会 -->
+	select  c.company_id , company.company_name, 0 as phone_count,0 as visit_count ,0 as purchased_count,0 as phone2visit_count ,
+		0 as identificationChips_count, 0 as initiation_count, 0 as homeExhibitionsWill_count, count(c.id) as externalExhibitionWill_count,0 as leaflet_count from 
+	customer_follow f,customer c ,company ,company_project p
+	where p.dev_code =  'customer_guangzhou' and c.is_deleted = '0' and f.customer_id=c.id and f.follow_type='8' and p.company_id=company.id
+     <include refid="findWhereCond_Report"/>   
+	 and c.project_id = p.id group by c.company_id,f.follow_type
+    union all	
+	<!-- 派单 -->
+	select  c.company_id , company.company_name, 0 as phone_count,0 as visit_count ,0 as purchased_count,0 as phone2visit_count ,
+		0 as identificationChips_count, 0 as initiation_count, 0 as homeExhibitionsWill_count, 0 as externalExhibitionWill_count,count(c.id) as leaflet_count from 
+	customer_follow f,customer c ,company ,company_project p
+	where p.dev_code =  'customer_guangzhou' and c.is_deleted = '0' and f.customer_id=c.id and f.follow_type='9' and p.company_id=company.id
+     <include refid="findWhereCond_Report"/>   
+	 and c.project_id = p.id group by c.company_id,f.follow_type
+	 )	
+	a group by company_id,company_name
+	
+	<if test="sort =='companyName' and order == 'asc'">
+			order by company_name asc
+	</if>
+	<if test="sort =='companyName' and order == 'desc'">
+			order by company_name desc
+	</if>
+		<include refid="orders"/>
+	</select>
+	
+	<select id="findReportSumGroupByProject" resultMap="projectPhoneVisitNum" parameterType="com.ihk.customer.data.pojo.CustomerFollowCond">
+	select project_id,project_name,sum(phone_count) as phone_count,sum(visit_count) as visit_count ,sum(purchased_count) as purchased_count,
+	 sum(phone2visit_count) as phone2visit_count ,sum(identificationChips_count) as identificationChips_count,sum(initiation_count) as initiation_count,
+	 sum(homeExhibitionsWill_count) as homeExhibitionsWill_count, sum(externalExhibitionWill_count) as externalExhibitionWill_count,sum(leaflet_count) as leaflet_count from 
+	(
+	select  c.project_id ,p.project_name,count(c.id) as phone_count,0 as visit_count ,0 as purchased_count,0 as phone2visit_count ,
+		0 as identificationChips_count, 0 as initiation_count, 0 as homeExhibitionsWill_count, 0 as externalExhibitionWill_count,0 as leaflet_count from 
+		customer_follow f,customer c ,company_project as p
+	where p.dev_code =  'customer_guangzhou' and c.is_deleted = '0' and f.customer_id=c.id and f.follow_type='1'
+     <include refid="findWhereCond_Report"/>   
+	 and c.project_id = p.id group by c.project_id,f.follow_type 
+	union all
+	select  c.project_id ,p.project_name,0 as phone_count,count(c.id) as visit_count, 0 as purchased_count,0 as phone2visit_count ,
+		0 as identificationChips_count, 0 as initiation_count, 0 as homeExhibitionsWill_count, 0 as externalExhibitionWill_count,0 as leaflet_count from 
+		customer_follow f,customer c ,company_project as p
+	where p.dev_code =  'customer_guangzhou' and c.is_deleted = '0' and f.customer_id=c.id and f.follow_type='2'
+     <include refid="findWhereCond_Report"/>   
+	 and c.project_id = p.id group by c.project_id,f.follow_type 
+	union all
+	select  c.project_id ,p.project_name,0 as phone_count,0 as visit_count, count(c.id) as purchased_count,0 as phone2visit_count ,
+		0 as identificationChips_count, 0 as initiation_count, 0 as homeExhibitionsWill_count, 0 as externalExhibitionWill_count,0 as leaflet_count from 
+		customer_follow f,customer c ,company_project as p
+	where p.dev_code =  'customer_guangzhou' and c.is_deleted = '0' and f.customer_id=c.id and f.follow_type='3'
+     <include refid="findWhereCond_Report"/>   
+	 and c.project_id = p.id group by c.project_id,f.follow_type 
+	union all	
+	select  c.project_id ,p.project_name,0 as phone_count,0 as visit_count, 0 as purchased_count,count(c.id) as phone2visit_count ,
+		0 as identificationChips_count, 0 as initiation_count, 0 as homeExhibitionsWill_count, 0 as externalExhibitionWill_count,0 as leaflet_count from 
+		customer_follow f,customer c ,company_project as p
+	where p.dev_code =  'customer_guangzhou' and c.is_deleted = '0' and f.customer_id=c.id and f.follow_type='4'
+     <include refid="findWhereCond_Report"/>   
+	 and c.project_id = p.id group by c.project_id,f.follow_type 
+	union all		
+	select  c.project_id ,p.project_name,0 as phone_count,0 as visit_count, 0 as purchased_count,0 as phone2visit_count ,
+		count(c.id) as identificationChips_count, 0 as initiation_count, 0 as homeExhibitionsWill_count, 0 as externalExhibitionWill_count,0 as leaflet_count from 
+		customer_follow f,customer c ,company_project as p
+	where p.dev_code =  'customer_guangzhou' and c.is_deleted = '0' and f.customer_id=c.id and f.follow_type='5'
+     <include refid="findWhereCond_Report"/>   
+	 and c.project_id = p.id group by c.project_id,f.follow_type 
+	union all		
+	select  c.project_id ,p.project_name,0 as phone_count,0 as visit_count, 0 as purchased_count,0 as phone2visit_count ,
+		0 as identificationChips_count, count(c.id) as initiation_count, 0 as homeExhibitionsWill_count, 0 as externalExhibitionWill_count,0 as leaflet_count from 
+		customer_follow f,customer c ,company_project as p
+	where p.dev_code =  'customer_guangzhou' and c.is_deleted = '0' and f.customer_id=c.id and f.follow_type='6'
+     <include refid="findWhereCond_Report"/>   
+	 and c.project_id = p.id group by c.project_id,f.follow_type 
+	union all	
+	select  c.project_id ,p.project_name,0 as phone_count,0 as visit_count, 0 as purchased_count,0 as phone2visit_count ,
+		0 as identificationChips_count, 0 as initiation_count, count(c.id) as homeExhibitionsWill_count, 0 as externalExhibitionWill_count,0 as leaflet_count from 
+		customer_follow f,customer c ,company_project as p
+	where p.dev_code =  'customer_guangzhou' and c.is_deleted = '0' and f.customer_id=c.id and f.follow_type='7'
+     <include refid="findWhereCond_Report"/>   
+	 and c.project_id = p.id group by c.project_id,f.follow_type 
+	union all		
+	select  c.project_id ,p.project_name,0 as phone_count,0 as visit_count, 0 as purchased_count,0 as phone2visit_count ,
+		0 as identificationChips_count, 0 as initiation_count, 0 as homeExhibitionsWill_count, count(c.id) as externalExhibitionWill_count,0 as leaflet_count from 
+		customer_follow f,customer c ,company_project as p
+	where p.dev_code =  'customer_guangzhou' and c.is_deleted = '0' and f.customer_id=c.id and f.follow_type='8'
+     <include refid="findWhereCond_Report"/>   
+	 and c.project_id = p.id group by c.project_id,f.follow_type 
+	union all	
+	select  c.project_id ,p.project_name,0 as phone_count,0 as visit_count, 0 as purchased_count,0 as phone2visit_count ,
+		0 as identificationChips_count, 0 as initiation_count, 0 as homeExhibitionsWill_count, 0 as externalExhibitionWill_count,count(c.id) as leaflet_count from 
+		customer_follow f,customer c ,company_project as p
+	where p.dev_code =  'customer_guangzhou' and c.is_deleted = '0' and f.customer_id=c.id and f.follow_type='9'
+     <include refid="findWhereCond_Report"/>   
+	 and c.project_id = p.id group by c.project_id,f.follow_type 
+	) a group by project_id,project_name
+	
+		<if test="sort =='projectName' and order == 'asc'">
+			order by project_name asc
+		</if>
+		<if test="sort =='projectName' and order == 'desc'">
+			order by project_name desc
+		</if>
+		<include refid="orders"/>
+	</select>
+	
+	<select id="findReportSumGroupByUser" resultMap="userPhoneVisitNum" parameterType="com.ihk.customer.data.pojo.CustomerFollowCond">
+	select project_name, user_id,real_name,sum(phone_count) as phone_count,sum(visit_count) as visit_count,sum(purchased_count) as purchased_count,
+	 sum(phone2visit_count) as phone2visit_count ,sum(identificationChips_count) as identificationChips_count,sum(initiation_count) as initiation_count,
+	 sum(homeExhibitionsWill_count) as homeExhibitionsWill_count, sum(externalExhibitionWill_count) as externalExhibitionWill_count,sum(leaflet_count) as leaflet_count
+	from (
+		select project_name, user_id, real_name,count(cid) as phone_count,0 as visit_count,0 as purchased_count,0 as phone2visit_count ,
+		0 as identificationChips_count, 0 as initiation_count, 0 as homeExhibitionsWill_count, 0 as externalExhibitionWill_count,0 as leaflet_count from
+		(
+		<!-- 电话 -->
+			select p.project_name, u.id as user_id,u.real_name,c.customer_name,c.id as cid,
+			0 as visit_count,0 as purchased_count,0 as phone2visit_count,
+			0 as identificationChips_count, 0 as initiation_count, 0 as homeExhibitionsWill_count, 0 as externalExhibitionWill_count,0 as leaflet_count from
+			customer_follow f,customer c ,user_account as u,company_project as p
+			where  f.customer_id = c.id and u.id = f.created_id
+			and p.id=c.project_id
+			and f.follow_type ='1'
+			and f.is_deleted = '0' and c.is_deleted = '0'
+			<include refid="findWhereCond_Report"/>  
+			group by c.id
+		) a group  by user_id
+	
+		union all
+
+		<!-- 回访 -->
+		select project_name,  user_id, real_name,0 as phone_count,count(cid) as visit_count, 0 as purchased_count,0 as phone2visit_count,
+		0 as identificationChips_count,0 as initiation_count, 0 as homeExhibitionsWill_count, 0 as externalExhibitionWill_count,0 as leaflet_count from
+		(
+			select p.project_name, u.id as user_id,u.real_name,c.customer_name,c.id as cid,
+			0 as visit_count,0 as purchased_count,0 as phone2visit_count,
+			0 as identificationChips_count, 0 as initiation_count, 0 as homeExhibitionsWill_count, 0 as externalExhibitionWill_count,0 as leaflet_count from 
+			customer_follow f,customer c ,user_account as u,company_project as p
+			where  f.customer_id = c.id and u.id = f.created_id
+			and p.id=c.project_id
+			and f.follow_type ='2'
+			and f.is_deleted = '0' and c.is_deleted = '0'
+			<include refid="findWhereCond_Report"/> 
+			group by c.id
+		) a group  by user_id
+		
+		union all
+		
+		<!-- 已购买 -->
+		select project_name,  user_id, real_name,0 as phone_count,0 as visit_count,count(cid) as purchased_count,0 as phone2visit_count,
+		0 as identificationChips_count,0 as initiation_count, 0 as homeExhibitionsWill_count, 0 as externalExhibitionWill_count,0 as leaflet_count from
+		(
+			select p.project_name, u.id as user_id,u.real_name,c.customer_name,c.id as cid,
+			0 as visit_count,0 as purchased_count,0 as phone2visit_count,
+			0 as identificationChips_count, 0 as initiation_count, 0 as homeExhibitionsWill_count, 0 as externalExhibitionWill_count,0 as leaflet_count from 
+			customer_follow f,customer c ,user_account as u,company_project as p
+			where  f.customer_id = c.id and u.id = f.created_id
+			and p.id=c.project_id
+			and f.follow_type ='3'
+			and f.is_deleted = '0' and c.is_deleted = '0'
+			<include refid="findWhereCond_Report"/> 
+			group by c.id
+		) a group  by user_id
+		
+		union all
+		
+		<!-- 电转访 -->
+		select project_name,  user_id, real_name,0 as phone_count,0 as visit_count,0 as purchased_count,count(cid) as phone2visit_count,
+		0 as identificationChips_count,0 as initiation_count, 0 as homeExhibitionsWill_count, 0 as externalExhibitionWill_count,0 as leaflet_count from
+		(
+			select p.project_name, u.id as user_id,u.real_name,c.customer_name,c.id as cid,
+			0 as visit_count,0 as purchased_count,0 as phone2visit_count,
+			0 as identificationChips_count, 0 as initiation_count, 0 as homeExhibitionsWill_count, 0 as externalExhibitionWill_count,0 as leaflet_count from 
+			customer_follow f,customer c ,user_account as u,company_project as p
+			where  f.customer_id = c.id and u.id = f.created_id
+			and p.id=c.project_id
+			and f.follow_type ='4'
+			and f.is_deleted = '0' and c.is_deleted = '0'
+			<include refid="findWhereCond_Report"/> 
+			group by c.id
+		) a group  by user_id
+		
+		union all
+		
+		<!-- 认筹 -->
+		select project_name,  user_id, real_name,0 as phone_count,0 as visit_count,0 as purchased_count,0 as phone2visit_count,
+		count(cid) as identificationChips_count,0 as initiation_count, 0 as homeExhibitionsWill_count, 0 as externalExhibitionWill_count,0 as leaflet_count from
+		(
+			select p.project_name, u.id as user_id,u.real_name,c.customer_name,c.id as cid,
+			0 as visit_count,0 as purchased_count,0 as phone2visit_count,
+			0 as identificationChips_count, 0 as initiation_count, 0 as homeExhibitionsWill_count, 0 as externalExhibitionWill_count,0 as leaflet_count from 
+			customer_follow f,customer c ,user_account as u,company_project as p
+			where  f.customer_id = c.id and u.id = f.created_id
+			and p.id=c.project_id
+			and f.follow_type ='5'
+			and f.is_deleted = '0' and c.is_deleted = '0'
+			<include refid="findWhereCond_Report"/> 
+			group by c.id
+		) a group  by user_id
+		
+		union all
+		
+		<!-- 入会 -->
+		select project_name,  user_id, real_name,0 as phone_count,0 as visit_count,0 as purchased_count,0 as phone2visit_count,
+		0 as identificationChips_count,count(cid) as initiation_count, 0 as homeExhibitionsWill_count, 0 as externalExhibitionWill_count,0 as leaflet_count from
+		(
+			select p.project_name, u.id as user_id,u.real_name,c.customer_name,c.id as cid,
+			0 as visit_count,0 as purchased_count,0 as phone2visit_count,
+			0 as identificationChips_count, 0 as initiation_count, 0 as homeExhibitionsWill_count, 0 as externalExhibitionWill_count,0 as leaflet_count from 
+			customer_follow f,customer c ,user_account as u,company_project as p
+			where  f.customer_id = c.id and u.id = f.created_id
+			and p.id=c.project_id
+			and f.follow_type ='6'
+			and f.is_deleted = '0' and c.is_deleted = '0'
+			<include refid="findWhereCond_Report"/> 
+			group by c.id
+		) a group  by user_id
+		
+		union all
+		
+		<!-- 房展会 -->
+		select project_name,  user_id, real_name,0 as phone_count,0 as visit_count,0 as purchased_count,0 as phone2visit_count,
+		0 as identificationChips_count,0 as initiation_count, count(cid) as homeExhibitionsWill_count, 0 as externalExhibitionWill_count,0 as leaflet_count from
+		(
+			select p.project_name, u.id as user_id,u.real_name,c.customer_name,c.id as cid,
+			0 as visit_count,0 as purchased_count,0 as phone2visit_count,
+			0 as identificationChips_count, 0 as initiation_count, 0 as homeExhibitionsWill_count, 0 as externalExhibitionWill_count,0 as leaflet_count from 
+			customer_follow f,customer c ,user_account as u,company_project as p
+			where  f.customer_id = c.id and u.id = f.created_id
+			and p.id=c.project_id
+			and f.follow_type ='7'
+			and f.is_deleted = '0' and c.is_deleted = '0'
+			<include refid="findWhereCond_Report"/> 
+			group by c.id
+		) a group  by user_id
+		
+		union all
+		
+		<!-- 外展会 -->
+		select project_name,  user_id, real_name,0 as phone_count,0 as visit_count,0 as purchased_count,0 as phone2visit_count,
+		0 as identificationChips_count,0 as initiation_count, 0 as homeExhibitionsWill_count, count(cid) as externalExhibitionWill_count,0 as leaflet_count from
+		(
+			select p.project_name, u.id as user_id,u.real_name,c.customer_name,c.id as cid,
+			0 as visit_count,0 as purchased_count,0 as phone2visit_count,
+			0 as identificationChips_count, 0 as initiation_count, 0 as homeExhibitionsWill_count, 0 as externalExhibitionWill_count,0 as leaflet_count from 
+			customer_follow f,customer c ,user_account as u,company_project as p
+			where  f.customer_id = c.id and u.id = f.created_id
+			and p.id=c.project_id
+			and f.follow_type ='8'
+			and f.is_deleted = '0' and c.is_deleted = '0'
+			<include refid="findWhereCond_Report"/> 
+			group by c.id
+		) a group  by user_id
+			
+		union all
+		
+		<!-- 派单 -->
+		select project_name,  user_id, real_name,0 as phone_count,0 as visit_count,0 as purchased_count,0 as phone2visit_count,
+		0 as identificationChips_count,0 as initiation_count, 0 as homeExhibitionsWill_count, 0 as externalExhibitionWill_count,count(cid) as leaflet_count from
+		(
+			select p.project_name, u.id as user_id,u.real_name,c.customer_name,c.id as cid,
+			0 as visit_count,0 as purchased_count,0 as phone2visit_count,
+			0 as identificationChips_count, 0 as initiation_count, 0 as homeExhibitionsWill_count, 0 as externalExhibitionWill_count,0 as leaflet_count from 
+			customer_follow f,customer c ,user_account as u,company_project as p
+			where  f.customer_id = c.id and u.id = f.created_id
+			and p.id=c.project_id
+			and f.follow_type ='9'
+			and f.is_deleted = '0' and c.is_deleted = '0'
+			<include refid="findWhereCond_Report"/> 
+			group by c.id
+		) a group  by user_id
+	) a group by user_id,real_name
+		<if test="sort =='projectName' and order == 'asc'">
+			order by project_name asc
+		</if>
+		<if test="sort =='projectName' and order == 'desc'">
+			order by project_name desc
+		</if>
+		<if test="sort =='realName' and order == 'asc'">
+			order by visit_count asc
+		</if>
+		<if test="sort =='realName' and order == 'desc'">
+			order by visit_count desc
+		</if>
+		<include refid="orders"/>
+	</select>
+	
+	<!-- 2012-10-24 追加 -->
+	<select id="findCustomerListByCustomerFollowUser" resultMap="CustomerList" parameterType="com.ihk.customer.data.pojo.CustomerFollowCond">
+	select DISTINCT t2.id as id,t2.customer_name as customerName,t2.phone as phone,t2.home_phone as homePhone,t2.user_id as userId,t2.created_time as createdTime,t2.price_num as priceNum,t2.area_num as areaNum,t3.project_name as projectName from company_project t3 join (
+		select id,customer_name,phone,home_phone,user_id,created_time,project_id,area_num,price_num from customer join 
+			(select customer_id from customer_follow 
+				where follow_user = #{followUserId} 
+				<if test="date1 != null and date1 != '' ">
+					and created_time &gt;= #{date1}
+				</if>
+				<if test="date2 != null and date2 != '' ">
+					and created_time &lt; date_add(#{date2},interval 1 day)
+				</if>
+				and follow_type = #{followType}
+				) t1 
+				on customer.id = t1.customer_id
+				where is_deleted = '0') t2 where t3.id=t2.project_id 
+				<if test="projectId != null and projectId != 0">
+					and t3.id = #{projectId}
+				</if>
+				
+				
+		<if test="startLine >= 0">
+			<if test="pageSize > 0">
+				limit #{startLine},#{pageSize};
+			</if>
+		</if>
+	</select>
+	
+	<select id="findCustomerListByCustomer" resultMap="CustomerList" parameterType="com.ihk.customer.data.pojo.CustomerFollowCond">
+	 select t2.*, t3.project_name as projectName from company_project t3 join(
+		select DISTINCT c.id as id,c.customer_name as customerName,c.phone as phone,c.home_phone as homePhone,c.user_id as userId,c.created_time as createdTime,c.price_num as priceNum,c.area_num as areaNum,c.project_id
+			from customer_follow f left join customer c
+			on f.customer_id=c.id
+			where f.is_deleted='0' and c.is_deleted='0' and c.company_id =#{companyId} and f.follow_type= #{followType}
+			<if test="date1 != null and date1 != '' ">
+					and f.created_time &gt;= #{date1}
+			</if>
+			<if test="date2 != null and date2 != '' ">
+					and f.created_time &lt; date_add(#{date2},interval 1 day)
+			</if>
+			) t2 on t3.id=t2.project_id
+			<if test="startLine >= 0">
+				<if test="pageSize > 0">
+					limit #{startLine},#{pageSize};
+				</if>
+			</if>
+	</select>
+	
+		<select id="findCustomerListByProject" resultMap="CustomerList" parameterType="com.ihk.customer.data.pojo.CustomerFollowCond">
+		select DISTINCT c.id as id,c.customer_name as customerName,c.phone as phone,c.home_phone as homePhone,c.user_id as userId,c.created_time as createdTime,c.price_num as priceNum,c.area_num as areaNum
+			from customer_follow f left join customer c
+			on f.customer_id=c.id
+			where f.is_deleted='0' and c.is_deleted='0' and c.company_id =#{customerId} and f.follow_type= #{followType}
+	</select>
+
+	<sql id="orders">
+		<if test="sort =='phoneCount' and order == 'asc'">
+			order by phone_count asc
+		</if>
+		<if test="sort =='phoneCount' and order == 'desc'">
+			order by phone_count desc
+		</if>
+		<if test="sort =='visitCount' and order == 'asc'">
+			order by visit_count asc
+		</if>
+		<if test="sort =='visitCount' and order == 'desc'">
+			order by visit_count desc
+		</if>
+		<if test="sort =='purchasedCount' and order == 'asc'">
+			order by visit_count asc
+		</if>
+		<if test="sort =='purchasedCount' and order == 'desc'">
+			order by visit_count desc
+		</if>
+		<if test="sort =='phone2visitCount' and order == 'asc'">
+			order by visit_count asc
+		</if>
+		<if test="sort =='phone2visitCount' and order == 'desc'">
+			order by visit_count desc
+		</if>
+		<if test="sort =='identificationChipsCount' and order == 'asc'">
+			order by visit_count asc
+		</if>
+		<if test="sort =='identificationChipsCount' and order == 'desc'">
+			order by visit_count desc
+		</if>
+		<if test="sort =='initiationCount' and order == 'asc'">
+			order by visit_count asc
+		</if>
+		<if test="sort =='initiationCount' and order == 'desc'">
+			order by visit_count desc
+		</if>
+		<if test="sort =='homeExhibitionsWillCount' and order == 'asc'">
+			order by visit_count asc
+		</if>
+		<if test="sort =='homeExhibitionsWillCount' and order == 'desc'">
+			order by visit_count desc
+		</if>
+		<if test="sort =='externalExhibitionCount' and order == 'asc'">
+			order by visit_count asc
+		</if>
+		<if test="sort =='externalExhibitionCount' and order == 'desc'">
+			order by visit_count desc
+		</if>
+		<if test="sort =='leafletCount' and order == 'asc'">
+			order by visit_count asc
+		</if>
+		<if test="sort =='leafletCount' and order == 'desc'">
+			order by visit_count desc
+		</if>
+	</sql>
+</mapper>

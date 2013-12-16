@@ -1,0 +1,106 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.ihk.sale.data.IPresaleMonitorAllMapper">
+
+	<resultMap type="PresaleMonitorAll" id="presaleMonitorAllResultMap">
+		<id property="id" column="id" />        
+		<result property="monitorDate" column="monitor_date" />
+		<result property="projectId" column="project_id" />
+		<result property="companyId" column="company_id" />
+		<result property="phoneNum" column="phone_num" />
+		<result property="visitorNum" column="visitor_num" />
+		<result property="intentionNum" column="intention_num" />
+		<result property="intentionAll" column="intention_all" />
+		<result property="isDeleted" column="is_deleted" />
+		<result property="createdId" column="created_id" />
+		<result property="createdTime" column="created_time" />
+		<result property="modId" column="mod_id" />
+		<result property="modTime" column="mod_time" />
+	</resultMap>
+
+	<insert id="addPresaleMonitorAll" parameterType="PresaleMonitorAll">
+		 <selectKey resultType="java.lang.Integer" keyProperty="id" order="AFTER" >
+            SELECT @@IDENTITY
+        </selectKey>		
+		insert into presale_monitor_all(
+		monitor_date,
+		project_id,
+		company_id,
+		phone_num,
+		visitor_num,
+		intention_num,
+		intention_all,
+		is_deleted,
+		created_id,
+		created_time,
+		mod_id,
+		mod_time
+		)
+			VALUES(
+		#{monitorDate},
+		#{projectId},
+		#{companyId},
+		#{phoneNum},
+		#{visitorNum},
+		#{intentionNum},
+		#{intentionAll},
+		#{isDeleted},
+		#{createdId},
+		#{createdTime},
+		#{modId},
+		#{modTime}
+			)
+		
+	</insert>
+	<delete id="deletePresaleMonitorAll" parameterType="int">
+	delete from presale_monitor_all where id=#{id};
+	</delete>
+	<update id="updatePresaleMonitorAll" parameterType="int">
+	update presale_monitor_all set 
+		monitor_date=#{monitorDate},
+		project_id=#{projectId},
+		company_id=#{companyId},
+		phone_num=#{phoneNum},
+		visitor_num=#{visitorNum},
+		intention_num=#{intentionNum},
+		intention_all=#{intentionAll},
+		is_deleted=#{isDeleted},
+		created_id=#{createdId},
+		created_time=#{createdTime},
+		mod_id=#{modId},
+		mod_time=#{modTime}
+	 where id=#{id}
+	</update>
+	<select id="findPresaleMonitorAllById" resultMap="presaleMonitorAllResultMap">
+	select * from presale_monitor_all where id=#{id}
+	</select>
+	
+	<select id="findPresaleMonitorAllCount" resultType="int" parameterType="com.ihk.sale.data.pojo.PresaleMonitorAllCond">
+		SELECT count(0) from presale_monitor_all  
+<!--
+    	<where>			
+	    <if test="studentName!=null and studentName!='' ">  
+	        STUDENT_NAME LIKE CONCAT(CONCAT('%', #{studentName}),'%')   
+	    </if>  
+    </where>
+    -->
+    
+    </select>
+    
+	<select id="findPresaleMonitorAllPage" resultMap="presaleMonitorAllResultMap" parameterType="com.ihk.sale.data.pojo.PresaleMonitorAllCond">
+		SELECT * from  presale_monitor_all 
+        <!--
+    	<where>			
+	    <if test="studentName!=null and studentName!='' ">  
+	        STUDENT_NAME LIKE CONCAT(CONCAT('%', #{studentName}),'%')   
+	    </if>  
+    </where>
+    -->
+    
+		<if test="startLine >= 0">
+		<if test="pageSize > 0">
+			limit #{startLine},#{pageSize};
+		</if>
+		</if>
+	</select>
+</mapper>

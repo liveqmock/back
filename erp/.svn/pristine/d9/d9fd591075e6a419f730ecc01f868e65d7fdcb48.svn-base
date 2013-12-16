@@ -1,0 +1,103 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.ihk.user.data.IRolePrivRefMapper">
+
+	<resultMap type="RolePrivRef" id="rolePrivRefResultMap">
+		<id property="id" column="id" />        
+		<result property="roleId" column="role_id" />
+		<result property="refRoleId" column="ref_role_id" />
+		<result property="isDeleted" column="is_deleted" />
+		<result property="createdId" column="created_id" />
+		<result property="createdTime" column="created_time" />
+		<result property="modId" column="mod_id" />
+		<result property="modTime" column="mod_time" />
+	</resultMap>
+
+	<insert id="addRolePrivRef" parameterType="RolePrivRef">
+		 <selectKey resultType="java.lang.Integer" keyProperty="id" order="AFTER" >
+            SELECT @@IDENTITY
+        </selectKey>		
+		insert into role_priv_ref(
+		role_id,
+		ref_role_id,
+		is_deleted,
+		created_id,
+		created_time,
+		mod_id,
+		mod_time
+		)
+			VALUES(
+		#{roleId},
+		#{refRoleId},
+		#{isDeleted},
+		#{createdId},
+		#{createdTime},
+		#{modId},
+		#{modTime}
+			)
+		
+	</insert>
+	<delete id="deleteRolePrivRef" parameterType="int">
+	update role_priv_ref set is_deleted='1' where id=#{id};
+	</delete>
+	<update id="updateRolePrivRef" parameterType="int">
+	update role_priv_ref set 
+		role_id=#{roleId},
+		ref_role_id=#{refRoleId},
+		is_deleted=#{isDeleted},
+		created_id=#{createdId},
+		created_time=#{createdTime},
+		mod_id=#{modId},
+		mod_time=#{modTime}
+	 where id=#{id}
+	</update>
+	<select id="findRolePrivRefById" resultMap="rolePrivRefResultMap" >
+	select * from role_priv_ref where id=#{id}
+	</select>
+	
+	<sql id="findWhereCond"> 
+		<where>	
+		
+	    	<if test="roleIds!=null and roleIds.size() > 0">  
+	            and role_id in
+	            <foreach  
+	                collection="roleIds"  
+	                item="eachRoleId"  
+	                open="("  
+	                separator=","  
+	                close=")">  
+	                #{eachRoleId}
+	            </foreach>  
+	      </if>
+	      
+	      <if test="roleId != null and roleId !=''" > 
+	      	and role_id = #{roleId}
+	      </if>
+	      <if test="refRoleId != null and refRoleId !=''" > 
+	      	and ref_role_id = #{refRoleId}
+	      </if>
+	      
+      </where> 
+  </sql>
+	
+	<select id="findRolePrivRefCount" resultType="int" parameterType="com.ihk.user.data.pojo.RolePrivRefCond">
+		SELECT count(0) from role_priv_ref 
+     <include refid="findWhereCond"/>   
+    
+    </select>
+    
+	<select id="findRolePrivRefPage" resultMap="rolePrivRefResultMap" parameterType="com.ihk.user.data.pojo.RolePrivRefCond">
+		SELECT * from  role_priv_ref 
+     <include refid="findWhereCond"/>   
+    
+		<if test="startLine >= 0">
+		<if test="pageSize > 0">
+			limit #{startLine},#{pageSize};
+		</if>
+		</if>
+	</select>
+	<select id="findAllRolePrivRef" resultMap="rolePrivRefResultMap">
+	SELECT * from  role_priv_ref
+	</select>
+
+</mapper>

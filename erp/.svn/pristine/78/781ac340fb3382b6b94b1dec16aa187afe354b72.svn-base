@@ -1,0 +1,112 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.ihk.demo.data.IDemoTableMapper">
+
+	<resultMap type="DemoTable" id="demoTableResultMap">
+		<id property="id" column="id" />        
+		<result property="columnInt" column="column_int" />
+		<result property="columnCode" column="column_code" />
+		<result property="columnVarchar" column="column_varchar" />
+		<result property="columnVarchar2" column="column_varchar2" />
+		<result property="columnVarchar3" column="column_varchar3" />
+		<result property="columnText" column="column_text" />
+		<result property="columnDate" column="column_date" />
+		<result property="columnPrice" column="column_price" />
+		<result property="orderIndex" column="order_index" />
+		<result property="isDeleted" column="is_deleted" />
+		<result property="createdId" column="created_id" />
+		<result property="createdTime" column="created_time" />
+		<result property="modId" column="mod_id" />
+		<result property="modTime" column="mod_time" />
+	</resultMap>
+
+	<insert id="addDemoTable" parameterType="DemoTable">
+		 <selectKey resultType="java.lang.Integer" keyProperty="id" order="AFTER" >
+            SELECT @@IDENTITY
+        </selectKey>		
+		insert into demo_table(
+		column_int,
+		column_code,
+		column_varchar,
+		column_varchar2,
+		column_varchar3,
+		column_text,
+		column_date,
+		column_price,
+		order_index,
+		is_deleted,
+		created_id,
+		created_time,
+		mod_id,
+		mod_time
+		)
+			VALUES(
+		#{columnInt},
+		#{columnCode},
+		#{columnVarchar},
+		#{columnVarchar2},
+		#{columnVarchar3},
+		#{columnText},
+		#{columnDate},
+		#{columnPrice},
+		#{orderIndex},
+		#{isDeleted},
+		#{createdId},
+		#{createdTime},
+		#{modId},
+		#{modTime}
+			)
+		
+	</insert>
+	<delete id="deleteDemoTable" parameterType="com.ihk.utils.base.PojoDeleteCond">
+	update demo_table set is_deleted='1', mod_id=#{modId}, mod_time=#{modTime} where id=#{id};
+	</delete>
+	<update id="updateDemoTable" parameterType="int">
+	update demo_table set 
+		column_int=#{columnInt},
+		column_code=#{columnCode},
+		column_varchar=#{columnVarchar},
+		column_varchar2=#{columnVarchar2},
+		column_varchar3=#{columnVarchar3},
+		column_text=#{columnText},
+		column_date=#{columnDate},
+		column_price=#{columnPrice},
+		order_index=#{orderIndex},
+		mod_id=#{modId},
+		mod_time=#{modTime}
+	 where id=#{id}
+	</update>
+	<select id="findDemoTableById" resultMap="demoTableResultMap">
+	select * from demo_table where id=#{id}
+	</select>
+    
+	<sql id="findWhereCond"> 
+		<where>
+         and is_deleted = '0'
+		</where>
+	</sql>
+	
+	<select id="findDemoTableCount" resultType="int" parameterType="com.ihk.demo.data.pojo.DemoTableCond">
+		SELECT count(0) from demo_table  
+        <include refid="findWhereCond"/>     
+    </select>
+        
+	<select id="findDemoTable" resultMap="demoTableResultMap" parameterType="com.ihk.demo.data.pojo.DemoTableCond">
+		SELECT * from  demo_table 
+        <include refid="findWhereCond"/> 
+		<if test="topNum > 0">
+			limit #{topNum};
+		</if>
+    </select>
+    
+	<select id="findDemoTablePage" resultMap="demoTableResultMap" parameterType="com.ihk.demo.data.pojo.DemoTableCond">
+		SELECT * from  demo_table 
+        <include refid="findWhereCond"/> 
+    
+		<if test="startLine >= 0">
+		<if test="pageSize > 0">
+			limit #{startLine},#{pageSize};
+		</if>
+		</if>
+	</select>
+</mapper>

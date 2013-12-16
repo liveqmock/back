@@ -1,0 +1,616 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.ihk.report.data.IReportUnitSaleMapper">
+
+	<resultMap type="com.ihk.report.data.pojo.unitsale.ReportUnitSaleCompany" id="unitSaleCompany">   
+		<result property="companyId" column="company_id" />
+		<result property="companyName" column="company_name" />
+		<result property="sumMoney" column="sum_money" />
+		<result property="sumArea" column="sum_area" />
+		<result property="sumUnit" column="sum_unit" />
+	</resultMap>
+	
+	<resultMap type="com.ihk.report.data.pojo.unitsale.ReportUnitSaleProject" id="unitSaleProject">   
+		<result property="projectId" column="project_id" />
+		<result property="projectName" column="project_name" />
+		<result property="sumMoney" column="sum_money" />
+		<result property="sumArea" column="sum_area" />
+		<result property="sumUnit" column="sum_unit" />
+	</resultMap>
+	
+	<resultMap type="com.ihk.report.data.pojo.unitsale.ReportUnitSaleSalesman" id="unitSaleSalesman">   
+		<result property="salesmanId" column="salesman_id" />
+		<result property="salesmanName" column="salesman_name" />
+		<result property="sumMoney" column="sum_money" />
+		<result property="sumArea" column="sum_area" />
+		<result property="sumUnit" column="sum_unit" />
+	</resultMap>
+	
+	<resultMap type="com.ihk.report.data.pojo.unitsale.ReportPojoXSFXByCompany" id="xSFXByCompany">  
+		<result property="companyId" column="company_id" />
+		<result property="companyName" column="company_name" />
+		<result property="sumAmount" column="sum_amount" />
+		<result property="sumArea" column="sum_area" />
+		<result property="sumMoney" column="sum_money" />
+		<result property="leftAmount" column="left_amount" />
+		<result property="leftArea" column="left_area" />
+		<result property="leftMoney" column="left_money" />
+	</resultMap>
+	
+	<resultMap type="com.ihk.report.data.pojo.unitsale.ReportPojoXSFXByProject" id="xSFXByProject">  
+		<result property="projectId" column="project_id" />
+		<result property="projectName" column="project_name" />
+		<result property="sumAmount" column="sum_amount" />
+		<result property="sumArea" column="sum_area" />
+		<result property="sumMoney" column="sum_money" />
+		<result property="leftAmount" column="left_amount" />
+		<result property="leftArea" column="left_area" />
+		<result property="leftMoney" column="left_money" />
+	</resultMap>
+	
+	<resultMap type="com.ihk.report.data.pojo.unitsale.ReportPojoXSFXBySalesman" id="xSFXBySalesman">  
+		<result property="salesId" column="sales_id" />
+		<result property="salesName" column="sales_name" />
+		<result property="projectId" column="project_id" />
+		<result property="projectName" column="project_name" />
+		<result property="sumAmount" column="sum_amount" />
+		<result property="sumArea" column="sum_area" />
+		<result property="sumMoney" column="sum_money" />
+	</resultMap>
+	
+	<resultMap type="com.ihk.report.data.pojo.unitsale.ReportPojoXSFXByUnit" id="xSFXByUnit">  
+		<result property="unitId" column="unit_id" />
+		<result property="salesId" column="sales_id" />
+		<result property="salesName" column="sales_name" />
+		<result property="buildId" column="build_id" />
+		<result property="buildName" column="build_name" />
+		<result property="roomNo" column="room_no" />
+		<result property="buildArea" column="build_area" />
+		<result property="insideArea" column="inside_area" />
+		<result property="sumPrice" column="sum_price" />
+		<result property="salePrice" column="sale_price" />
+		<result property="workDate" column="work_date" />
+		<result property="payWay" column="pay_way" />
+		<result property="discountPercent" column="discount_percent" />
+		<result property="customerName" column="customer_name" />
+		<result property="mainId" column="main_id" />
+	</resultMap>
+
+	<select id="groupByCompany" resultMap="unitSaleCompany" parameterType="com.ihk.report.data.pojo.unitsale.ReportUnitSaleCompanyCond">		
+		SELECT c.id,c.company_name,SUM(a.sum_money) AS sum_money,SUM(a.build_area) AS sum_area,COUNT(a.unit_id) AS sum_unit FROM v_transaction_unit a,company_project b,company c 
+		WHERE a.company_project_id=b.id AND b.company_id=c.id		
+			<if test="date1 != null and date1 != ''">
+				and confirm_date &gt;= #{date1}
+			</if>
+			<if test="date2 != null and date2 != ''">
+				and confirm_date &lt; date_add(#{date2},interval 1 day)
+			</if>
+				
+            <if test="companyProjectIds != null and companyProjectIds.size() > 0">
+                and a.company_project_id in
+                <foreach collection="companyProjectIds" item="pId" open="(" separator="," close=")">
+                    #{pId}
+                </foreach>
+            </if>
+		GROUP BY c.id,c.company_name
+		ORDER BY SUM(a.sum_money) DESC
+		<if test="returnCount > 0">
+			limit #{returnCount}
+		</if>
+	</select>
+	
+	<select id="getSumMoney" resultType="BigDecimal" parameterType="com.ihk.report.data.pojo.unitsale.ReportUnitSaleCond">		
+		SELECT SUM(a.sum_money) AS sum_money FROM v_transaction_unit a
+			
+		<where>
+            <if test="companyProjectIds != null and companyProjectIds.size() > 0">
+                and a.company_project_id in
+                <foreach collection="companyProjectIds" item="pId" open="(" separator="," close=")">
+                    #{pId}
+                </foreach>
+            </if>            
+			<if test="salesId>0">
+			and a.confirm_id IN (
+				SELECT id FROM confirm WHERE sales_id LIKE concat('%,', #{salesId, jdbcType=VARCHAR}, ',%')
+				)
+			</if>
+       </where>
+	</select>
+	
+	<select id="groupByProject" resultMap="unitSaleProject" parameterType="com.ihk.report.data.pojo.unitsale.ReportUnitSaleProjectCond">		
+		SELECT c.id,b.project_name,SUM(a.sum_money) AS sum_money,SUM(a.build_area) AS sum_area,COUNT(a.unit_id) AS sum_unit FROM v_transaction_unit a,company_project b,company c 
+		WHERE a.company_project_id=b.id AND b.company_id=c.id		
+			<if test="date1 != null and date1 != ''">
+				and confirm_date &gt;= #{date1}
+			</if>
+			<if test="date2 != null and date2 != ''">
+				and confirm_date &lt; date_add(#{date2},interval 1 day)
+			</if>
+				
+            <if test="companyProjectIds != null and companyProjectIds.size() > 0">
+                and a.company_project_id in
+                <foreach collection="companyProjectIds" item="pId" open="(" separator="," close=")">
+                    #{pId}
+                </foreach>
+            </if>
+		GROUP BY c.id,b.project_name
+		ORDER BY SUM(a.sum_money) DESC
+		<if test="returnCount > 0">
+			limit #{returnCount}
+		</if>
+	</select>
+	
+	<select id="groupBySalesman" resultMap="unitSaleSalesman" parameterType="com.ihk.report.data.pojo.unitsale.ReportUnitSaleSalesmanCond">		
+		SELECT u.id as salesman_id,u.real_name as salesman_name,SUM(a.sum_money) AS sum_money,SUM(a.build_area) AS sum_area,COUNT(a.unit_id) AS sum_unit
+        FROM v_transaction_unit a,confirm b,contract_salesman s,user_account u
+		WHERE a.confirm_id=b.id AND s.confirm_type='1' AND s.sales_id=u.id AND s.main_id=b.id 
+			<if test="date1 != null and date1 != ''">
+				and confirm_date &gt;= #{date1}
+			</if>
+			<if test="date2 != null and date2 != ''">
+				and confirm_date &lt; date_add(#{date2},interval 1 day)
+			</if>
+				
+            <if test="companyProjectIds != null and companyProjectIds.size() > 0">
+                and a.company_project_id in
+                <foreach collection="companyProjectIds" item="pId" open="(" separator="," close=")">
+                    #{pId}
+                </foreach>
+            </if>
+		GROUP BY u.id,u.real_name
+		ORDER BY SUM(a.sum_money) DESC
+		<if test="returnCount > 0">
+			limit #{returnCount}
+		</if>
+	</select>
+	
+	<sql id="orderByCond_XSFX"> 	
+		<if test="sort =='sumAmount' and order == 'asc'">
+			order by sum_amount asc
+		</if>
+		<if test="sort =='sumAmount' and order == 'desc'">
+			order by sum_amount desc
+		</if>
+		<if test="sort =='sumArea' and order == 'asc'">
+			order by sum_area asc
+		</if>
+		<if test="sort =='sumArea' and order == 'desc'">
+			order by sum_area desc
+		</if>
+		<if test="sort =='sumMoney' and order == 'asc'">
+			order by sum_money asc
+		</if>
+		<if test="sort =='sumMoney' and order == 'desc'">
+			order by sum_money desc
+		</if>
+		
+		<if test="sort =='leftAmount' and order == 'asc'">
+			order by left_amount asc
+		</if>
+		<if test="sort =='leftAmount' and order == 'desc'">
+			order by left_amount desc
+		</if>
+		<if test="sort =='leftArea' and order == 'asc'">
+			order by left_area asc
+		</if>
+		<if test="sort =='leftArea' and order == 'desc'">
+			order by left_area desc
+		</if>
+		<if test="sort =='leftMoney' and order == 'asc'">
+			order by left_money asc
+		</if>
+		<if test="sort =='leftMoney' and order == 'desc'">
+			order by left_money desc
+		</if>
+	</sql>
+	<select id="findXSFXBySalesman_ConfirmBook" resultMap="xSFXBySalesman" parameterType="com.ihk.report.data.pojo.unitsale.ReportPojoXSFXBySalesmanCond">		
+		select c.sales_id as sales_id,count(1) as sum_amount,sum(p.build_area) as sum_area,IFNULL(sum(c.sum_money),0)
+		as sum_money ,pr.project_name as project_name,pr.id as project_id
+		from property_unit
+		p,confirm_book c,company_project pr
+		where
+		p.id = c.unit_id
+		and p.company_project_id = pr.id
+		and p.is_deleted = '0'
+		and c.is_deleted = '0'
+		<if test="companyProjectIds != null and companyProjectIds.size() > 0">
+				and p.company_project_id in
+                <foreach collection="companyProjectIds" item="pId" open="(" separator="," close=")">
+                    #{pId}
+                </foreach>
+		</if>
+		<if test="salesId != null and salesId != ''">
+			and c.sales_id like concat('%,', #{salesId, jdbcType=VARCHAR}, ',%')
+		</if>
+		<if test="date1 != null and date1 != '' ">
+			and c.created_time &gt; #{date1}
+				</if>
+		<if test="date2 != null and date2 != '' ">
+			and c.created_time &lt; date_add(#{date2},interval 1 day) 
+				</if>
+		group by c.sales_id
+		 <include refid="orderByCond_XSFX"/>   
+	</select>
+	
+	<select id="findXSFXBySalesman_Confirm" resultMap="xSFXBySalesman" parameterType="com.ihk.report.data.pojo.unitsale.ReportPojoXSFXBySalesmanCond">		
+		select c.sales_id as sales_id,count(1) as sum_amount,sum(p.build_area) as sum_area,sum(c.sum_money)
+		as sum_money ,pr.project_name as project_name,pr.id as project_id
+		from property_unit
+		p,confirm c,company_project pr
+		where
+		p.id = c.unit_id
+		and p.company_project_id = pr.id
+		and p.is_deleted = '0'
+		and c.is_deleted = '0'
+		<if test="companyProjectIds != null and companyProjectIds.size() > 0">
+				and p.company_project_id in
+                <foreach collection="companyProjectIds" item="pId" open="(" separator="," close=")">
+                    #{pId}
+                </foreach>
+		</if>
+		<if test="salesId != null and salesId != ''">
+			and c.sales_id like concat('%,', #{salesId, jdbcType=VARCHAR}, ',%')
+		</if>
+		<if test="date1 != null and date1 != '' ">
+			and c.work_date &gt;= #{date1}
+				</if>
+		<if test="date2 != null and date2 != '' ">
+			and c.work_date &lt; date_add(#{date2},interval 1 day) 
+				</if>
+		group by c.sales_id
+		 <include refid="orderByCond_XSFX"/>   
+		
+	</select>
+	
+	<select id="findXSFXBySalesman_Contract" resultMap="xSFXBySalesman" parameterType="com.ihk.report.data.pojo.unitsale.ReportPojoXSFXBySalesmanCond">		
+		select c.sales_id as sales_id,count(1) as sum_amount,sum(p.build_area) as sum_area,sum(c.sum_money)
+		as sum_money ,pr.project_name as project_name,pr.id as project_id
+		from property_unit
+		p,contract c,company_project pr
+		where
+		p.id = c.unit_id
+		and p.company_project_id = pr.id
+		and p.is_deleted = '0'
+		and c.is_deleted = '0'
+		<if test="companyProjectIds != null and companyProjectIds.size() > 0">
+				and p.company_project_id in
+                <foreach collection="companyProjectIds" item="pId" open="(" separator="," close=")">
+                    #{pId}
+                </foreach>
+		</if>
+		<if test="salesId != null and salesId != ''">
+			and c.sales_id like concat('%,', #{salesId, jdbcType=VARCHAR}, ',%')
+		</if>
+		<if test="date1 != null and date1 != '' ">
+			and c.sign_date &gt; #{date1}
+				</if>
+		<if test="date2 != null and date2 != '' ">
+			and c.sign_date &lt; date_add(#{date2},interval 1 day) 
+				</if>
+		group by c.sales_id
+		 <include refid="orderByCond_XSFX"/>  
+	</select>
+	
+	
+	<select id="findXSFXByCompany_ConfirmBook" resultMap="xSFXByCompany" parameterType="com.ihk.report.data.pojo.unitsale.ReportPojoXSFXByCompanyCond">		
+		SELECT a.id AS company_id,company_name,ifnull(sum_amount,0) as sum_amount,ifnull(sum_area,0) as sum_area,ifnull(sum_money,0) as sum_money,ifnull(left_amount,0) as left_amount,ifnull(left_area,0) as left_area,ifnull(left_money,0) as left_money FROM (SELECT id,company_name FROM company WHERE dev_code='customer_guangzhou' 
+		<if test="searchCompanyIds != null and searchCompanyIds.size() > 0">
+				and id in
+                <foreach collection="searchCompanyIds" item="cId" open="(" separator="," close=")">
+                    #{cId}
+                </foreach>
+		</if>
+		) a
+		LEFT JOIN 
+		(SELECT cp.company_id,COUNT(c.id) AS sum_amount,SUM(p.build_area) AS sum_area,SUM(c.sum_money) AS sum_money FROM property_unit p,confirm_book c,company_project cp WHERE p.id=c.unit_id AND p.company_project_id=cp.id AND p.is_deleted='0' AND c.is_deleted='0' 
+		<if test="companyProjectIds != null and companyProjectIds.size() > 0">
+				and p.company_project_id in
+                <foreach collection="companyProjectIds" item="pId" open="(" separator="," close=")">
+                    #{pId}
+                </foreach>
+		</if>
+		<if test="salesId != null and salesId != ''">
+			and c.sales_id like concat('%,', #{salesId, jdbcType=VARCHAR}, ',%')
+		</if>
+		<if test="date1 != null and date1 != '' ">
+			and c.created_time &gt; #{date1}
+				</if>
+		<if test="date2 != null and date2 != '' ">
+			and c.created_time &lt; date_add(#{date2},interval 1 day) 
+		</if>
+		GROUP BY cp.company_id) lc ON a.id=lc.company_id
+		LEFT JOIN
+		(SELECT cp.company_id,COUNT(p.id) AS left_amount,SUM(p.build_area) AS left_area,SUM(p.sum_price) AS left_money FROM property_unit p,company_project cp WHERE p.company_project_id=cp.id AND p.is_deleted='0' AND p.sale_state IN ('1','2') GROUP BY cp.company_id) lp ON a.id=lp.company_id
+
+		 <include refid="orderByCond_XSFX"/> 
+	</select>
+	
+	<select id="findXSFXByCompany_Confirm" resultMap="xSFXByCompany" parameterType="com.ihk.report.data.pojo.unitsale.ReportPojoXSFXByCompanyCond">		
+		SELECT a.id AS company_id,company_name,ifnull(sum_amount,0) as sum_amount,ifnull(sum_area,0) as sum_area,ifnull(sum_money,0) as sum_money,ifnull(left_amount,0) as left_amount,ifnull(left_area,0) as left_area,ifnull(left_money,0) as left_money FROM (SELECT id,company_name FROM company WHERE dev_code='customer_guangzhou' 
+		<if test="searchCompanyIds != null and searchCompanyIds.size() > 0">
+				and id in
+                <foreach collection="searchCompanyIds" item="cId" open="(" separator="," close=")">
+                    #{cId}
+                </foreach>
+		</if>
+		) a
+		LEFT JOIN 
+		(SELECT cp.company_id,COUNT(c.id) AS sum_amount,SUM(p.build_area) AS sum_area,SUM(c.sum_money) AS sum_money FROM property_unit p,confirm c,company_project cp WHERE p.id=c.unit_id AND p.company_project_id=cp.id AND p.is_deleted='0' AND c.is_deleted='0' 
+		<if test="companyProjectIds != null and companyProjectIds.size() > 0">
+				and p.company_project_id in
+                <foreach collection="companyProjectIds" item="pId" open="(" separator="," close=")">
+                    #{pId}
+                </foreach>
+		</if>
+		<if test="salesId != null and salesId != ''">
+			and c.sales_id like concat('%,', #{salesId, jdbcType=VARCHAR}, ',%')
+		</if>
+		<if test="date1 != null and date1 != '' ">
+			and c.work_date &gt;= #{date1}
+				</if>
+		<if test="date2 != null and date2 != '' ">
+			and c.work_date &lt; date_add(#{date2},interval 1 day) 
+		</if>
+		GROUP BY cp.company_id) lc ON a.id=lc.company_id
+		LEFT JOIN
+		(SELECT cp.company_id,COUNT(p.id) AS left_amount,SUM(p.build_area) AS left_area,SUM(p.sum_price) AS left_money FROM property_unit p,company_project cp WHERE p.company_project_id=cp.id AND p.is_deleted='0' AND p.sale_state IN ('1','2') GROUP BY cp.company_id) lp ON a.id=lp.company_id
+
+		 <include refid="orderByCond_XSFX"/>  
+	</select>
+	<select id="findXSFXByCompany_Contract" resultMap="xSFXByCompany" parameterType="com.ihk.report.data.pojo.unitsale.ReportPojoXSFXByCompanyCond">		
+		SELECT a.id AS company_id,company_name,ifnull(sum_amount,0) as sum_amount,ifnull(sum_area,0) as sum_area,ifnull(sum_money,0) as sum_money,ifnull(left_amount,0) as left_amount,ifnull(left_area,0) as left_area,ifnull(left_money,0) as left_money FROM (SELECT id,company_name FROM company WHERE dev_code='customer_guangzhou' 
+		<if test="searchCompanyIds != null and searchCompanyIds.size() > 0">
+				and id in
+                <foreach collection="searchCompanyIds" item="cId" open="(" separator="," close=")">
+                    #{cId}
+                </foreach>
+		</if>
+		) a
+		LEFT JOIN 
+		(SELECT cp.company_id,COUNT(c.id) AS sum_amount,SUM(p.build_area) AS sum_area,SUM(c.sum_money) AS sum_money FROM property_unit p,contract c,company_project cp WHERE p.id=c.unit_id AND p.company_project_id=cp.id AND p.is_deleted='0' AND c.is_deleted='0' 
+		<if test="companyProjectIds != null and companyProjectIds.size() > 0">
+				and p.company_project_id in
+                <foreach collection="companyProjectIds" item="pId" open="(" separator="," close=")">
+                    #{pId}
+                </foreach>
+		</if>
+		<if test="salesId != null and salesId != ''">
+			and c.sales_id like concat('%,', #{salesId, jdbcType=VARCHAR}, ',%')
+		</if>
+		<if test="date1 != null and date1 != '' ">
+			and c.sign_date &gt; #{date1}
+				</if>
+		<if test="date2 != null and date2 != '' ">
+			and c.sign_date &lt; date_add(#{date2},interval 1 day) 
+		</if>
+		GROUP BY cp.company_id) lc ON a.id=lc.company_id
+		LEFT JOIN
+		(SELECT cp.company_id,COUNT(p.id) AS left_amount,SUM(p.build_area) AS left_area,SUM(p.sum_price) AS left_money FROM property_unit p,company_project cp WHERE p.company_project_id=cp.id AND p.is_deleted='0' AND p.sale_state IN ('1','2') GROUP BY cp.company_id) lp ON a.id=lp.company_id
+
+		 <include refid="orderByCond_XSFX"/>  
+	</select>
+		
+	<select id="findXSFXByProject_ConfirmBook" resultMap="xSFXByProject" parameterType="com.ihk.report.data.pojo.unitsale.ReportPojoXSFXByProjectCond">		
+		SELECT a.id AS project_id,project_name,ifnull(sum_amount,0) as sum_amount,ifnull(sum_area,0) as sum_area,ifnull(sum_money,0) as sum_money,ifnull(left_amount,0) as left_amount,ifnull(left_area,0) as left_area,ifnull(left_money,0) as left_money FROM (SELECT id,project_name FROM company_project WHERE dev_code='customer_guangzhou' and is_deleted='0' 
+		<if test="companyProjectIds != null and companyProjectIds.size() > 0">
+				and id in
+                <foreach collection="companyProjectIds" item="pId" open="(" separator="," close=")">
+                    #{pId}
+                </foreach>
+		</if>
+		<if test="searchCompanyIds != null and searchCompanyIds.size() > 0">
+				and company_id in
+                <foreach collection="searchCompanyIds" item="cId" open="(" separator="," close=")">
+                    #{cId}
+                </foreach>
+		</if>
+		) a
+		LEFT JOIN 
+		(SELECT cp.id as project_id,COUNT(c.id) AS sum_amount,SUM(p.build_area) AS sum_area,SUM(c.sum_money) AS sum_money FROM property_unit p,confirm_book c,company_project cp WHERE p.id=c.unit_id AND p.company_project_id=cp.id AND p.is_deleted='0' AND c.is_deleted='0' 
+		<if test="companyProjectIds != null and companyProjectIds.size() > 0">
+				and p.company_project_id in
+                <foreach collection="companyProjectIds" item="pId" open="(" separator="," close=")">
+                    #{pId}
+                </foreach>
+		</if>
+		<if test="salesId != null and salesId != ''">
+			and c.sales_id like concat('%,', #{salesId, jdbcType=VARCHAR}, ',%')
+		</if>
+		<if test="date1 != null and date1 != '' ">
+			and c.created_time &gt; #{date1}
+				</if>
+		<if test="date2 != null and date2 != '' ">
+			and c.created_time &lt; date_add(#{date2},interval 1 day) 
+		</if>
+		GROUP BY cp.id) lc ON a.id=lc.project_id
+		LEFT JOIN
+		(SELECT cp.id as project_id,COUNT(p.id) AS left_amount,SUM(p.build_area) AS left_area,SUM(p.sum_price) AS left_money FROM property_unit p,company_project cp WHERE p.company_project_id=cp.id AND p.is_deleted='0' AND p.sale_state IN ('1','2') GROUP BY cp.id) lp ON a.id=lp.project_id
+
+		 <include refid="orderByCond_XSFX"/> 
+	</select>
+	<select id="findXSFXByProject_Confirm" resultMap="xSFXByProject" parameterType="com.ihk.report.data.pojo.unitsale.ReportPojoXSFXByProjectCond">		
+		SELECT a.id AS project_id,project_name,ifnull(sum_amount,0) as sum_amount,ifnull(sum_area,0) as sum_area,ifnull(sum_money,0) as sum_money,ifnull(left_amount,0) as left_amount,ifnull(left_area,0) as left_area,ifnull(left_money,0) as left_money FROM (SELECT id,project_name FROM company_project WHERE dev_code='customer_guangzhou' and is_deleted='0' 
+		<if test="companyProjectIds != null and companyProjectIds.size() > 0">
+				and id in
+                <foreach collection="companyProjectIds" item="pId" open="(" separator="," close=")">
+                    #{pId}
+                </foreach>
+		</if>
+		<if test="searchCompanyIds != null and searchCompanyIds.size() > 0">
+				and company_id in
+                <foreach collection="searchCompanyIds" item="cId" open="(" separator="," close=")">
+                    #{cId}
+                </foreach>
+		</if>
+		) a
+		LEFT JOIN 
+		(SELECT cp.id as project_id,COUNT(c.id) AS sum_amount,SUM(p.build_area) AS sum_area,SUM(c.sum_money) AS sum_money FROM property_unit p,confirm c,company_project cp WHERE p.id=c.unit_id AND p.company_project_id=cp.id AND p.is_deleted='0' AND c.is_deleted='0' 
+		<if test="companyProjectIds != null and companyProjectIds.size() > 0">
+				and p.company_project_id in
+                <foreach collection="companyProjectIds" item="pId" open="(" separator="," close=")">
+                    #{pId}
+                </foreach>
+		</if>
+		<if test="salesId != null and salesId != ''">
+			and c.sales_id like concat('%,', #{salesId, jdbcType=VARCHAR}, ',%')
+		</if>
+		<if test="date1 != null and date1 != '' ">
+			and c.work_date &gt;= #{date1}
+				</if>
+		<if test="date2 != null and date2 != '' ">
+			and c.work_date &lt; date_add(#{date2},interval 1 day) 
+		</if>
+		GROUP BY cp.id) lc ON a.id=lc.project_id
+		LEFT JOIN
+		(SELECT cp.id as project_id,COUNT(p.id) AS left_amount,SUM(p.build_area) AS left_area,SUM(p.sum_price) AS left_money FROM property_unit p,company_project cp WHERE p.company_project_id=cp.id AND p.is_deleted='0' AND p.sale_state IN ('1','2') GROUP BY cp.id) lp ON a.id=lp.project_id
+
+		 <include refid="orderByCond_XSFX"/>  
+	</select>
+	<select id="findXSFXByProject_Contract" resultMap="xSFXByProject" parameterType="com.ihk.report.data.pojo.unitsale.ReportPojoXSFXByProjectCond">		
+		SELECT a.id AS project_id,project_name,ifnull(sum_amount,0) as sum_amount,ifnull(sum_area,0) as sum_area,ifnull(sum_money,0) as sum_money,ifnull(left_amount,0) as left_amount,ifnull(left_area,0) as left_area,ifnull(left_money,0) as left_money FROM (SELECT id,project_name FROM company_project WHERE dev_code='customer_guangzhou' and is_deleted='0' 
+		<if test="companyProjectIds != null and companyProjectIds.size() > 0">
+				and id in
+                <foreach collection="companyProjectIds" item="pId" open="(" separator="," close=")">
+                    #{pId}
+                </foreach>
+		</if>
+		<if test="searchCompanyIds != null and searchCompanyIds.size() > 0">
+				and company_id in
+                <foreach collection="searchCompanyIds" item="cId" open="(" separator="," close=")">
+                    #{cId}
+                </foreach>
+		</if>
+		) a
+		LEFT JOIN 
+		(SELECT cp.id as project_id,COUNT(c.id) AS sum_amount,SUM(p.build_area) AS sum_area,SUM(c.sum_money) AS sum_money FROM property_unit p,contract c,company_project cp WHERE p.id=c.unit_id AND p.company_project_id=cp.id AND p.is_deleted='0' AND c.is_deleted='0' 
+		<if test="companyProjectIds != null and companyProjectIds.size() > 0">
+				and p.company_project_id in
+                <foreach collection="companyProjectIds" item="pId" open="(" separator="," close=")">
+                    #{pId}
+                </foreach>
+		</if>
+		<if test="salesId != null and salesId != ''">
+			and c.sales_id like concat('%,', #{salesId, jdbcType=VARCHAR}, ',%')
+		</if>
+		<if test="date1 != null and date1 != '' ">
+			and c.sign_date &gt; #{date1}
+				</if>
+		<if test="date2 != null and date2 != '' ">
+			and c.sign_date &lt; date_add(#{date2},interval 1 day) 
+		</if>
+		GROUP BY cp.id) lc ON a.id=lc.project_id
+		LEFT JOIN
+		(SELECT cp.id as project_id,COUNT(p.id) AS left_amount,SUM(p.build_area) AS left_area,SUM(p.sum_price) AS left_money FROM property_unit p,company_project cp WHERE p.company_project_id=cp.id AND p.is_deleted='0' AND p.sale_state IN ('1','2') GROUP BY cp.id) lp ON a.id=lp.project_id
+
+		 <include refid="orderByCond_XSFX"/>  
+	</select>
+	
+	<select id="findXSFXByUnit_ConfirmBook" resultMap="xSFXByUnit" parameterType="com.ihk.report.data.pojo.unitsale.ReportPojoXSFXByUnit">		
+		SELECT p.id AS unit_id,c.sales_id sales_id,
+		b.id AS build_id,CONCAT(pr.property_name,"-",ar.area_name,"-",b.build_name) AS build_name,
+		p.unit_no AS room_no ,p.build_area AS build_area,p.inside_area AS
+		inside_area,ifnull(p.sum_price,0) AS sum_price,ifnull(c.sum_money,0) AS sale_price,
+		pw.pay_name AS payWay,c.discount_percent AS discountPercent,
+		c.created_time AS work_date
+		FROM
+		property_unit p,confirm_book c,property_build b,property_area ar,property_project pr,pay_way pw		
+			WHERE  p.id = c.unit_id
+			AND p.is_deleted = '0'
+			AND c.is_deleted = '0'
+			AND pw.is_deleted = '0'
+			AND pw.id = c.pay_way_id
+			AND p.build_id = b.id
+			AND b.area_id = ar.id
+			AND ar.property_id = pr.id
+			<if test="companyProjectIds != null and companyProjectIds.size() > 0">
+				and p.company_project_id in
+                <foreach collection="companyProjectIds" item="pId" open="(" separator="," close=")">
+                    #{pId}
+                </foreach>
+			</if>
+			<if test="salesId != null and salesId != ''">
+				and c.sales_id like concat('%,', #{salesId, jdbcType=VARCHAR}, ',%')
+			</if>
+			<if test="date1 != null and date1 != '' ">
+				and c.created_time &gt; #{date1}
+					</if>
+			<if test="date2 != null and date2 != '' ">
+				and c.created_time &lt; date_add(#{date2},interval 1 day) 
+			</if>
+	</select>
+	<select id="findXSFXByUnit_Confirm" resultMap="xSFXByUnit" parameterType="com.ihk.report.data.pojo.unitsale.ReportPojoXSFXByUnit">		
+		SELECT p.id AS unit_id,c.sales_id sales_id,
+		b.id AS build_id,CONCAT(pr.property_name,"-",ar.area_name,"-",b.build_name) AS build_name,
+		p.unit_no AS room_no ,p.build_area AS build_area,p.inside_area AS
+		inside_area,p.sum_price AS sum_price,c.sum_money AS sale_price,
+		pw.pay_name AS payWay,c.discount_percent AS discountPercent,
+		c.work_date AS work_date, c.id as main_id,cc.customer_name
+		FROM
+		property_unit p,confirm c,property_build b,property_area ar,property_project pr,pay_way pw, contract_customer cc 		
+			WHERE  p.id = c.unit_id
+			AND p.is_deleted = '0'
+			AND c.is_deleted = '0'
+			AND pw.is_deleted = '0'
+			AND cc.is_deleted = '0'
+			AND pw.id = c.pay_way_id
+			AND p.build_id = b.id
+			AND b.area_id = ar.id
+			AND ar.property_id = pr.id
+			AND c.id = cc.main_id
+			<if test="companyProjectIds != null and companyProjectIds.size() > 0">
+				and p.company_project_id in
+                <foreach collection="companyProjectIds" item="pId" open="(" separator="," close=")">
+                    #{pId}
+                </foreach>
+			</if>
+			<if test="companyProjectIds != null and companyProjectIds.size() > 0">
+				and cc.project_id in
+                <foreach collection="companyProjectIds" item="pId" open="(" separator="," close=")">
+                    #{pId}
+                </foreach>
+			</if>
+			<if test="salesId != null and salesId != ''">
+				and c.sales_id like concat('%,', #{salesId, jdbcType=VARCHAR}, ',%')
+			</if>
+			<if test="date1 != null and date1 != '' ">
+				and c.work_date &gt;= #{date1}
+					</if>
+			<if test="date2 != null and date2 != '' ">
+				and c.work_date &lt; date_add(#{date2},interval 1 day) 
+			</if>
+	</select>
+	<select id="findXSFXByUnit_Contract" resultMap="xSFXByUnit" parameterType="com.ihk.report.data.pojo.unitsale.ReportPojoXSFXByUnitCond">		
+			
+		SELECT p.id AS unit_id,c.sales_id sales_id,
+		b.id AS build_id,CONCAT(pr.property_name,"-",ar.area_name,"-",b.build_name) AS build_name,
+		p.unit_no AS room_no ,p.build_area AS build_area,p.inside_area AS
+		inside_area,p.sum_price AS sum_price,c.sum_money AS sale_price,
+		pw.pay_name AS payWay,c.discount_percent AS discountPercent,
+		c.work_date AS work_date
+		FROM
+		property_unit p,contract c,property_build b,property_area ar,property_project pr,pay_way pw		
+			WHERE  p.id = c.unit_id
+			AND p.is_deleted = '0'
+			AND c.is_deleted = '0'
+			AND pw.is_deleted = '0'
+			AND pw.id = c.pay_way_id
+			AND p.build_id = b.id
+			AND b.area_id = ar.id
+			AND ar.property_id = pr.id
+			<if test="companyProjectIds != null and companyProjectIds.size() > 0">
+				and p.company_project_id in
+                <foreach collection="companyProjectIds" item="pId" open="(" separator="," close=")">
+                    #{pId}
+                </foreach>
+			</if>
+			<if test="salesId != null and salesId != ''">
+				and c.sales_id like concat('%,', #{salesId, jdbcType=VARCHAR}, ',%')
+			</if>
+			<if test="date1 != null and date1 != '' ">
+				and c.sign_date &gt; #{date1}
+					</if>
+			<if test="date2 != null and date2 != '' ">
+				and c.sign_date &lt; date_add(#{date2},interval 1 day) 
+			</if>
+	</select>
+</mapper>

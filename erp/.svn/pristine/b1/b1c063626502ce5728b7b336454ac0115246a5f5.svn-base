@@ -1,0 +1,101 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.ihk.saleunit.data.IUnitDiscountDetailMapper">
+
+	<resultMap type="UnitDiscountDetail" id="unitDiscountDetailResultMap">
+		<id property="id" column="id" />        
+		<result property="discountId" column="discount_id" />
+		<result property="discountType" column="discount_type" />
+		<result property="discountPercent" column="discount_percent" />
+		<result property="remark" column="remark" />
+		<result property="isDeleted" column="is_deleted" />
+		<result property="createdId" column="created_id" />
+		<result property="createdTime" column="created_time" />
+		<result property="modId" column="mod_id" />
+		<result property="modTime" column="mod_time" />
+	</resultMap>
+
+	<insert id="addUnitDiscountDetail" parameterType="UnitDiscountDetail">
+		 <selectKey resultType="java.lang.Integer" keyProperty="id" order="AFTER" >
+            SELECT @@IDENTITY
+        </selectKey>		
+		insert into unit_discount_detail(
+		discount_id,
+		discount_type,
+		discount_percent,
+		remark,
+		is_deleted,
+		created_id,
+		created_time,
+		mod_id,
+		mod_time
+		)
+			VALUES(
+		#{discountId},
+		#{discountType},
+		#{discountPercent},
+		#{remark},
+		#{isDeleted},
+		#{createdId},
+		#{createdTime},
+		#{modId},
+		#{modTime}
+			)
+		
+	</insert>
+	<delete id="deleteUnitDiscountDetail" parameterType="int">
+	update unit_discount_detail set is_deleted='1' where id=#{id};
+	</delete>
+	<update id="updateUnitDiscountDetail" parameterType="int">
+	update unit_discount_detail set 
+		discount_id=#{discountId},
+		discount_type=#{discountType},
+		discount_percent=#{discountPercent},
+		remark=#{remark},
+		mod_id=#{modId},
+		mod_time=#{modTime}
+	 where id=#{id}
+	</update>
+	<select id="findUnitDiscountDetailById" resultMap="unitDiscountDetailResultMap">
+	select * from unit_discount_detail where id=#{id}
+	</select>
+    
+	<sql id="findWhereCond"> 
+		<where>
+			is_deleted = '0'
+		</where>
+	</sql>
+	
+	<select id="findUnitDiscountDetailCount" resultType="int" parameterType="com.ihk.saleunit.data.pojo.UnitDiscountDetailCond">
+		SELECT count(0) from unit_discount_detail  
+        <include refid="findWhereCond"/>     
+    </select>
+        
+	<select id="findUnitDiscountDetail" resultMap="unitDiscountDetailResultMap" parameterType="com.ihk.saleunit.data.pojo.UnitDiscountDetailCond">
+		SELECT * from  unit_discount_detail 
+        <include refid="findWhereCond"/> 
+		<if test="topNum > 0">
+			limit #{topNum};
+		</if>
+    </select>
+    
+	<select id="findUnitDiscountDetailPage" resultMap="unitDiscountDetailResultMap" parameterType="com.ihk.saleunit.data.pojo.UnitDiscountDetailCond">
+		SELECT * from  unit_discount_detail 
+        <include refid="findWhereCond"/> 
+    
+		<if test="startLine >= 0">
+		<if test="pageSize > 0">
+			limit #{startLine},#{pageSize};
+		</if>
+		</if>
+	</select>
+	
+	<select id="findDetailByDiscountId" resultMap="unitDiscountDetailResultMap">
+		select * from unit_discount_detail where discount_id = #{discountId} and is_deleted = '0'
+	</select>
+	
+	<update id="deleteUnitDiscountDetailByDiscountId" parameterType="int">
+		update unit_discount_detail set is_deleted='1' where discount_id = #{discountId}; 
+	</update>
+	
+</mapper>

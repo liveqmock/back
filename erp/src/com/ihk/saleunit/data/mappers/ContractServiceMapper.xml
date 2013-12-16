@@ -1,0 +1,103 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.ihk.saleunit.data.IContractServiceMapper">
+
+	<resultMap type="ContractService" id="contractServiceResultMap">
+		<id property="id" column="id" />        
+		<result property="contractId" column="contract_id" />
+		<result property="serviceType" column="service_type" />
+		<result property="promiseDoDate" column="promise_do_date" />
+		<result property="promiseFinishDate" column="promise_finish_date" />
+		<result property="stepState" column="step_state" />
+		<result property="isDeleted" column="is_deleted" />
+		<result property="createdId" column="created_id" />
+		<result property="createdTime" column="created_time" />
+		<result property="modId" column="mod_id" />
+		<result property="modTime" column="mod_time" />
+	</resultMap>
+
+	<insert id="addContractService" parameterType="ContractService">
+		 <selectKey resultType="java.lang.Integer" keyProperty="id" order="AFTER" >
+            SELECT @@IDENTITY
+        </selectKey>		
+		insert into contract_service(
+		contract_id,
+		service_type,
+		promise_do_date,
+		promise_finish_date,
+		step_state,
+		is_deleted,
+		created_id,
+		created_time,
+		mod_id,
+		mod_time
+		)
+			VALUES(
+		#{contractId},
+		#{serviceType},
+		#{promiseDoDate},
+		#{promiseFinishDate},
+		#{stepState},
+		#{isDeleted},
+		#{createdId},
+		#{createdTime},
+		#{modId},
+		#{modTime}
+			)
+		
+	</insert>
+	<delete id="deleteContractService" parameterType="int">
+	update contract_service set is_deleted='1' where id=#{id};
+	</delete>
+	<update id="updateContractService" parameterType="int">
+	update contract_service set 
+		contract_id=#{contractId},
+		service_type=#{serviceType},
+		promise_do_date=#{promiseDoDate},
+		promise_finish_date=#{promiseFinishDate},
+		step_state=#{stepState},
+		is_deleted=#{isDeleted},
+		created_id=#{createdId},
+		created_time=#{createdTime},
+		mod_id=#{modId},
+		mod_time=#{modTime}
+	 where id=#{id}
+	</update>
+	<select id="findContractServiceById" resultMap="contractServiceResultMap">
+	select * from contract_service where id=#{id}
+	</select>
+    
+	<sql id="findWhereCond"> 
+		<where>
+		
+			<if test="contractId != null and contractId != ''">
+				and contract_id = #{contractId}
+			</if>
+			
+		</where>
+	</sql>
+	
+	<select id="findContractServiceCount" resultType="int" parameterType="com.ihk.saleunit.data.pojo.ContractServiceCond">
+		SELECT count(0) from contract_service  
+        <include refid="findWhereCond"/>     
+    </select>
+        
+	<select id="findContractService" resultMap="contractServiceResultMap" parameterType="com.ihk.saleunit.data.pojo.ContractServiceCond">
+		SELECT * from  contract_service 
+        <include refid="findWhereCond"/> 
+		<if test="topNum > 0">
+			limit #{topNum};
+		</if>
+    </select>
+    
+	<select id="findContractServicePage" resultMap="contractServiceResultMap" parameterType="com.ihk.saleunit.data.pojo.ContractServiceCond">
+		SELECT * from  contract_service 
+        <include refid="findWhereCond"/> 
+    
+		<if test="startLine >= 0">
+		<if test="pageSize > 0">
+			limit #{startLine},#{pageSize};
+		</if>
+		</if>
+	</select>
+</mapper>

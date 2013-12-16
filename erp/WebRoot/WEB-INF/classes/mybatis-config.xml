@@ -1,0 +1,397 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE configuration PUBLIC "-//mybatis.org//DTD Config 3.0//EN" "http://mybatis.org/dtd/mybatis-3-config.dtd">
+<configuration>
+
+	<typeAliases>
+		<!-- 例子 -->
+    	<typeAlias alias="DemoTable" type="com.ihk.demo.data.pojo.DemoTable" />
+    
+		<typeAlias alias="SBook" type="com.dou.book.data.pojo.SBook" />		
+		<typeAlias alias="Student" type="com.dou.student.data.pojo.Student" />	
+		<typeAlias alias="Customer" type="com.ihk.customer.data.pojo.Customer"/>
+		<typeAlias alias="CustomerLog" type="com.ihk.customer.data.pojo.CustomerLog"/>
+		<typeAlias alias="CustomerFollow" type="com.ihk.customer.data.pojo.CustomerFollow"/>
+    	<typeAlias alias="CustomerFocus" type="com.ihk.customer.data.pojo.CustomerFocus" />	
+		<typeAlias alias="CustomerKnown" type="com.ihk.customer.data.pojo.CustomerKnown"/>
+    	<typeAlias alias="CustomerRed" type="com.ihk.customer.data.pojo.CustomerRed" />
+    	<typeAlias alias="ProjectRange" type="com.ihk.customer.data.pojo.ProjectRange" />	
+		<typeAlias alias="FollowRoom" type="com.ihk.customer.data.pojo.FollowRoom"/>
+		<typeAlias alias="RecommendRoom" type="com.ihk.customer.data.pojo.RecommendRoom"/>
+		
+		
+		<typeAlias alias="UserAccount" type="com.ihk.user.data.pojo.UserAccount" />		
+		<typeAlias alias="Company" type="com.ihk.user.data.pojo.Company" />	
+		<typeAlias alias="CompanyGroup" type="com.ihk.user.data.pojo.CompanyGroup" />	
+		<typeAlias alias="Team" type="com.ihk.user.data.pojo.Team" />	
+		<typeAlias alias="CompanyProject" type="com.ihk.user.data.pojo.CompanyProject" />
+    	<typeAlias alias="ProjectState" type="com.ihk.user.data.pojo.ProjectState" />
+		<typeAlias alias="UserAccountCond" type="com.ihk.user.data.pojo.UserAccountCond" />
+    	<typeAlias alias="InputMemory" type="com.ihk.user.data.pojo.InputMemory" />	
+		
+		<typeAlias alias="UserRole" type="com.ihk.user.data.pojo.UserRole" />
+		<typeAlias alias="Role" type="com.ihk.user.data.pojo.Role" />		
+		<typeAlias alias="RolePriv" type="com.ihk.user.data.pojo.RolePriv" />	
+		<typeAlias alias="RolePrivRef" type="com.ihk.user.data.pojo.RolePrivRef" />	
+		<typeAlias alias="PrivFunc" type="com.ihk.user.data.pojo.PrivFunc" />		
+		<typeAlias alias="FuncTree" type="com.ihk.user.data.pojo.FuncTree" />	
+		<typeAlias alias="Priv" type="com.ihk.user.data.pojo.Priv" />	
+
+		<typeAlias alias="Priv" type="com.ihk.user.data.pojo.Priv"/>
+		<typeAlias alias="PrivFuncName" type="com.ihk.user.data.pojo.PrivFuncName"/>
+		
+		<typeAlias alias="CodeDtl" type="com.ihk.setting.data.pojo.CodeDtl" />	
+		<typeAlias alias="CodeType" type="com.ihk.setting.data.pojo.CodeType" />
+		<typeAlias alias="ProjectCode" type="com.ihk.setting.data.pojo.ProjectCode" />
+    	<typeAlias alias="Province" type="com.ihk.setting.data.pojo.Province" />
+    	<typeAlias alias="City" type="com.ihk.setting.data.pojo.City" />
+    	<typeAlias alias="Region" type="com.ihk.setting.data.pojo.Region" />    	
+    	<typeAlias alias="Block" type="com.ihk.setting.data.pojo.Block" />
+    	<typeAlias alias="ProjectText" type="com.ihk.setting.data.pojo.ProjectText" />
+		
+		<typeAlias alias="SaleMonitorMonth" type="com.ihk.sale.data.pojo.SaleMonitorMonth" />
+		<typeAlias alias="PresaleMonitorAll" type="com.ihk.sale.data.pojo.PresaleMonitorAll" />
+		<typeAlias alias="PresaleMonitor" type="com.ihk.sale.data.pojo.PresaleMonitor" />
+		<typeAlias alias="SaleMonitorAll" type="com.ihk.sale.data.pojo.SaleMonitorAll" />
+		<typeAlias alias="SaleMonitor" type="com.ihk.sale.data.pojo.SaleMonitor" />
+	    <typeAlias alias="SaleMonitorWeek" type="com.ihk.sale.data.pojo.SaleMonitorWeek" />	
+	    <typeAlias alias="SaleMonitorYear" type="com.ihk.sale.data.pojo.SaleMonitorYear" />	
+	    <typeAlias alias="SaleMonitorLog" type="com.ihk.sale.data.pojo.SaleMonitorLog" />
+	    <typeAlias alias="SaleMonitorLogbefore" type="com.ihk.sale.data.pojo.SaleMonitorLogbefore" />	
+	    <typeAlias alias="SaleBuildLog" type="com.ihk.sale.data.pojo.SaleBuildLog" />	
+	    
+	    <typeAlias alias="OperLog" type="com.ihk.setting.data.pojo.OperLog" />
+	    <typeAlias alias="Article" type="com.ihk.article.data.pojo.Article" />
+	    
+    	<typeAlias alias="PropertyDeveloper" type="com.ihk.property.data.pojo.PropertyDeveloper" />	
+    	<typeAlias alias="PropertyProject" type="com.ihk.property.data.pojo.PropertyProject" />
+    	<typeAlias alias="PropertyProjectPlan" type="com.ihk.saleunit.data.pojo.PropertyProjectPlan" />
+    	<typeAlias alias="PropertyPriv" type="com.ihk.property.data.pojo.PropertyPriv" />	
+    	<typeAlias alias="PropertyArea" type="com.ihk.property.data.pojo.PropertyArea" />	
+    	<typeAlias alias="PropertyBuild" type="com.ihk.property.data.pojo.PropertyBuild" />	
+    	<typeAlias alias="UnitBind" type="com.ihk.property.data.pojo.UnitBind" />
+    	<typeAlias alias="PropertyUnit" type="com.ihk.property.data.pojo.PropertyUnit" />	
+    	<typeAlias alias="BuildDiscount" type="com.ihk.property.data.pojo.BuildDiscount" />	
+	    <typeAlias alias="PayWay" type="com.ihk.property.data.pojo.PayWay" />	
+	    <typeAlias alias="PayWayDetail" type="com.ihk.property.data.pojo.PayWayDetail" />	
+	    <typeAlias alias="UnitPayBill" type="com.ihk.property.data.pojo.UnitPayBill" />
+		<typeAlias alias="UnitPayBillDetail" type="com.ihk.property.data.pojo.UnitPayBillDetail" />
+		<typeAlias alias="UnitImage" type="com.ihk.property.data.pojo.UnitImage" />
+		<typeAlias alias="PropertyUnitDefine" type="com.ihk.property.data.pojo.PropertyUnitDefine" />
+		<typeAlias alias="PropertyGroup" type="com.ihk.property.data.pojo.PropertyGroup" />
+		<typeAlias alias="PropertyGroupDetail" type="com.ihk.property.data.pojo.PropertyGroupDetail" />
+		
+		
+	    <typeAlias alias="Appoint" type="com.ihk.saleunit.data.pojo.Appoint" />
+    	<typeAlias alias="AppointCustomer" type="com.ihk.saleunit.data.pojo.AppointCustomer" />	
+	    <typeAlias alias="AppointBill" type="com.ihk.saleunit.data.pojo.AppointBill" />	
+	    <typeAlias alias="AppointBillDetail" type="com.ihk.saleunit.data.pojo.AppointBillDetail" />		
+	    <typeAlias alias="AddonProperty" type="com.ihk.saleunit.data.pojo.AddonProperty" />	
+	    <typeAlias alias="ChangeOut" type="com.ihk.saleunit.data.pojo.ChangeOut" />	
+	    <typeAlias alias="ChangeOwner" type="com.ihk.saleunit.data.pojo.ChangeOwner" />	
+	    <typeAlias alias="ChangeOwnerDetail" type="com.ihk.saleunit.data.pojo.ChangeOwnerDetail" />	
+	    <typeAlias alias="ChangePrice" type="com.ihk.saleunit.data.pojo.ChangePrice" />	
+	    <typeAlias alias="ChangeUnit" type="com.ihk.saleunit.data.pojo.ChangeUnit" />	
+	    
+	    <typeAlias alias="Confirm" type="com.ihk.saleunit.data.pojo.Confirm" />	
+	    <typeAlias alias="Contract" type="com.ihk.saleunit.data.pojo.Contract" />
+	    
+	    <typeAlias alias="ConfirmContractGather" type="com.ihk.saleunit.data.pojo.ConfirmContractGather" />
+	    
+	    <!-- 自定义类,非数据库中表 -->
+	    <typeAlias alias="ContractCustConfirm" type="com.ihk.saleunit.data.pojo.ContractCustConfirm"/>
+	    
+    	<typeAlias alias="ContractCustomer" type="com.ihk.saleunit.data.pojo.ContractCustomer" />	
+	    <typeAlias alias="ContractRenovate" type="com.ihk.saleunit.data.pojo.ContractRenovate" />	
+	    <typeAlias alias="ContractService" type="com.ihk.saleunit.data.pojo.ContractService" />	
+	    <typeAlias alias="Mortgage" type="com.ihk.saleunit.data.pojo.Mortgage" />	
+	    <typeAlias alias="MortgageUnit" type="com.ihk.saleunit.data.pojo.MortgageUnit" />	
+	    <typeAlias alias="PayBill" type="com.ihk.saleunit.data.pojo.PayBill" />	
+	    <typeAlias alias="PayDetail" type="com.ihk.saleunit.data.pojo.PayDetail" />	
+	    <typeAlias alias="PropertyOwner" type="com.ihk.saleunit.data.pojo.PropertyOwner" />	
+	    <typeAlias alias="SaleDaily" type="com.ihk.saleunit.data.pojo.SaleDaily" />	
+    	<typeAlias alias="ApprovalChange" type="com.ihk.saleunit.data.pojo.ApprovalChange" />
+    	<typeAlias alias="CustomerComplaints" type="com.ihk.saleunit.data.pojo.CustomerComplaints" />
+    	<typeAlias alias="ExtensionContract" type="com.ihk.saleunit.data.pojo.ExtensionContract" />
+		<typeAlias alias="UnitGift" type="com.ihk.saleunit.data.pojo.UnitGift" />
+    	<typeAlias alias="CustomerEvent" type="com.ihk.saleunit.data.pojo.CustomerEvent" />	
+    	
+	    <typeAlias alias="Question" type="com.ihk.saleunit.data.pojo.Question" />	
+	    <typeAlias alias="QuestionAnswerDetail" type="com.ihk.saleunit.data.pojo.QuestionAnswerDetail" />	
+	    <typeAlias alias="QuestionAnwser" type="com.ihk.saleunit.data.pojo.QuestionAnwser" />	
+	    <typeAlias alias="QuestionTopic" type="com.ihk.saleunit.data.pojo.QuestionTopic" />
+	    <typeAlias alias="SaleDefaultQuestion" type="com.ihk.saleunit.data.pojo.SaleDefaultQuestion" />	
+	    
+	    
+		<typeAlias alias="SaleUnitLog" type="com.ihk.saleunit.data.pojo.SaleUnitLog" />
+		<typeAlias alias="MakeBuildPrice" type="com.ihk.saleunit.data.pojo.MakeBuildPrice" />
+		<typeAlias alias="MakeBuildPriceDetail" type="com.ihk.saleunit.data.pojo.MakeBuildPriceDetail" />
+		
+	    <typeAlias alias="UnitDiscount" type="com.ihk.saleunit.data.pojo.UnitDiscount" />	
+	    <typeAlias alias="UnitDiscountDetail" type="com.ihk.saleunit.data.pojo.UnitDiscountDetail" />
+		
+		<typeAlias alias="ContractRecord" type="com.ihk.saleunit.data.pojo.ContractRecord" />
+		<typeAlias alias="ContractRecordDetail" type="com.ihk.saleunit.data.pojo.ContractRecordDetail" />
+		
+		<typeAlias alias="Invoice" type="com.ihk.saleunit.data.pojo.Invoice" />
+		<typeAlias alias="UnitPayDelay" type="com.ihk.saleunit.data.pojo.UnitPayDelay" />
+		
+	    <typeAlias alias="ReportDefineColumn" type="com.ihk.saleunit.data.pojo.ReportDefineColumn" />	
+	    <typeAlias alias="ReportDefineType" type="com.ihk.saleunit.data.pojo.ReportDefineType" />
+		
+
+		<typeAlias alias="ConfirmBook" type="com.ihk.saleunit.data.pojo.ConfirmBook" />
+		
+		<typeAlias alias="Receipt" type="com.ihk.saleunit.data.pojo.Receipt" />	
+    	<typeAlias alias="ReceiptDetail" type="com.ihk.saleunit.data.pojo.ReceiptDetail" />	
+    	
+    	<typeAlias alias="Chip" type="com.ihk.saleunit.data.pojo.Chip" />
+    	
+    	<typeAlias alias="VipCustImp" type="com.ihk.customer.collection.pojo.VipCustImp" />
+		<typeAlias alias="VipCust" type="com.ihk.customer.collection.pojo.VipCust" />
+		<typeAlias alias="VipCustdeal" type="com.ihk.customer.collection.pojo.VipCustdeal" />
+		<typeAlias alias="VipCustomer" type="com.ihk.customer.collection.pojo.VipCustomer" />
+		<typeAlias alias="VipCustFollow" type="com.ihk.customer.collection.pojo.VipCustFollow" />
+		<typeAlias alias="VipCustItem" type="com.ihk.customer.collection.pojo.VipCustItem" />
+		<typeAlias alias="PayWayDiscount" type="com.ihk.property.data.pojo.PayWayDiscount" />
+		<typeAlias alias="ConfirmDiscount" type="com.ihk.saleunit.data.pojo.ConfirmDiscount" />
+		<typeAlias alias="ProjectDiscount" type="com.ihk.property.data.pojo.ProjectDiscount" />	
+		
+		<typeAlias alias="ContractManager" type="com.ihk.property.data.pojo.ContractManager" />	
+		<typeAlias alias="ContractBarrules" type="com.ihk.property.data.pojo.ContractBarrules" />	
+		
+		<typeAlias alias="OnlyFollow" type="com.ihk.customer.data.pojo.OnlyFollow" />	
+		
+    	<typeAlias alias="OtherExpenses" type="com.ihk.saleunit.data.pojo.OtherExpenses" />	
+    	<typeAlias alias="SaleUnitReceipt" type="com.ihk.saleunit.data.pojo.SaleUnitReceipt" />	
+    	
+	    <typeAlias alias="ApPayment" type="com.ihk.saleunit.data.pojo.ApPayment" />	
+	    <typeAlias alias="ArAmount" type="com.ihk.saleunit.data.pojo.ArAmount" />	
+		<typeAlias alias="OlddbIdlog" type="com.ihk.kn.data.pojo.OlddbIdlog" />
+		
+	  	<typeAlias alias="MidUnitConfirm" type="com.ihk.saleunit.data.pojo.MidUnitConfirm" />	
+	  	
+	  	<typeAlias alias="Tart" type="com.ihk.saleunit.data.pojo.Tart" />
+	  	
+	 	<typeAlias alias="CustomerRename" type="com.ihk.saleunit.data.pojo.CustomerRename" />	
+	 	
+	 	<typeAlias alias="ReplaceUnit" type="com.ihk.saleunit.data.pojo.ReplaceUnit" />
+	 	
+	    <typeAlias alias="CancelUnit" type="com.ihk.saleunit.data.pojo.CancelUnit" />	
+	    
+	    <typeAlias alias="UnitOperRecord" type="com.ihk.saleunit.data.pojo.UnitOperRecord" />	
+
+		<!-- 报表的对应实体类 -->
+    	<!-- <typeAlias alias="AllUnitCompany" type="com.ihk.report.data.pojo.allunit.AllUnitCompany" />
+    	 -->
+    	 
+    	<typeAlias alias="Checkfee" type="com.ihk.property.data.pojo.Checkfee" />	
+    	<typeAlias alias="CheckfeeList" type="com.ihk.property.data.pojo.CheckfeeList" />	
+    	
+    	<typeAlias alias="Checkcommission" type="com.ihk.property.data.pojo.Checkcommission" />	
+    	<typeAlias alias="CheckcommissionList" type="com.ihk.property.data.pojo.CheckcommissionList" />	
+    	
+    	<typeAlias alias="ContractSalesman" type="com.ihk.saleunit.data.pojo.ContractSalesman" />	
+    	
+    	<typeAlias alias="CheckcommissionListSec" type="com.ihk.property.data.pojo.CheckcommissionListSec" />	
+   		<typeAlias alias="CheckcommissionSec" type="com.ihk.property.data.pojo.CheckcommissionSec" />	
+   		
+   		<typeAlias alias="IdcardLocation" type="com.ihk.customer.data.pojo.IdcardLocation" />	
+		<!-- 追加 -->
+		<typeAlias alias="Log" type="com.ihk.saleunit.log.pojo.Log" />
+		
+		<typeAlias alias="ActionRecordLog" type="com.ihk.setting.data.pojo.ActionRecordLog" />
+	</typeAliases>
+	
+	<mappers>
+		<!-- 例子 -->
+		<mapper resource="com/ihk/demo/data/mappers/DemoTableMapper.xml" />
+		
+		<mapper resource="com/dou/book/data/mappers/SBookMapper.xml" />	
+		<mapper resource="com/dou/student/data/mappers/StudentMapper.xml" />		
+		<mapper resource="com/ihk/customer/data/mappers/CustomerMapper.xml"/>
+		<mapper resource="com/ihk/customer/data/mappers/CustomerLogMapper.xml"/>
+		<mapper resource="com/ihk/customer/data/mappers/CustomerFollowMapper.xml"/>
+		<mapper resource="com/ihk/customer/data/mappers/CustomerFocusMapper.xml" />
+		<mapper resource="com/ihk/customer/data/mappers/CustomerKnownMapper.xml"/>
+		<mapper resource="com/ihk/customer/data/mappers/CustomerRedMapper.xml" />
+		<mapper resource="com/ihk/customer/data/mappers/ProjectRangeMapper.xml" />
+		<mapper resource="com/ihk/customer/data/mappers/FollowRoomMapper.xml"/>
+		<mapper resource="com/ihk/customer/data/mappers/RecommendRoomMapper.xml"/>
+		
+		<mapper resource="com/ihk/user/data/mappers/UserAccountMapper.xml" />
+		<mapper resource="com/ihk/user/data/mappers/TeamMapper.xml" />	
+		<mapper resource="com/ihk/user/data/mappers/CompanyMapper.xml" />	
+		<mapper resource="com/ihk/user/data/mappers/CompanyGroupMapper.xml" />
+		<mapper resource="com/ihk/user/data/mappers/CompanyProjectMapper.xml" />	
+		<mapper resource="com/ihk/user/data/mappers/ProjectStateMapper.xml" />
+		<mapper resource="com/ihk/user/data/mappers/InputMemoryMapper.xml" />
+		
+		<mapper resource="com/ihk/user/data/mappers/UserRoleMapper.xml" />	
+		<mapper resource="com/ihk/user/data/mappers/RoleMapper.xml" />	
+		<mapper resource="com/ihk/user/data/mappers/RolePrivMapper.xml" />	
+		<mapper resource="com/ihk/user/data/mappers/RolePrivRefMapper.xml" />
+		<mapper resource="com/ihk/user/data/mappers/PrivFuncMapper.xml" />
+		<mapper resource="com/ihk/user/data/mappers/FuncTreeMapper.xml" />		
+		<mapper resource="com/ihk/user/data/mappers/PrivMapper.xml"/>		
+		
+		<mapper resource="com/ihk/setting/data/mappers/CodeDtlMapper.xml" />				
+		<mapper resource="com/ihk/setting/data/mappers/CodeTypeMapper.xml" />				
+		<mapper resource="com/ihk/setting/data/mappers/ProjectCodeMapper.xml" />
+		<mapper resource="com/ihk/setting/data/mappers/ProvinceMapper.xml" />
+		<mapper resource="com/ihk/setting/data/mappers/CityMapper.xml" />
+		<mapper resource="com/ihk/setting/data/mappers/RegionMapper.xml" />
+		<mapper resource="com/ihk/setting/data/mappers/BlockMapper.xml" />
+		<mapper resource="com/ihk/setting/data/mappers/ProjectTextMapper.xml" />
+		
+	
+		<mapper resource="com/ihk/sale/data/mappers/PresaleMonitorAllMapper.xml" />
+		<mapper resource="com/ihk/sale/data/mappers/PresaleMonitorMapper.xml" />
+		<mapper resource="com/ihk/sale/data/mappers/SaleMonitorAllMapper.xml" />
+		<mapper resource="com/ihk/sale/data/mappers/SaleMonitorMapper.xml" />
+		<mapper resource="com/ihk/sale/data/mappers/SaleMonitorMonthMapper.xml" />
+		<mapper resource="com/ihk/sale/data/mappers/SaleMonitorWeekMapper.xml" />
+		<mapper resource="com/ihk/sale/data/mappers/SaleMonitorYearMapper.xml" />
+		<mapper resource="com/ihk/sale/data/mappers/SaleMonitorLogMapper.xml" />
+		<mapper resource="com/ihk/sale/data/mappers/SaleMonitorLogbeforeMapper.xml" />
+		<mapper resource="com/ihk/sale/data/mappers/SaleBuildLogMapper.xml" />
+		
+		
+		<mapper resource="com/ihk/setting/data/mappers/OperLogMapper.xml" />
+		<mapper resource="com/ihk/article/data/mappers/ArticleMapper.xml" />
+		
+		<mapper resource="com/ihk/property/data/mappers/PropertyDeveloperMapper.xml" />
+		<mapper resource="com/ihk/property/data/mappers/PropertyProjectMapper.xml" />
+		<mapper resource="com/ihk/saleunit/data/mappers/PropertyProjectPlanMapper.xml" />
+		<mapper resource="com/ihk/property/data/mappers/PropertyPrivMapper.xml" />
+		<mapper resource="com/ihk/property/data/mappers/PropertyAreaMapper.xml" />
+		<mapper resource="com/ihk/property/data/mappers/PropertyBuildMapper.xml" />
+		<mapper resource="com/ihk/property/data/mappers/UnitBindMapper.xml" />
+		<mapper resource="com/ihk/property/data/mappers/PropertyUnitMapper.xml" />
+		<mapper resource="com/ihk/property/data/mappers/BuildDiscountMapper.xml" />
+		<mapper resource="com/ihk/property/data/mappers/PayWayMapper.xml" />
+		<mapper resource="com/ihk/property/data/mappers/PayWayDetailMapper.xml" />
+		<mapper resource="com/ihk/property/data/mappers/UnitPayBillDetailMapper.xml" />
+		<mapper resource="com/ihk/property/data/mappers/UnitPayBillMapper.xml" />	
+		<mapper resource="com/ihk/property/data/mappers/UnitImageMapper.xml" />	
+		<mapper resource="com/ihk/property/data/mappers/PropertyUnitDefineMapper.xml" />	
+		<mapper resource="com/ihk/property/data/mappers/PropertyGroupDetailMapper.xml" />
+		<mapper resource="com/ihk/property/data/mappers/PropertyGroupMapper.xml" />
+		
+		<mapper resource="com/ihk/saleunit/data/mappers/AppointMapper.xml" />
+		<mapper resource="com/ihk/saleunit/data/mappers/AppointCustomerMapper.xml" />
+		<mapper resource="com/ihk/saleunit/data/mappers/AppointBillMapper.xml" />
+		<mapper resource="com/ihk/saleunit/data/mappers/AppointBillDetailMapper.xml" />	
+		<mapper resource="com/ihk/saleunit/data/mappers/AddonPropertyMapper.xml" />
+		<mapper resource="com/ihk/saleunit/data/mappers/ChangeOutMapper.xml" />
+		<mapper resource="com/ihk/saleunit/data/mappers/ChangeOwnerMapper.xml" />
+		<mapper resource="com/ihk/saleunit/data/mappers/ChangeOwnerDetailMapper.xml" />
+		<mapper resource="com/ihk/saleunit/data/mappers/ChangePriceMapper.xml" />
+		<mapper resource="com/ihk/saleunit/data/mappers/ChangeUnitMapper.xml" />
+		<mapper resource="com/ihk/saleunit/data/mappers/ConfirmMapper.xml" />
+		<mapper resource="com/ihk/saleunit/data/mappers/ContractMapper.xml" />
+		<mapper resource="com/ihk/saleunit/data/mappers/ContractCustomerMapper.xml" />
+		<mapper resource="com/ihk/saleunit/data/mappers/ContractRenovateMapper.xml" />
+		<mapper resource="com/ihk/saleunit/data/mappers/ContractServiceMapper.xml" />
+		<mapper resource="com/ihk/saleunit/data/mappers/MortgageMapper.xml" />
+		<mapper resource="com/ihk/saleunit/data/mappers/MortgageUnitMapper.xml" />
+		<mapper resource="com/ihk/saleunit/data/mappers/PayBillMapper.xml" />
+		<mapper resource="com/ihk/saleunit/data/mappers/PayDetailMapper.xml" />
+		<mapper resource="com/ihk/saleunit/data/mappers/PropertyOwnerMapper.xml" />
+		<mapper resource="com/ihk/saleunit/data/mappers/SaleDailyMapper.xml" />
+		<mapper resource="com/ihk/saleunit/data/mappers/ApprovalChangeMapper.xml" />
+		<mapper resource="com/ihk/saleunit/data/mappers/SaleUnitLogMapper.xml" />
+		<mapper resource="com/ihk/saleunit/data/mappers/CustomerComplaintsMapper.xml" />
+		<mapper resource="com/ihk/saleunit/data/mappers/UnitGiftMapper.xml" />
+		<mapper resource="com/ihk/saleunit/data/mappers/CustomerEventMapper.xml" />
+		
+		<mapper resource="com/ihk/saleunit/data/mappers/UnitDiscountMapper.xml" />
+		<mapper resource="com/ihk/saleunit/data/mappers/UnitDiscountDetailMapper.xml" />
+		
+		<mapper resource="com/ihk/saleunit/data/mappers/QuestionMapper.xml" />
+		<mapper resource="com/ihk/saleunit/data/mappers/QuestionAnswerDetailMapper.xml" />
+		<mapper resource="com/ihk/saleunit/data/mappers/QuestionAnwserMapper.xml" />
+		<mapper resource="com/ihk/saleunit/data/mappers/QuestionTopicMapper.xml" />
+		<mapper resource="com/ihk/saleunit/data/mappers/SaleDefaultQuestionMapper.xml" />
+		
+		
+		<mapper resource="com/ihk/saleunit/data/mappers/ExtensionContractMapper.xml" />
+		<mapper resource="com/ihk/saleunit/data/mappers/MakeBuildPriceMapper.xml" />
+		<mapper resource="com/ihk/saleunit/data/mappers/MakeBuildPriceDetailMapper.xml" />
+		
+		<mapper resource="com/ihk/saleunit/data/mappers/ContractRecordMapper.xml" />
+		<mapper resource="com/ihk/saleunit/data/mappers/ContractRecordDetailMapper.xml" />
+		<mapper resource="com/ihk/saleunit/data/mappers/InvoiceMapper.xml" />
+		<mapper resource="com/ihk/saleunit/data/mappers/UnitPayDelayMapper.xml" />
+
+		<mapper resource="com/ihk/saleunit/data/mappers/ConfirmBookMapper.xml" />
+		
+		<mapper resource="com/ihk/saleunit/data/mappers/ReceiptMapper.xml" />
+		<mapper resource="com/ihk/saleunit/data/mappers/ReceiptDetailMapper.xml" />
+		
+		<mapper resource="com/ihk/saleunit/data/mappers/ReportDefineColumnMapper.xml" />
+		<mapper resource="com/ihk/saleunit/data/mappers/ReportDefineTypeMapper.xml" />
+		
+		<mapper resource="com/ihk/saleunit/data/mappers/ChipMapper.xml" />
+		
+		<mapper resource="com/ihk/customer/collection/mappers/VipCustImpMapper.xml" />
+		<mapper resource="com/ihk/customer/collection/mappers/VipCustMapper.xml" />
+		<mapper resource="com/ihk/customer/collection/mappers/VipCustdealMapper.xml" />
+		<mapper resource="com/ihk/customer/collection/mappers/VipCustomerMapper.xml" />
+		<mapper resource="com/ihk/customer/collection/mappers/VipCustFollowMapper.xml" />
+		<mapper resource="com/ihk/customer/collection/mappers/VipCustItemMapper.xml" />
+		
+		<mapper resource="com/ihk/property/data/mappers/PayWayDiscountMapper.xml" />
+		<mapper resource="com/ihk/saleunit/data/mappers/ConfirmDiscountMapper.xml" />
+		<mapper resource="com/ihk/property/data/mappers/ProjectDiscountMapper.xml" />
+		
+		<mapper resource="com/ihk/property/data/mappers/ContractManagerMapper.xml" />
+		<mapper resource="com/ihk/property/data/mappers/ContractBarrulesMapper.xml" />
+		
+		<mapper resource="com/ihk/customer/data/mappers/OnlyFollowMapper.xml" />
+		
+		<mapper resource="com/ihk/saleunit/data/mappers/OtherExpensesMapper.xml" />
+		<mapper resource="com/ihk/saleunit/data/mappers/SaleUnitReceiptMapper.xml" />
+		
+		<mapper resource="com/ihk/saleunit/data/mappers/ApPaymentMapper.xml" />
+		<mapper resource="com/ihk/saleunit/data/mappers/ArAmountMapper.xml" />
+			
+		<mapper resource="com/ihk/kn/data/mappers/OlddbIdlogMapper.xml" />
+		
+		<mapper resource="com/ihk/saleunit/data/mappers/MidUnitConfirmMapper.xml" />
+		
+		<mapper resource="com/ihk/saleunit/data/mappers/TartMapper.xml" />
+		
+		<mapper resource="com/ihk/saleunit/data/mappers/CustomerRenameMapper.xml" />
+		
+		<mapper resource="com/ihk/saleunit/data/mappers/CancelUnitMapper.xml" />
+		
+		<mapper resource="com/ihk/saleunit/data/mappers/ReplaceUnitMapper.xml" />
+		
+		<!-- 报表 -->
+		<mapper resource="com/ihk/report/data/mappers/ReportUnitAmountMapper.xml" />
+		<mapper resource="com/ihk/report/data/mappers/ReportUnitSaleMapper.xml" />
+		<mapper resource="com/ihk/report/data/mappers/ReportCommissionMapper.xml" />
+		<mapper resource="com/ihk/report/data/mappers/ReportPreCustomerMapper.xml" />
+		
+		<mapper resource="com/ihk/saleunit/data/mappers/UnitOperRecordMapper.xml" />
+		
+		<mapper resource="com/ihk/property/data/mappers/CheckfeeMapper.xml" />
+		<mapper resource="com/ihk/property/data/mappers/CheckfeeListMapper.xml" />
+		
+		<mapper resource="com/ihk/property/data/mappers/CheckcommissionMapper.xml" />
+		<mapper resource="com/ihk/property/data/mappers/CheckcommissionListMapper.xml" />
+		
+		<mapper resource="com/ihk/saleunit/data/mappers/ContractSalesmanMapper.xml" />
+		
+		<mapper resource="com/ihk/property/data/mappers/CheckcommissionListSecMapper.xml" />
+		<mapper resource="com/ihk/property/data/mappers/CheckcommissionSecMapper.xml" />
+		
+		<mapper resource="com/ihk/customer/data/mappers/IdcardLocationMapper.xml" />
+
+    	<!-- 日志 -->
+		<mapper resource="com/ihk/saleunit/log/mappers/LogMapper.xml" />
+		<!-- 点击功能日志 -->
+		<mapper resource="com/ihk/setting/data/mappers/ActionRecordLogMapper.xml" />
+	</mappers>	
+</configuration>		
+			

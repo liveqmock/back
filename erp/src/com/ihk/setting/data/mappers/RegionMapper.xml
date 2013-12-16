@@ -1,0 +1,99 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.ihk.setting.data.IRegionMapper">
+
+	<resultMap type="Region" id="regionResultMap">
+		<id property="regionId" column="region_id" />        
+		<result property="cityId" column="city_id" />
+		<result property="regionName" column="region_name" />
+		<result property="orderIndex" column="order_index" />
+		<result property="isDeleted" column="is_deleted" />
+	</resultMap>
+
+	<insert id="addRegion" parameterType="Region">
+		 <selectKey resultType="java.lang.Integer" keyProperty="id" order="AFTER" >
+            SELECT @@IDENTITY
+        </selectKey>		
+		insert into region(
+		city_id,
+		region_name,
+		order_index,
+		is_deleted
+		)
+			VALUES(
+		#{cityId},
+		#{regionName},
+		#{orderIndex},
+		#{isDeleted}
+			)
+		
+	</insert>
+	<delete id="deleteRegion" parameterType="int">
+	update region set is_deleted='1' where region_id=#{region_id};
+	</delete>
+	<update id="updateRegion" parameterType="int">
+	update region set 
+		city_id=#{cityId},
+		region_name=#{regionName},
+		is_deleted=#{isDeleted}
+	 where region_id=#{region_id}
+	</update>
+	<select id="findRegionById" resultMap="regionResultMap">
+	select * from region where region_id=#{region_id}
+	</select>
+    
+	<sql id="findWhereCond"> 
+		<where>
+        	<if test="regionName != null and regionName != ''">
+				region_name like concat('%',#{regionName},'%')
+            </if>    
+            and is_deleted = '0'
+		</where>
+	</sql>
+	
+	<select id="findRegionCount" resultType="int" parameterType="com.ihk.setting.data.pojo.RegionCond">
+		SELECT count(0) from region  
+        <include refid="findWhereCond"/>     
+    </select>
+        
+	<select id="findRegion" resultMap="regionResultMap" parameterType="com.ihk.setting.data.pojo.RegionCond">
+		SELECT * from  region 
+        <include refid="findWhereCond"/> 
+		<if test="topNum > 0">
+			limit #{topNum};
+		</if>
+		order by order_index
+    </select>
+    
+	<select id="findRegionPage" resultMap="regionResultMap" parameterType="com.ihk.setting.data.pojo.RegionCond">
+		SELECT * from  region 
+        <include refid="findWhereCond"/> 
+    
+		<if test="startLine >= 0">
+		<if test="pageSize > 0">
+			limit #{startLine},#{pageSize};
+		</if>
+		</if>
+		order by order_index
+	</select>
+	
+	<select id="findRegionByCityId" resultMap="regionResultMap">
+		select * from region where city_id = #{cityId} and is_deleted = '0'
+		order by order_index
+	</select>
+	
+	
+	<select id="findRegionByName" resultMap="regionResultMap">
+		select * from region t where t.region_name like 
+		concat(concat('%', #{name, jdbcType=VARCHAR}), '%')
+		and city_id = #{subId}
+		limit 1
+	</select>
+	
+	<select id="findRegionByNameStr" resultMap="regionResultMap" parameterType="string">
+		select * from region t where t.region_name like 
+		concat(concat('%', #{name, jdbcType=VARCHAR}), '%')
+		limit 1
+	</select>
+	
+</mapper>

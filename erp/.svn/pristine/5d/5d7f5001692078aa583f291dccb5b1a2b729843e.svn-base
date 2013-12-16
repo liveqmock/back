@@ -1,0 +1,84 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.ihk.user.data.IInputMemoryMapper">
+
+	<resultMap type="InputMemory" id="inputMemoryResultMap">
+		<id property="id" column="id" />        
+		<result property="userId" column="user_id" />
+		<result property="memoryType" column="memory_type" />
+		<result property="memoryId" column="memory_id" />
+		<result property="memoryText" column="memory_text" />
+	</resultMap>
+
+	<insert id="addInputMemory" parameterType="InputMemory">
+		 <selectKey resultType="java.lang.Integer" keyProperty="id" order="AFTER" >
+            SELECT @@IDENTITY
+        </selectKey>		
+		insert into input_memory(
+		user_id,
+		memory_type,
+		memory_id,
+		memory_text
+		)
+			VALUES(
+		#{userId},
+		#{memoryType},
+		#{memoryId},
+		#{memoryText}
+			)
+		
+	</insert>
+	<delete id="deleteInputMemory" parameterType="int">
+	update input_memory set is_deleted='1' where id=#{id};
+	</delete>
+	<update id="updateInputMemory" parameterType="int">
+	update input_memory set 
+		user_id=#{userId},
+		memory_type=#{memoryType},
+		memory_id=#{memoryId},
+		memory_text=#{memoryText}
+	 where id=#{id}
+	</update>
+	<select id="findInputMemoryById" resultMap="inputMemoryResultMap">
+	select * from input_memory where id=#{id}
+	</select>
+    
+	<sql id="findWhereCond"> 
+		<where>
+        <!--
+			<if test="date1 != null and date1 != ''">
+            </if>    
+            and is_deleted = '0'
+            -->
+		</where>
+	</sql>
+	
+	<select id="findInputMemoryCount" resultType="int" parameterType="com.ihk.user.data.pojo.InputMemoryCond">
+		SELECT count(0) from input_memory  
+        <include refid="findWhereCond"/>     
+    </select>
+        
+	<select id="findInputMemory" resultMap="inputMemoryResultMap" parameterType="com.ihk.user.data.pojo.InputMemoryCond">
+		SELECT * from  input_memory 
+        <include refid="findWhereCond"/> 
+		<if test="topNum > 0">
+			limit #{topNum};
+		</if>
+    </select>
+    
+	<select id="findInputMemoryPage" resultMap="inputMemoryResultMap" parameterType="com.ihk.user.data.pojo.InputMemoryCond">
+		SELECT * from  input_memory 
+        <include refid="findWhereCond"/> 
+    
+		<if test="startLine >= 0">
+		<if test="pageSize > 0">
+			limit #{startLine},#{pageSize};
+		</if>
+		</if>
+	</select>
+	
+	<select id="findInputMemoryForNew" resultMap="inputMemoryResultMap" parameterType="com.ihk.user.data.pojo.InputMemoryCond">
+		select * from input_memory where user_id = #{userId} and memory_type = #{memoryType} order by id desc limit 1 
+	</select>
+	
+</mapper>

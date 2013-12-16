@@ -1,0 +1,75 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.ihk.report.data.IReportCommissionMapper">
+
+	<resultMap type="com.ihk.report.data.pojo.commission.ReportCommissionCompany" id="commissionCompany">   
+		<result property="companyId" column="company_id" />
+		<result property="companyName" column="company_name" />
+		<result property="paymentAmount" column="payment_amount" />
+		<result property="notgetAmount" column="notget_amount" />
+	</resultMap>
+	
+	<resultMap type="com.ihk.report.data.pojo.commission.ReportCommissionProject" id="commissionProject">   
+		<result property="projectId" column="project_id" />
+		<result property="projectName" column="project_name" />
+		<result property="paymentAmount" column="payment_amount" />
+		<result property="notgetAmount" column="notget_amount" />
+	</resultMap>
+
+	<select id="groupByCompany" resultMap="commissionCompany" parameterType="com.ihk.report.data.pojo.commission.ReportCommissionCompanyCond">		
+		SELECT c.id,c.company_name,SUM(a.sum_money) AS sum_money,SUM(a.build_area) AS sum_area,COUNT(a.unit_id) AS sum_unit FROM v_transaction_unit a,company_project b,company c 
+		WHERE a.company_project_id=b.id AND b.company_id=c.id		
+			<if test="date1 != null and date1 != ''">
+				and confirm_date &gt;= #{date1}
+			</if>
+			<if test="date2 != null and date2 != ''">
+				and confirm_date &lt; date_add(#{date2},interval 1 day)
+			</if>			
+            <if test="companyProjectIds != null and companyProjectIds.size() > 0">
+                and a.company_project_id in
+                <foreach collection="companyProjectIds" item="pId" open="(" separator="," close=")">
+                    #{pId}
+                </foreach>
+            </if>
+		GROUP BY c.id,c.company_name
+		ORDER BY SUM(a.sum_money) DESC
+		<if test="returnCount > 0">
+			limit #{returnCount}
+		</if>
+	</select>
+	
+	<select id="getSumMoney" resultType="BigDecimal" parameterType="com.ihk.report.data.pojo.commission.ReportCommissionCond">		
+		SELECT SUM(a.sum_price) AS sum_money FROM property_unit a
+		
+		<where>	
+            <if test="companyProjectIds != null and companyProjectIds.size() > 0">
+                and a.company_project_id in
+                <foreach collection="companyProjectIds" item="pId" open="(" separator="," close=")">
+                    #{pId}
+                </foreach>
+            </if>
+            </where>
+	</select>
+	
+	<select id="groupByProject" resultMap="commissionProject" parameterType="com.ihk.report.data.pojo.commission.ReportCommissionProjectCond">		
+		SELECT c.id,b.project_name,SUM(a.sum_money) AS sum_money,SUM(a.build_area) AS sum_area,COUNT(a.unit_id) AS sum_unit FROM v_transaction_unit a,company_project b,company c 
+		WHERE a.company_project_id=b.id AND b.company_id=c.id		
+			<if test="date1 != null and date1 != ''">
+				and confirm_date &gt;= #{date1}
+			</if>
+			<if test="date2 != null and date2 != ''">
+				and confirm_date &lt; date_add(#{date2},interval 1 day)
+			</if>			
+            <if test="companyProjectIds != null and companyProjectIds.size() > 0">
+                and a.company_project_id in
+                <foreach collection="companyProjectIds" item="pId" open="(" separator="," close=")">
+                    #{pId}
+                </foreach>
+            </if>
+		GROUP BY c.id,b.project_name
+		ORDER BY SUM(a.sum_money) DESC
+		<if test="returnCount > 0">
+			limit #{returnCount}
+		</if>
+	</select>
+</mapper>

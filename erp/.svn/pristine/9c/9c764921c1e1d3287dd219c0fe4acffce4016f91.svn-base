@@ -1,0 +1,337 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE struts PUBLIC
+    "-//Apache Software Foundation//DTD Struts Configuration 2.0//EN"
+    "http://struts.apache.org/dtds/struts-2.0.dtd">
+<struts>
+	<package name="saleunit_new_init_appoint_guangzhou" extends="struts-default" namespace="/saleunit_new_init/appoint/guangzhou">
+		<!--楼盘初始 主页面 -->
+		<action name="layout" class="com.ihk.saleunit.action.new_.GuangZhouAppointNewLeftAction" method="layout">
+			<result name="layout">/saleunit_new_init/guangzhou/layout.jsp</result>
+		</action>
+		
+		<action name="layout_preCustomer" class="com.ihk.saleunit.action.new_.GuangZhouAppointNewLeftAction" method="layout">
+			<result name="layout">/saleunit_new_init/guangzhou/layout_preCustomer.jsp</result>
+		</action>
+		
+		<!-- 房间信息 -->
+		<action name="unitInfo" class="com.ihk.saleunit.action.new_.GuangZhouAppointNewUnitInfoAction" method="unitInfo">
+			<result name="unit_info">/saleunit_new_init/guangzhou/unit_info.jsp</result>
+		</action>
+		
+		<!-- 项目信息 -->
+		<action name="projectInfo" class="com.ihk.saleunit.action.new_.PropertyProjectInfoAction" method="proInfo">
+			<result name="suc">/saleunit_new_init/guangzhou/property_project_info.jsp</result>
+		</action>
+		
+		<!-- 左边项目,楼栋,分区导航条 -->
+		<action name="layoutLeft" class="com.ihk.saleunit.action.new_.GuangZhouAppointNewLeftAction" method="layoutLeftForInit"/>
+		
+		<!-- 新建  根据YTPE区分新建什么   -->
+		<action name="addSome" class="com.ihk.saleunit.action.new_init.GuangZhouNewInitTree" method="addSome">
+			<result name="suc">/saleunit_new_init/guangzhou/dialog_new_by_type.jsp</result>
+			<result name="prosuc">/saleunit_new_init/guangzhou/dialog_new_project.jsp</result>
+			<result name="build">/saleunit_new_init/guangzhou/dialog_new_build.jsp</result>
+		</action>
+		<action name="addDev" class="com.ihk.saleunit.action.new_init.GuangZhouNewInitTree" method="addDev">
+			<result name="prosuc">/saleunit_new_init/guangzhou/dialog_new_project.jsp</result>
+		</action>
+		<action name="addProject" class="com.ihk.saleunit.action.new_init.GuangZhouNewInitTree" method="addProject">
+			<result name="suc">/saleunit_new_init/guangzhou/dialog_new_by_type.jsp</result>
+			<result name="prosuc">/saleunit_new_init/guangzhou/dialog_new_project.jsp</result>
+		</action>
+		<action name="addArea" class="com.ihk.saleunit.action.new_init.GuangZhouNewInitTree" method="addArea">
+			<result name="suc">/saleunit_new_init/guangzhou/dialog_new_by_type.jsp</result>
+		</action>
+		<action name="addBuild" class="com.ihk.saleunit.action.new_init.GuangZhouNewInitTree" method="addBuild">
+			<result name="suc">/saleunit_new_init/guangzhou/dialog_new_build.jsp</result>
+		</action>
+		<!-- 修改项目 -->
+		<action name="updateProjectDialog" class="com.ihk.saleunit.action.new_init.GuangZhouNewInitTree" method="updateProjectDialog">
+			<result name="suc">/saleunit_new_init/guangzhou/update_project_dialog.jsp</result>
+		</action>
+		<action name="updateProjectForm" class="com.ihk.saleunit.action.new_init.GuangZhouNewInitTree" method="updateProjectForm">
+			<result name="suc">/saleunit_new_init/guangzhou/update_project_dialog.jsp</result>
+		</action>
+		
+		<!-- 修改分区 -->
+		<action name="updateAreaDialog" class="com.ihk.saleunit.action.new_init.GuangZhouNewInitTree" method="updateAreaDialog">
+			<result name="suc">/saleunit_new_init/guangzhou/update_area_dialog.jsp</result>
+		</action>
+		<action name="updateAreaForm" class="com.ihk.saleunit.action.new_init.GuangZhouNewInitTree" method="updateAreaForm">
+			<result name="suc">/saleunit_new_init/guangzhou/update_area_dialog.jsp</result>
+		</action>
+		
+		<!-- 修改分区的时候可以对楼栋进行拖拉排序 -->
+		<action name="modifyBuildByBrag" class="com.ihk.saleunit.action.new_init.PropertyAreaBuildDragAction" method="modifyBuildByBrag"/>
+		
+		<!-- 修改楼栋 2012-10-12 安徽公司后勤暂时需要这个功能 -->
+		<action name="updateBuildDialog" class="com.ihk.saleunit.action.new_init.GuangZhouNewInitTree" method="updateBuildDialog">
+			<result name="suc">/saleunit_new_init/guangzhou/update_build_dialog.jsp</result>
+		</action>
+		<action name="updateBuildForm" class="com.ihk.saleunit.action.new_init.GuangZhouNewInitTree" method="updateBuildForm">
+			<result name="suc">/saleunit_new_init/guangzhou/update_build_dialog.jsp</result>
+		</action>
+		
+		<!-- 修改名字   初始化tree上面修改功能    -->
+		<action name="renameSome" class="com.ihk.saleunit.action.new_init.GuangZhouNewInitTree" method="renameSome">
+			<result name="suc">/saleunit_new_init/guangzhou/dialog_new_by_type.jsp</result>
+			<result name="updateArea">/saleunit_new_init/guangzhou/update_area_dialog.jsp</result>
+		</action>
+		<action name="renameProject" class="com.ihk.saleunit.action.new_init.GuangZhouNewInitTree" method="renameProject">
+			<result name="suc">/saleunit_new_init/guangzhou/dialog_new_by_type.jsp</result>
+		</action>
+		<action name="renameArea" class="com.ihk.saleunit.action.new_init.GuangZhouNewInitTree" method="renameArea">
+			<result name="suc">/saleunit_new_init/guangzhou/dialog_new_by_type.jsp</result>
+		</action>
+		<action name="renameBuild" class="com.ihk.saleunit.action.new_init.GuangZhouNewInitTree" method="renameBuild">
+			<result name="suc">/saleunit_new_init/guangzhou/dialog_new_by_type.jsp</result>
+		</action>
+		
+		<!-- 复制楼栋 -->
+		<action name="copyBuild" class="com.ihk.saleunit.action.new_init.GuangZhouNewInitTree" method="copyBuildForm">
+			<result name="suc">/saleunit_new_init/guangzhou/dialog_copy_build.jsp</result>
+		</action>
+		<action name="copyBuildDialog" class="com.ihk.saleunit.action.new_init.GuangZhouNewInitTree" method="copyBuildDialog">
+			<result name="suc">/saleunit_new_init/guangzhou/dialog_copy_build.jsp</result>
+		</action>
+		<!-- 楼栋房间 -->
+		<action name="unitMap" class="com.ihk.saleunit.action.new_init.GuangZhouNewUnitList" method="indexMap">
+			<result name="suc">/saleunit_new_init/guangzhou/unit_map.jsp</result>
+		</action>
+		<action name="unitList" class="com.ihk.saleunit.action.new_init.GuangZhouNewUnitList" method="indexList">
+			<result name="suc">/saleunit_new_init/guangzhou/unit_list.jsp</result>
+		</action>
+		
+		<!-- 批量新建单元 -->
+		<action name="initSomeUnit" class="com.ihk.saleunit.action.new_init.GuangZhouNewInitSomeUnit" method="index">
+			<result name="suc">/saleunit_new_init/guangzhou/init_some_unit.jsp</result>
+		</action>
+		<action name="initSomeUnitForm" class="com.ihk.saleunit.action.new_init.GuangZhouNewInitSomeUnit" method="form">
+			<result name="suc">/saleunit_new_init/guangzhou/init_some_unit.jsp</result>
+		</action>
+		<!-- 新建单个单元 -->
+		<action name="initOneUnit" class="com.ihk.saleunit.action.new_init.GuangZhouNewInitOneUnit" method="index">
+			<result name="suc">/saleunit_new_init/guangzhou/init_one_unit.jsp</result>
+		</action>
+		<action name="initOneUnitForm" class="com.ihk.saleunit.action.new_init.GuangZhouNewInitOneUnit" method="form">
+			<result name="suc">/saleunit_new_init/guangzhou/init_one_unit.jsp</result>
+		</action>
+		
+		<!-- 删除单个单元 -->
+		<action name="delOneUnit" class="com.ihk.saleunit.action.new_init.GuangZhouNewInitOneUnit" method="del">
+		</action>
+		<!-- 批量修改单元 2012-11-05  jira:HDXMXSGLXT-633 HDXMXSGLXT-635 -->
+		<action name="updateSomeUnit" class="com.ihk.saleunit.action.new_init.GuangZhouNewInitOneUnit" method="updateSomeUnit">
+			<result name="suc">/saleunit_new_init/guangzhou/update_some_unit.jsp</result>
+		</action>
+		<!-- 批量删除单元 -->
+		<action name="delSomeUnit" class="com.ihk.saleunit.action.new_init.GuangZhouNewInitOneUnit" method="delSomeUnit">
+		</action>
+		<!-- 批量修改单元状态 -->
+		<action name="updateSaleStateBySomeUnitIds" class="com.ihk.saleunit.action.new_init.GuangZhouNewInitOneUnit" method="updateSaleStateBySomeUnitIds"/>
+		
+		<!-- 下载楼栋单元资料 -->
+		<action name="loadBuildXls" class="com.ihk.saleunit.action.new_init.GuangZhouNewInitPriceExcelAction" method="loadExcel"/>
+		
+		<!-- 上传楼栋单元资料 -->
+		<action name="uploadBuildXlsDialog" class="com.ihk.saleunit.action.new_init.GuangZhouNewInitPriceExcelAction" method="upLoadExcelDIalog">
+			<result name="suc">/saleunit_new_init/guangzhou/up_load_xls.jsp</result>
+		</action>
+		
+		<action name="uploadBuildXlsForm" class="com.ihk.saleunit.action.new_init.GuangZhouNewInitPriceExcelAction" method="upLoadExcel">
+			<result name="suc">/saleunit_new_init/guangzhou/up_load_xls.jsp</result>
+		</action>
+		
+		<!-- 定价单 -->
+		<action name="makePriceTab" class="com.ihk.saleunit.action.new_init.MakePriceTabAction" method="makePriceTab">
+			<result name="suc">/saleunit_new_init/guangzhou/make_price.jsp</result>
+		</action>
+		<action name="showMakePriceDaDialog" class="com.ihk.saleunit.action.new_init.MakePriceTabAction" method="showMakePriceDaDialog">
+			<result name="suc">/saleunit_new_init/guangzhou/make_price_de_dialog.jsp</result>
+		</action>
+		<action name="delMakePrice" class="com.ihk.saleunit.action.new_init.MakePriceTabAction" method="delMakePrice">
+		</action>
+		
+		<action name="showMakePriceDaDialogForm" class="com.ihk.saleunit.action.new_init.MakePriceTabAction" method="doMakePrice">
+			<result name="suc">/saleunit_new_init/guangzhou/make_price_de_dialog.jsp</result>
+		</action>
+		
+		<!-- 客户问卷调查 -->
+		<action name="cusQuestion" class="com.ihk.saleunit.action.new_init.CusQuestionAction" method="indexTab">
+			<result name="suc">/saleunit_new_init/guangzhou/question_tab.jsp</result>
+		</action>
+		<action name="questionTocTable" class="com.ihk.saleunit.action.new_questions.QuestionAction" method="selectQuestionTopic">
+			<result name="suc">/saleunit_new_init/guangzhou/question_toc_dialog.jsp</result>
+		</action>
+		<action name="delQuestionToc" class="com.ihk.saleunit.action.new_questions.QuestionAction" method="delQuestionToc" />
+		<action name="delQuestion" class="com.ihk.saleunit.action.new_questions.QuestionAction" method="delQuestion" />
+	
+		<!-- 修改单个单元 -->
+		<action name="updateOneUnit" class="com.ihk.saleunit.action.new_init.GuangZhouNewInitOneUnit" method="updateOneUnit">
+			<result name="suc">/saleunit_new_init/guangzhou/init_one_unit.jsp</result>
+		</action>
+		<action name="updateOneUnitForm" class="com.ihk.saleunit.action.new_init.GuangZhouNewInitOneUnit" method="updateOneUnitForm">
+			<result name="suc">/saleunit_new_init/guangzhou/init_one_unit.jsp</result>
+		</action>
+		
+		
+		<!-- 售前客户自定义 -->
+		<action name="customerBeforeTab" class="com.ihk.saleunit.action.new_init.CustomerBeforeByQuestionAction" method="index">
+			<result name="suc">/saleunit_new_init/guangzhou/customer_befor_tab.jsp</result>
+		</action>
+		
+		<!-- 主页面售前客户自定义 -->
+		<action name="customerBeforeTabForMain" class="com.ihk.saleunit.action.new_init.CustomerBeforeByQuestionAction" method="indexMain">
+			<result name="suc">/saleunit_new_report/guangzhou/customer_befor_tab_for_main.jsp</result>
+		</action>
+		
+		<!-- 主页面售前客户自定义Ajax -->
+		<action name="customerBeforeTabForMainAjax" class="com.ihk.saleunit.action.new_init.CustomerBeforeByQuestionAction" method="indexAjax">
+			<result name="suc">/saleunit_new_report/guangzhou/customer_befor_tab_for_main_ajax.jsp</result>
+		</action>	
+		
+		<action name="customerBeforeTabAjax" class="com.ihk.saleunit.action.new_init.CustomerBeforeByQuestionAction" method="indexMainAjax"/>
+
+		<!-- 主页面售前客户增加问卷Ajax -->
+		<action name="addQuestion" class="com.ihk.saleunit.action.new_init.CustomerBeforeByQuestionAction" method="addQuestion">
+			<result name="suc">/saleunit_new_report/guangzhou/customer_befor_dialog_add_question.jsp</result>
+		</action>
+		
+
+		<action name="getTopicById" class="com.ihk.saleunit.action.new_init.CustomerBeforeByQuestionAction" method="getTopicAjax"/>
+		
+		<action name="customerBeforeDialog" class="com.ihk.saleunit.action.new_init.CustomerBeforeByQuestionAction" method="dialog">
+			<result name="suc">/saleunit_new_init/guangzhou/customer_befor_dialog.jsp</result>
+		</action>
+		
+		<action name="customerBeforeDialogForMain" class="com.ihk.saleunit.action.new_init.CustomerBeforeByQuestionAction" method="dialog">
+			<result name="suc">/saleunit_new_init/guangzhou/customer_befor_dialog_for_main.jsp</result>
+		</action>
+		
+		<action name="customerBeforeDialogForMainModify" class="com.ihk.saleunit.action.new_init.CustomerBeforeByQuestionAction" method="dialogModify">
+			<result name="suc">/saleunit_new_init/guangzhou/customer_befor_dialog_for_main_modify.jsp</result>
+		</action>
+		
+		<action name="customerBeforeDialogForMainOrder" class="com.ihk.saleunit.action.new_init.CustomerBeforeByQuestionAction" method="dialogOrder">
+			<result name="suc">/saleunit_new_init/guangzhou/customer_befor_dialog_for_main_order.jsp</result>
+		</action>
+		
+		<action name="questionHasBeUsed" class="com.ihk.saleunit.action.new_init.CustomerBeforeByQuestionAction" method="questionHasBeUsed"/>
+		
+		<action name="customerBeforeDialogForm" class="com.ihk.saleunit.action.new_init.CustomerBeforeByQuestionAction" method="form">
+			<result name="suc">/saleunit_new_init/guangzhou/customer_befor_dialog.jsp</result>
+		</action>
+		
+		<action name="customerBeforeDialogFormForMain" class="com.ihk.saleunit.action.new_init.CustomerBeforeByQuestionAction" method="formForMain"/>
+		
+		<action name="customerBeforeDialogFormForMainModify" class="com.ihk.saleunit.action.new_init.CustomerBeforeByQuestionAction" method="formForMainModify"/>
+	
+		<action name="customerBeforeDialogFormForMainOrder" class="com.ihk.saleunit.action.new_init.CustomerBeforeByQuestionAction" method="formForMainOrder"/>
+	
+		<action name="deleteTopicTable" class="com.ihk.saleunit.action.new_init.CustomerBeforeByQuestionAction" method="formForMainDelete" />
+		
+		<action name="deleteQuestionTable" class="com.ihk.saleunit.action.new_init.CustomerBeforeByQuestionAction" method="deleteQuestionTable" />
+		
+		<action name="customerBeforeAddQuestion" class="com.ihk.saleunit.action.new_init.CustomerBeforeByQuestionAction" method="addQuestionDialog">
+			<result name="suc">/saleunit_new_init/guangzhou/customer_befor_dialog_add_question.jsp</result>
+		</action>
+		
+		<action name="customerBeforeAddQuestionForm" class="com.ihk.saleunit.action.new_init.CustomerBeforeByQuestionAction" method="customerBeforeAddQuestionForm">
+			<result name="suc">/saleunit_new_init/guangzhou/customer_befor_dialog_add_question.jsp</result>
+		</action>
+		
+		<action name="customerBeforeModifyQuestion" class="com.ihk.saleunit.action.new_init.CustomerBeforeByQuestionAction" method="modifyQuestionDialog">
+			<result name="suc">/saleunit_new_init/guangzhou/customer_befor_dialog_modify_question.jsp</result>
+		</action>
+		
+		<action name="customerBeforeModifyQuestionForm" class="com.ihk.saleunit.action.new_init.CustomerBeforeByQuestionAction" method="customerBeforeModifyQuestionForm">
+			<result name="suc">/saleunit_new_init/guangzhou/customer_befor_dialog_modify_question.jsp</result>
+		</action>
+		
+		
+		<action name="customerBeforeDelByDeId" class="com.ihk.saleunit.action.new_init.CustomerBeforeByQuestionAction" method="delByDeId">
+		</action>
+		
+		<action name="setDefaultQuestion" class="com.ihk.saleunit.action.new_init.CustomerBeforeByQuestionAction" method="setDefaultQuestion">
+		</action>
+		
+		
+		<!-- 添加楼盘销售计划(添加前) -->
+		<action name="forInputPropertyProjectPlan" class="com.ihk.saleunit.action.new_init.PropertyProjectPlanAction" method="forInput">
+			<result name="forInput">/saleunit_new_init/guangzhou/add_property_project_plan.jsp</result>
+		</action>
+		<!-- 添加楼盘销售计划(提交) -->
+		<action name="inputPropertyProjectPlan" class="com.ihk.saleunit.action.new_init.PropertyProjectPlanAction" method="inputData">
+			<result name="inputSuccess">/saleunit_new_init/guangzhou/add_property_project_plan.jsp</result>
+		</action>		
+		<!-- 楼盘销售计划,取得一条数据显示的页面 -->
+		<action name="getPlanById" class="com.ihk.saleunit.action.new_init.PropertyProjectPlanAction" method="getPlanById">
+			<result name="finish" >/saleunit_new_init/guangzhou/update_property_project_plan.jsp</result>
+		</action>
+		
+		<!-- 楼盘销售计划,执行修改数据的处理与页面 -->
+		<action name="updatePlanData" class="com.ihk.saleunit.action.new_init.PropertyProjectPlanAction" method="updatePlanData">
+			<result name="finish" >/saleunit_new_init/guangzhou/update_property_project_plan.jsp</result>
+		</action>	
+		
+		<!-- 合同管理 -->
+		<action name="contractManager" class="com.ihk.saleunit.action.new_init.ContractManagerAction" method="contractManager">
+			<result name="contractManager">/saleunit_new_init/guangzhou/contract_manager.jsp</result>
+			<result name="contractManagerForSaleunit">/saleunit_new/manager/contract_manager.jsp</result><!-- 成交单元管理下的合同管理 -->
+		</action>
+		
+		<!-- 废弃 -->
+		<action name="toAddContractManager" class="com.ihk.saleunit.action.new_init.ContractManagerAction" method="toAddContractManager">
+			<result name="toAddContractManager">/saleunit_new_init/guangzhou/add_contract_manager.jsp</result>
+		</action>
+		
+		<action name="toAjaxAddContractManager" class="com.ihk.saleunit.action.new_init.ContractManagerAction" method="toAjaxAddContractManager">
+			<!-- 原先的div模式下,一些东西用不了,改成iframe的 -->
+			<result name="toAjaxAddContractManager">/saleunit_new_init/guangzhou/add_contract_manager_ajax.jsp</result>
+			<!-- 
+			 <result name="toAjaxAddContractManager">/saleunit_new_init/guangzhou/add_contract_manager.jsp</result>
+			 -->
+		</action>
+		
+		<action name="addContractManager" class="com.ihk.saleunit.action.new_init.ContractManagerAction" method="addContractManager"/>
+		
+		<action name="showContractManager" class="com.ihk.saleunit.action.new_init.ContractManagerAction" method="showContractManager">
+			<result name="showContractManager">/saleunit_new_init/guangzhou/modify_contract_manager.jsp</result>
+			<result name="toCopyContractManager">/saleunit_new_init/guangzhou/copy_contract_manager.jsp</result>
+		</action>
+		
+		<action name="updateContractManager" class="com.ihk.saleunit.action.new_init.ContractManagerAction" method="updateContractManager"/>
+		
+		<!-- 作废 ContractManager-->
+		<action name="cancelContractManager" class="com.ihk.saleunit.action.new_init.ContractManagerAction" method="cancelContractManager"/>
+		
+		<action name="copyContractManager" class="com.ihk.saleunit.action.new_init.ContractManagerAction" method="copyContractManager"/>
+		
+		<action name="toAddBarRule" class="com.ihk.saleunit.action.new_init.ContractManagerAction" method="toAddBarRule">
+			<result name="toAddBarRule">/saleunit_new_init/guangzhou/bar_rule.jsp</result>
+		</action>
+		
+		<action name="addBarRule" class="com.ihk.saleunit.action.new_init.ContractManagerAction" method="addBarRule"/>
+		
+		<action name="getBarRuleListByManagerId" class="com.ihk.saleunit.action.new_init.ContractManagerAction" method="getBarRuleListByManagerId"/>
+		
+		<!-- 复制 ContractManager要获取的barRule-->
+		<action name="getBarRuleListByManagerIdForCopy" class="com.ihk.saleunit.action.new_init.ContractManagerAction" 
+			method="getBarRuleListByManagerIdForCopy"/>
+		
+		<!-- 根据session中的值获取对应的barRule -->
+		<action name="addBarRuleToTable" class="com.ihk.saleunit.action.new_init.ContractManagerAction" method="addBarRuleToTable"/>
+		
+		<action name="toUpdateBarRule" class="com.ihk.saleunit.action.new_init.ContractManagerAction" method="toUpdateBarRule">
+			<result name="toUpdateBarRule">/saleunit_new_init/guangzhou/bar_rule_update.jsp</result>
+		</action>
+		
+		<!-- 更新 -->
+		<action name="updateBarRule" class="com.ihk.saleunit.action.new_init.ContractManagerAction" method="updateBarRule"/>
+		
+		<!-- 删除 -->
+		<action name="deleteBarRule" class="com.ihk.saleunit.action.new_init.ContractManagerAction" method="deleteBarRule"/>
+		
+	</package>
+</struts>
+

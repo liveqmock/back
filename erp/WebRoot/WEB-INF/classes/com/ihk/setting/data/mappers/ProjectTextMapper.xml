@@ -1,0 +1,139 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.ihk.setting.data.IProjectTextMapper">
+
+	<resultMap type="ProjectText" id="projectTextResultMap">
+		<id property="id" column="id" />        
+		<result property="projectId" column="project_id" />
+		<result property="textType" column="text_type" />
+		<result property="mainId" column="main_id" />
+		<result property="typeName" column="type_name" />
+		<result property="codeDesc" column="code_desc" />
+		<result property="codeOrder" column="code_order" />
+		<result property="isDeleted" column="is_deleted" />
+		<result property="createdId" column="created_id" />
+		<result property="createdTime" column="created_time" />
+		<result property="modId" column="mod_id" />
+		<result property="modTime" column="mod_time" />
+	</resultMap>
+	
+	<resultMap type="CodeDtl" id="codeDtlResultMap">
+		<result property="typeName" column="type_name" />        
+		<result property="codeVal" column="code_val" />
+		<result property="codeDesc" column="code_desc" />
+		<result property="isDeleted" column="is_deleted" />
+		<result property="codeOrder" column="code_order" />
+	</resultMap>
+
+	<insert id="addProjectText" parameterType="ProjectText">
+		 <selectKey resultType="java.lang.Integer" keyProperty="id" order="AFTER" >
+            SELECT @@IDENTITY
+        </selectKey>		
+		insert into project_text(
+		project_id,
+		text_type,
+		main_id,
+		type_name,
+		code_desc,
+		code_order,
+		is_deleted,
+		created_id,
+		created_time,
+		mod_id,
+		mod_time
+		)
+			VALUES(
+		#{projectId},
+		#{textType},
+		#{mainId},
+		#{typeName},
+		#{codeDesc},
+		#{codeOrder},
+		#{isDeleted},
+		#{createdId},
+		#{createdTime},
+		#{modId},
+		#{modTime}
+			)
+		
+	</insert>
+	<delete id="deleteProjectText" parameterType="com.ihk.utils.base.PojoDeleteCond">
+	update project_text set is_deleted='1', mod_id=#{modId}, mod_time=#{modTime} where id=#{id};
+	</delete>
+	<update id="updateProjectText" parameterType="int">
+	update project_text set 
+		project_id=#{projectId},
+		text_type=#{textType},
+		main_id=#{mainId},
+		type_name=#{typeName},
+		code_desc=#{codeDesc},
+		code_order=#{codeOrder},
+		mod_id=#{modId},
+		mod_time=#{modTime}
+	 where id=#{id}
+	</update>
+	<select id="findProjectTextById" resultMap="projectTextResultMap">
+	select * from project_text where id=#{id}
+	</select>
+    
+	<sql id="findWhereCond"> 
+		<where>
+			<if test="projectId != null and projectId != ''">
+				and project_id = #{projectId}
+            </if>    
+            <if test="typeName != null and typeName != ''">
+				and type_name = #{typeName}
+            </if>    
+            
+            <if test="textType != null and textType != '' and textType != 0">
+				and text_type = #{textType}
+            </if>
+            <if test="mainId != null and mainId != '' and mainId != 0">
+				and main_id = #{mainId}
+            </if>  
+            
+            and is_deleted = '0'
+		</where>
+	</sql>
+	
+	<select id="findProjectTextCount" resultType="int" parameterType="com.ihk.setting.data.pojo.ProjectTextCond">
+		SELECT count(0) from project_text  
+        <include refid="findWhereCond"/>     
+    </select>
+        
+	<select id="findProjectText" resultMap="projectTextResultMap" parameterType="com.ihk.setting.data.pojo.ProjectTextCond">
+		SELECT * from  project_text 
+        <include refid="findWhereCond"/> 
+		<if test="topNum > 0">
+			limit #{topNum};
+		</if>
+    </select>
+    
+	<select id="findProjectTextPage" resultMap="projectTextResultMap" parameterType="com.ihk.setting.data.pojo.ProjectTextCond">
+		SELECT * from  project_text 
+        <include refid="findWhereCond"/> 
+    
+		<if test="startLine >= 0">
+		<if test="pageSize > 0">
+			limit #{startLine},#{pageSize};
+		</if>
+		</if>
+	</select>
+	
+	<select id="findCodeList" resultMap="codeDtlResultMap" parameterType="com.ihk.setting.data.pojo.ProjectTextCond">
+	select code_desc as code_val ,code_desc,is_deleted,code_order from project_text where type_name=#{typeName} and project_id=#{projectId} and is_deleted='0' order by code_order 
+	</select>
+	
+	<select id="findMaxOrderProjectTextByProjectIdAndTypeName" resultMap="projectTextResultMap" parameterType="com.ihk.setting.data.pojo.ProjectTextCond">
+		select * from project_text where project_id = #{projectId} and type_name = #{typeName}  and is_deleted = '0' order by code_order desc limit 1
+	</select>
+	
+	<update id="deleteProjectTextByTypeName" parameterType="com.ihk.setting.data.pojo.ProjectTextCond">
+		update project_text set is_deleted = '1', mod_id=#{modId}, mod_time=#{modTime} where type_name = #{typeName} and project_id = #{projectId}
+	</update>
+	
+	<update id="updateProjectTextCodeDesc" parameterType="com.ihk.setting.data.pojo.ProjectTextCond">
+		update project_text set code_desc=#{codeDesc}, mod_id=#{modId}, mod_time=#{modTime} where id = #{id}
+	</update>
+	
+</mapper>

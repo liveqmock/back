@@ -1,0 +1,257 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.ihk.saleunit.data.IAppointMapper">
+
+	<resultMap type="Appoint" id="appointResultMap">
+		<id property="id" column="id" />        
+		<result property="propertyId" column="property_id" />
+		<result property="buildId" column="build_id" />
+		<result property="unitId" column="unit_id" />
+		<result property="realNum" column="real_num" />
+		<result property="customerId" column="customer_id" />
+		<result property="appointDate" column="appoint_date" />
+		<result property="endDate" column="end_date" />
+		<result property="appointNum" column="appoint_num" />
+		<result property="unitNum" column="unit_num" />
+		<result property="apponitMoney" column="apponit_money" />
+		<result property="realMoney" column="real_money" />
+		<result property="salesId" column="sales_id" />
+		<result property="remark" column="remark" />
+		<result property="confirmId" column="confirm_id" />
+		<result property="isDeleted" column="is_deleted" />
+		<result property="createdId" column="created_id" />
+		<result property="createdTime" column="created_time" />
+		<result property="modId" column="mod_id" />
+		<result property="modTime" column="mod_time" />
+	</resultMap>
+
+	<insert id="addAppoint" parameterType="Appoint">
+		 <selectKey resultType="java.lang.Integer" keyProperty="id" order="AFTER" >
+            SELECT @@IDENTITY
+        </selectKey>		
+		insert into appoint(
+		property_id,
+		build_id,
+		unit_id,
+		real_num,
+		customer_id,
+		appoint_date,
+		end_date,
+		appoint_num,
+		unit_num,
+		apponit_money,
+		real_money,
+		sales_id,
+		remark,
+		confirm_id,
+		is_deleted,
+		created_id,
+		created_time,
+		mod_id,
+		mod_time
+		)
+			VALUES(
+		#{propertyId},
+		#{buildId},
+		#{unitId},
+		#{realNum},
+		#{customerId},
+		#{appointDate},
+		#{endDate},
+		#{appointNum},
+		#{unitNum},
+		#{apponitMoney},
+		#{realMoney},
+		#{salesId},
+		#{remark},
+		#{confirmId},
+		#{isDeleted},
+		#{createdId},
+		#{createdTime},
+		#{modId},
+		#{modTime}
+			)
+		
+	</insert>
+	<delete id="deleteAppoint" parameterType="int">
+	update appoint set is_deleted='1' where id=#{id};
+	</delete>
+	<update id="updateAppoint" parameterType="int">
+	update appoint set 
+		property_id=#{propertyId},
+		build_id=#{buildId},
+		unit_id=#{unitId},
+		real_num=#{realNum},
+		customer_id=#{customerId},
+		appoint_date=#{appointDate},
+		end_date=#{endDate},
+		appoint_num=#{appointNum},
+		unit_num=#{unitNum},
+		apponit_money=#{apponitMoney},
+		real_money=#{realMoney},
+		sales_id=#{salesId},
+		remark=#{remark},
+		confirm_id=#{confirmId},
+		mod_id=#{modId},
+		mod_time=#{modTime}
+	 where id=#{id}
+	</update>
+	<select id="findAppointById" resultMap="appointResultMap">
+	select * from appoint where id=#{id}
+	</select>
+    
+	<sql id="findWhereCond"> 
+		<where>
+			
+			<if test="propertyId != null and propertyId != '' and propertyId != 0">
+				and property_id = #{propertyId}
+			</if>
+			<if test="unitId != null and unitId != ''">
+				and unit_id = #{unitId}
+			</if>
+			<if test="realNum != null and realNum != ''">
+				and real_num = #{realNum}
+			</if>
+			<if test="unitNum != null and unitNum != ''">
+				and unit_num = #{unitNum}
+			</if>
+			
+			<if test="date1 != null and date1 != ''">
+				and appoint_date &gt;= #{date1}
+			</if>
+			<if test="date2 != null and date2 != ''">
+				and appoint_date &lt; date_add(#{date2},interval 1 day)
+			</if>
+			
+			<if test="salesId != null and salesId != '' and salesId != 0">
+				and sales_id = #{salesId}
+			</if>
+			
+			<if test="customerId != null and customerId != '' and customerId != 0">
+				and customer_id = #{customerId}
+			</if>
+			
+			 and is_deleted = '0' 
+		</where>
+	</sql>
+	
+	<select id="findAppointCount" resultType="int" parameterType="com.ihk.saleunit.data.pojo.AppointCond">
+		SELECT count(0) from appoint  
+        <include refid="findWhereCond"/>     
+    </select>
+        
+	<select id="findAppoint" resultMap="appointResultMap" parameterType="com.ihk.saleunit.data.pojo.AppointCond">
+		SELECT * from  appoint 
+        <include refid="findWhereCond"/> 
+        
+		<if test="topNum > 0">
+			limit #{topNum};
+		</if>
+    </select>
+    
+	<select id="findAppointPage" resultMap="appointResultMap" parameterType="com.ihk.saleunit.data.pojo.AppointCond">
+		SELECT * from  appoint 
+        <include refid="findWhereCond"/> 
+        
+         <if test="orderByFiled == null or orderByFiled == ''">
+			order by id desc
+		</if>
+		<if test="orderByFiled=='11'">
+			order by apponit_money desc 
+		</if>
+		<if test="orderByFiled=='12'">
+			order by apponit_money 
+		</if>
+		<if test="orderByFiled=='19'">
+			order by end_date desc
+		</if>
+		<if test="orderByFiled=='20'">
+			order by end_date 
+		</if>	
+		<if test="orderByFiled=='17'">
+			order by appoint_date desc
+		</if>
+		<if test="orderByFiled=='18'">
+			order by appoint_date 
+		</if>
+    
+		<if test="startLine >= 0">
+		<if test="pageSize > 0">
+			limit #{startLine},#{pageSize};
+		</if>
+		</if>
+	</select>
+	
+	<update id="updateAppointSetConfirmId" parameterType="map">
+		
+		update appoint set confirm_id = #{confirmId} where id = #{appointId};
+	</update>
+	
+	<select id="findCompanyReport" resultType="map" parameterType="com.ihk.saleunit.data.pojo.AppointCond">
+	
+		select p.id as pId, p.property_name as propertyName, tmp.cou, tmp.appMoney, tmp.realMoney from property_project p
+		inner join 
+		(
+		select property_id as pId, COUNT(1) as cou, sum(apponit_money) as appMoney,
+			sum(real_money) as realMoney from appoint
+			
+		<where>
+			<if test="date1 != null and date1 != ''">
+				and appoint_date &gt;= #{date1}
+			</if>
+			<if test="date2 != null and date2 != ''">
+				and appoint_date &lt; date_add(#{date2},interval 1 day)
+			</if>
+				
+				and is_deleted = '0'
+		</where>
+			
+			group by property_id
+			order by cou
+		)tmp
+		on p.id = tmp.pId
+			
+	</select>
+	
+	<select id="findPropertyReport" resultType="map" parameterType="com.ihk.saleunit.data.pojo.AppointCond">
+	
+		select b.id as bId, b.build_name as buildName, tmp.cou, tmp.appMoney, tmp.realMoney from property_build b
+		inner join 
+		(
+		select build_id as bId, COUNT(1) as cou, sum(apponit_money) as appMoney,
+			sum(real_money) as realMoney from appoint
+			
+		<where>
+			<if test="date1 != null and date1 != ''">
+				and appoint_date &gt;= #{date1}
+			</if>
+			<if test="date2 != null and date2 != ''">
+				and appoint_date &lt; date_add(#{date2},interval 1 day)
+			</if>
+			<if test="propertyId != null and propertyId != ''">
+				and property_id = #{propertyId}
+			</if>
+			
+				and is_deleted = '0'
+		</where>
+			
+			group by build_id
+			order by cou
+		)tmp
+		on b.id = tmp.bId
+			
+	</select>
+	
+	<select id="findAppointByDetailId" resultMap="appointResultMap">
+	
+		select a.* from appoint a inner join appoint_bill b inner join appoint_bill_detail d 
+		on a.id = b.appoint_id and b.id = d.bill_id 
+		where d.id = #{detailId}
+		
+	</select>
+	
+	<select id="findAppointByUnitId" resultMap="appointResultMap">
+		select * from appoint where unit_id = #{unitId}
+	</select>
+	
+</mapper>

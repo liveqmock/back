@@ -1,0 +1,77 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.ihk.setting.data.ICodeDtlMapper">
+
+<!-- 
+<cache/>
+ -->
+	<resultMap type="CodeDtl" id="codeDtlResultMap">
+		<result property="typeName" column="type_name" />        
+		<result property="codeVal" column="code_val" />
+		<result property="codeDesc" column="code_desc" />
+		<result property="isDeleted" column="is_deleted" />
+		<result property="codeOrder" column="code_order" />
+	</resultMap>
+
+	<select id="findCodeList" resultMap="codeDtlResultMap" parameterType="com.ihk.setting.data.pojo.CodeDtlCond">
+	select * from code_dtl where type_name=#{typeName} and is_deleted='0' order by code_order 
+	</select>
+	
+	<select id="findCodeDescByCodeVal" resultMap="codeDtlResultMap" parameterType="com.ihk.setting.data.pojo.CodeDtlCond">
+	select * from code_dtl where type_name=#{typeName} and code_val=#{codeVal} and is_deleted='0' order by code_order limit 1
+	</select>
+	
+	<select id="findAllCodeDtl" resultMap="codeDtlResultMap">
+		select * from code_dtl where is_deleted='0' order by code_order 
+	</select>
+	
+	<select id="findCodeDtlListForHomeWorkDistrict" resultMap="codeDtlResultMap" parameterType="com.ihk.customer.data.pojo.CustomerCond">
+	
+		select distinct
+		<if test="homeOrWork == 'home_district'">
+			home_region
+		</if>
+		<if test="homeOrWork == 'work_district'">
+			work_region
+		</if>
+		as code_val,region_name as code_desc from customer c
+			left join region r
+			on
+			<if test="homeOrWork == 'work_district'">
+				c.work_region = r.region_id
+			</if>
+			<if test="homeOrWork == 'home_district'">
+	 			 c.home_Region = r.region_id
+			</if>
+		<where>
+		
+			<if test="date1 != null and date1 != ''">
+				and created_time &gt;= #{date1}
+			</if>
+			<if test="date2 != null and date2 != ''">
+				and created_time &lt; date_add(#{date2},interval 1 day)
+			</if>
+	
+			<if test="projectIds !=null and projectIds.size() > 0">  
+	            and project_id in
+	            <foreach  
+	                collection="projectIds"  
+	                item="proId"  
+	                open="("  
+	                separator=","  
+	                close=")">  
+	                #{proId}  
+	            </foreach>  
+	        </if>
+	        
+	        <!-- 
+	        and home_region &lt;&gt; '0' 
+	        and region_name &lt;&gt; ''
+	         -->
+	        and c.is_deleted = '0' 
+        
+        </where>
+        
+	</select>
+	
+</mapper>

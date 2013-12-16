@@ -1,0 +1,117 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.ihk.saleunit.data.IContractSalesmanMapper">
+
+	<resultMap type="ContractSalesman" id="contractSalesmanResultMap">
+		<id property="id" column="id" />        
+		<result property="confirmType" column="confirm_type" />
+		<result property="mainId" column="main_id" />
+		<result property="salesId" column="sales_id" />
+		<result property="salesPercent" column="sales_percent" />
+		<result property="isDeleted" column="is_deleted" />
+		<result property="createdId" column="created_id" />
+		<result property="createdTime" column="created_time" />
+		<result property="modId" column="mod_id" />
+		<result property="modTime" column="mod_time" />
+	</resultMap>
+
+	<insert id="addContractSalesman" parameterType="ContractSalesman">
+		 <selectKey resultType="java.lang.Integer" keyProperty="id" order="AFTER" >
+            SELECT @@IDENTITY
+        </selectKey>		
+		insert into contract_salesman(
+		confirm_type,
+		main_id,
+		sales_id,
+		sales_percent,
+		is_deleted,
+		created_id,
+		created_time,
+		mod_id,
+		mod_time
+		)
+			VALUES(
+		#{confirmType},
+		#{mainId},
+		#{salesId},
+		#{salesPercent},
+		#{isDeleted},
+		#{createdId},
+		#{createdTime},
+		#{modId},
+		#{modTime}
+			)
+		
+	</insert>
+	<delete id="deleteContractSalesman" parameterType="com.ihk.utils.base.PojoDeleteCond">
+	update contract_salesman set is_deleted='1', mod_id=#{modId}, mod_time=#{modTime} where id=#{id};
+	</delete>
+	<update id="updateContractSalesman" parameterType="int">
+	update contract_salesman set 
+		confirm_type=#{confirmType},
+		main_id=#{mainId},
+		sales_id=#{salesId},
+		sales_percent=#{salesPercent},
+		mod_id=#{modId},
+		mod_time=#{modTime}
+	 where id=#{id}
+	</update>
+	<select id="findContractSalesmanById" resultMap="contractSalesmanResultMap">
+	select * from contract_salesman where id=#{id}
+	</select>
+    
+	<sql id="findWhereCond"> 
+		<where>
+            and is_deleted = '0'
+		</where>
+	</sql>
+	
+	<select id="findContractSalesmanCount" resultType="int" parameterType="com.ihk.saleunit.data.pojo.ContractSalesmanCond">
+		SELECT count(0) from contract_salesman  
+        <include refid="findWhereCond"/>     
+    </select>
+        
+	<select id="findContractSalesman" resultMap="contractSalesmanResultMap" parameterType="com.ihk.saleunit.data.pojo.ContractSalesmanCond">
+		SELECT * from  contract_salesman 
+        <include refid="findWhereCond"/> 
+		<if test="topNum > 0">
+			limit #{topNum};
+		</if>
+    </select>
+    
+	<select id="findContractSalesmanPage" resultMap="contractSalesmanResultMap" parameterType="com.ihk.saleunit.data.pojo.ContractSalesmanCond">
+		SELECT * from  contract_salesman 
+        <include refid="findWhereCond"/> 
+    
+		<if test="startLine >= 0">
+		<if test="pageSize > 0">
+			limit #{startLine},#{pageSize};
+		</if>
+		</if>
+	</select>
+    
+    <!-- ajax分页使用 -->	
+   <sql id="findContractSalesmanForAjaxComm">
+		<where>		
+            and is_deleted = '0'
+		</where>
+		
+	</sql>
+    
+    <select id="findContractSalesmanForAjax" resultMap="contractSalesmanResultMap" parameterType="com.ihk.saleunit.data.pojo.ContractSalesmanCond">
+		SELECT * from  contract_salesman 
+        <include refid="findContractSalesmanForAjaxComm"/> 
+    
+		<if test="startLine >= 0">
+		<if test="pageSize > 0">
+			limit #{startLine},#{pageSize};
+		</if>
+		</if>
+	</select>
+    
+    <select id="findContractSalesmanCountForAjax" resultType="int" parameterType="com.ihk.saleunit.data.pojo.ContractSalesmanCond">
+		SELECT count(1) from contract_salesman  
+        <include refid="findContractSalesmanForAjaxComm"/>     
+    </select>
+    
+</mapper>

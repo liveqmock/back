@@ -1,0 +1,1045 @@
+package com.ihk.customer.action;
+
+import java.text.SimpleDateFormat;
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.Iterator;
+import java.util.LinkedHashMap;
+import java.util.LinkedList;
+import java.util.List;
+import java.util.Map;
+import java.util.Set;
+
+import javax.servlet.http.HttpSession;
+
+import org.springframework.beans.factory.annotation.Autowired;
+
+import com.ihk.constanttype.ContConfirmType;
+import com.ihk.constanttype.ContTable;
+import com.ihk.constanttype.ContUnitSaleState;
+import com.ihk.constanttype.ContUserId;
+import com.ihk.constanttype.EnumCodeTypeName;
+import com.ihk.constanttype.EnumDevFlag;
+import com.ihk.constanttype.EnumPrivCode;
+import com.ihk.customer.data.pojo.Customer;
+import com.ihk.customer.data.pojo.CustomerCond;
+import com.ihk.customer.data.pojo.CustomerFollowCond;
+import com.ihk.customer.data.services.ICustomerFollowServices;
+import com.ihk.customer.data.services.ICustomerServices;
+import com.ihk.permission.PermissionUtils;
+import com.ihk.property.data.services.IPropertyUnitServices;
+import com.ihk.saleunit.data.pojo.Confirm;
+import com.ihk.saleunit.data.pojo.Contract;
+import com.ihk.saleunit.data.pojo.ContractCustomer;
+import com.ihk.saleunit.data.pojo.ContractCustomerCond;
+import com.ihk.saleunit.data.pojo.Question;
+import com.ihk.saleunit.data.pojo.QuestionAnswerDetail;
+import com.ihk.saleunit.data.pojo.QuestionCond;
+import com.ihk.saleunit.data.pojo.QuestionTopic;
+import com.ihk.saleunit.data.pojo.QuestionTopicCond;
+import com.ihk.saleunit.data.services.IConfirmServices;
+import com.ihk.saleunit.data.services.IContractCustomerServices;
+import com.ihk.saleunit.data.services.IContractServices;
+import com.ihk.saleunit.data.services.IQuestionAnswerDetailServices;
+import com.ihk.saleunit.data.services.IQuestionAnwserServices;
+import com.ihk.saleunit.data.services.IQuestionServices;
+import com.ihk.saleunit.data.services.IQuestionTopicServices;
+import com.ihk.setting.data.pojo.City;
+import com.ihk.setting.data.pojo.CityCond;
+import com.ihk.setting.data.pojo.Province;
+import com.ihk.setting.data.pojo.ProvinceCond;
+import com.ihk.setting.data.pojo.Region;
+import com.ihk.setting.data.pojo.RegionCond;
+import com.ihk.setting.data.services.ICityServices;
+import com.ihk.setting.data.services.IProvinceServices;
+import com.ihk.setting.data.services.IRegionServices;
+import com.ihk.user.data.services.IUserAccountServices;
+import com.ihk.utils.CommonUtils;
+import com.ihk.utils.CustomerUtils;
+import com.ihk.utils.DescUtils;
+import com.ihk.utils.MyTransationTemplate;
+import com.ihk.utils.Pager;
+import com.ihk.utils.ProvinceCityRegionUtils;
+import com.ihk.utils.ReportUtils;
+import com.ihk.utils.SessionUser;
+import com.ihk.utils.SupperAction;
+import com.ihk.utils.onlyfollow.CustomerOnlyFollowUtils;
+import com.ihk.utils.saleunit.PayWayUtils;
+import com.opensymphony.xwork2.ActionContext;
+
+/**
+ * 
+ *广州客户查询
+ */
+@SuppressWarnings("unchecked")
+public class GuangZhouSearchAction extends SupperAction{
+
+	private static final long serialVersionUID = 1L;
+	
+	private static final String BASE_PRE_QUESTION = "售前基本问卷";
+	
+	@Autowired 
+	ICustomerServices iCustomerServices;
+	@Autowired
+	IUserAccountServices userAccountServices;
+	@Autowired
+	ICustomerFollowServices customerFollowServices; 
+	@Autowired 
+	IContractCustomerServices contractCustomerServices;
+	@Autowired 
+	IProvinceServices provinceServices;
+	@Autowired 
+	ICityServices cityServices;
+	@Autowired 
+	IRegionServices regionServices;
+	@Autowired 
+	IConfirmServices confirmServices;
+	@Autowired 
+	IContractServices contractServices;
+	@Autowired
+	IQuestionServices questionServices;
+	@Autowired
+	IQuestionTopicServices questionTopicServices;
+	@Autowired
+	IQuestionAnswerDetailServices questionAnswerDetailServices;
+	@Autowired
+	IQuestionAnwserServices questionAnwserServices;
+	@Autowired
+	IPropertyUnitServices propertyUnitServices;
+	
+	/**跳转到查询页面*/
+	public String index(){
+		isManager = IS_MANAGER;
+		this.initSel();
+		
+		String today = CustomerUtils.getNowForString();
+		//String before7Day = CommonUtils.getOneWeekBeforeForString();
+		if(searchCond == null){
+			searchCond = new CustomerCond();
+		}
+		//searchCond.setDate1(before7Day);
+		if(CustomerUtils.isStrEmpty(searchCond.getDate2())){
+			searchCond.setDate2(today);
+		}
+		this.cusList = this.initCustList(searchCond);
+		
+		HttpSession session = request.getSession();
+		session.setAttribute("searchCond", searchCond);
+		session.removeAttribute("projectName");
+
+		String isDeleteSugg = request.getParameter("deleteSugg");
+		if(!"false".equals(isDeleteSugg)){
+			session.removeAttribute("suggestion");
+		}
+		
+		return "searchCustomer";
+	}
+	
+	/**跳转到售后客户查询页面*/
+	public String indexContractCustomer(){
+		isManager = IS_MANAGER;
+		this.initSel();
+		
+		String today = CustomerUtils.getNowForString();
+		//String before7Day = CommonUtils.getOneWeekBeforeForString();
+		if(ccSearchCond == null){
+			ccSearchCond = new ContractCustomerCond();
+		}
+		//searchCond.setDate1(before7Day);
+		if(CustomerUtils.isStrEmpty(ccSearchCond.getDate2())){
+			ccSearchCond.setDate2(today);
+		}
+		this.concusList = this.initContCustList(ccSearchCond);
+		
+		HttpSession session = request.getSession();
+		session.setAttribute("ccSearchCond", ccSearchCond);
+		session.removeAttribute("projectName");
+
+		String isDeleteSugg = request.getParameter("deleteSugg");
+		if(!"false".equals(isDeleteSugg)){
+			session.removeAttribute("suggestion");
+		}
+		this.initSelectedList(ccSearchCond);
+		return "searchContractCustomer";
+	}
+	
+	public String getPayTypeListByCompanyProjectId() throws Exception{
+		String content = ""; //默认值
+		int projectId = Integer.parseInt(request.getParameter("projectId").equals("")?"0":request.getParameter("projectId"));
+		
+		try{
+			payTypeList= PayWayUtils.getSelPayWayByCompanyProjectId(projectId);
+			StringBuffer sb = new StringBuffer();
+			
+			if(payTypeList.keySet().size() > 0){
+				Set<String> keys = payTypeList.keySet();
+				for(String key : keys){
+						String value = payTypeList.get(key);
+						sb.append("<option value=\"")
+							.append(key)
+							.append("\">")
+							.append(value)
+							.append("</option>")
+							;	
+				}
+				
+			}
+			
+			String getContent = sb.toString();
+			if(!CustomerUtils.isStrEmpty(getContent)){
+				content = getContent;
+			}
+			
+		}catch(Exception e){
+			System.out.println(e.toString());
+		}
+		
+		CustomerUtils.writeResponse(response, content);
+		
+		return null;
+		
+		
+		
+	}
+	
+	
+	
+	public String indexForDeleSugg(){
+		
+		return "indexForDeleSugg";
+	}
+	
+	public String indexForNotDeleSugg(){
+		
+		return "indexForNotDeleSugg";
+	}
+	
+	public String searchForNotDelSugg(){
+		
+		return "searchForNotDelSugg";
+	}
+
+	
+	/**点击查询*/
+	public String search() throws Exception{
+		isManager = IS_MANAGER;
+		
+		String projectName = request.getParameter("projectName");
+		String workOrMonth = request.getParameter("workOrMonth");
+		
+//		if(followCond != null && (!CommonUtils.isStrEmpty(followCond.getDate1()) || !CommonUtils.isStrEmpty(followCond.getDate2()))){
+//			List<Integer> ids = customerFollowServices.findCustomerFollowCustomerIds(followCond);
+//			searchCond.setIds(ids);
+//			searchCond.setFollowCond(followCond); 
+//		}
+		
+		if(searchCond == null)
+			searchCond = new CustomerCond();
+		
+		if("week".equals(workOrMonth)){
+			String weekFirst = CommonUtils.getWeekFirstForString();
+			String weekEnd = CommonUtils.getWeekEndForString();
+			
+			searchCond.setDate1(weekFirst);
+			searchCond.setDate2(weekEnd);
+		}
+		
+		if("month".equals(workOrMonth)){
+			String monthFirst = CommonUtils.getMonthFirstForString();
+			String monthEnd = CommonUtils.getMonthEndForString();
+			
+			searchCond.setDate1(monthFirst);
+			searchCond.setDate2(monthEnd);
+		}
+		
+		this.initSel();
+		this.cusList = this.initCustList(this.searchCond);
+		
+		HttpSession session = request.getSession();
+		session.setAttribute("searchCond", searchCond);
+		session.setAttribute("projectName", projectName);
+		
+		String isDeleteSugg = request.getParameter("deleteSugg");
+		if(!"false".equals(isDeleteSugg)){
+			session.removeAttribute("suggestion");
+		}
+		initQuestionList();
+		return "searchCustomer";
+	}
+	
+	/**
+	 * 实例话问卷列表
+	 */
+	private void initQuestionList(){
+		QuestionCond qc = new QuestionCond();
+		qc.setCompanyProjectId(searchCond.getProjectId());
+		List<Question> qList=questionServices.findQuestion(qc);
+		questionList = new LinkedHashMap<String,String>();
+		questionList.put("0", BASE_PRE_QUESTION);
+		for(Question q:qList){
+			questionList.put(q.getId()+"", q.getQuestionName());
+		}
+	}
+	
+	
+	/**点击查询*/
+	public String searchContractCustomer() throws Exception{
+		isManager = IS_MANAGER;
+		
+		String projectName = request.getParameter("projectName");
+		
+		if(ccSearchCond == null)
+			ccSearchCond = new ContractCustomerCond();
+
+		
+		this.initSel();
+		this.concusList = this.initContCustList(this.ccSearchCond);
+		
+		/**
+		if("".equals(ccSearchCond.getConfirmType())){
+			for(ContractCustomer cc : this.concusList){
+				if(cc.getConfirmType().equals(ContConfirmType.CONFIRM)){
+					if(propertyUnitServices.findPropertyUnitById(confirmServices.findConfirmById(cc.getMainId()).getUnitId()).getSaleState().equals(ContUnitSaleState.CONTRACT)){
+					}
+				}
+			}
+		}**/
+		HttpSession session = request.getSession();
+		session.setAttribute("ccSearchCond", ccSearchCond);
+		session.setAttribute("projectName", projectName);
+		
+		String isDeleteSugg = request.getParameter("deleteSugg");
+		if(!"false".equals(isDeleteSugg)){
+			session.removeAttribute("suggestion");
+		}
+		this.initSelectedList(ccSearchCond);
+		return "searchContractCustomer";
+	}
+	
+	
+	
+	/**点击排序*/
+	public String searchOrderBy() throws Exception{
+		HttpSession session = request.getSession();
+		
+		isManager = IS_MANAGER;
+		this.initSel();
+		Object o = session.getAttribute("searchCond");
+		CustomerCond cond ;
+		if(o == null){
+			cond = new CustomerCond();
+		}else{
+			cond = (CustomerCond)o;
+		}
+		
+		this.searchCond = cond;
+		this.followCond = searchCond.getFollowCond();
+		this.cusList = this.initCustList(searchCond);
+		
+		String isDeleteSugg = request.getParameter("deleteSugg");
+		if(!"false".equals(isDeleteSugg)){
+			session.removeAttribute("suggestion");
+		}
+		initQuestionList();
+		return "searchCustomer";
+	}
+	
+	/**点击排序*/
+	public String searchContractCustomerOrderBy() throws Exception{
+		HttpSession session = request.getSession();
+		
+		isManager = IS_MANAGER;
+		this.initSel();
+		Object o = session.getAttribute("ccSearchCond");
+		ContractCustomerCond cond ;
+		if(o == null){
+			cond = new ContractCustomerCond();
+		}else{
+			cond = (ContractCustomerCond)o;
+		}
+		
+		this.ccSearchCond = cond;
+		
+		this.concusList = this.initContCustList(ccSearchCond);
+		
+		String isDeleteSugg = request.getParameter("deleteSugg");
+		if(!"false".equals(isDeleteSugg)){
+			session.removeAttribute("suggestion");
+		}
+		this.initSelectedList(ccSearchCond);
+		return "searchContractCustomer";
+	}
+	
+	public void initSelectedList(ContractCustomerCond ccSearchCond){
+		confirmTypeList=new LinkedHashMap<String,String>();
+		confirmTypeList.put("", "合同+成交");
+		confirmTypeList.put("1", "成交");
+		confirmTypeList.put("2", "合同");
+		confirmTypeList.put("3", "临订");
+		if(ccSearchCond.getProjectId()==null || ccSearchCond.getProjectId().equals("")){
+			payTypeList=new LinkedHashMap<String,String>();
+			payTypeList.put("", "请选择");
+		}else{
+			payTypeList= PayWayUtils.getSelPayWayByCompanyProjectId(Integer.parseInt(ccSearchCond.getProjectId()));
+		}
+		householdProvinceList=new LinkedHashMap<String,String>();
+		homeProvinceList=new LinkedHashMap<String,String>();;
+		householdProvinceList.put("", CommonUtils.EMPTY);
+		homeProvinceList.put("", CommonUtils.EMPTY);
+		List<Province> provinceList = provinceServices.findProvince(new ProvinceCond());
+		for(Province province : provinceList){
+			householdProvinceList.put(province.getProvinceId()+"", province.getProvinceName());
+			homeProvinceList.put(province.getProvinceId()+"", province.getProvinceName());
+		}
+	}
+	
+	
+	public String downLoad() throws Exception{
+		
+		try{
+			
+			long start = System.currentTimeMillis();
+			String customerIds=request.getParameter("customerIds");
+			List<Integer> ids = CommonUtils.stringToList(customerIds);
+			HttpSession session = request.getSession();
+			Object o = session.getAttribute("searchCond");
+			CustomerCond cond = new CustomerCond();
+			cond.setUserId(SessionUser.getUserId()+"");
+			if(o != null){
+				cond = (CustomerCond)o;
+			}
+			cond.setCreatedId(0);
+			cond.setCompanyProjectIds(null);
+			cond.setIds(ids);
+			final List<Customer> getList = iCustomerServices.findCustomerForDownload(cond);
+			
+			//获取id的list
+			Iterator<Customer> it = getList.iterator();
+			final List<Integer> list = new ArrayList<Integer>();
+			while(it.hasNext()){
+				list.add(it.next().getId());
+			}
+			
+			List<String> ths;
+			String middleName;
+			if(question.getId()==0){
+				middleName = BASE_PRE_QUESTION;
+				ths = new LinkedList<String>();
+				String[] ts = new String[]{"客户姓名", "所属项目", "客户评级", "录入日期", "移动电话", "固定电话", 
+				//"居住区域", "工作区域",
+				"居住省","居住市","居住区域","居住内容","工作省","工作市","工作区域","工作内容",
+				"购房用途", "置业次数", "意向总价", "产品类型", 
+				"客户来源", "销售人员", "来访次数", "性别", "国籍", "身份证号码",
+				"驾车车型", "年龄", "地址", "邮编", "家庭结构", "家庭收入", "行业分类",
+				"职业", "购买单元1", "购买单元2", "购房目的", "付款方式", "意向面积",
+				"意向套数", "意向户型", "认知途径", "关注点", "客户背景", "备注"
+				};
+				for(String s:ts){
+					ths.add(s);
+				}
+			}else{
+				middleName = questionServices.findQuestionById(question.getId()).getQuestionName();
+				String[] ts = new String[]{"客户姓名", "所属项目", "客户评级", "录入日期", "移动电话", "固定电话", 
+						//"居住区域", "工作区域",
+						"居住省","居住市","居住区域","居住内容","工作省","工作市","工作区域","工作内容",
+						"购房用途", "置业次数", "意向总价", "产品类型", 
+						"客户来源", "销售人员"};
+				ths = new LinkedList<String>();
+				for(String s:ts){
+					ths.add(s);
+				}
+				QuestionTopicCond qCond = new QuestionTopicCond();
+				qCond.setQuestionId(question.getId());
+				List<QuestionTopic> qtList=questionTopicServices.findQuestionTopic(qCond);
+				for(QuestionTopic qt:qtList){
+					ths.add(qt.getTopicName());
+				}
+			}
+			
+			
+			final StringBuffer sb = new StringBuffer();
+			
+			sb.append(ContTable.TABLE_START)
+				.append(ContTable.TR_START)
+				;
+			for(String th : ths){
+				sb.append(ContTable.TH_START)
+					.append(th)
+					.append(ContTable.TH_END)
+					;
+				
+			}
+			sb.append(ContTable.TR_END);
+			
+			new MyTransationTemplate() {
+				
+				@Override
+				protected void doExecuteCallback() throws Exception {
+					List<QuestionAnswerDetail> qadList = null;
+					if(question.getId()!=0){
+						Map map = new HashMap();
+						map.put("questionId", question.getId()+"");
+						map.put("custId", list);
+						qadList = questionAnswerDetailServices.findQuestionAnswerDetailByQuestionIdAndCustId(map);
+					}
+					for(Customer get : getList){
+						sb.append(ContTable.TR_START);
+                        //写值及权限
+						List<String> fieldValue=getFieldValue(get,question.getId(),qadList);
+						for(String value : fieldValue){
+							sb.append(ContTable.TD_START)
+								.append(value == null ? "" : value)
+								.append(ContTable.TD_END)
+								;
+						}
+						
+						sb.append(ContTable.TR_END);
+							
+					}
+					
+				}
+			}.execute();
+			
+			sb.append(ContTable.TALBE_END);
+			
+			
+			String fileName = middleName + "-" + CustomerUtils.getNowForString() + ".xls";
+			ReportUtils.downLoadReport(sb.toString(), fileName, response);
+			
+			long end = System.currentTimeMillis();
+			
+			System.out.println(CustomerUtils.getNowForString() + " " + CustomerUtils.getNowTimeForString() 
+					+ "\t" + fileName + "下载所花的时间为: " + (end - start)/1000 + "." + (end - start)%1000 + "s");
+			
+			
+		}catch(Exception e){
+			e.printStackTrace();
+		}
+		return null;
+		
+	}
+	
+	public String downLoadContractCustomer() throws Exception{
+		
+		try{
+			
+			long start = System.currentTimeMillis();
+			
+			HttpSession session = request.getSession();
+			
+			Object o = session.getAttribute("ccSearchCond");
+			ContractCustomerCond cond = new ContractCustomerCond();
+			cond.setUserId(SessionUser.getUserId()+"");
+			
+			if(o != null){
+				cond = (ContractCustomerCond)o;
+			}
+			final List<ContractCustomer> getList;
+			if("".equals(cond.getConfirmType())){
+				cond.startLine=0;
+				cond.pageSize=0;
+				getList= contractCustomerServices.findContractConfirmCustomer(cond);
+			}else{
+				getList = contractCustomerServices.findContractCustomerDownload(cond);
+			}
+			
+			
+			
+			String[] ths = new String[]{"客户姓名", "电话","所属项目","分区","楼栋","单元号","成交类型","成交日期","所属销售","付款方式"
+					,"认购面积","认购总价","居住省","居住市","居住区","户籍省","户籍市","户籍区"};
+			
+			final StringBuffer sb = new StringBuffer();
+			
+			sb.append(ContTable.TABLE_START)
+				.append(ContTable.TR_START)
+				;
+			for(String th : ths){
+				sb.append(ContTable.TH_START)
+					.append(th)
+					.append(ContTable.TH_END)
+					;
+				
+			}
+			sb.append(ContTable.TR_END);
+			
+			new MyTransationTemplate() {
+				
+				@Override
+				protected void doExecuteCallback() throws Exception {
+					
+					for(ContractCustomer get : getList){
+						sb.append(ContTable.TR_START);
+						
+						for(String value : getContractCustomerFieldValue(get)){
+							sb.append(ContTable.TD_START)
+								.append(value == null ? "" : value)
+								.append(ContTable.TD_END)
+								;
+						}
+						
+						sb.append(ContTable.TR_END);
+							
+					}
+					
+				}
+			}.execute();
+			
+			sb.append(ContTable.TALBE_END);
+			
+			String fileName = "download-" + CustomerUtils.getNowForString() + "-.xls";
+			ReportUtils.downLoadReport(sb.toString(), fileName, response);
+			
+			long end = System.currentTimeMillis();
+			
+			System.out.println(CustomerUtils.getNowForString() + " " + CustomerUtils.getNowTimeForString() 
+					+ "\t" + fileName + "下载所花的时间为: " + (end - start)/1000 + "." + (end - start)%1000 + "s");
+			
+			
+		}catch(Exception e){
+			e.printStackTrace();
+		}
+		return null;
+		
+	}
+	
+	
+	
+	private List<String> getFieldValue(Customer cust, int questionId , List<QuestionAnswerDetail> qadList){
+		
+		List<String> ret = new ArrayList<String>();
+		
+		ret.add(cust.getCustomerName());
+		ret.add(cust.getProjectName());
+		ret.add(cust.getDescRating());
+		ret.add(cust.getDownloadCreatedTime());
+
+        if(SessionUser.getUserId() == ContUserId.ADMIN || PermissionUtils.hasPermission(EnumPrivCode.PRECUSTOMER_DOWNLOAD_TEL,
+                EnumDevFlag.GUANGZHOU)){
+            ret.add(cust.getPhone() + "");
+            ret.add(cust.getHomePhone());
+        }else{
+            ret.add("***");
+            ret.add("***");
+        }
+		ret.add(DescUtils.findProvinceById(cust.getHomeProvince()).getProvinceName());
+		ret.add(DescUtils.findCityById(cust.getHomeCity()).getCityName());
+		ret.add(DescUtils.findRegionById(cust.getHomeRegion()).getRegionName());
+		ret.add(cust.getHomeContent());
+		ret.add(DescUtils.findProvinceById(cust.getWorkProvince()).getProvinceName());
+		ret.add(DescUtils.findCityById(cust.getWorkCity()).getCityName());
+		ret.add(DescUtils.findRegionById(cust.getWorkRegion()).getRegionName());
+		ret.add(cust.getWorkContent());
+		
+		ret.add(cust.getDescBuyUse());
+		ret.add(cust.getDescBuyCount());
+		ret.add(cust.getPriceNum() + "");
+		ret.add(cust.getDescHouseType());
+		ret.add(cust.getDescCustomerSource());
+		
+		ret.add(cust.getDescUserId());
+		
+		if(questionId!=0){
+			for(QuestionAnswerDetail qad : qadList){
+				if(cust.getId()==qad.getPreCustomerId()){
+					String[] s=qad.getAnwserContent().split("\\r\\n");
+					String result="";
+					for(String str:s){
+						if(str.startsWith("1")){	
+							result=result+str.substring(2)+",";		
+						}
+					}
+					if(!qad.getOtherOption().equals("")){
+						result=result+qad.getOtherOption()+",";
+					}
+					result=CommonUtils.removeLastChar(result);
+					ret.add(result);
+				}
+			}
+			
+			
+			
+		}
+		
+		//基本售前问卷
+		else{
+			ret.add(cust.getDescVisitCount());
+			ret.add(cust.getDescGender());
+			ret.add(cust.getNationality());
+			
+			ret.add(CommonUtils.isStrEmpty(cust.getIdcardNo()) ? "" : "'" + cust.getIdcardNo()); //避免导出文件不能完全显示
+			ret.add(cust.getTrafficDesc());
+			ret.add(cust.getDescAge());
+			ret.add(cust.getAddress());
+			
+			ret.add(cust.getPostcode());
+			ret.add(cust.getDescFamilyType());
+			ret.add(cust.getDescFamilyIncome());
+			ret.add(cust.getDescJobType());
+			
+			ret.add(cust.getDescJobIndustry());
+			ret.add(cust.getIntentUnit1());
+			ret.add(cust.getIntentUnit2());
+			ret.add(cust.getDescBuyAim());
+			
+			ret.add(cust.getDescPayType());
+			ret.add(cust.getAreaNum() + "");
+			ret.add(cust.getDescIntentBuynum());
+			ret.add(cust.getDescRoomType());
+			
+			ret.add(cust.getCustomerKnowns());
+			ret.add(cust.getCustomerFocus());
+			
+			//汇悦台
+			ret.add(cust.getBackground());
+			ret.add(cust.getRemark1());
+		}
+		
+		
+		return ret;
+	}
+	
+	private List<String> getContractCustomerFieldValue(ContractCustomer cust){
+		
+		List<String> ret = new ArrayList<String>();
+		
+		ret.add(cust.getCustomerName());
+		ret.add(cust.getMobilePhone());
+		ret.add(cust.getProjectStr());
+		
+		
+
+		if(cust.getConfirmType().equals(ContConfirmType.CONFIRM)){
+			Confirm confirm =confirmServices.findConfirmById(cust.getMainId());
+			ret.add(DescUtils.findAreaName(confirm.getId(), cust.getConfirmType()));
+			ret.add(confirm.getUnit().getPropertyBuildName());
+			ret.add(confirm.getUnit().getUnitNo().replaceAll("-", "--"));
+			ret.add(cust.getConfirmTypeStr());
+			ret.add(new SimpleDateFormat("yyyy-MM-dd").format(confirm.getSignDate()));
+			ret.add(confirm.getSalesName());
+			ret.add(confirm.getPayTypeStr());
+			ret.add(confirm.getUnit().getBuildArea()+"");
+			ret.add(confirm.getSumMoney()+"");
+			ret.add(cust.getHomeProvinceStr());
+			ret.add(cust.getHomeCityStr());
+			ret.add(cust.getHomeRegionStr());
+			ret.add(cust.getHouseholdProvinceStr());
+			ret.add(cust.getHouseholdCityStr());
+			ret.add(cust.getHouseholdRegionStr());
+			
+		}
+		
+		if(cust.getConfirmType().equals(ContConfirmType.CONTRACT)){
+			Contract contract=contractServices.findContractById(cust.getMainId());
+			ret.add(DescUtils.findAreaName(contract.getId(), cust.getConfirmType()));
+			ret.add(contract.getUnit().getPropertyBuildName());
+			ret.add(contract.getUnit().getUnitNo().replaceAll("-", "--"));
+			ret.add(cust.getConfirmTypeStr());
+			ret.add(new SimpleDateFormat("yyyy-MM-dd").format(contract.getSignDate()));
+			ret.add(contract.getSalesName());
+			ret.add(contract.getPayTypeStr());
+			ret.add(contract.getUnit().getBuildArea()+"");
+			ret.add(contract.getSumMoney()+"");
+			ret.add(cust.getHomeProvinceStr());
+			ret.add(cust.getHomeCityStr());
+			ret.add(cust.getHomeRegionStr());
+			ret.add(cust.getHouseholdProvinceStr());
+			ret.add(cust.getHouseholdCityStr());
+			ret.add(cust.getHouseholdRegionStr());
+			
+		}
+		
+		return ret;
+	}
+	
+	//init userList
+	private List<Customer> initCustList(CustomerCond cond){
+		
+		List<Integer> projectIds = PermissionUtils.getUserProjectIdList(EnumPrivCode.REPORT_PRECUSTOMER_DOWNLOAD);
+
+		if(projectIds!=null && projectIds.size()>0){
+			//表示为有多个项目的人员，增加能跟进不能修改的客户的判断(管理员是可以忽略的)
+			cond.setProjectIds(projectIds);
+
+		}else{
+
+			//表示为普通录入人员,但要增加能跟进不能修改的客户的判断
+			int sessionUserId = SessionUser.getUserId();
+			cond.setUserId(sessionUserId+"");
+
+			List<Integer> followUserIds = CustomerOnlyFollowUtils.getFollowCustomerIds();
+			cond.setFollowIds(followUserIds);
+
+		}
+
+		//增加created_id
+		if(cond.getProjectId() <= 0){
+			cond.setCreatedId(SessionUser.getUserId());
+		}else{
+			cond.setCreatedId(0);
+		}
+
+		String action = CustomerUtils.getActionNameFromRequest(request);
+		Pager page = new Pager(ActionContext.getContext(),pageSize,action);
+		
+		page.setCond(cond);
+		List<Customer> retList;
+		ProvinceCityRegionUtils.setHomeAndWorkDetailToIdByName(cond);
+		if("1".equals(cond.getIsDeleted())){
+			retList = this.iCustomerServices.findCustomerSearchDeleted(cond);
+		}else{
+			retList = this.iCustomerServices.findCustomerSearch(cond);
+		}
+		
+		
+		this.setShowPage(page.toHtmlString());
+		
+		//批量初始化号码归属地
+		//temp = PhoneUtils.postPhone(temp);
+		
+		return retList;
+	}
+	
+	private List<ContractCustomer> initContCustList(ContractCustomerCond cond){
+		
+		List<Integer> projectIds = PermissionUtils.getUserProjectIdList(EnumPrivCode.SALEUNIT_CENTER_RETRIEVE);
+		if(projectIds!=null && projectIds.size()>0){
+			//表示为管理员
+			cond.setProjectIds(projectIds);
+			
+			//增加能跟进不能修改的客户的判断(管理员是可以忽略的)
+			
+		}else{
+			
+			//表示为普通录入人员,但要增加能跟进不能修改的客户的判断
+			int sessionUserId = SessionUser.getUserId();
+			cond.setUserId(sessionUserId+"");
+			
+		}
+		
+		String action = CustomerUtils.getActionNameFromRequest(request);
+		Pager page = new Pager(ActionContext.getContext(),pageSize,action);
+		
+		page.setCond(cond);
+		List<ContractCustomer> retList;
+		ProvinceCityRegionUtils.setHomeAndWorkDetailToIdByNameContractCustomer(cond);
+		if(!"".equals(cond.getConfirmType())){
+			retList = this.contractCustomerServices.findContractCustomerSearch(cond);//成交、合同、临订
+		}else{
+			retList = this.contractCustomerServices.findContractConfirmCustomer(cond);//成交+合同
+		}
+		
+		
+		//removeConfirmWithContract(retList,cond);
+		
+		this.setShowPage(page.toHtmlString());
+		
+		//批量初始化号码归属地
+		//temp = PhoneUtils.postPhone(temp);
+		
+		return retList;
+	}
+	
+	@SuppressWarnings("unused")
+	private List<ContractCustomer> removeConfirmWithContract(List<ContractCustomer> retList , ContractCustomerCond cond){
+		//合同+成交条件下，筛除同时合同和成交同时存在的情况下的成交
+		List<Integer> unitIdList = new LinkedList<Integer>();
+		if(cond.getConfirmType()==null||cond.getConfirmType().equals("")){
+			for(ContractCustomer c : retList){
+				if(c.getConfirmType().equals("2")){
+					Contract contract=contractServices.findContractById(c.getMainId());
+					int unitId=0;
+					if(contract!=null){
+						unitId=contract.getUnitId();
+					}
+					unitIdList.add(unitId);
+				}
+			}
+			Iterator<ContractCustomer> it;
+			for( it= retList.iterator();it.hasNext();){
+				ContractCustomer c=it.next();
+				if(c.getConfirmType().equals("1")){
+					if(unitIdList.contains(confirmServices.findConfirmById(c.getMainId()).getUnitId())){
+						it.remove();
+					}
+				}
+			}
+			
+		}
+		return retList;
+	}
+	
+	//private init sel
+	private void initSel(){
+		selRequestArea = DescUtils.getInitSelForGuangZhou(selRequestArea, EnumCodeTypeName.REQUEST_AREA, true);
+		selHouseType = DescUtils.getInitSelForGuangZhou(selHouseType, EnumCodeTypeName.HOUSE_TYPE, true);	
+		selPriceAmount = DescUtils.getInitSelForGuangZhou(selPriceAmount, EnumCodeTypeName.PRICE_AMOUNT, true);
+		selCustomerSource = DescUtils.getInitSelForGuangZhou(selCustomerSource, EnumCodeTypeName.CUSTOMER_SOURCE, true);
+		selRating = DescUtils.getInitSelForGuangZhou(selRating, EnumCodeTypeName.RATING, true);
+		
+		//是否有查看电话的权限
+		boolean isTel = false;
+		if(PermissionUtils.hasPermission(EnumPrivCode.PRECUSTOMER_RETRIEVE_TEL, EnumDevFlag.GUANGZHOU)){
+			
+			isTel = true;
+		}
+		request.setAttribute("isTel", isTel);
+		
+	}
+	
+	/***********************************************************************************************************************************************/
+	
+	private CustomerFollowCond followCond;
+	private CustomerCond searchCond;
+	private List<Customer> cusList;
+	private List<ContractCustomer> concusList;
+	
+	
+	private ContractCustomerCond ccSearchCond;
+	private Question question;
+	
+	
+
+	private LinkedHashMap<?, ?> selRequestArea; //需求面积
+	private LinkedHashMap<?, ?> selHouseType; //产品类型
+	private LinkedHashMap<?, ?> selPriceAmount; 	//意向总价
+	private LinkedHashMap<?, ?> selCustomerSource; //客户来源
+	private LinkedHashMap<String, String> selProject; //项目
+	private LinkedHashMap<String, String> confirmTypeList; //成交类型列表
+	private LinkedHashMap<String, String> payTypeList;	//付款方式列表
+	private LinkedHashMap<String, String> householdProvinceList; //居住区域列表
+	private LinkedHashMap<String, String> homeProvinceList;	//户籍区域列表
+	
+	private LinkedHashMap<String, String> selRating; //客户评级
+	private LinkedHashMap<String, String> questionList; //售前问卷列表
+	
+	private String isManager;//使用哪一套查询
+//	private String IS_USER = "user";//
+	private String IS_MANAGER = "manager";//
+	
+	
+	
+
+	public Question getQuestion() {
+		return question;
+	}
+
+	public void setQuestion(Question question) {
+		this.question = question;
+	}
+
+	public CustomerFollowCond getFollowCond() {
+		return followCond;
+	}
+
+	public void setFollowCond(CustomerFollowCond followCond) {
+		this.followCond = followCond;
+	}
+	
+	public void setSelRating(LinkedHashMap<String, String> selRating) {
+		this.selRating = selRating;
+	}
+	
+	public LinkedHashMap<String, String> getSelRating() {
+		return selRating;
+	}
+	
+	public List<Customer> getCusList() {
+		return cusList;
+	}
+	public CustomerCond getSearchCond() {
+		return searchCond;
+	}
+	public void setSearchCond(CustomerCond searchCond) {
+		this.searchCond = searchCond;
+	}
+	
+	public ContractCustomerCond getCcSearchCond() {
+		return ccSearchCond;
+	}
+
+	public void setCcSearchCond(ContractCustomerCond ccSearchCond) {
+		this.ccSearchCond = ccSearchCond;
+	}
+	
+	public String getIsManager() {
+		return isManager;
+	}
+	
+	public LinkedHashMap<?, ?> getSelRequestArea() {
+		return selRequestArea;
+	}
+	public LinkedHashMap<?, ?> getSelHouseType() {
+		return selHouseType;
+	}
+	public LinkedHashMap<?, ?> getSelPriceAmount() {
+		return selPriceAmount;
+	}
+	public LinkedHashMap<?, ?> getSelCustomerSource() {
+		return selCustomerSource;
+	}
+	
+	public void setSelProject(LinkedHashMap<String, String> selProject) {
+		this.selProject = selProject;
+	}
+	
+	public LinkedHashMap<String, String> getSelProject() {
+		return selProject;
+	}
+
+	public List<ContractCustomer> getConcusList() {
+		return concusList;
+	}
+
+	public void setConcusList(List<ContractCustomer> concusList) {
+		this.concusList = concusList;
+	}
+
+	public LinkedHashMap<String, String> getConfirmTypeList() {
+		return confirmTypeList;
+	}
+
+	public void setConfirmTypeList(LinkedHashMap<String, String> confirmTypeList) {
+		this.confirmTypeList = confirmTypeList;
+	}
+
+	public LinkedHashMap<String, String> getPayTypeList() {
+		return payTypeList;
+	}
+
+	public void setPayTypeList(LinkedHashMap<String, String> payTypeList) {
+		this.payTypeList = payTypeList;
+	}
+
+	public LinkedHashMap<String, String> getHouseholdProvinceList() {
+		return householdProvinceList;
+	}
+
+	public void setHouseholdProvinceList(
+			LinkedHashMap<String, String> householdProvinceList) {
+		this.householdProvinceList = householdProvinceList;
+	}
+
+	public LinkedHashMap<String, String> getHomeProvinceList() {
+		return homeProvinceList;
+	}
+
+	public void setHomeProvinceList(LinkedHashMap<String, String> homeProvinceList) {
+		this.homeProvinceList = homeProvinceList;
+	}
+
+	public LinkedHashMap<String, String> getQuestionList() {
+		return questionList;
+	}
+
+	public void setQuestionList(LinkedHashMap<String, String> questionList) {
+		this.questionList = questionList;
+	}
+
+
+	
+	
+	
+	
+	
+	
+}

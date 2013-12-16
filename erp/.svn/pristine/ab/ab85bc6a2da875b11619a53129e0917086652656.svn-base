@@ -1,0 +1,1233 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.ihk.property.data.IPropertyUnitMapper">
+
+	<resultMap type="PropertyUnit" id="propertyUnitResultMap">
+		<id property="id" column="id" />
+		<result property="buildId" column="build_id" />
+		<result property="floorNum" column="floor_num" />
+		<result property="roomNo" column="room_no" />
+		<result property="unitNo" column="unit_no" />
+		<result property="aliasNo" column="alias_no" />
+		<result property="houseType" column="house_type" />
+		<result property="roomNum" column="room_num" />
+		<result property="hallNum" column="hall_num" />
+		<result property="toiletNum" column="toilet_num" />
+		<result property="roomType" column="room_type" />
+		<result property="saleState" column="sale_state" />
+		<result property="saleType" column="sale_type" />
+		<result property="buildArea" column="build_area" />
+		<result property="insideArea" column="inside_area" />
+		<result property="buildPrice" column="build_price" />
+		<result property="insidePrice" column="inside_price" />
+		<result property="sumPrice" column="sum_price" />
+		<result property="priceWay" column="price_way" />
+		<result property="areaState" column="area_state" />
+		<result property="scenery" column="scenery" />
+		<result property="orientation" column="orientation" />
+		<result property="preBuildArea" column="pre_build_area" />
+		<result property="preInsideArea" column="pre_inside_area" />
+		<result property="realBuildArea" column="real_build_area" />
+		<result property="realInsideArea" column="real_inside_area" />
+		<result property="productType" column="product_type" />
+		<result property="renovateMoney" column="renovate_money" />
+		<result property="isSample" column="is_sample" />
+		<result property="isSlave" column="is_slave" />
+		<result property="mortgageState" column="mortgage_state" />
+		<result property="houseDesc" column="house_desc" />
+		<result property="renovateDesc" column="renovate_desc" />
+		<result property="renovatePrice" column="renovate_price" />
+		<result property="remark" column="remark" />
+		<result property="chip1" column="chip_1" />
+		<result property="chip2" column="chip_2" />
+		<result property="chip3" column="chip_3" />
+		<result property="chipA" column="chip_a" />
+		<result property="chipB" column="chip_b" />
+		<result property="saleTime" column="sale_time" />
+		<result property="appointPublicArea" column="appoint_public_area" />
+		<result property="realPublicArea" column="real_public_area" />
+		<result property="publicArea" column="public_area" />
+		<result property="companyProjectId" column="company_project_id" />
+		<result property="baseprice" column="baseprice" />
+		<result property="totalBaseprice" column="total_baseprice" />
+		<result property="isDeleted" column="is_deleted" />
+		<result property="createdId" column="created_id" />
+		<result property="createdTime" column="created_time" />
+		<result property="modId" column="mod_id" />
+		<result property="modTime" column="mod_time" />
+		<result property="addArea" column="add_area" />
+		<result property="floorShowName" column="floor_show_name" />
+		<result property="confirm_customer_id" column="confirm_customer_id" />
+		<result property="confirmDate" column="confirm_date" />
+		<result property="unitId" column="unit_id" />
+		<result property="payName" column="pay_name" />
+		<result property="checkfeeDate" column="checkfee_date" />
+		<result property="checkfeeType" column="checkfee_type" />
+	</resultMap>
+
+	<insert id="addPropertyUnit" parameterType="PropertyUnit">
+		<selectKey resultType="java.lang.Integer" keyProperty="id"
+			order="AFTER">
+			SELECT @@IDENTITY
+        </selectKey>
+		insert into property_unit(
+		build_id,
+		floor_num,
+		room_no,
+		unit_no,
+		alias_no,
+		house_type,
+		room_num,
+		hall_num,
+		toilet_num,
+		room_type,
+		sale_state,
+		sale_type,
+		build_area,
+		inside_area,
+		build_price,
+		inside_price,
+		sum_price,
+		price_way,
+		area_state,
+		scenery,
+		orientation,
+		pre_build_area,
+		pre_inside_area,
+		real_build_area,
+		real_inside_area,
+		product_type,
+		renovate_money,
+		is_sample,
+		is_slave,
+		mortgage_state,
+		house_desc,
+		renovate_desc,
+		renovate_price,
+		remark,
+		chip_1,
+		chip_2,
+		chip_3,
+		chip_a,
+		chip_b,
+		sale_time,
+		appoint_public_area,
+		real_public_area,
+		public_area,
+		company_project_id,
+		baseprice,
+		total_baseprice,
+		is_deleted,
+		created_id,
+		created_time,
+		mod_id,
+		mod_time,
+		add_area,
+		floor_show_name,
+		checkfee_date,
+		checkfee_type
+		)
+			VALUES(
+		#{buildId},
+		#{floorNum},
+		#{roomNo},
+		#{unitNo},
+		#{aliasNo},
+		#{houseType},
+		#{roomNum},
+		#{hallNum},
+		#{toiletNum},
+		#{roomType},
+		#{saleState},
+		#{saleType},
+		#{buildArea},
+		#{insideArea},
+		#{buildPrice},
+		#{insidePrice},
+		#{sumPrice},
+		#{priceWay},
+		#{areaState},
+		#{scenery},
+		#{orientation},
+		#{preBuildArea},
+		#{preInsideArea},
+		#{realBuildArea},
+		#{realInsideArea},
+		#{productType},
+		#{renovateMoney},
+		#{isSample},
+		#{isSlave},
+		#{mortgageState},
+		#{houseDesc},
+		#{renovateDesc},
+		#{renovatePrice},
+		#{remark},
+		#{chip1},
+		#{chip2},
+		#{chip3},
+		#{chipA},
+		#{chipB},
+		#{saleTime},
+		#{appointPublicArea},
+		#{realPublicArea},
+		#{publicArea},
+		#{companyProjectId},
+		#{baseprice},
+		#{totalBaseprice},
+		#{isDeleted},
+		#{createdId},
+		#{createdTime},
+		#{modId},
+		#{modTime},
+		#{addArea},
+		#{floorShowName},
+		#{checkfeeDate},
+		#{checkfeeType}
+		)
+
+	</insert>
+
+	<delete id="deletePropertyUnit" parameterType="com.ihk.utils.base.PojoDeleteCond">
+		update property_unit set is_deleted='1', mod_id=#{modId},
+		mod_time=#{modTime} where id=#{id};
+	</delete>
+
+	<update id="updatePropertyUnit" parameterType="int">
+		update property_unit set 
+		build_id=#{buildId},
+		floor_num=#{floorNum},
+		room_no=#{roomNo},
+		unit_no=#{unitNo},
+		alias_no=#{aliasNo},
+		house_type=#{houseType},
+		room_num=#{roomNum},
+		hall_num=#{hallNum},
+		toilet_num=#{toiletNum},
+		room_type=#{roomType},
+		sale_state=#{saleState},
+		sale_type=#{saleType},
+		build_area=#{buildArea},
+		inside_area=#{insideArea},
+		build_price=#{buildPrice},
+		inside_price=#{insidePrice},
+		sum_price=#{sumPrice},
+		price_way=#{priceWay},
+		area_state=#{areaState},
+		scenery=#{scenery},
+		orientation=#{orientation},
+		pre_build_area=#{preBuildArea},
+		pre_inside_area=#{preInsideArea},
+		real_build_area=#{realBuildArea},
+		real_inside_area=#{realInsideArea},
+		product_type=#{productType},
+		renovate_money=#{renovateMoney},
+		is_sample=#{isSample},
+		is_slave=#{isSlave},
+		mortgage_state=#{mortgageState},
+		house_desc=#{houseDesc},
+		renovate_desc=#{renovateDesc},
+		renovate_price=#{renovatePrice},
+		remark=#{remark},
+		chip_1=#{chip1},
+		chip_2=#{chip2},
+		chip_3=#{chip3},
+		chip_a=#{chipA},
+		chip_b=#{chipB},
+		sale_time=#{saleTime},
+		appoint_public_area=#{appointPublicArea},
+		real_public_area=#{realPublicArea},
+		public_area=#{publicArea},
+		company_project_id=#{companyProjectId},
+		baseprice=#{baseprice},
+		total_baseprice=#{totalBaseprice},
+		mod_id=#{modId},
+		mod_time=#{modTime},
+		add_area=#{addArea},
+		floor_show_name=#{floorShowName},
+		checkfee_date=#{checkfeeDate},
+		checkfee_type=#{checkfeeType}
+	 	where id=#{id}
+	</update>
+
+	<delete id="deletePropertyUnitByBuildId" parameterType="int">
+		update property_unit set is_deleted='1' where build_id = #{id};
+	</delete>
+
+	<resultMap type="java.util.Map" id="reportRCFXMap">
+		<result property="roomNo" column="room_no" />
+		<result property="floorNum" column="floor_num" />
+		<result property="chip1Sum" column="chip_1_sum" />
+		<result property="chip2Sum" column="chip_2_sum" />
+		<result property="chip3Sum" column="chip_3_sum" />
+	</resultMap>
+
+	<update id="updateByIds" parameterType="java.util.Map">
+		update property_unit set
+		<if test="unit.houseType != null and unit.houseType != '' ">
+			house_type=#{unit.houseType},
+         </if>
+		<if
+			test="unit.roomNum != null and unit.roomNum != '' and unit.roomNum != '0'">
+			room_num=#{unit.roomNum},
+            </if>
+		<if test="unit.hallNum != null and  unit.hallNum !=0">
+			hall_num=#{unit.hallNum},
+            </if>
+		<if test="unit.toiletNum != null or unit.toiletNum != 0">
+			toilet_num=#{unit.toiletNum},
+            </if>
+		<if test="unit.roomType != null and unit.roomType != ''">
+			room_type=#{unit.roomType},
+            </if>
+		<if test="unit.saleState != null and unit.saleState != ''">
+			sale_state=#{unit.saleState},
+            </if>
+		<if test="unit.saleType != null and unit.saleType != ''">
+			sale_type=#{unit.saleType},
+            </if>
+		<if test="unit.buildArea != 0 and unit.buildArea !=null">
+			build_area=#{unit.buildArea},
+            </if>
+		<if test="unit.insideArea != 0 and unit.insideArea != null">
+			inside_area=#{unit.insideArea},
+            </if>
+		<if test="unit.buildPrice != 0 and unit.buildPrice != null">
+			build_price=#{unit.buildPrice},
+            </if>
+		<if test="unit.insidePrice != 0 and unit.insidePrice != null">
+			inside_price=#{unit.insidePrice},
+            </if>
+		<if test="unit.sumPrice != 0 and unit.sumPrice != null">
+			sum_price=#{unit.sumPrice},
+            </if>
+		<if test="unit.priceWay != null and unit.priceWay != '' ">
+			price_way=#{unit.priceWay},
+            </if>
+		<if test="unit.areaState != null and unit.areaState != '' ">
+			area_state=#{unit.areaState},
+            </if>
+		<if test="unit.scenery != null and unit.scenery != '' ">
+			scenery=#{unit.scenery},
+            </if>
+		<if test="unit.orientation != null and unit.orientation != ''">
+			orientation=#{unit.orientation},
+            </if>
+		<if test="unit.preBuildArea != 0 and unit.preBuildArea != null">
+			pre_build_area=#{unit.preBuildArea},
+            </if>
+		<if test="unit.preInsideArea != 0 and unit.preInsideArea != null">
+			pre_inside_area=#{unit.preInsideArea},
+            </if>
+		<if test="unit.realBuildArea != 0 and unit.realBuildArea != null ">
+			real_build_area=#{unit.realBuildArea},
+            </if>
+		<if test="unit.realInsideArea != 0 and unit.realInsideArea != null">
+			real_inside_area=#{unit.realInsideArea},
+            </if>
+		<if test="unit.productType != null and unit.productType != ''">
+			product_type=#{unit.productType},
+            </if>
+		<if test="unit.renovateMoney != 0 and unit.renovateMoney != null">
+			renovate_money=#{unit.renovateMoney},
+            </if>
+		<if test="unit.isSample != null and unit.isSample != ''">
+			is_sample=#{unit.isSample},
+            </if>
+		<if test="unit.isSlave != null and unit.isSlave != ''">
+			is_slave=#{unit.isSlave},
+            </if>
+		<if test="unit.mortgageState != null and unit.mortgageState != ''">
+			mortgage_state=#{unit.mortgageState},
+            </if>
+		<if test="unit.houseDesc != null and unit.houseDesc != ''">
+			house_desc=#{unit.houseDesc},
+            </if>
+		<if test="unit.renovateDesc != null and unit.renovateDesc != ''">
+			renovate_desc=#{unit.renovateDesc},
+            </if>
+		<if test="unit.renovatePrice != 0 and unit.renovatePrice != null">
+			renovate_price=#{unit.renovatePrice},
+            </if>
+
+
+
+		<if test="unit.appointPublicArea != null and unit.appointPublicArea != 0">
+			appoint_public_area=#{unit.appointPublicArea}, </if>
+		<if test="unit.publicArea != null and unit.publicArea != 0">
+			public_area=#{unit.publicArea}, </if>
+		<if test="unit.realPublicArea != null and unit.realPublicArea != 0">
+			real_public_area=#{unit.realPublicArea}, </if>
+		<if test="unit.modId != null and unit.modId != ''">
+			mod_id=#{unit.modId}, </if>
+
+		<if test="unit.modTime != null and unit.modTime != ''">
+			mod_time=#{unit.modTime}</if>
+		<if test="ids != null and ids.size() > 0">
+			where id in
+			<foreach collection="ids" item="updateId" open="(" separator=","
+				close=")">
+				#{updateId}  
+            </foreach>
+		</if>
+	</update>
+	<select id="findPropertyUnitById" resultMap="propertyUnitResultMap">
+		select * from property_unit where id=#{id}
+	</select>
+
+	<sql id="findWhereCond">
+		<where>
+			<if test="ids != null and ids.size() > 0">
+				and id in
+				<foreach collection="ids" item="uId" open="(" separator="," close=")">
+					#{uId}  
+	            </foreach>
+			</if>
+
+			<if test="buildId != null and buildId != ''">
+				and build_id = #{buildId}
+            </if>
+			<if test="unitNo != null and unitNo != ''">
+				and unit_no like concat(concat('%', #{unitNo,jdbcType=VARCHAR}), '%')
+
+            </if>
+
+			<if test="buildIds != null and buildIds.size() > 0">
+				and build_id in
+				<foreach collection="buildIds" item="bId" open="(" separator="," close=")">
+					#{bId}  
+	            </foreach>
+			</if>
+
+			<if test="buildName != null and buildName != ''">
+				and build_id in
+				(select id from property_build where
+				build_name like concat(concat('%', #{buildName, jdbcType=VARCHAR}),'%') and is_deleted = '0')
+
+            </if>
+			<if test="floorNum != null and floorNum != '' and floorNum != '0'">
+				and floor_num = #{floorNum}
+            </if>
+
+			<if test="date1 != null and date1 != ''">
+				and created_time &gt;= #{date1}
+			</if>
+			<if test="date2 != null and date2 != ''">
+				and created_time &lt; date_add(#{date2},interval 1 day)
+			</if>
+			<if test="projectId != 0">
+				and company_project_id = #{projectId}
+            </if>
+			<if test="companyProjectIds != null and companyProjectIds.size() > 0">
+				and company_project_id in
+				<foreach collection="companyProjectIds" item="pId" open="(" separator="," close=")">
+					#{pId}  
+	            </foreach>
+			</if>
+			<if test="saleState != null and saleState != '' ">
+				and sale_state = #{saleState}
+            </if>
+			<if test="unitNo != null and unitNo != '' ">
+				and unit_no like concat(concat('%', #{unitNo, jdbcType=VARCHAR}), '%')
+			</if>
+			<if test="companyProjectId != 0 ">
+				and company_project_id = #{companyProjectId}
+            </if>
+
+			and is_deleted = '0'
+			<if test="orderByFiled =='' ">
+				order by floor_num ,room_no 
+            </if>
+			<if test="orderByFiled != '' and orderByFiled=='chip1' ">
+				order by chip_1 desc
+            </if>
+
+
+		</where>
+	</sql>
+
+    <sql id="searchWhereCond">
+        <where>
+            1=1
+            <if test="buildId != null and buildId != ''">
+                and a.build_id = #{buildId}
+            </if>
+            <if test="unitNo != null and unitNo != ''">
+                and unit_no like concat(concat('%', #{unitNo,jdbcType=VARCHAR}), '%')
+            </if>
+
+            <if test="buildIds != null and buildIds.size() > 0">
+                and a.build_id in
+                <foreach collection="buildIds" item="bId" open="("  separator="," close=")">
+                    #{bId}
+                </foreach>
+            </if>
+
+            <if test="confirmDate != null and confirmDate != ''">
+                and confirm_date = #{confirmDate}
+            </if>
+
+            <if test="sales != null and sales != ''">
+                and confirm_sales_id like concat(concat('%,', #{sales,jdbcType=VARCHAR}), ',%')
+            </if>
+
+            <if test="projectId != 0">
+                and company_project_id = #{projectId}
+            </if>
+            <if test="companyProjectIds != null and companyProjectIds.size() > 0">
+                and company_project_id in
+                <foreach collection="companyProjectIds" item="pId" open="(" separator="," close=")">
+                    #{pId}
+                </foreach>
+            </if>
+            <if test="saleState != null and saleState != '' ">
+                and sale_state = #{saleState}
+            </if>
+
+            <if test="companyProjectId != 0 ">
+                and company_project_id = #{companyProjectId}
+            </if>
+
+            <if test="payName != null and payName != '' ">
+                and b.pay_name like concat(concat('%', #{payName,jdbcType=VARCHAR}), '%')
+            </if>
+
+            <if test="orderByFiled =='' ">
+                order by floor_num ,room_no
+            </if>
+            <if test="orderByFiled != '' and orderByFiled=='chip1' ">
+                order by chip_1 desc
+            </if>
+        </where>
+    </sql>
+
+	<select id="findPropertyUnitCount" resultType="int" 
+		parameterType="com.ihk.property.data.pojo.PropertyUnitCond">
+		SELECT count(0) from property_unit
+		<include refid="findWhereCond" />
+	</select>
+
+	<select id="findPropertyUnit" resultMap="propertyUnitResultMap"
+		parameterType="com.ihk.property.data.pojo.PropertyUnitCond">
+		SELECT * from property_unit
+		<include refid="findWhereCond" />
+		order by floor_num+0 desc, id desc
+		<if test="topNum > 0">
+			limit #{topNum};
+		</if>
+	</select>
+
+	<select id="findPropertyUnitPage" resultMap="propertyUnitResultMap"
+		parameterType="com.ihk.property.data.pojo.PropertyUnitCond">
+		SELECT * from property_unit
+		<include refid="findWhereCond" />
+
+		<if test="startLine >= 0">
+			<if test="pageSize > 0">
+				limit #{startLine},#{pageSize};
+		</if>
+		</if>
+	</select>
+
+    <!-- search 销售中心-列表-搜索  -->
+    <select id="searchPropertyUnitCount" resultType="int"
+            parameterType="com.ihk.property.data.pojo.PropertyUnitCond">
+        SELECT count(0) from v_property_unit a LEFT JOIN  pay_way b ON a.pay_way_id=b.id
+        <include refid="searchWhereCond" />
+    </select>
+    <select id="searchPropertyUnitPage" resultMap="propertyUnitResultMap"
+            parameterType="com.ihk.property.data.pojo.PropertyUnitCond">
+        SELECT * from v_property_unit a LEFT JOIN  pay_way b ON a.pay_way_id=b.id
+
+        <include refid="searchWhereCond" />
+
+        <if test="startLine >= 0">
+            <if test="pageSize > 0">
+                limit #{startLine},#{pageSize};
+            </if>
+        </if>
+    </select>
+
+	<select id="findUnitNameByIds" resultMap="propertyUnitResultMap"
+		resultType="com.ihk.property.data.pojo.PropertyUnit">
+		SELECT * from property_unit
+		<if test="ids != null and ids.size() > 0">
+			where id in
+			<foreach collection="ids" item="updateId" open="(" separator=","
+				close=")">
+				#{updateId}  
+            </foreach>
+		</if>
+
+	</select>
+
+	<select id="findUnitsByBuildId" resultMap="propertyUnitResultMap">
+		select * from
+		property_unit where build_id = #{buildId} and is_deleted = '0' order
+		by floor_num+0 desc, id desc
+	</select>
+	<select id="findUnitIdByLikeUnitNo" resultType="int">
+		select id from
+		property_unit where unit_no like concat(concat('%', #{unitNo,
+		jdbcType=VARCHAR}), '%') and is_deleted = '0' limit 1
+	</select>
+
+	<select id="findAddonPropertyUnitByMainId" resultMap="propertyUnitResultMap">
+		select pu.*
+		from property_unit pu inner join unit_bind nb on pu.id =
+		nb.slave_unit_id
+		and nb.main_unit_id = #{mainId} and nb.is_deleted =
+		'0'
+	</select>
+
+	<update id="updatePropertyUnitSaleState" parameterType="java.util.Map">
+		update
+		property_unit set sale_state = #{saleState}, mod_id = #{modId},
+		mod_time = #{modTime} where id = #{id}
+	</update>
+
+	<select id="findStrListBuyBuildIdForRepeat" resultType="java.util.Map">
+		select
+		CONCAT(floor_num,'-',room_no) as li1 from property_unit where build_id
+		= #(buildId) and is_deleted ='0'
+	</select>
+
+	<select id="findUnitListByGroupId" resultMap="propertyUnitResultMap">
+
+		select a.* from property_group_detail as b , property_unit as a where a.id =
+		b.unit_id and a.is_deleted = '0'
+		and b.is_deleted = '0' and b.group_id= #{groupId}
+	</select>
+
+	<select id="findMaxFloorByBuildIdList" resultType="int">
+		select max(floor_num+0) from property_unit
+		<where>
+			<if test="buildIds != null and buildIds.size() > 0">
+				build_id in
+				<foreach collection="buildIds" item="bid" open="("
+					separator="," close=")">
+					#{bid}  
+            </foreach>
+			</if>
+			and is_deleted = '0'
+		</where>
+	</select>
+
+	<select id="findMinFloorByBuildIdList" resultType="int">
+		select min(floor_num+0) from property_unit
+		<where>
+			<if test="buildIds != null and buildIds.size() > 0">
+				build_id in
+				<foreach collection="buildIds" item="bid" open="("
+					separator="," close=")">
+					#{bid}  
+            </foreach>
+			</if>
+			and is_deleted = '0'
+		</where>
+	</select>
+
+	<select id="findUnitOneByBuildId" resultMap="propertyUnitResultMap">
+		select * from
+		property_unit unit where build_id = #{buildId} order by id asc limit 1
+	</select>
+
+	<update id="updatePropertyUnitChipByUnitIdAndChipTypeWithCountNo"
+		parameterType="java.util.Map">
+		update property_unit set
+		<if test="chipType == 1">
+			chip_1 = #{chipCountNo}
+		</if>
+
+		<if test="chipType == 2">
+			chip_2 = #{chipCountNo}
+		</if>
+
+		<if test="chipType == 3">
+			chip_3 = #{chipCountNo}
+		</if>
+
+		<where>
+			id = #{unitId}
+		</where>
+	</update>
+
+	<select id="reportForRCFX" resultMap="reportRCFXMap">
+		select
+		room_no,
+		floor_num,
+		sum(ifnull(chip_1,0)) as chip_1_sum,
+		sum(ifnull(chip_2,0)) as chip_2_sum ,
+		sum(ifnull(chip_3,0)) as chip_3_sum
+		from property_unit
+		<where>
+			<if test="projectId != 0">
+				and company_project_id = #{projectId}
+            </if>
+			<if test="date1 != null and date1 != ''">
+				and created_time &gt;= #{date1}
+			</if>
+			<if test="date2 != null and date2 != ''">
+				and created_time &lt; date_add(#{date2},interval 1 day)
+			</if>
+			and is_deleted = '0'
+		</where>
+		group by room_no ,floor_num
+
+	</select>
+
+	<!-- 成交单元管理,明细中使用 -->
+
+	<sql id="findPropertyUnitForAjaxComm">
+		<where>
+
+			<if test="buildIds != null and buildIds.size() > 0">
+				build_id in
+				<foreach collection="buildIds" item="bId" open="("
+					separator="," close=")">
+					#{bId}  
+	            </foreach>
+			</if>
+
+			<if test="saleState != null and saleState != ''">
+				and sale_state = #{saleState}
+			</if>
+
+			and is_deleted = '0'
+
+		</where>
+	</sql>
+
+	<select id="findPropertyUnitForAjax" resultMap="propertyUnitResultMap"
+		parameterType="com.ihk.property.data.pojo.PropertyUnitCond">
+
+		select * from property_unit
+		<include refid="findPropertyUnitForAjaxComm" />
+
+		<if test="startLine >= 0">
+			<if test="pageSize > 0">
+				limit ${startLine},${pageSize};
+			</if>
+		</if>
+
+	</select>
+
+	<select id="findPropertyUnitCountForAjax" resultType="int"
+		parameterType="com.ihk.property.data.pojo.PropertyUnitCond">
+
+		select count(1) from property_unit
+		<include refid="findPropertyUnitForAjaxComm" />
+
+	</select>
+
+
+	<sql id="reportConfirm">
+		<where>
+			<if test="companyProjectId > 0">
+				and p.company_project_id = #{companyProjectId}
+		</if>
+			<if test="companyProjectIds !=null">
+				and p.company_project_id in
+				<foreach collection="companyProjectIds" item="ids" open="("
+					separator="," close=")">
+					#{ids}  
+	            </foreach>
+			</if>
+		
+			<if test="date1 != null and date1 != '' ">
+				and c.work_date &gt; #{date1}
+		</if>
+			<if test="date2 != null and date2 != '' ">
+				and c.work_date &lt; date_add(#{date2},interval 1 day)
+		</if>
+		
+		
+		<if test="date11 != null and date11 != '' ">
+				and c.created_time &gt; #{date11}
+		</if>
+			<if test="date22 != null and date22 != '' ">
+				and c.created_time &lt; date_add(#{date22},interval 1 day)
+		</if>
+		
+			and c.unit_id = p.id
+			and p.is_deleted = '0'
+			and c.is_deleted = '0'
+		</where>
+	</sql>
+	<!-- 套数 confirm -->
+	<select id="findCountConfirm" resultType="int"
+		parameterType="com.ihk.property.data.pojo.PropertyUnitReportCond">
+		select count(1) from property_unit p , confirm c
+		<include refid="reportConfirm" />
+	</select>
+	<!-- 建筑面积 confirm -->
+	<select id="findSumBuildAreaConfirm" resultType="java.math.BigDecimal"
+		parameterType="com.ihk.property.data.pojo.PropertyUnitReportCond">
+		select sum(p.build_area) from property_unit p,confirm c
+		<include refid="reportConfirm" />
+	</select>
+	<!-- 套内面积 confirm -->
+	<select id="findSumInsideAreaConfirm" resultType="java.math.BigDecimal"
+		parameterType="com.ihk.property.data.pojo.PropertyUnitReportCond">
+		select sum(p.inside_area) from property_unit p,confirm c
+		<include refid="reportConfirm" />
+	</select>
+	<!-- 成交总价 confirm -->
+	<select id="findSumPriceConfirm" resultType="java.math.BigDecimal"
+		parameterType="com.ihk.property.data.pojo.PropertyUnitReportCond">
+		select sum(c.sum_money) from property_unit p,confirm c
+		<include refid="reportConfirm" />
+	</select>
+
+
+	<sql id="reportContract">
+		<where>
+			<if test="companyProjectId > 0">
+				and p.company_project_id = #{companyProjectId}
+		</if>
+			<if test="companyProjectIds !=null">
+				and p.company_project_id in
+				<foreach collection="companyProjectIds" item="ids" open="("
+					separator="," close=")">
+					#{ids}  
+	            </foreach>
+			</if>
+			<if test="date3 != null and date3 != '' ">
+				and c.work_date &gt; #{date3}
+		</if>
+			<if test="date4 != null and date4 != '' ">
+				and c.work_date &lt; date_add(#{date4},interval 1 day) 
+		</if>
+		
+		<if test="date33 != null and date33 != '' ">
+				and c.created_time &gt; #{date33}
+		</if>
+			<if test="date44 != null and date44 != '' ">
+				and c.created_time &lt; date_add(#{date44},interval 1 day) 
+		</if>
+			and c.unit_id = p.id
+			and p.is_deleted = '0'
+			and c.is_deleted = '0'
+		</where>
+	</sql>
+	<!-- 套数 contract -->
+	<select id="findCountContract" resultType="int"
+		parameterType="com.ihk.property.data.pojo.PropertyUnitReportCond">
+		select count(1) from property_unit p , contract c
+		<include refid="reportContract" />
+	</select>
+	<!-- 建筑面积 contract -->
+	<select id="findSumBuildAreaContract" resultType="java.math.BigDecimal"
+		parameterType="com.ihk.property.data.pojo.PropertyUnitReportCond">
+		select sum(p.build_area) from property_unit p,contract c
+		<include refid="reportContract" />
+	</select>
+	<!-- 套内面积 contract -->
+	<select id="findSumInsideAreaContract" resultType="java.math.BigDecimal"
+		parameterType="com.ihk.property.data.pojo.PropertyUnitReportCond">
+		select sum(p.inside_area) from property_unit p,contract c
+		<include refid="reportContract" />
+	</select>
+	<!-- 成交总价 contract -->
+	<select id="findSumPriceContract" resultType="java.math.BigDecimal"
+		parameterType="com.ihk.property.data.pojo.PropertyUnitReportCond">
+		select sum(c.sum_money) from property_unit p,contract c
+		<include refid="reportContract" />
+	</select>
+
+	<sql id="reportShengYu">
+		<where>
+			<if test="companyProjectId > 0">
+				and p.company_project_id = #{companyProjectId}
+		</if>
+			<if test="companyProjectIds != null">
+				and p.company_project_id in
+				<foreach collection="companyProjectIds" item="ids" open="("
+					separator="," close=")">
+					#{ids}  
+	            </foreach>
+			</if>
+			<if test="saleStates != null">
+				and p.sale_state in
+				<foreach collection="saleStates" item="salestatesit" open="("
+					separator="," close=")">
+					#{salestatesit}  
+	            </foreach>
+			</if>
+			and p.is_deleted = '0'
+		</where>
+	</sql>
+	<!-- 套数 剩余 -->
+	<select id="findCountShengYu" resultType="int"
+		parameterType="com.ihk.property.data.pojo.PropertyUnitReportCond">
+		select count(1) from property_unit p
+		<include refid="reportShengYu" />
+	</select>
+	<!-- 建筑面积 剩余 -->
+	<select id="findSumBuildAreaShengYu" resultType="java.math.BigDecimal"
+		parameterType="com.ihk.property.data.pojo.PropertyUnitReportCond">
+		select sum(p.build_area) from property_unit p
+		<include refid="reportShengYu" />
+	</select>
+	<!-- 套内面积 剩余 -->
+	<select id="findSumInsideAreaShengYu" resultType="java.math.BigDecimal"
+		parameterType="com.ihk.property.data.pojo.PropertyUnitReportCond">
+		select sum(p.inside_area) from property_unit p
+		<include refid="reportShengYu" />
+	</select>
+	<!-- 成交总价 剩余 -->
+	<select id="findSumPriceShengYu" resultType="java.math.BigDecimal"
+		parameterType="com.ihk.property.data.pojo.PropertyUnitReportCond">
+		select sum(p.sum_price) from property_unit p
+		<include refid="reportShengYu" />
+	</select>
+
+	<!-- 销售分析 详细列表 条件 -->
+	<sql id="reportxiangxi">
+		<where>
+			p.sale_state = '8'
+			<if test="companyProjectId > 0">
+				and p.company_project_id = #{companyProjectId}
+		</if>
+			<if test="date1 != null and date1 != '' ">
+				and c.work_date &gt; #{date1}
+		</if>
+			<if test="date2 != null and date2 != '' ">
+				and c.work_date &lt; date_add(#{date2},interval 1 day) 
+		</if>
+			and p.id = c.unit_id
+			and p.is_deleted = '0'
+			and c.is_deleted = '0'
+			and pw.is_deleted = '0'
+			and pw.id = c.pay_way_id
+			and c.customer_id = cc.id
+			and p.build_id = b.id
+			and b.area_id = ar.id
+			and ar.property_id = pr.id
+
+		</where>
+	</sql>
+	<!-- 销售分析 详细列表 认购 -->
+	<select id="findListForXSFXXXConfirm" resultType="java.util.Map" 
+		parameterType="com.ihk.property.data.pojo.PropertyUnitReportCond">
+		select p.id as id,
+		concat(pr.property_name,"-",ar.area_name,"-",b.build_name) as build,
+		p.unit_no as roomNo ,c.work_date as saleDate,cc.customer_name as
+		customerName,
+		p.build_area as buildArea,p.inside_area as
+		insideArea,p.sum_price as sumPrice,c.sum_money as salePrice,
+		pw.pay_name as payWay,c.discount_percent as discountPercent
+		from
+		property_unit p,confirm c,property_build b,contract_customer
+		cc,property_area ar,property_project pr,pay_way pw
+		<include refid="reportxiangxi"/>
+		<if test="limit2 > 0">
+			limit #{limit1},#{limit2}
+		</if>
+	</select>
+	<select id="findListForXSFXXXConfirMcount" 
+		parameterType="com.ihk.property.data.pojo.PropertyUnitReportCond">
+		select count(*)
+		from
+		property_unit p,confirm c,property_build b,contract_customer
+		cc,property_area ar,property_project pr,pay_way pw
+		<include refid="reportxiangxi"/>
+		<if test="limit2 > 0">
+			limit #{limit1},#{limit2}
+		</if>
+	</select>
+
+	<!-- 销售分析 详细列表 签约 -->
+	<select id="findListForXSFXXXContract" resultType="java.util.Map"
+		parameterType="com.ihk.property.data.pojo.PropertyUnitReportCond">
+		select p.id as id,
+		concat(pr.property_name,"-",ar.area_name,"-",b.build_name) as build,
+		p.unit_no as roomNo ,c.work_date as saleDate,cc.customer_name as
+		customerName,
+		p.build_area as buildArea,p.inside_area as
+		insideArea,p.sum_price as sumPrice,c.sum_money as salePrice,
+		pw.pay_name as payWay,c.discount_percent as discountPercent
+		from
+		property_unit p,contract c,property_build b,contract_customer
+		cc,property_area ar,property_project pr,pay_way pw
+		<where>
+			p.sale_state = '9'
+			<if test="companyProjectId > 0">
+				and p.company_project_id = #{companyProjectId}
+		</if>
+			<if test="date3 != null and date3 != '' ">
+				and c.work_date &gt; #{date3}
+		</if>
+			<if test="date4 != null and date4 != '' ">
+				and c.work_date &lt; date_add(#{date4},interval 1 day) 
+		</if>
+			and p.id = c.unit_id
+			and p.is_deleted = '0'
+			and c.is_deleted = '0'
+			and pw.is_deleted = '0'
+			and pw.id = c.pay_way_id
+			and c.customer_id = cc.id
+			and p.build_id = b.id
+			and b.area_id = ar.id
+			and ar.property_id = pr.id
+
+		</where>
+		<if test="limit2 > 0">
+			limit #{limit1},#{limit2}
+	</if>
+	</select>
+
+	<!-- olddb_idlog -->
+	<select id="findOldDbLogAndUnit" resultMap="propertyUnitResultMap">
+		select * from
+		property_unit t,olddb_idlog tt where t.id = tt.my_id and tt.my_table =
+		'company_unit_lp2'
+	</select>
+
+	<!-- -->
+	<select id="findListMapForReportByPidAndUserId" resultType="java.util.Map">
+		select c.sales_id r1,count(1) r2,sum(p.build_area) r3,sum(c.sum_money)
+		r4 ,pr.project_name proName,c.sales_id as salesid,
+		p.company_project_id as proId
+		from property_unit
+		p,confirm c,company_project pr
+		where
+		p.id = c.unit_id
+		and p.company_project_id = pr.id
+		and p.is_deleted = '0'
+		and c.is_deleted = '0'
+		and p.sale_state = '8'
+		
+		<if test="companyProjectIds != null">
+					and p.company_project_id in
+					<foreach collection="companyProjectIds" item="ids" open="("
+						separator="," close=")">
+						#{ids}  
+		            </foreach>
+		</if>
+				
+		<if test="companyProjectId > 0">
+			and p.company_project_id = #{companyProjectId}
+		</if>
+		<if test="userId != null and userId != ''">
+			and c.sales_id like concat(concat("%,", #{userId, jdbcType=VARCHAR}),
+			",%")
+				</if>
+		<if test="date1 != null and date1 != '' ">
+			and c.work_date &gt; #{date1}
+				</if>
+		<if test="date2 != null and date2 != '' ">
+			and c.work_date &lt; date_add(#{date2},interval 1 day) 
+				</if>
+		group by c.sales_id,p.company_project_id
+	</select>
+
+	<select id="findListMapForReportByPidAndUserIdContract"
+		resultType="java.util.Map">
+		select c.sales_id r1,count(1) q2,sum(p.build_area) q3,sum(c.sum_money)
+		q4 ,pr.project_name proName,c.sales_id as salesid,
+		p.company_project_id as proId
+		from property_unit
+		p,contract c,company_project pr
+		where
+		p.id = c.unit_id
+		and p.company_project_id = pr.id
+		and p.is_deleted = '0'
+		and c.is_deleted = '0'
+		and p.sale_state = '9'
+		<if test="companyProjectIds != null">
+					and p.company_project_id in
+					<foreach collection="companyProjectIds" item="ids" open="("
+						separator="," close=")">
+						#{ids}  
+		            </foreach>
+		</if>
+		<if test="companyProjectId > 0">
+			and p.company_project_id = #{companyProjectId}
+				</if>
+		<if test="userId != null and userId != ''">
+			and c.sales_id like concat(concat('%', #{userId, jdbcType=VARCHAR}),
+			'%')
+				</if>
+		<if test="date3 != null and date3 != '' ">
+			and c.work_date &gt; #{date3}
+				</if>
+		<if test="date4 != null and date4 != '' ">
+			and c.work_date &lt; date_add(#{date4},interval 1 day) 
+				</if>
+		group by c.sales_id
+	</select>
+
+
+	<select id="findListMapForReportByPidAndUserIdXX" resultType="java.util.Map">
+		select p.id as id,c.sales_id r1,
+		concat(pr.property_name,"-",ar.area_name,"-",b.build_name) as build,
+		p.unit_no as roomNo ,c.work_date as saleDate,cc.customer_name as
+		customerName,
+		p.build_area as buildArea,p.inside_area as
+		insideArea,p.sum_price as sumPrice,c.sum_money as salePrice,
+		pw.pay_name as payWay,c.discount_percent as discountPercent,
+		c.id as cid
+		from
+		property_unit p,confirm c,property_build b,contract_customer
+		cc,property_area ar,property_project pr,pay_way pw
+		<where>
+			p.sale_state = '8'
+			<if test="companyProjectId > 0">
+				and p.company_project_id = #{companyProjectId}
+		</if>
+			<if test="date1 != null and date1 != '' ">
+				and c.work_date &gt; #{date1}
+		</if>
+			<if test="date2 != null and date2 != '' ">
+				and c.work_date &lt; date_add(#{date2},interval 1 day) 
+		</if>
+			<if test="userId != null and userId != '' ">
+				and c.sales_id like concat(concat("%,", #{userId, jdbcType=VARCHAR}),
+				"\,%")
+		</if>
+			and p.id = c.unit_id
+			and p.is_deleted = '0'
+			and c.is_deleted = '0'
+			and pw.is_deleted = '0'
+			and pw.id = c.pay_way_id
+			and cc.main_id = c.id  
+			and 1=cc.confirm_type
+			and p.build_id = b.id
+			and b.area_id = ar.id
+			and ar.property_id = pr.id
+			group by unit_no
+		</where>
+	</select>
+
+	<select id="findListMapForReportByPidAndUserIdContractXX"
+		resultType="java.util.Map">
+		select p.id as id,c.sales_id r1,
+		concat(pr.property_name,"-",ar.area_name,"-",b.build_name) as build,
+		p.unit_no as roomNo ,c.work_date as saleDate,cc.customer_name as
+		customerName,
+		p.build_area as buildArea,p.inside_area as
+		insideArea,p.sum_price as sumPrice,c.sum_money as salePrice,
+		pw.pay_name as payWay,c.discount_percent as discountPercent,
+		c.id as cid
+		from
+		property_unit p,contract c,property_build b,contract_customer
+		cc,property_area ar,property_project pr,pay_way pw
+		<where>
+			p.sale_state = '9'
+			<if test="companyProjectId > 0">
+				and p.company_project_id = #{companyProjectId}
+			</if>
+			<if test="date3 != null and date3 != '' ">
+				and c.work_date &gt; #{date3}
+			</if>
+			<if test="date4 != null and date4 != '' ">
+				and c.work_date &lt; date_add(#{date4},interval 1 day) 
+			</if>
+			<if test="userId != null and userId != '' ">
+				and c.sales_id like concat(concat("%,", #{userId, jdbcType=VARCHAR}),
+				"\,%")
+		</if>
+			and p.id = c.unit_id
+			and p.is_deleted = '0'
+			and c.is_deleted = '0'
+			and pw.is_deleted = '0'
+			and pw.id = c.pay_way_id
+			and cc.main_id = c.id  
+			and 2=cc.confirm_type
+			and p.build_id = b.id
+			and b.area_id = ar.id
+			and ar.property_id = pr.id
+			group by unit_no
+		</where>
+	</select>
+	
+	<select id="findConfirmUnit" resultMap="propertyUnitResultMap" parameterType="com.ihk.property.data.pojo.PropertyUnitCond">
+		
+		select u.* from confirm c left join property_unit u	on c.unit_id = u.id
+		
+		<where>
+			
+			<if test="companyProjectId > 0">
+				and u.company_project_id = #{companyProjectId}
+			</if>
+			<if test="date1 != null and date1 != '' ">
+				and c.work_date &gt; #{date1}
+			</if>
+			<if test="date2 != null and date2 != '' ">
+				and c.work_date &lt; date_add(#{date2},interval 1 day) 
+			</if>
+			
+			and c.is_deleted = '0' and u.is_deleted = '0'
+			
+		</where>
+		
+	</select>
+	
+	<!-- 成交数据交叉分析里面有个单元的相关查询 -->
+	<select id="findForCjsjjc" resultType="java.util.Map" parameterType="com.ihk.property.data.pojo.CjsjjcUnitCond">
+		
+		select DISTINCT ${selectField} as val from property_unit
+		
+		<where>
+			
+			<if test="companyProjectId > 0">
+				and company_project_id = #{companyProjectId}
+			</if>
+			
+			and is_deleted = '0'
+			
+		</where>
+		
+		order by ${selectField} asc
+	
+	</select>
+	
+	
+	<select id="findUnitCompanyId" resultType="int">
+	
+		select c.id from property_unit u, company c, company_project p 
+		where u.company_project_id = p.id and p.company_id = c.id 
+		and u.id = #{unitId}
+		
+	</select>
+	
+	<select id="findLastModifyUnitByBuildId" resultMap="propertyUnitResultMap">
+		select * from property_unit where build_id = #{buildId} and is_deleted = '0' order by mod_time desc limit 1
+	</select>
+	
+	<select id="findLastModifyUnitByAreaId" resultMap="propertyUnitResultMap">
+		select * from property_unit
+		join (select id from property_build where area_id = #{areaId} and is_deleted = '0') t1 on property_unit.build_id = t1.id
+		 and is_deleted = '0' order by mod_time desc limit 1
+	</select>
+	
+	<select id="findLastModifyUnitByProjectId" resultMap="propertyUnitResultMap">
+		select * from property_unit
+		join (select id,area_id from property_build where is_deleted = '0') t1 on property_unit.build_id = t1.id
+		join (select id from property_area where property_id = #{projectId} and is_deleted = '0') t2 on t1.area_id = t2.id
+		 and is_deleted = '0' order by mod_time desc limit 1
+	</select>
+
+	<update id="updateUnitCheckFeeByIdsAndDate" parameterType="com.ihk.property.data.pojo.PropertyUnitCheckFeeCond">
+	
+		update property_unit set checkfee_date = #{checkFeeDate}, checkfee_type = #{checkfeeType},
+			mod_id=#{modId}, mod_time=#{modTime} 
+
+		<where>
+			<if test="ids != null and ids.size() > 0">
+				id in
+				<foreach collection="ids" item="updateId" open="(" separator="," close=")">
+					#{updateId}  
+	            </foreach>
+			</if>	
+		</where>
+		
+	</update>	
+	
+	<select id="findUnitByBuildIdAndFloorNumAndRoomNo" resultMap="propertyUnitResultMap" parameterType="com.ihk.property.data.pojo.PropertyUnit">
+		select * from property_unit where build_id = #{buildId} and floor_num = #{floorNum} and room_no = #{roomNo} and is_deleted = "0"
+		order by floor_num+0 desc, id desc
+		
+	</select>
+	
+</mapper>

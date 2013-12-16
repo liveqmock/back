@@ -1,0 +1,13 @@
+@charset "utf-8";
+
+.icon-home{background:url('../images/icons/home.gif') no-repeat;}
+.icon-cust{background:url('../images/icons/cust.gif') no-repeat;}
+.icon-contract_cust{background:url('../images/icons/contract_cust.png') no-repeat;}
+.icon-menu{background:url('../images/icons/menu.gif') no-repeat;}
+.icon-caiwu{background:url('../images/icons/caiwu.gif') no-repeat;}
+.icon-report{background:url('../images/icons/report.gif') no-repeat;}
+.icon-houtai{background:url('../images/icons/houtai.gif') no-repeat;}
+.icon-reportsearch{background:url('../images/icons/reportsearch.gif') no-repeat;}
+.icon-caozuo{background:url('../images/icons/caozuo.png') no-repeat;}
+.icon-vipcust{background:url('../images/icons/vipcust.gif') no-repeat;}
+.icon-account{background:url('../images/icons/account.jpg') no-repeat;}

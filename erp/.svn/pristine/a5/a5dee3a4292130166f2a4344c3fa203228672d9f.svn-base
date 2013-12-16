@@ -1,0 +1,201 @@
+/**
+ * 权限的js
+ */
+
+$().ready(function(){
+	//tip	sub
+	
+	$("#sub").click(function(){
+							 
+		var roleName = $("#addOrUpdateRoleName").val();
+		if(roleName == ""){
+			clearTip("角色名称不能为空");
+			$("#addOrUpdateRoleName").focus();
+			return false;
+		}
+		
+		var projectId = $("#projectId").val();
+		if(projectId == ""){
+			clearTip("所属项目不能为空");
+			$("#projectId").focus();
+			return false;
+		}
+		
+		var projectName = $("#projectName").val();
+		if(projectName == ""){
+			clearTip("所属项目不能为空");
+			$("#projectName").focus();
+			return false;
+		}
+				
+		
+		return true;
+	
+	});
+	
+	$("#userRoleSub").click(function(){
+							 
+		var userId = $("#userNameRemote").val();
+		if(userId == "0" || userId == ""){
+			clearTip("用户名称不能为空");
+			$("#userNameRemote").focus();
+			return false;
+		}
+		
+		var roleId = $("#roleName").val();
+		if(roleId == "0" || roleId == ""){
+			clearTip("角色名称不能为空");
+			$("#addOrUpdateRoleName").focus();
+			return false;
+		}
+		
+		return true;
+	
+	});
+	
+	//提示框 top
+	$("#userNameRemote").autocomplete("./userrole!searchUser.action", {
+		width: 180,  //提示框宽度
+		selectFirst: false
+	});
+	
+	$("#userNameRemote").result(function(event, data, formatted) {
+		if (data)
+			$(this).parent().next().find("input").val(data[1]);
+	});
+	//提示框 end
+	
+	$("#roleName").autocomplete("./userrole!searchRole.action", {
+		width: 180,  //提示框宽度
+		selectFirst: false
+	});
+	
+	$("#roleName").result(function(event, data, formatted) {
+		if (data)
+			$(this).parent().next().find("input").val(data[1]);
+	});
+	
+	$("#projectName").autocomplete("./userrole!searchProject.action", {
+		width: 180,  //提示框宽度
+		selectFirst: false
+	});
+	
+	$("#projectName").result(function(event, data, formatted) {
+		if (data)
+			$(this).parent().next().find("input").val(data[1]);
+	});
+	
+	$("#initRolePriv").autocomplete("./user_role_priv!initRolePriv.action", {
+		width: 150,  //提示框宽度
+		selectFirst: false
+	});
+	
+	$("#initRolePriv").result(function(event, data, formatted) {
+		if (data)
+			$(this).parent().next().find("input").val(data[1]);
+	});
+	
+	
+});
+
+function numCheck(valId, tipValue){
+	//判断是否数字
+	var value = $("#" + valId).val();
+	if(value.match("^\\d*$") == null){
+		clearTip(tipValue);
+		$("#" + valId).val("");
+		$("#" + valId).focus();
+		return false;
+	}
+};
+
+
+/**
+ * 查看用户权限
+ */
+function check(){
+	var userNameRemote = $("#userNameRemote").val();
+	if(userNameRemote == ""){
+		alert("用户名称不能为空.");
+		return false;
+	}
+}
+
+function allDel(){
+	var delIds = document.getElementsByName("delId");
+	var allDelVal = document.getElementById("allDel");
+	
+	if(allDelVal.checked == true){
+		for(var i=0; i<delIds.length; i++){
+			delIds[i].checked = true;
+		}
+	}else{
+		for(var i=0; i<delIds.length; i++){
+			delIds[i].checked = false;
+		}
+	}
+}
+
+function delId(){
+	var delIds = document.getElementsByName("delId");
+	var allDel = true;
+	
+	for(var i=0; i<delIds.length; i++){
+		if(delIds[i].checked == false){
+			allDel = false;
+		}
+	}
+	
+	if(allDel){
+		document.getElementById("allDel").checked = true;
+	}else{
+		document.getElementById("allDel").checked = false;
+	}
+}
+
+function delSome(action, method){
+	var delIds = document.getElementsByName("delId");
+	var ids = "";
+	
+	for(var i=0; i<delIds.length; i++){
+		if(delIds[i].checked == true){
+			ids += delIds[i].value + "_";
+		}
+	}
+	
+	if(ids != ""){
+		var r = confirm("确定删除所选?");
+		if(r == true){
+			location.href = action + "!" + method + ".action?ids=" + ids;
+			
+		}else{
+			return false;
+		}
+	}else{
+		alert("请选择要删除的数据.");
+		return false;
+	}
+	
+}
+
+
+function clearTip(tipSug){
+		
+	$("#suggestion").html(tipSug);
+	clearSome("suggestion",2000);
+	
+	$("#suggestion2").html(tipSug);
+	clearSome("suggestion2",2000);
+}
+
+function clearSuggestion(){
+	clearSome("suggestion",2000);
+	clearSome("suggestion2",2000);
+}
+
+function clearSome(id, time){
+	var ele = document.getElementById(id);
+	if(ele != null){
+		setTimeout("document.getElementById('" + id + "').innerHTML = ''", time);
+	}
+}

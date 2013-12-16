@@ -1,0 +1,122 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.ihk.saleunit.data.IChangeOwnerMapper">
+
+	<resultMap type="ChangeOwner" id="changeOwnerResultMap">
+		<id property="id" column="id" />        
+		<result property="confirmType" column="confirm_type" />
+		<result property="mainId" column="main_id" />
+		<result property="resonType" column="reson_type" />
+		<result property="handFee" column="hand_fee" />
+		<result property="resonDesc" column="reson_desc" />
+		<result property="applyUser" column="apply_user" />
+		<result property="applyDate" column="apply_date" />
+		<result property="applyState" column="apply_state" />
+		<result property="isDeleted" column="is_deleted" />
+		<result property="createdId" column="created_id" />
+		<result property="createdTime" column="created_time" />
+		<result property="modId" column="mod_id" />
+		<result property="modTime" column="mod_time" />
+	</resultMap>
+
+	<insert id="addChangeOwner" parameterType="ChangeOwner">
+		 <selectKey resultType="java.lang.Integer" keyProperty="id" order="AFTER" >
+            SELECT @@IDENTITY
+        </selectKey>		
+		insert into change_owner(
+		confirm_type,
+		main_id,
+		reson_type,
+		hand_fee,
+		reson_desc,
+		apply_user,
+		apply_date,
+		apply_state,
+		is_deleted,
+		created_id,
+		created_time,
+		mod_id,
+		mod_time
+		)
+			VALUES(
+		#{confirmType},
+		#{mainId},
+		#{resonType},
+		#{handFee},
+		#{resonDesc},
+		#{applyUser},
+		#{applyDate},
+		#{applyState},
+		#{isDeleted},
+		#{createdId},
+		#{createdTime},
+		#{modId},
+		#{modTime}
+			)
+		
+	</insert>
+	<delete id="deleteChangeOwner" parameterType="int">
+	update change_owner set is_deleted='1' where id=#{id};
+	</delete>
+	<update id="updateChangeOwner" parameterType="int">
+	update change_owner set 
+		confirm_type=#{confirmType},
+		main_id=#{mainId},
+		reson_type=#{resonType},
+		hand_fee=#{handFee},
+		reson_desc=#{resonDesc},
+		apply_user=#{applyUser},
+		apply_date=#{applyDate},
+		apply_state=#{applyState},
+		is_deleted=#{isDeleted},
+		created_id=#{createdId},
+		created_time=#{createdTime},
+		mod_id=#{modId},
+		mod_time=#{modTime}
+	 where id=#{id}
+	</update>
+	<select id="findChangeOwnerById" resultMap="changeOwnerResultMap">
+	select * from change_owner where id=#{id}
+	</select>
+    
+	<sql id="findWhereCond"> 
+		<where>
+        <!--
+			<if test="date1 != null and date1 != ''">
+            </if>    
+            and is_deleted = '0'
+            -->
+            <if test="mainId != 0">
+           	and main_id = #{mainId}
+            </if>   
+             <if test="confirmType != null and confirmType != ''">
+           	and confirm_type = #{confirmType}
+            </if>  
+            and is_deleted = '0'
+		</where>
+	</sql>
+	
+	<select id="findChangeOwnerCount" resultType="int" parameterType="com.ihk.saleunit.data.pojo.ChangeOwnerCond">
+		SELECT count(0) from change_owner  
+        <include refid="findWhereCond"/>     
+    </select>
+        
+	<select id="findChangeOwner" resultMap="changeOwnerResultMap" parameterType="com.ihk.saleunit.data.pojo.ChangeOwnerCond">
+		SELECT * from  change_owner 
+        <include refid="findWhereCond"/> 
+		<if test="topNum > 0">
+			limit #{topNum};
+		</if>
+    </select>
+    
+	<select id="findChangeOwnerPage" resultMap="changeOwnerResultMap" parameterType="com.ihk.saleunit.data.pojo.ChangeOwnerCond">
+		SELECT * from  change_owner 
+        <include refid="findWhereCond"/> 
+    
+		<if test="startLine >= 0">
+		<if test="pageSize > 0">
+			limit #{startLine},#{pageSize};
+		</if>
+		</if>
+	</select>
+</mapper>

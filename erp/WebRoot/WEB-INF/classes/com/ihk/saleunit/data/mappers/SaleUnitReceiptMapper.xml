@@ -1,0 +1,163 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.ihk.saleunit.data.ISaleUnitReceiptMapper">
+
+	<resultMap type="SaleUnitReceipt" id="saleUnitReceiptResultMap">
+		<id property="id" column="id" />        
+		<result property="billNo" column="bill_no" />
+		<result property="unitId" column="unit_id" />
+		<result property="billId" column="bill_id" />
+		<result property="checkfeeId" column="checkfee_id" />
+		<result property="typeName" column="type_name" />
+		<result property="feeType" column="fee_type" />
+		<result property="receiptDate" column="receipt_date" />
+		<result property="receiptMoney" column="receipt_money" />
+		<result property="payMan" column="pay_man" />
+		<result property="inputMan" column="input_man" />
+		<result property="remark" column="remark" />
+		<result property="isDeleted" column="is_deleted" />
+		<result property="createdId" column="created_id" />
+		<result property="createdTime" column="created_time" />
+		<result property="modId" column="mod_id" />
+		<result property="modTime" column="mod_time" />
+	</resultMap>
+
+	<insert id="addSaleUnitReceipt" parameterType="SaleUnitReceipt">
+		 <selectKey resultType="java.lang.Integer" keyProperty="id" order="AFTER" >
+            SELECT @@IDENTITY
+        </selectKey>		
+		insert into sale_unit_receipt(
+		bill_no,
+		unit_id,
+		bill_id,
+		checkfee_id,
+		type_name,
+		fee_type,
+		receipt_date,
+		receipt_money,
+		pay_man,
+		input_man,
+		remark,
+		is_deleted,
+		created_id,
+		created_time,
+		mod_id,
+		mod_time
+		)
+			VALUES(
+		#{billNo},
+		#{unitId},
+		#{billId},
+		#{checkfeeId},
+		#{typeName},
+		#{feeType},
+		#{receiptDate},
+		#{receiptMoney},
+		#{payMan},
+		#{inputMan},
+		#{remark},
+		#{isDeleted},
+		#{createdId},
+		#{createdTime},
+		#{modId},
+		#{modTime}
+			)
+		
+	</insert>
+	<delete id="deleteSaleUnitReceipt" parameterType="com.ihk.utils.base.PojoDeleteCond">
+	update sale_unit_receipt set is_deleted='1', mod_id=#{modId}, mod_time=#{modTime} where id=#{id};
+	</delete>
+	<update id="updateSaleUnitReceipt" parameterType="int">
+	update sale_unit_receipt set 
+		bill_no=#{billNo},
+		unit_id=#{unitId},
+		bill_id=#{billId},
+		checkfee_id=#{checkfeeId},
+		type_name=#{typeName},
+		fee_type=#{feeType},
+		receipt_date=#{receiptDate},
+		receipt_money=#{receiptMoney},
+		pay_man=#{payMan},
+		input_man=#{inputMan},
+		remark=#{remark},
+		mod_id=#{modId},
+		mod_time=#{modTime}
+	 where id=#{id}
+	</update>
+	<select id="findSaleUnitReceiptById" resultMap="saleUnitReceiptResultMap">
+	select * from sale_unit_receipt where id=#{id}
+	</select>
+    
+	<sql id="findWhereCond"> 
+		<where>
+		
+			 and is_deleted = '0'
+		</where>
+	</sql>
+	
+	<select id="findSaleUnitReceiptCount" resultType="int" parameterType="com.ihk.saleunit.data.pojo.SaleUnitReceiptCond">
+		SELECT count(0) from sale_unit_receipt  
+        <include refid="findWhereCond"/>     
+    </select>
+        
+	<select id="findSaleUnitReceipt" resultMap="saleUnitReceiptResultMap" parameterType="com.ihk.saleunit.data.pojo.SaleUnitReceiptCond">
+		SELECT * from  sale_unit_receipt 
+        <include refid="findWhereCond"/> 
+		<if test="topNum > 0">
+			limit #{topNum};
+		</if>
+    </select>
+    
+	<select id="findSaleUnitReceiptPage" resultMap="saleUnitReceiptResultMap" parameterType="com.ihk.saleunit.data.pojo.SaleUnitReceiptCond">
+		SELECT * from  sale_unit_receipt 
+        <include refid="findWhereCond"/> 
+    
+		<if test="startLine >= 0">
+		<if test="pageSize > 0">
+			limit #{startLine},#{pageSize};
+		</if>
+		</if>
+	</select>
+    
+    <!-- ajax分页使用 -->	
+    <sql id="findSaleUnitReceiptForAjaxComm">
+		<where>
+			
+			and is_deleted = '0'
+		</where>
+		
+	</sql>
+    
+    <select id="findSaleUnitReceiptForAjax" resultMap="saleUnitReceiptResultMap" parameterType="com.ihk.saleunit.data.pojo.SaleUnitReceiptCond">
+		SELECT * from  sale_unit_receipt 
+        <include refid="findSaleUnitReceiptForAjaxComm"/> 
+    
+		<if test="startLine >= 0">
+		<if test="pageSize > 0">
+			limit #{startLine},#{pageSize};
+		</if>
+		</if>
+	</select>
+    
+    <select id="findSaleUnitReceiptCountForAjax" resultType="int" parameterType="com.ihk.saleunit.data.pojo.SaleUnitReceiptCond">
+		SELECT count(1) from sale_unit_receipt  
+        <include refid="findSaleUnitReceiptForAjaxComm"/>     
+    </select>
+    
+    <select id="findReceiptListByUnitId" resultMap="saleUnitReceiptResultMap">
+		select * from sale_unit_receipt where unit_id = #{unitId} and is_deleted = '0';
+	</select>
+	
+	<select id="findReceiptListByBillId" resultMap="saleUnitReceiptResultMap">
+		select * from sale_unit_receipt where bill_id = #{billId} and is_deleted = '0';
+	</select>
+	
+	<update id="updateSaleUnitReceiptCheckFeeId" parameterType="com.ihk.saleunit.data.pojo.SaleUnitReceiptCond">
+		update sale_unit_receipt set checkfee_id = #{checkFeeId}, mod_id = #{modId}, mod_time = #{modTime} where id = #{receiptId}
+	</update>
+
+    <update id="updateSaleUnitReceiptCheckCommissionId" parameterType="com.ihk.saleunit.data.pojo.SaleUnitReceiptCond">
+		update sale_unit_receipt set checkfee_id = 0, mod_id = #{modId}, mod_time = #{modTime} where checkfee_id = #{checkFeeId}
+	</update>
+
+</mapper>

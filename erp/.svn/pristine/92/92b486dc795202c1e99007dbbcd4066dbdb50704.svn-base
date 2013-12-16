@@ -1,0 +1,96 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.ihk.property.data.IUnitPayBillDetailMapper">
+
+	<resultMap type="UnitPayBillDetail" id="unitPayBillDetailResultMap">
+		<id property="id" column="id" />        
+		<result property="billId" column="bill_id" />
+		<result property="payMoney" column="pay_money" />
+		<result property="payMan" column="pay_man" />
+		<result property="payDate" column="pay_date" />
+		<result property="isDeleted" column="is_deleted" />
+		<result property="createdId" column="created_id" />
+		<result property="createdTime" column="created_time" />
+		<result property="modId" column="mod_id" />
+		<result property="modTime" column="mod_time" />
+	</resultMap>
+
+	<insert id="addUnitPayBillDetail" parameterType="UnitPayBillDetail">
+		 <selectKey resultType="java.lang.Integer" keyProperty="id" order="AFTER" >
+            SELECT @@IDENTITY
+        </selectKey>		
+		insert into unit_pay_bill_detail(
+		bill_id,
+		pay_money,
+		pay_man,
+		pay_date,
+		is_deleted,
+		created_id,
+		created_time,
+		mod_id,
+		mod_time
+		)
+			VALUES(
+		#{billId},
+		#{payMoney},
+		#{payMan},
+		#{payDate},
+		#{isDeleted},
+		#{createdId},
+		#{createdTime},
+		#{modId},
+		#{modTime}
+			)
+		
+	</insert>
+	<delete id="deleteUnitPayBillDetail" parameterType="int">
+	update unit_pay_bill_detail set is_deleted='1' where id=#{id};
+	</delete>
+	<update id="updateUnitPayBillDetail" parameterType="int">
+	update unit_pay_bill_detail set 
+		bill_id=#{billId},
+		pay_money=#{payMoney},
+		pay_man=#{payMan},
+		pay_date=#{payDate},
+		mod_id=#{modId},
+		mod_time=#{modTime}
+	 where id=#{id}
+	</update>
+	<select id="findUnitPayBillDetailById" resultMap="unitPayBillDetailResultMap">
+	select * from unit_pay_bill_detail where id=#{id}
+	</select>
+    
+	<sql id="findWhereCond"> 
+		<where>
+        <!--
+			<if test="date1 != null and date1 != ''">
+            </if>    
+            and is_deleted = '0'
+            -->
+		</where>
+	</sql>
+	
+	<select id="findUnitPayBillDetailCount" resultType="int" parameterType="com.ihk.property.data.pojo.UnitPayBillDetailCond">
+		SELECT count(0) from unit_pay_bill_detail  
+        <include refid="findWhereCond"/>     
+    </select>
+        
+	<select id="findUnitPayBillDetail" resultMap="unitPayBillDetailResultMap" parameterType="com.ihk.property.data.pojo.UnitPayBillDetailCond">
+		SELECT * from  unit_pay_bill_detail 
+        <include refid="findWhereCond"/> 
+		<if test="topNum > 0">
+			limit #{topNum};
+		</if>
+    </select>
+    
+	<select id="findUnitPayBillDetailPage" resultMap="unitPayBillDetailResultMap" parameterType="com.ihk.property.data.pojo.UnitPayBillDetailCond">
+		SELECT * from  unit_pay_bill_detail 
+        <include refid="findWhereCond"/> 
+    
+		<if test="startLine >= 0">
+		<if test="pageSize > 0">
+			limit #{startLine},#{pageSize};
+		</if>
+		</if>
+	</select>
+</mapper>

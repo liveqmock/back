@@ -1,0 +1,63 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.ihk.report.data.IReportUnitAmountMapper">
+
+	<resultMap type="com.ihk.report.data.pojo.unitamount.ReportUnitAmountCompany" id="unitAmountCompany">   
+		<result property="companyId" column="company_id" />
+		<result property="companyName" column="company_name" />
+		<result property="sumMoney" column="sum_money" />
+	</resultMap>
+	
+	<resultMap type="com.ihk.report.data.pojo.unitamount.ReportUnitAmountProject" id="unitAmountProject">   
+		<result property="projectId" column="project_id" />
+		<result property="projectName" column="project_name" />
+		<result property="sumMoney" column="sum_money" />
+	</resultMap>
+
+	<select id="groupByCompany" resultMap="unitAmountCompany" parameterType="com.ihk.report.data.pojo.unitamount.ReportUnitAmountCompanyCond">		
+		SELECT c.id,c.company_name,SUM(a.sum_price) AS sum_money FROM property_unit a,company_project b,company c 
+		WHERE a.company_project_id=b.id AND b.company_id=c.id AND c.dev_code='customer_guangzhou'
+			
+            <if test="companyProjectIds != null and companyProjectIds.size() > 0">
+                and a.company_project_id in
+                <foreach collection="companyProjectIds" item="pId" open="(" separator="," close=")">
+                    #{pId}
+                </foreach>
+            </if>
+		GROUP BY c.id,c.company_name
+		ORDER BY SUM(a.sum_price) DESC
+		<if test="returnCount > 0">
+			limit #{returnCount}
+		</if>
+	</select>
+	
+	<select id="getSumMoney" resultType="BigDecimal" parameterType="com.ihk.report.data.pojo.unitamount.ReportUnitAmountCond">		
+		SELECT SUM(a.sum_price) AS sum_money FROM property_unit a ,company_project b,company c 
+		WHERE a.company_project_id=b.id AND b.company_id=c.id AND c.dev_code='customer_guangzhou'
+			
+            <if test="companyProjectIds != null and companyProjectIds.size() > 0">
+                and a.company_project_id in
+                <foreach collection="companyProjectIds" item="pId" open="(" separator="," close=")">
+                    #{pId}
+                </foreach>
+            </if>
+		and a.is_deleted='0'
+	</select>
+	
+	<select id="groupByProject" resultMap="unitAmountProject" parameterType="com.ihk.report.data.pojo.unitamount.ReportUnitAmountProjectCond">		
+		SELECT c.id,b.project_name,SUM(a.sum_price) AS sum_money FROM property_unit a,company_project b,company c 
+		WHERE a.company_project_id=b.id AND b.company_id=c.id AND c.dev_code='customer_guangzhou'
+			
+            <if test="companyProjectIds != null and companyProjectIds.size() > 0">
+                and a.company_project_id in
+                <foreach collection="companyProjectIds" item="pId" open="(" separator="," close=")">
+                    #{pId}
+                </foreach>
+            </if>
+		GROUP BY c.id,b.project_name
+		ORDER BY SUM(a.sum_price) DESC
+		<if test="returnCount > 0">
+			limit #{returnCount}
+		</if>
+	</select>
+</mapper>

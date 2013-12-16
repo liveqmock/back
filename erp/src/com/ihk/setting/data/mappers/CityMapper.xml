@@ -1,0 +1,102 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.ihk.setting.data.ICityMapper">
+
+	<resultMap type="City" id="cityResultMap">
+		<id property="cityId" column="city_id" />        
+		<result property="provinceId" column="province_id" />
+		<result property="cityName" column="city_name" />
+		<result property="zipCode" column="zip_code" />
+		<result property="orderIndex" column="order_index" />
+		<result property="isDeleted" column="is_deleted" />
+	</resultMap>
+
+	<insert id="addCity" parameterType="City">
+		 <selectKey resultType="java.lang.Integer" keyProperty="id" order="AFTER" >
+            SELECT @@IDENTITY
+        </selectKey>		
+		insert into city(
+		province_id,
+		city_name,
+		zip_code,
+		order_index,
+		is_deleted
+		)
+			VALUES(
+		#{provinceId},
+		#{cityName},
+		#{zipCode},
+		#{orderIndex},
+		#{isDeleted}
+			)
+		
+	</insert>
+	<delete id="deleteCity" parameterType="int">
+	update city set is_deleted='1' where city_id=#{city_id};
+	</delete>
+	<update id="updateCity" parameterType="int">
+	update city set 
+		province_id=#{provinceId},
+		city_name=#{cityName},
+		zip_code=#{zipCode},
+		order_index=#{orderIndex},
+		is_deleted=#{isDeleted}
+	 where city_id=#{city_id}
+	</update>
+	<select id="findCityById" resultMap="cityResultMap">
+	select * from city where city_id=#{city_id}
+	</select>
+    
+	<sql id="findWhereCond"> 
+		<where>
+        	<if test="cityName != null and cityName != ''">
+				city_name like concat('%',#{cityName},'%')
+            </if>    
+            and is_deleted = '0'
+		</where>
+	</sql>
+	
+	<select id="findCityCount" resultType="int" parameterType="com.ihk.setting.data.pojo.CityCond">
+		SELECT count(0) from city  
+        <include refid="findWhereCond"/>     
+    </select>
+        
+	<select id="findCity" resultMap="cityResultMap" parameterType="com.ihk.setting.data.pojo.CityCond">
+		SELECT * from  city 
+        <include refid="findWhereCond"/> 
+		<if test="topNum > 0">
+			limit #{topNum};
+		</if>
+		order by order_index
+    </select>
+    
+	<select id="findCityPage" resultMap="cityResultMap" parameterType="com.ihk.setting.data.pojo.CityCond">
+		SELECT * from  city 
+        <include refid="findWhereCond"/> 
+    
+		<if test="startLine >= 0">
+		<if test="pageSize > 0">
+			limit #{startLine},#{pageSize};
+		</if>
+		</if>
+		order by order_index
+	</select>
+	
+	<select id="findCityByProvinceId" resultMap="cityResultMap">
+		select * from city where province_id = #{provinceId} and is_deleted = '0'
+		order by order_index
+	</select>
+	
+	<select id="findCityByname" resultMap="cityResultMap">
+		select * from city t where t.city_name like 
+		concat(concat('%', #{name, jdbcType=VARCHAR}), '%')
+		and province_id = #{subId}
+		limit 1
+	</select>
+	
+	<select id="findCityByName" resultMap="cityResultMap" parameterType="string">
+		select * from city t where t.city_name like 
+		concat(concat('%', #{name, jdbcType=VARCHAR}), '%')
+		limit 1
+	</select>
+</mapper>

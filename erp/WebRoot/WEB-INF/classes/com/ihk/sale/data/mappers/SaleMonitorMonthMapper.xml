@@ -1,0 +1,422 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.ihk.sale.data.ISaleMonitorMonthMapper">
+
+	<resultMap type="SaleMonitorMonth" id="saleMonitorMonthResultMap">
+		<id property="id" column="id" />        
+		<result property="monitorDate" column="monitor_date" />
+		<result property="projectId" column="project_id" />
+		<result property="companyId" column="company_id" />
+		<result property="phoneNum" column="phone_num" />
+		<result property="visitorNum" column="visitor_num" />
+		<result property="houseNum" column="house_num" />
+		<result property="houseArea" column="house_area" />
+		<result property="houseMoney" column="house_money" />
+		<result property="shopNum" column="shop_num" />
+		<result property="shopArea" column="shop_area" />
+		<result property="shopMoney" column="shop_money" />
+		<result property="parkNum" column="park_num" />
+		<result property="parkArea" column="park_area" />
+		<result property="parkMoney" column="park_money" />
+		<result property="sumNum" column="sum_num" />
+		<result property="sumArea" column="sum_area" />
+		<result property="sumMoney" column="sum_money" />
+		<result property="undoHouseNum" column="undo_house_num" />
+		<result property="undoHouseArea" column="undo_house_area" />
+		<result property="undoHouseMoney" column="undo_house_money" />
+		<result property="undoShopNum" column="undo_shop_num" />
+		<result property="undoShopArea" column="undo_shop_area" />
+		<result property="undoShopMoney" column="undo_shop_money" />
+		<result property="undoParkNum" column="undo_park_num" />
+		<result property="undoParkArea" column="undo_park_area" />
+		<result property="undoParkMoney" column="undo_park_money" />
+		<result property="undoSumNum" column="undo_sum_num" />
+		<result property="undoSumArea" column="undo_sum_area" />
+		<result property="undoSumMoney" column="undo_sum_money" />
+		<result property="tempNum" column="temp_num" />
+		<result property="rescissionNum" column="rescission_num" />
+		<result property="completeArea" column="complete_area" />
+		<result property="completeMoney" column="complete_money" />
+		<result property="intentionNum" column="intention_num" />
+		<result property="isDeleted" column="is_deleted" />
+		<result property="createdId" column="created_id" />
+		<result property="createdTime" column="created_time" />
+		<result property="modId" column="mod_id" />
+		<result property="modTime" column="mod_time" />
+	</resultMap>
+
+	<insert id="addSaleMonitorMonth" parameterType="SaleMonitorMonth">
+		 <selectKey resultType="java.lang.Integer" keyProperty="id" order="AFTER" >
+            SELECT @@IDENTITY
+        </selectKey>		
+		insert into sale_monitor_month(
+		monitor_date,
+		project_id,
+		company_id,
+		phone_num,
+		visitor_num,
+		house_num,
+		house_area,
+		house_money,
+		shop_num,
+		shop_area,
+		shop_money,
+		park_num,
+		park_area,
+		park_money,
+		sum_num,
+		sum_area,
+		sum_money,
+		undo_house_num,
+		undo_house_area,
+		undo_house_money,
+		undo_shop_num,
+		undo_shop_area,
+		undo_shop_money,
+		undo_park_num,
+		undo_park_area,
+		undo_park_money,
+		undo_sum_num,
+		undo_sum_area,
+		undo_sum_money,
+		temp_num,
+		rescission_num,
+		complete_area,
+		complete_money,
+		intention_num,
+		is_deleted,
+		created_id,
+		created_time,
+		mod_id,
+		mod_time
+		)
+			VALUES(
+		#{monitorDate},
+		#{projectId},
+		#{companyId},
+		#{phoneNum},
+		#{visitorNum},
+		#{houseNum},
+		#{houseArea},
+		#{houseMoney},
+		#{shopNum},
+		#{shopArea},
+		#{shopMoney},
+		#{parkNum},
+		#{parkArea},
+		#{parkMoney},
+		#{sumNum},
+		#{sumArea},
+		#{sumMoney},
+		#{undoHouseNum},
+		#{undoHouseArea},
+		#{undoHouseMoney},
+		#{undoShopNum},
+		#{undoShopArea},
+		#{undoShopMoney},
+		#{undoParkNum},
+		#{undoParkArea},
+		#{undoParkMoney},
+		#{undoSumNum},
+		#{undoSumArea},
+		#{undoSumMoney},
+		#{tempNum},
+		#{rescissionNum},
+		#{completeArea},
+		#{completeMoney},
+		#{intentionNum},
+		#{isDeleted},
+		#{createdId},
+		#{createdTime},
+		#{modId},
+		#{modTime}
+			)
+		
+	</insert>
+	<delete id="deleteSaleMonitorMonth" parameterType="int">
+	update sale_monitor_month set is_deleted='1' where id=#{id};
+	</delete>
+	<update id="updateSaleMonitorMonth" parameterType="int">
+	update sale_monitor_month set 
+		monitor_date=#{monitorDate},
+		project_id=#{projectId},
+		company_id=#{companyId},
+		phone_num=#{phoneNum},
+		visitor_num=#{visitorNum},
+		house_num=#{houseNum},
+		house_area=#{houseArea},
+		house_money=#{houseMoney},
+		shop_num=#{shopNum},
+		shop_area=#{shopArea},
+		shop_money=#{shopMoney},
+		park_num=#{parkNum},
+		park_area=#{parkArea},
+		park_money=#{parkMoney},
+		sum_num=#{sumNum},
+		sum_area=#{sumArea},
+		sum_money=#{sumMoney},
+		undo_house_num=#{undoHouseNum},
+		undo_house_area=#{undoHouseArea},
+		undo_house_money=#{undoHouseMoney},
+		undo_shop_num=#{undoShopNum},
+		undo_shop_area=#{undoShopArea},
+		undo_shop_money=#{undoShopMoney},
+		undo_park_num=#{undoParkNum},
+		undo_park_area=#{undoParkArea},
+		undo_park_money=#{undoParkMoney},
+		undo_sum_num=#{undoSumNum},
+		undo_sum_area=#{undoSumArea},
+		undo_sum_money=#{undoSumMoney},
+		temp_num=#{tempNum},
+		rescission_num=#{rescissionNum},
+		complete_area=#{completeArea},
+		complete_money=#{completeMoney},
+		intention_num=#{intentionNum},
+		is_deleted=#{isDeleted},
+		created_id=#{createdId},
+		created_time=#{createdTime},
+		mod_id=#{modId},
+		mod_time=#{modTime}
+	 where id=#{id}
+	</update>
+	<select id="findSaleMonitorMonthById" resultMap="saleMonitorMonthResultMap">
+	select * from sale_monitor_month where id=#{id}
+	</select>
+    
+	<sql id="sumForCompanyDate">
+		monitor_date,		
+		company_id,
+		sum(phone_num) as phone_num,
+		sum(visitor_num) as visitor_num,
+		sum(house_num) as house_num,
+		sum(house_area) as house_area,
+		sum(house_money) as house_money,
+		sum(shop_num) as shop_num,
+		sum(shop_area) as shop_area,
+		sum(shop_money) as shop_money,
+		sum(park_num) as park_num,
+		sum(park_area) as park_area,
+		sum(park_money) as park_money,
+		sum(sum_num) as sum_num,
+		sum(sum_area) as sum_area,
+		sum(sum_money) as sum_money,
+		sum(undo_house_num) as undo_house_num,
+		sum(undo_house_area) as undo_house_area,
+		sum(undo_house_money) as undo_house_money,
+		sum(undo_shop_num) as undo_shop_num,
+		sum(undo_shop_area) as undo_shop_area,
+		sum(undo_shop_money) as undo_shop_money,
+		sum(undo_park_num) as undo_park_num,
+		sum(undo_park_area) as undo_park_area,
+		sum(undo_park_money) as undo_park_money,
+		sum(undo_sum_num) as undo_sum_num,
+		sum(undo_sum_area) as undo_sum_area,
+		sum(undo_sum_money) as undo_sum_money,
+		sum(temp_num) as temp_num,
+		sum(rescission_num) as rescission_num,
+		sum(complete_area) as complete_area,
+		sum(complete_money) as complete_money,
+		sum(intention_num) as intention_num
+	</sql>
+	
+	<sql id="sumForCountryDate">
+		monitor_date,	
+		sum(phone_num) as phone_num,
+		sum(visitor_num) as visitor_num,
+		sum(house_num) as house_num,
+		sum(house_area) as house_area,
+		sum(house_money) as house_money,
+		sum(shop_num) as shop_num,
+		sum(shop_area) as shop_area,
+		sum(shop_money) as shop_money,
+		sum(park_num) as park_num,
+		sum(park_area) as park_area,
+		sum(park_money) as park_money,
+		sum(sum_num) as sum_num,
+		sum(sum_area) as sum_area,
+		sum(sum_money) as sum_money,
+		sum(undo_house_num) as undo_house_num,
+		sum(undo_house_area) as undo_house_area,
+		sum(undo_house_money) as undo_house_money,
+		sum(undo_shop_num) as undo_shop_num,
+		sum(undo_shop_area) as undo_shop_area,
+		sum(undo_shop_money) as undo_shop_money,
+		sum(undo_park_num) as undo_park_num,
+		sum(undo_park_area) as undo_park_area,
+		sum(undo_park_money) as undo_park_money,
+		sum(undo_sum_num) as undo_sum_num,
+		sum(undo_sum_area) as undo_sum_area,
+		sum(undo_sum_money) as undo_sum_money,
+		sum(temp_num) as temp_num,
+		sum(rescission_num) as rescission_num,
+		sum(complete_area) as complete_area,
+		sum(complete_money) as complete_money,
+		sum(intention_num) as intention_num
+	</sql>
+	
+	<sql id="findWhereCond"> 
+		<where>
+			<if test="date1 != null and date1 != ''">
+				and monitor_date &gt;= #{date1}
+			</if>
+			<if test="date2 != null and date2 != ''">
+				and monitor_date &lt; date_add(#{date2},interval 1 day)
+			</if>
+			<if test="monitorDate != null and monitorDate != ''">
+				and substring(monitor_date, 1, 7) = substring(#{monitorDate}, 1, 7)
+			</if>
+			<if test="projectIds !=null and projectIds.size() > 0">  
+	            and project_id in
+	            <foreach  
+	                collection="projectIds"  
+	                item="pid"  
+	                open="("  
+	                separator=","  
+	                close=")">  
+	                #{pid}  
+	            </foreach>  
+	        </if> 
+			<if test="monitorDates !=null and monitorDates.size() > 0">  
+	            and monitor_date in
+	            <foreach  
+	                collection="monitorDates"  
+	                item="mDate"  
+	                open="("  
+	                separator=","  
+	                close=")">  
+	                #{mDate}  
+	            </foreach>  
+	    </if> 
+	        
+			<if test="projectId != null and projectId != ''">
+				and project_id = #{projectId}
+			</if>
+			<if test="companyId != null and companyId != '' and companyId != 0 and companyId != '0'">
+				and company_id=#{companyId}
+			</if>
+			and is_deleted = '0' 
+		</where>
+	</sql>
+	
+	<select id="findSaleMonitorMonthCount" resultType="int" parameterType="com.ihk.sale.data.pojo.SaleMonitorMonthCond">
+		SELECT count(0) from sale_monitor_month  
+        <include refid="findWhereCond"/>     
+    </select>
+        
+	<select id="findSaleMonitorMonth" resultMap="saleMonitorMonthResultMap" parameterType="com.ihk.sale.data.pojo.SaleMonitorMonthCond">
+		SELECT * from  sale_monitor_month 
+        <include refid="findWhereCond"/> 
+		<if test="topNum > 0">
+			limit #{topNum};
+		</if>
+    </select>
+    
+	<select id="findSaleMonitorMonthPage" resultMap="saleMonitorMonthResultMap" parameterType="com.ihk.sale.data.pojo.SaleMonitorMonthCond">
+		SELECT * from  sale_monitor_month 
+        <include refid="findWhereCond"/> 
+    
+		<if test="startLine >= 0">
+		<if test="pageSize > 0">
+			limit #{startLine},#{pageSize};
+		</if>
+		</if>
+	</select>
+	
+	<select id="findSaleMonitorMonthForAdd" resultMap="saleMonitorMonthResultMap" 
+		parameterType="com.ihk.sale.data.pojo.SaleMonitor">
+		
+		select sum(phone_num) as phone_num,sum(visitor_num) as visitor_num,sum(house_num) as house_num,sum(shop_num) as shop_num,
+			sum(park_num) as park_num,sum(temp_num) as temp_num,sum(rescission_num) as rescission_num,sum(complete_area) as complete_area,
+			sum(complete_money) as complete_money,sum(intention_num) as intention_num  
+			from sale_monitor
+			where substring(monitor_date,1,7) = substring(#{monitorDate}, 1, 7) 
+			and monitor_date &lt; #{monitorDate}
+			and project_id = #{projectId} and is_deleted = '0'
+	</select>
+	
+	<update id="updateMonthFromModifySaleMonitorAdd" parameterType="com.ihk.sale.data.pojo.SaleMonitor">
+	<!-- 各个数字可能为负数,负数不能传递,要用两个方法 -->
+		update sale_monitor_month set 
+			phone_num = phone_num + #{phoneNum} , 
+			visitor_num = visitor_num + #{visitorNum} ,
+			house_num = house_num + #{houseNum} ,
+			shop_num = shop_num + #{shopNum} ,
+			park_num = park_num + #{parkNum} ,
+			temp_num = temp_num + #{tempNum} ,
+			rescission_num = rescission_num + #{rescissionNum} ,
+			complete_area = complete_area + #{completeArea} ,
+			complete_money = complete_money + #{completeMoney},
+			intention_num = intention_num + #{intentionNum}
+			where monitor_date >= #{monitorDate} and substring(monitor_date,1,7) = substring(#{monitorDate}, 1, 7) 
+			and project_id = #{projectId}  and is_deleted = '0'
+			
+	</update>
+	
+	<update id="updateMonthFromModifySaleMonitorDel" parameterType="com.ihk.sale.data.pojo.SaleMonitor">
+	<!-- 各个数字可能为负数,负数不能传递,要用两个方法 -->
+		update sale_monitor_month set 
+			phone_num = phone_num - #{phoneNum} , 
+			visitor_num = visitor_num - #{visitorNum} ,
+			house_num = house_num - #{houseNum} ,
+			shop_num = shop_num - #{shopNum} ,
+			park_num = park_num - #{parkNum} ,
+			temp_num = temp_num - #{tempNum} ,
+			rescission_num = rescission_num - #{rescissionNum} ,
+			complete_area = complete_area - #{completeArea} ,
+			complete_money = complete_money - #{completeMoney},
+			intention_num = intention_num - #{intentionNum}
+			where monitor_date >= #{monitorDate} and substring(monitor_date,1,7) = substring(#{monitorDate}, 1, 7) 
+			and project_id = #{projectId}  and is_deleted = '0'
+			
+	</update>
+	
+	<update id="updateMonthFromAddSaleMonitor" parameterType="com.ihk.sale.data.pojo.SaleMonitor">
+		update sale_monitor_month set 
+			phone_num = phone_num + #{phoneNum} , 
+			visitor_num = visitor_num + #{visitorNum} ,
+			house_num = house_num + #{houseNum} ,
+			shop_num = shop_num + #{shopNum} ,
+			park_num = park_num + #{parkNum} ,
+			temp_num = temp_num + #{tempNum} ,
+			rescission_num = rescission_num + #{rescissionNum} ,
+			complete_area = complete_area + #{completeArea} ,
+			complete_money = complete_money + #{completeMoney},
+			intention_num = intention_num + #{intentionNum}
+			where monitor_date > #{monitorDate} and substring(monitor_date,1,7) = substring(#{monitorDate}, 1, 7) 
+			and project_id = #{projectId}  and is_deleted = '0'
+			
+	</update>
+	
+	<delete id="deleteSaleMonitorMonthByMonitorDate" parameterType="com.ihk.sale.data.pojo.SaleMonitor">
+		update sale_monitor_month set is_deleted ='1' where monitor_date = #{monitorDate}
+	</delete>
+	
+	<select id="findSaleMonitorMonthToShow" resultMap="saleMonitorMonthResultMap"
+		parameterType="com.ihk.sale.data.pojo.SaleMonitor">
+		select * from sale_monitor_month where monitor_date = #{monitorDate} and project_id = #{projectId} and is_deleted = '0' 
+	</select>
+	
+	<select id="findQuartzDateSaleMonitorMonth" resultMap="saleMonitorMonthResultMap"
+		parameterType="com.ihk.sale.data.pojo.SaleMonitorMonthCond">
+		select * from sale_monitor_month where monitor_date = #{monitorDate} and project_id = #{projectId} and is_deleted = '0' 
+	</select>
+	
+	<select id="findSaleMonitorMonthGroupbyCompanyDate" resultMap="saleMonitorMonthResultMap"
+		parameterType="com.ihk.sale.data.pojo.SaleMonitorMonthCond">
+		select <include refid="sumForCompanyDate"/>  from sale_monitor_month
+		<include refid="findWhereCond"/> 
+		
+		group by company_id,monitor_date
+		
+	</select>
+	
+	<select id="findSaleMonitorMonthGroupbyCountryDate" resultMap="saleMonitorMonthResultMap"
+		parameterType="com.ihk.sale.data.pojo.SaleMonitorMonthCond">
+		select <include refid="sumForCountryDate"/>  from sale_monitor_month
+		<include refid="findWhereCond"/> 
+		
+		group by monitor_date
+		
+	</select>
+	
+</mapper>

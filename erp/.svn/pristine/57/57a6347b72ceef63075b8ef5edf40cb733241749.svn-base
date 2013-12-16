@@ -1,0 +1,121 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.ihk.property.data.ICheckcommissionListMapper">
+
+	<resultMap type="CheckcommissionList" id="checkcommissionListResultMap">
+		<id property="id" column="id" />        
+		<result property="propertyProjectId" column="property_project_id" />
+		<result property="checkcommissionDate" column="checkcommission_date" />
+		<result property="repayType" column="repay_type" />
+		<result property="remark" column="remark" />
+		<result property="isDeleted" column="is_deleted" />
+		<result property="createdId" column="created_id" />
+		<result property="createdTime" column="created_time" />
+		<result property="modId" column="mod_id" />
+		<result property="modTime" column="mod_time" />
+	</resultMap>
+
+	<insert id="addCheckcommissionList" parameterType="CheckcommissionList">
+		 <selectKey resultType="java.lang.Integer" keyProperty="id" order="AFTER" >
+            SELECT @@IDENTITY
+        </selectKey>		
+		insert into checkcommission_list(
+		property_project_id,
+		checkcommission_date,
+		repay_type,
+		remark,
+		is_deleted,
+		created_id,
+		created_time,
+		mod_id,
+		mod_time
+		)
+			VALUES(
+		#{propertyProjectId},
+		#{checkcommissionDate},
+		#{repayType},
+		#{remark},
+		#{isDeleted},
+		#{createdId},
+		#{createdTime},
+		#{modId},
+		#{modTime}
+			)
+		
+	</insert>
+	<delete id="deleteCheckcommissionList" parameterType="com.ihk.utils.base.PojoDeleteCond">
+	update checkcommission_list set is_deleted='1', mod_id=#{modId}, mod_time=#{modTime} where id=#{id};
+	</delete>
+	<update id="updateCheckcommissionList" parameterType="int">
+	update checkcommission_list set 
+		property_project_id=#{propertyProjectId},
+		checkcommission_date=#{checkcommissionDate},
+		repay_type=#{repayType},
+		remark=#{remark},
+		mod_id=#{modId},
+		mod_time=#{modTime}
+	 where id=#{id}
+	</update>
+	<select id="findCheckcommissionListById" resultMap="checkcommissionListResultMap">
+	select * from checkcommission_list where id=#{id}
+	</select>
+    
+	<sql id="findWhereCond"> 
+		<where>
+            and is_deleted = '0'
+		</where>
+	</sql>
+	
+	<select id="findCheckcommissionListCount" resultType="int" parameterType="com.ihk.property.data.pojo.CheckcommissionListCond">
+		SELECT count(0) from checkcommission_list  
+        <include refid="findWhereCond"/>     
+    </select>
+        
+	<select id="findCheckcommissionList" resultMap="checkcommissionListResultMap" parameterType="com.ihk.property.data.pojo.CheckcommissionListCond">
+		SELECT * from  checkcommission_list 
+        <include refid="findWhereCond"/> 
+		<if test="topNum > 0">
+			limit #{topNum};
+		</if>
+    </select>
+    
+	<select id="findCheckcommissionListPage" resultMap="checkcommissionListResultMap" parameterType="com.ihk.property.data.pojo.CheckcommissionListCond">
+		SELECT * from  checkcommission_list 
+        <include refid="findWhereCond"/> 
+    
+		<if test="startLine >= 0">
+		<if test="pageSize > 0">
+			limit #{startLine},#{pageSize};
+		</if>
+		</if>
+	</select>
+    
+    <!-- ajax分页使用 -->	
+   <sql id="findCheckcommissionListForAjaxComm">
+		<where>		
+            and is_deleted = '0'
+		</where>
+		
+	</sql>
+    
+    <select id="findCheckcommissionListForAjax" resultMap="checkcommissionListResultMap" parameterType="com.ihk.property.data.pojo.CheckcommissionListCond">
+		SELECT * from  checkcommission_list 
+        <include refid="findCheckcommissionListForAjaxComm"/> 
+    
+		<if test="startLine >= 0">
+		<if test="pageSize > 0">
+			limit #{startLine},#{pageSize};
+		</if>
+		</if>
+	</select>
+    
+    <select id="findCheckcommissionListCountForAjax" resultType="int" parameterType="com.ihk.property.data.pojo.CheckcommissionListCond">
+		SELECT count(1) from checkcommission_list  
+        <include refid="findCheckcommissionListForAjaxComm"/>     
+    </select>
+
+    <select id="findCheckcommissionListByPrjId" resultMap="checkcommissionListResultMap" parameterType="com.ihk.property.data.pojo.CheckcommissionListCond">
+   	    select * from checkcommission_list where property_project_id=#{propertyProjectId} and checkcommission_date=#{checkcommissionDate}
+   	</select>
+
+</mapper>

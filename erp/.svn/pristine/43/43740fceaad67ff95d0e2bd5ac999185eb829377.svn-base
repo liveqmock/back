@@ -1,0 +1,119 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.ihk.saleunit.data.IInvoiceMapper">
+
+	<resultMap type="Invoice" id="invoiceResultMap">
+		<id property="id" column="id" />        
+		<result property="unitId" column="unit_id" />
+		<result property="invoiceNo" column="invoice_no" />
+		<result property="invoiceMoney" column="invoice_money" />
+		<result property="invoeceDate" column="invoece_date" />
+		<result property="remark" column="remark" />
+		<result property="receiveMan" column="receive_man" />
+		<result property="receiveDate" column="receive_date" />
+		<result property="receiveManDo" column="receive_man_do" />
+		<result property="receiveDateDo" column="receive_date_do" />
+		<result property="isVoid" column="is_void" />
+		<result property="isDeleted" column="is_deleted" />
+		<result property="createdId" column="created_id" />
+		<result property="createdTime" column="created_time" />
+		<result property="modId" column="mod_id" />
+		<result property="modTime" column="mod_time" />
+	</resultMap>
+
+	<insert id="addInvoice" parameterType="Invoice">
+		 <selectKey resultType="java.lang.Integer" keyProperty="id" order="AFTER" >
+            SELECT @@IDENTITY
+        </selectKey>		
+		insert into invoice(
+		unit_id,
+		invoice_no,
+		invoice_money,
+		invoece_date,
+		remark,
+		receive_man,
+		receive_date,
+		receive_man_do,
+		receive_date_do,
+		is_void,
+		is_deleted,
+		created_id,
+		created_time,
+		mod_id,
+		mod_time
+		)
+			VALUES(
+		#{unitId},
+		#{invoiceNo},
+		#{invoiceMoney},
+		#{invoeceDate},
+		#{remark},
+		#{receiveMan},
+		#{receiveDate},
+		#{receiveManDo},
+		#{receiveDateDo},
+		#{isVoid},
+		#{isDeleted},
+		#{createdId},
+		#{createdTime},
+		#{modId},
+		#{modTime}
+			)
+		
+	</insert>
+	<delete id="deleteInvoice" parameterType="int">
+	update invoice set is_deleted='1' where id=#{id};
+	</delete>
+	<update id="updateInvoice" parameterType="int">
+	update invoice set 
+		unit_id=#{unitId},
+		invoice_no=#{invoiceNo},
+		invoice_money=#{invoiceMoney},
+		invoece_date=#{invoeceDate},
+		remark=#{remark},
+		receive_man=#{receiveMan},
+		receive_date=#{receiveDate},
+		receive_man_do=#{receiveManDo},
+		receive_date_do=#{receiveDateDo},
+		is_void=#{isVoid},
+		mod_id=#{modId},
+		mod_time=#{modTime}
+	 where id=#{id}
+	</update>
+	<select id="findInvoiceById" resultMap="invoiceResultMap">
+	select * from invoice where id=#{id}
+	</select>
+    
+	<sql id="findWhereCond"> 
+		<where>
+			<if test="unitId != null and unitId != ''">
+				unit_id = #{unitId}
+            </if>    
+            and is_deleted = '0'
+		</where>
+	</sql>
+	
+	<select id="findInvoiceCount" resultType="int" parameterType="com.ihk.saleunit.data.pojo.InvoiceCond">
+		SELECT count(0) from invoice  
+        <include refid="findWhereCond"/>     
+    </select>
+        
+	<select id="findInvoice" resultMap="invoiceResultMap" parameterType="com.ihk.saleunit.data.pojo.InvoiceCond">
+		SELECT * from  invoice 
+        <include refid="findWhereCond"/> 
+		<if test="topNum > 0">
+			limit #{topNum};
+		</if>
+    </select>
+    
+	<select id="findInvoicePage" resultMap="invoiceResultMap" parameterType="com.ihk.saleunit.data.pojo.InvoiceCond">
+		SELECT * from  invoice 
+        <include refid="findWhereCond"/> 
+    
+		<if test="startLine >= 0">
+		<if test="pageSize > 0">
+			limit #{startLine},#{pageSize};
+		</if>
+		</if>
+	</select>
+</mapper>

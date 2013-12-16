@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.ihk.user.data.ITeamMapper">
+<cache/>
+	
+	<resultMap type="Team" id="TeamResultMap">
+		<id property="id" column="team.id" />        
+		<result property="teamName" column="team_name" />
+		<result property="projectId" column="Project_id" />
+		<result property="isDeleted" column="is_deleted" />
+		<result property="createdId" column="created_id" />
+		<result property="createdTime" column="created_time" />
+		<result property="modId" column="mod_id" />
+		<result property="modTime" column="mod_time" />
+	</resultMap>
+	
+	<select id="findTeam" resultMap="TeamResultMap">
+		select * from team;
+	</select>
+	<select id="findTeamById" resultMap="TeamResultMap">
+		select * from team where id = #{id};
+	</select>
+</mapper>

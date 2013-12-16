@@ -1,0 +1,339 @@
+package com.ihk.utils;
+
+import java.io.File;
+import java.io.FileInputStream;
+import java.io.FileOutputStream;
+import java.io.InputStream;
+import java.io.OutputStream;
+import java.net.URL;
+import java.text.DecimalFormat;
+import java.util.Date;
+import java.util.List;
+import java.util.Map;
+import java.util.Set;
+
+import javax.servlet.http.HttpServletResponse;
+
+import net.sf.jxls.transformer.XLSTransformer;
+
+import com.ihk.constanttype.EnumExportType;
+import com.ihk.setting.data.pojo.ActionRecordLog;
+import com.ihk.setting.data.services.IActionRecordLogServices;
+import com.ihk.user.data.pojo.UserAccount;
+import com.ihk.utils.common.setup.ExportExcelLogUtils;
+import com.ihk.utils.log.CompareUtils;
+import com.ihk.utils.request.HttpRequestUtils;
+import com.ihk.utils.saleunit.MyPropertyUtils;
+
+/**
+ * @author dtc
+ * 该类的使用,要先在FILEPATH下新建一个模板文件,并写好对应的循环语句,再调用下面的方法进行输入
+ */
+public class ReportUtils {
+	
+	private static final String FILEPATH = "com" + File.separator + "ihk" + File.separator + "report" + File.separator; //兼容不同的系统,要用File.separator
+	
+	/**
+	 * @param map key为模板文件中的items名,value为具体要循环的值
+	 * @param srcFileName 模板文件名称,要包含文件类型.xls
+	 * @param fileName 输出的文件名称,要包含文件类型.xls
+	 * @param response
+	 * @throws Exception
+	 */
+	public static void downLoadReport(Map<String, Object> map, String srcFileName,
+			String fileName, HttpServletResponse response) throws Exception{
+		
+		OutputStream out = null;
+		
+		try{
+			
+			long start = System.currentTimeMillis();
+			
+			String printFileName = fileName;
+			
+			XLSTransformer transformer = new XLSTransformer();
+			
+			URL url = new ReportUtils().getClass().getClassLoader().getResource(FILEPATH + srcFileName);
+			String srcFilePath = url.getPath();
+			File file = new File(srcFilePath);
+			InputStream in = new FileInputStream(file);
+			
+			out = response.getOutputStream();// 取得输出流   
+	        response.reset();// 清空输出流   
+	        fileName = new String(fileName.getBytes("utf-8"), "ISO8859-1");
+	        response.setHeader("Content-disposition", "attachment; filename=" +  fileName);// 设定输出文件头   
+	        response.setContentType("application/msexcel");// 定义输出类型  
+	        
+			org.apache.poi.ss.usermodel.Workbook workbook = transformer.transformXLS(in, map); //in为获取模板的输入流
+			workbook.write(out);
+			
+			out.flush();
+			
+			long end = System.currentTimeMillis();
+			
+			System.out.println(CustomerUtils.getNowForString() + " " + CustomerUtils.getNowTimeForString() + " '" + printFileName + "'下载所花的时间为: " + (end - start)/1000 + "s");
+			
+			log(srcFileName);
+		}catch(Exception e){
+			
+			e.printStackTrace();
+			CustomerUtils.writeResponse(response, "下载功能出现了异常,请与开发人员说明\n" + e.toString());
+			throw e;
+		}finally{
+			
+			if(out != null){
+				out.close();
+			}
+			
+		}
+		
+	}
+	
+	/**
+	 * 下载talbe格式的文本生成xls表格
+	 * @param content,满足table格式的文本内容
+	 * @param fileName,输出的文件名
+	 * @param response
+	 * @throws Exception
+	 */
+    @Deprecated
+	public static void downLoadReport(String content, String fileName, HttpServletResponse response) throws Exception{
+		
+		OutputStream out = null;
+		
+		try{
+			
+			long start = System.currentTimeMillis();
+			
+			String printFileName = fileName;
+			
+			out = response.getOutputStream();// 取得输出流   
+	        response.reset();// 清空输出流   
+	        fileName = new String(fileName.getBytes("utf-8"), "ISO8859-1");
+	        response.setHeader("Content-disposition", "attachment; filename=" +  fileName);// 设定输出文件头   
+	        response.setContentType("application/msexcel");// 定义输出类型  
+	        response.setCharacterEncoding("utf-8");
+	        
+	        byte[] b = content.getBytes("utf-8");
+	        
+	        out.write(b);
+			
+			out.flush();
+			
+			long end = System.currentTimeMillis();
+			
+			System.out.println(CustomerUtils.getNowForString() + " " + CustomerUtils.getNowTimeForString() + " '" + printFileName + "'下载所花的时间为: " + (end - start)/1000 + "s");
+			
+		}catch(Exception e){
+			e.printStackTrace();
+			CustomerUtils.writeResponse(response, "下载功能出现了异常,请与开发人员说明\n" + e.toString());
+			throw e;
+		}finally{
+			
+			if(out != null){
+				out.close();
+			}
+		}
+		
+	}
+	
+	/**
+	 * 文件名要写网站路径
+	 * @param map
+	 * @param srcFileName
+	 * @param outFileName
+	 * @throws Exception
+	 */
+	public static void downLoadReport(Map<String, Object> map, String srcFileName, String outFileName) throws Exception{
+		
+		OutputStream out = null;
+		
+		try{
+			
+			XLSTransformer transformer = new XLSTransformer();
+			
+			URL url = new ReportUtils().getClass().getClassLoader().getResource(srcFileName);
+			String srcFilePath = url.getPath();
+			
+			File srcFile = new File(srcFilePath);
+			InputStream in = new FileInputStream(srcFile);
+			
+			File outFile = new File(outFileName);
+			out = new FileOutputStream(outFile);
+	        //fileName = new String(fileName.getBytes("utf-8"), "ISO8859-1");
+	        
+			org.apache.poi.ss.usermodel.Workbook workbook = transformer.transformXLS(in, map); //in为获取模板的输入流
+			workbook.write(out);
+			
+			out.flush();
+			
+		}catch(Exception e){
+			
+			e.printStackTrace();
+			throw e;
+		}finally{
+			
+			if(out != null){
+				out.close();
+			}
+			
+		}
+		
+	}
+	
+	/**
+	 * 格式化数字，千分位加逗号
+	 * @param num
+	 * @param pointNum 0表示不要小数点
+	 * @return
+	 */
+	public static String formatNumber(String num,int pointNum) {
+		String style = "#,###.00";
+		if(pointNum==0){
+			style = "#,###";
+		}
+		else if(pointNum==1){
+			style = "#,###.0";
+		}
+		else if(pointNum==2){
+			style = "#,###.00";
+		}
+		DecimalFormat df1 = new DecimalFormat(style);
+		try{
+			return df1.format(Double.parseDouble( num));
+		}
+		catch(Exception ex){
+			return "";
+		}
+    }
+
+	/**
+	 * 格式化日期
+	 * @param strDate
+	 * @return
+	 */
+	public static String formatDate(String strDate) {
+		return DateTimeUtils.toDateTimeFromStr(strDate).toString("yyyy-MM-dd");
+	}
+
+	/**
+	 * List里面的比例进行计算<br>
+	 * 运算之后List里面的Map会发生数值改变
+	 * @param retList
+	 */
+	@SuppressWarnings({ "unchecked", "rawtypes" })
+	public static void fixListPieColumn(List<Map<String, String>> retList,String pieCountName,String sumCountName){
+		if(retList.size()>0){
+			double sumCount = 0;
+			for(Map m:retList){
+				try{
+					sumCount+= Integer.valueOf(m.get(sumCountName).toString());				
+				}
+				catch(Exception ex){
+					
+				}
+			}
+			for(Map m:retList){
+				try{
+					double v = Integer.valueOf(m.get(sumCountName).toString())*100/sumCount;
+					m.put(pieCountName, String.format("%10.2f%%", v)) ;	//保留2位小数			
+				}
+				catch(Exception ex){
+					
+				}
+			}
+		}
+	}
+	
+	
+	/**
+	 * 下载talbe格式的文本生成xls表格
+	 * @param content,满足table格式的文本内容
+	 * @param fileName,输出的文件名
+	 * @param response
+	 * @throws Exception
+	 */
+    @Deprecated
+	public static void downLoadReport(String content, String fileName, HttpServletResponse response,String inKey) throws Exception{
+		
+		OutputStream out = null;
+		
+		try{
+			
+			long start = System.currentTimeMillis();
+			
+			String printFileName = fileName;
+			
+			out = response.getOutputStream();// 取得输出流   
+	        response.reset();// 清空输出流   
+	        fileName = new String(fileName.getBytes("utf-8"), "ISO8859-1");
+	        response.setHeader("Content-disposition", "attachment; filename=" +  fileName);// 设定输出文件头   
+	        response.setContentType("application/msexcel");// 定义输出类型  
+	        response.setCharacterEncoding("utf-8");
+	        
+	        byte[] b = content.getBytes("utf-8");
+	        
+	        out.write(b);
+			
+			out.flush();
+			
+			long end = System.currentTimeMillis();
+			
+			System.out.println(CustomerUtils.getNowForString() + " " + CustomerUtils.getNowTimeForString() + " '" + printFileName + "'下载所花的时间为: " + (end - start)/1000 + "s");
+			
+			log(inKey);
+		}catch(Exception e){
+			e.printStackTrace();
+			CustomerUtils.writeResponse(response, "下载功能出现了异常,请与开发人员说明\n" + e.toString());
+			throw e;
+		}finally{
+			
+			if(out != null){
+				out.close();
+			}
+		}
+		
+	}
+    
+    public static void log(String inKey) {
+		/**
+		 * 通用模版导出数据
+		 */
+		Set<String> keys = ExportExcelLogUtils.getExportExcelLog().keySet();
+		for (String key : keys) {
+			if (CommonUtils.isStrEmpty(key)) {
+				continue;
+			}
+			if (inKey.equals(key)) {
+				createLog(key);
+				return;
+			}
+		}
+		/**
+		 * 拼接字符串导出数据
+		 */
+		if (EnumExportType.contains(inKey)) {
+			createLog(inKey);
+		}
+
+	}
+	
+	private static void createLog(String type){
+		IActionRecordLogServices actionRecordLogServices = MyPropertyUtils
+				.getActionRecordLogServices();
+		Object obj = HttpRequestUtils.getRequest().getSession()
+				.getAttribute(CommonUtils.USER_SESSION_KEY);
+		int userId = -1;
+		ActionRecordLog log = new ActionRecordLog();
+		if (obj != null) {
+			UserAccount user = (UserAccount) obj;
+			userId = user.getId();
+			log.setUserId(userId);
+			log.setLogType(type);
+			log.setLogTime(new Date());
+			log.setLogDesc(CompareUtils.getIpAddr());
+			log.setProjectId(user.getProjectId());
+			actionRecordLogServices.addActionRecordLog(log);
+		}
+	}
+}

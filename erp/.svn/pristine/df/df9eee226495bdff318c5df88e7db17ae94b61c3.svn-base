@@ -1,0 +1,182 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.ihk.saleunit.data.ISaleDefaultQuestionMapper">
+
+	<resultMap type="SaleDefaultQuestion" id="saleDefaultQuestionResultMap">
+		<id property="id" column="id" />
+		<result property="unitId" column="unit_id" />   
+		<result property="customerId" column="customer_id" />      
+		<result property="customerName" column="customer_name" />
+		<result property="rating" column="rating" />
+		<result property="phone" column="phone" />
+		<result property="homePhone" column="home_phone" />
+		<result property="homeProvince" column="home_province" />
+		<result property="homeCity" column="home_city" />
+		<result property="homeRegion" column="home_region" />
+		<result property="homeContent" column="home_content" />
+		<result property="workProvince" column="work_province" />
+		<result property="workCity" column="work_city" />
+		<result property="workRegion" column="work_region" />
+		<result property="workContent" column="work_content" />
+		<result property="buyUse" column="buy_use" />
+		<result property="buyCount" column="buy_count" />
+		<result property="roomType" column="room_type" />
+		<result property="customerSource" column="customer_source" />
+		<result property="remark" column="remark" />
+		<result property="isDeleted" column="is_deleted" />
+		<result property="createdId" column="created_id" />
+		<result property="createdTime" column="created_time" />
+		<result property="modId" column="mod_id" />
+		<result property="modTime" column="mod_time" />
+		
+		<result property="nativeProvince" column="native_province" />
+		<result property="nativeCity" column="native_city" />
+		<result property="nativeRegion" column="native_region" />
+		<result property="nativeContent" column="native_content" />
+	</resultMap> 
+
+	<insert id="addSaleDefaultQuestion" parameterType="SaleDefaultQuestion">
+		 <selectKey resultType="java.lang.Integer" keyProperty="id" order="AFTER" >
+            SELECT @@IDENTITY
+        </selectKey>		
+		insert into sale_default_question(
+		unit_id,
+		customer_id,
+		customer_name,
+		rating,
+		phone,
+		home_phone,
+		home_province,
+		home_city,
+		home_region,
+		home_content,
+		work_province,
+		work_city,
+		work_region,
+		work_content,
+		buy_use,
+		buy_count,
+		room_type,
+		customer_source,
+		remark,
+		is_deleted,
+		created_id,
+		created_time,
+		mod_id,
+		mod_time,
+		
+		native_province,
+		native_city,
+		native_region,
+		native_content
+		)
+			VALUES(
+		#{unitId},
+		#{customerId},
+		#{customerName},
+		#{rating},
+		#{phone},
+		#{homePhone},
+		
+		#{homeProvince},
+		#{homeCity},
+		#{homeRegion},
+		#{homeContent},
+		
+		#{workProvince},
+		#{workCity},
+		#{workRegion},
+		#{workContent},
+		
+		#{buyUse},
+		#{buyCount},
+		#{roomType},
+		#{customerSource},
+		#{remark},
+		#{isDeleted},
+		#{createdId},
+		#{createdTime},
+		#{modId},
+		#{modTime},
+		
+		#{nativeProvince},
+		#{nativeCity},
+		#{nativeRegion},
+		#{nativeContent}
+			)
+		
+	</insert>
+	<delete id="deleteSaleDefaultQuestion" parameterType="int">
+	update sale_default_question set is_deleted='1' where id=#{id};
+	</delete>
+	<update id="updateSaleDefaultQuestion" parameterType="int">
+	update sale_default_question set 
+		unit_id=#{unitId},
+		customer_id=#{customerId},
+		customer_name=#{customerName},
+		rating=#{rating},
+		phone=#{phone},
+		home_phone=#{homePhone},
+		home_province=#{homeProvince},
+		home_city=#{homeCity},
+		home_region=#{homeRegion},
+		home_content=#{homeContent},
+		work_province=#{workProvince},
+		work_city=#{workCity},
+		work_region=#{workRegion},
+		work_content=#{workContent},
+		buy_use=#{buyUse},
+		buy_count=#{buyCount},
+		room_type=#{roomType},
+		customer_source=#{customerSource},
+		remark=#{remark},
+		mod_id=#{modId},
+		mod_time=#{modTime},
+		
+		native_province = #{nativeProvince},
+		native_city = #{nativeCity},
+		native_region = #{nativeRegion},
+		native_content =#{nativeContent}
+		
+		where id=#{id}
+	</update>
+	<select id="findSaleDefaultQuestionById" resultMap="saleDefaultQuestionResultMap">
+	select * from sale_default_question where id=#{id}
+	</select>
+    
+	<sql id="findWhereCond"> 
+		<where>
+			<if test="unitId != null and unitId != ''">
+				unit_id = #{unitId}
+            </if> 
+			<if test="customerId != null and customerId != ''">
+				customer_id = #{customerId}
+            </if>    
+            and is_deleted = '0'
+		</where>
+	</sql>
+	
+	<select id="findSaleDefaultQuestionCount" resultType="int" parameterType="com.ihk.saleunit.data.pojo.SaleDefaultQuestionCond">
+		SELECT count(0) from sale_default_question  
+        <include refid="findWhereCond"/>     
+    </select>
+        
+	<select id="findSaleDefaultQuestion" resultMap="saleDefaultQuestionResultMap" parameterType="com.ihk.saleunit.data.pojo.SaleDefaultQuestionCond">
+		SELECT * from  sale_default_question 
+        <include refid="findWhereCond"/> 
+		<if test="topNum > 0">
+			limit #{topNum};
+		</if>
+    </select>
+    
+	<select id="findSaleDefaultQuestionPage" resultMap="saleDefaultQuestionResultMap" parameterType="com.ihk.saleunit.data.pojo.SaleDefaultQuestionCond">
+		SELECT * from  sale_default_question 
+        <include refid="findWhereCond"/> 
+    
+		<if test="startLine >= 0">
+		<if test="pageSize > 0">
+			limit #{startLine},#{pageSize};
+		</if>
+		</if>
+	</select>
+</mapper>

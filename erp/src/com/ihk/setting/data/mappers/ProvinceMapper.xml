@@ -1,0 +1,81 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.ihk.setting.data.IProvinceMapper">
+
+	<resultMap type="Province" id="provinceResultMap">
+		<id property="provinceId" column="province_id" />        
+		<result property="provinceName" column="province_name" />
+		<result property="orderIndex" column="order_index" />
+		<result property="isDeleted" column="is_deleted" />
+	</resultMap>
+
+	<insert id="addProvince" parameterType="Province">
+		 <selectKey resultType="java.lang.Integer" keyProperty="id" order="AFTER" >
+            SELECT @@IDENTITY
+        </selectKey>		
+		insert into province(
+		province_name,
+		order_index,
+		is_deleted
+		)
+			VALUES(
+		#{provinceName},
+		#{orderIndex},
+		#{isDeleted}
+			)
+		
+	</insert>
+	<delete id="deleteProvince" parameterType="int">
+	update province set is_deleted='1' where province_id=#{province_id};
+	</delete>
+	<update id="updateProvince" parameterType="int">
+	update province set 
+		province_name=#{provinceName},
+		order_index=#{orderIndex},
+		is_deleted=#{isDeleted}
+	 where province_id=#{province_id}
+	</update>
+	<select id="findProvinceById" resultMap="provinceResultMap">
+	select * from province where province_id=#{province_id}
+	</select>
+    
+	<sql id="findWhereCond"> 
+		<where>
+			<if test="provinceName != null and provinceName != ''">
+				province_name like concat('%',#{provinceName},'%')
+            </if>    
+            and is_deleted = '0'
+		</where>
+	</sql>
+	
+	<select id="findProvinceCount" resultType="int" parameterType="com.ihk.setting.data.pojo.ProvinceCond">
+		SELECT count(0) from province  
+        <include refid="findWhereCond"/>     
+    </select>
+        
+	<select id="findProvince" resultMap="provinceResultMap" parameterType="com.ihk.setting.data.pojo.ProvinceCond">
+		SELECT * from  province 
+        <include refid="findWhereCond"/> 
+		<if test="topNum > 0">
+			limit #{topNum};
+		</if>
+		order by order_index
+    </select>
+    
+	<select id="findProvincePage" resultMap="provinceResultMap" parameterType="com.ihk.setting.data.pojo.ProvinceCond">
+		SELECT * from  province 
+        <include refid="findWhereCond"/> 
+    
+		<if test="startLine >= 0">
+		<if test="pageSize > 0">
+			limit #{startLine},#{pageSize};
+		</if>
+		</if>
+		order by order_index
+	</select>
+	<select id="findProvineByName" resultMap="provinceResultMap">
+		select * from province t where t.province_name like 
+		concat(concat('%', #{name, jdbcType=VARCHAR}), '%')
+		limit 1
+	</select>
+</mapper>

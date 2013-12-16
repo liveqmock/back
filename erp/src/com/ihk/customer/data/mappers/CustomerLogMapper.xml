@@ -1,0 +1,683 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.ihk.customer.data.ICustomerLogMapper">
+
+	<resultMap type="CustomerLog" id="customerLogResultMap">
+		<id property="id" column="id" />        
+		<result property="customerId" column="customer_id" />
+		<result property="customerNo" column="customer_no" />
+		<result property="customerName" column="customer_name" />
+		<result property="companyId" column="company_id" />
+		<result property="projectId" column="project_id" />
+		<result property="teamId" column="team_id" />
+		<result property="userId" column="user_id" />
+		<result property="managerId" column="manager_id" />
+		<result property="customerSource" column="customer_source" />
+		<result property="intentEstate" column="intent_estate" />
+		<result property="customerState" column="customer_state" />
+		<result property="phone" column="phone" />
+		<result property="homePhone" column="home_phone" />
+		<result property="officePhone" column="office_phone" />
+		<result property="gender" column="gender" />
+		<result property="email" column="email" />
+		<result property="peerNumber" column="peer_number" />
+		<result property="isFirst" column="is_first" />
+		<result property="firstDate" column="first_date" />
+		<result property="firstHour" column="first_hour" />
+		<result property="visitCount" column="visit_count" />
+		<result property="isRelation" column="is_relation" />
+		<result property="relationDesc" column="relation_desc" />
+		<result property="isOwner" column="is_owner" />
+		<result property="nationality" column="nationality" />
+		<result property="background" column="background" />
+		<result property="requestArea" column="request_area" />
+		<result property="priceAmount" column="price_amount" />
+		<result property="areaNum" column="area_num" />
+		<result property="priceNum" column="price_num" />
+		<result property="buyReson" column="buy_reson" />
+		<result property="notBuyReson" column="not_buy_reson" />
+		<result property="intentionPart" column="intention_part" />
+		<result property="rating" column="rating" />
+		<result property="ratingRemark" column="rating_remark" />
+		<result property="payType" column="pay_type" />
+		<result property="familyType" column="family_type" />
+		<result property="familyIncome" column="family_income" />
+		<result property="remark1" column="remark1" />
+		<result property="remark2" column="remark2" />
+		<result property="remark3" column="remark3" />
+		<result property="remark4" column="remark4" />
+		<result property="marriage" column="marriage" />
+		<result property="age" column="age" />
+		<result property="birthday" column="birthday" />
+		<result property="idcardType" column="idcard_type" />
+		<result property="idcardNo" column="idcard_no" />
+		<result property="faceLook" column="face_look" />
+		<result property="workUnit" column="work_unit" />
+		<result property="jobPosition" column="job_position" />
+		<result property="wage" column="wage" />
+		<result property="jobType" column="job_type" />
+		<result property="jobIndustry" column="job_industry" />
+		<result property="jobDesc" column="job_desc" />
+		<result property="homeProvince" column="home_province" />
+		<result property="homeCity" column="home_city" />
+		<result property="homeRegion" column="home_region" />
+		<result property="homeBlock" column="home_block" />
+		<result property="workProvince" column="work_province" />
+		<result property="workCity" column="work_city" />
+		<result property="workRegion" column="work_region" />
+		<result property="workBlock" column="work_block" />
+		<result property="customerRegion" column="customer_region" />
+		<result property="address" column="address" />
+		<result property="postcode" column="postcode" />
+		<result property="family" column="family" />
+		<result property="interest" column="interest" />
+		<result property="trafficTool" column="traffic_tool" />
+		<result property="trafficDesc" column="traffic_desc" />
+		<result property="knownFrom" column="known_from" />
+		<result property="buyAim" column="buy_aim" />
+		<result property="buyUse" column="buy_use" />
+		<result property="productClaim" column="product_claim" />
+		<result property="unitPrice" column="unit_price" />
+		<result property="houseType" column="house_type" />
+		<result property="roomType" column="room_type" />
+		<result property="floor" column="floor" />
+		<result property="parking" column="parking" />
+		<result property="buyFactor" column="buy_factor" />
+		<result property="intentLease" column="intent_lease" />
+		<result property="payBy" column="pay_by" />
+		<result property="rejectFactor" column="reject_factor" />
+		<result property="intentUnit1" column="intent_unit1" />
+		<result property="intentUnit2" column="intent_unit2" />
+		<result property="intentBuynum" column="intent_buynum" />
+		<result property="intentionDesc" column="intention_desc" />
+		<result property="buyCount" column="buy_count" />
+		<result property="subject1" column="subject1" />
+		<result property="content1" column="content1" />
+		<result property="subject2" column="subject2" />
+		<result property="content2" column="content2" />
+		<result property="subject3" column="subject3" />
+		<result property="content3" column="content3" />
+		<result property="subject4" column="subject4" />
+		<result property="content4" column="content4" />
+		<result property="isDeleted" column="is_deleted" />
+		<result property="createdId" column="created_id" />
+		<result property="createdTime" column="created_time" />
+		<result property="modId" column="mod_id" />
+		<result property="modTime" column="mod_time" />
+		
+		<result property="logCreatedId" column="log_created_id" />
+		<result property="logCreatedTime" column="log_created_time" />
+	</resultMap>
+
+	<insert id="addCustomerLog" parameterType="CustomerLog">
+		 <selectKey resultType="java.lang.Integer" keyProperty="id" order="AFTER" >
+            SELECT @@IDENTITY
+        </selectKey>		
+		insert into customer_log(
+		customer_id,
+		customer_no,
+		customer_name,
+		company_id,
+		project_id,
+		team_id,
+		user_id,
+		manager_id,
+		customer_source,
+		intent_estate,
+		customer_state,
+		phone,
+		home_phone,
+		office_phone,
+		gender,
+		email,
+		peer_number,
+		is_first,
+		first_date,
+		first_hour,
+		visit_count,
+		is_relation,
+		relation_desc,
+		is_owner,
+		nationality,
+		background,
+		request_area,
+		price_amount,
+		area_num,
+		price_num,
+		buy_reson,
+		not_buy_reson,
+		intention_part,
+		rating,
+		rating_remark,
+		pay_type,
+		family_type,
+		family_income,
+		remark1,
+		remark2,
+		remark3,
+		remark4,
+		marriage,
+		age,
+		birthday,
+		idcard_type,
+		idcard_no,
+		face_look,
+		work_unit,
+		job_position,
+		wage,
+		job_type,
+		job_industry,
+		job_desc,
+		home_province,
+		home_city,
+		home_region,
+		home_block,
+		work_province,
+		work_city,
+		work_region,
+		work_block,
+		customer_region,
+		address,
+		postcode,
+		family,
+		interest,
+		traffic_tool,
+		traffic_desc,
+		known_from,
+		buy_aim,
+		buy_use,
+		product_claim,
+		unit_price,
+		house_type,
+		room_type,
+		floor,
+		parking,
+		buy_factor,
+		intent_lease,
+		pay_by,
+		reject_factor,
+		intent_unit1,
+		intent_unit2,
+		intent_buynum,
+		intention_desc,
+		buy_count,
+		subject1,
+		content1,
+		subject2,
+		content2,
+		subject3,
+		content3,
+		subject4,
+		content4,
+		is_deleted,
+		created_id,
+		created_time,
+		mod_id,
+		mod_time,
+		
+		log_created_id,
+		log_created_time
+		)
+			VALUES(
+		#{customerId},
+		#{customerNo},
+		#{customerName},
+		#{companyId},
+		#{projectId},
+		#{teamId},
+		#{userId},
+		#{managerId},
+		#{customerSource},
+		#{intentEstate},
+		#{customerState},
+		#{phone},
+		#{homePhone},
+		#{officePhone},
+		#{gender},
+		#{email},
+		#{peerNumber},
+		#{isFirst},
+		#{firstDate},
+		#{firstHour},
+		#{visitCount},
+		#{isRelation},
+		#{relationDesc},
+		#{isOwner},
+		#{nationality},
+		#{background},
+		#{requestArea},
+		#{priceAmount},
+		#{areaNum},
+		#{priceNum},
+		#{buyReson},
+		#{notBuyReson},
+		#{intentionPart},
+		#{rating},
+		#{ratingRemark},
+		#{payType},
+		#{familyType},
+		#{familyIncome},
+		#{remark1},
+		#{remark2},
+		#{remark3},
+		#{remark4},
+		#{marriage},
+		#{age},
+		#{birthday},
+		#{idcardType},
+		#{idcardNo},
+		#{faceLook},
+		#{workUnit},
+		#{jobPosition},
+		#{wage},
+		#{jobType},
+		#{jobIndustry},
+		#{jobDesc},
+		#{homeProvince},
+		#{homeCity},
+		#{homeRegion},
+		#{homeBlock},
+		#{workProvince},
+		#{workCity},
+		#{workRegion},
+		#{workBlock},
+		#{customerRegion},
+		#{address},
+		#{postcode},
+		#{family},
+		#{interest},
+		#{trafficTool},
+		#{trafficDesc},
+		#{knownFrom},
+		#{buyAim},
+		#{buyUse},
+		#{productClaim},
+		#{unitPrice},
+		#{houseType},
+		#{roomType},
+		#{floor},
+		#{parking},
+		#{buyFactor},
+		#{intentLease},
+		#{payBy},
+		#{rejectFactor},
+		#{intentUnit1},
+		#{intentUnit2},
+		#{intentBuynum},
+		#{intentionDesc},
+		#{buyCount},
+		#{subject1},
+		#{content1},
+		#{subject2},
+		#{content2},
+		#{subject3},
+		#{content3},
+		#{subject4},
+		#{content4},
+		#{isDeleted},
+		#{createdId},
+		#{createdTime},
+		#{modId},
+		#{modTime},
+		#{logCreatedId},
+		#{logCreatedTime}
+			)
+		
+	</insert>
+	
+	<insert id="addCustomerToCustomerLog" parameterType="map">
+		 <selectKey resultType="java.lang.Integer" keyProperty="id" order="AFTER" >
+            SELECT @@IDENTITY
+        </selectKey>		
+		insert into customer_log(
+		customer_id,
+		customer_no,
+		customer_name,
+		company_id,
+		project_id,
+		team_id,
+		user_id,
+		manager_id,
+		customer_source,
+		intent_estate,
+		customer_state,
+		phone,
+		home_phone,
+		office_phone,
+		gender,
+		email,
+		peer_number,
+		is_first,
+		first_date,
+		first_hour,
+		visit_count,
+		is_relation,
+		relation_desc,
+		is_owner,
+		nationality,
+		background,
+		request_area,
+		price_amount,
+		area_num,
+		price_num,
+		buy_reson,
+		not_buy_reson,
+		intention_part,
+		rating,
+		rating_remark,
+		pay_type,
+		family_type,
+		family_income,
+		remark1,
+		remark2,
+		remark3,
+		remark4,
+		marriage,
+		age,
+		birthday,
+		idcard_type,
+		idcard_no,
+		face_look,
+		work_unit,
+		job_position,
+		wage,
+		job_type,
+		job_industry,
+		job_desc,
+		home_province,
+		home_city,
+		home_region,
+		home_block,
+		work_province,
+		work_city,
+		work_region,
+		work_block,
+		customer_region,
+		address,
+		postcode,
+		family,
+		interest,
+		traffic_tool,
+		traffic_desc,
+		known_from,
+		buy_aim,
+		buy_use,
+		product_claim,
+		unit_price,
+		house_type,
+		room_type,
+		floor,
+		parking,
+		buy_factor,
+		intent_lease,
+		pay_by,
+		reject_factor,
+		intent_unit1,
+		intent_unit2,
+		intent_buynum,
+		intention_desc,
+		buy_count,
+		subject1,
+		content1,
+		subject2,
+		content2,
+		subject3,
+		content3,
+		subject4,
+		content4,
+		is_deleted,
+		created_id,
+		created_time,
+		mod_id,
+		mod_time,
+		
+		log_created_id,
+		log_created_time
+		)
+			VALUES(
+		#{id},
+		#{customerNo},
+		#{customerName},
+		#{companyId},
+		#{projectId},
+		#{teamId},
+		#{userId},
+		#{managerId},
+		#{customerSource},
+		#{intentEstate},
+		#{customerState},
+		#{phone},
+		#{homePhone},
+		#{officePhone},
+		#{gender},
+		#{email},
+		#{peerNumber},
+		#{isFirst},
+		#{firstDate},
+		#{firstHour},
+		#{visitCount},
+		#{isRelation},
+		#{relationDesc},
+		#{isOwner},
+		#{nationality},
+		#{background},
+		#{requestArea},
+		#{priceAmount},
+		#{areaNum},
+		#{priceNum},
+		#{buyReson},
+		#{notBuyReson},
+		#{intentionPart},
+		#{rating},
+		#{ratingRemark},
+		#{payType},
+		#{familyType},
+		#{familyIncome},
+		#{remark1},
+		#{remark2},
+		#{remark3},
+		#{remark4},
+		#{marriage},
+		#{age},
+		#{birthday},
+		#{idcardType},
+		#{idcardNo},
+		#{faceLook},
+		#{workUnit},
+		#{jobPosition},
+		#{wage},
+		#{jobType},
+		#{jobIndustry},
+		#{jobDesc},
+		#{homeProvince},
+		#{homeCity},
+		#{homeRegion},
+		#{homeBlock},
+		#{workProvince},
+		#{workCity},
+		#{workRegion},
+		#{workBlock},
+		#{customerRegion},
+		#{address},
+		#{postcode},
+		#{family},
+		#{interest},
+		#{trafficTool},
+		#{trafficDesc},
+		#{knownFrom},
+		#{buyAim},
+		#{buyUse},
+		#{productClaim},
+		#{unitPrice},
+		#{houseType},
+		#{roomType},
+		#{floor},
+		#{parking},
+		#{buyFactor},
+		#{intentLease},
+		#{payBy},
+		#{rejectFactor},
+		#{intentUnit1},
+		#{intentUnit2},
+		#{intentBuynum},
+		#{intentionDesc},
+		#{buyCount},
+		#{subject1},
+		#{content1},
+		#{subject2},
+		#{content2},
+		#{subject3},
+		#{content3},
+		#{subject4},
+		#{content4},
+		#{isDeleted},
+		#{createdId},
+		#{createdTime},
+		#{modId},
+		#{modTime},
+		#{logCreatedId},
+		#{logCreatedTime}
+			)
+		
+	</insert>
+	<delete id="deleteCustomerLog" parameterType="int">
+	update customer_log set is_deleted='1' where id=#{id};
+	</delete>
+	<update id="updateCustomerLog" parameterType="int">
+	update customer_log set 
+		customer_id=#{customerId},
+		customer_no=#{customerNo},
+		customer_name=#{customerName},
+		company_id=#{companyId},
+		project_id=#{projectId},
+		team_id=#{teamId},
+		user_id=#{userId},
+		manager_id=#{managerId},
+		customer_source=#{customerSource},
+		intent_estate=#{intentEstate},
+		customer_state=#{customerState},
+		phone=#{phone},
+		home_phone=#{homePhone},
+		office_phone=#{officePhone},
+		gender=#{gender},
+		email=#{email},
+		peer_number=#{peerNumber},
+		is_first=#{isFirst},
+		first_date=#{firstDate},
+		first_hour=#{firstHour},
+		visit_count=#{visitCount},
+		is_relation=#{isRelation},
+		relation_desc=#{relationDesc},
+		is_owner=#{isOwner},
+		nationality=#{nationality},
+		background=#{background},
+		request_area=#{requestArea},
+		price_amount=#{priceAmount},
+		area_num=#{areaNum},
+		price_num=#{priceNum},
+		buy_reson=#{buyReson},
+		not_buy_reson=#{notBuyReson},
+		intention_part=#{intentionPart},
+		rating=#{rating},
+		rating_remark=#{ratingRemark},
+		pay_type=#{payType},
+		family_type=#{familyType},
+		family_income=#{familyIncome},
+		remark1=#{remark1},
+		remark2=#{remark2},
+		remark3=#{remark3},
+		remark4=#{remark4},
+		marriage=#{marriage},
+		age=#{age},
+		birthday=#{birthday},
+		idcard_type=#{idcardType},
+		idcard_no=#{idcardNo},
+		face_look=#{faceLook},
+		work_unit=#{workUnit},
+		job_position=#{jobPosition},
+		wage=#{wage},
+		job_type=#{jobType},
+		job_industry=#{jobIndustry},
+		job_desc=#{jobDesc},
+		home_province=#{homeProvince},
+		home_city=#{homeCity},
+		home_region=#{homeRegion},
+		home_block=#{homeBlock},
+		work_province=#{workProvince},
+		work_city=#{workCity},
+		work_region=#{workRegion},
+		work_block=#{workBlock},
+		customer_region=#{customerRegion},
+		address=#{address},
+		postcode=#{postcode},
+		family=#{family},
+		interest=#{interest},
+		traffic_tool=#{trafficTool},
+		traffic_desc=#{trafficDesc},
+		known_from=#{knownFrom},
+		buy_aim=#{buyAim},
+		buy_use=#{buyUse},
+		product_claim=#{productClaim},
+		unit_price=#{unitPrice},
+		house_type=#{houseType},
+		room_type=#{roomType},
+		floor=#{floor},
+		parking=#{parking},
+		buy_factor=#{buyFactor},
+		intent_lease=#{intentLease},
+		pay_by=#{payBy},
+		reject_factor=#{rejectFactor},
+		intent_unit1=#{intentUnit1},
+		intent_unit2=#{intentUnit2},
+		intent_buynum=#{intentBuynum},
+		intention_desc=#{intentionDesc},
+		buy_count=#{buyCount},
+		subject1=#{subject1},
+		content1=#{content1},
+		subject2=#{subject2},
+		content2=#{content2},
+		subject3=#{subject3},
+		content3=#{content3},
+		subject4=#{subject4},
+		content4=#{content4},
+		mod_id=#{modId},
+		mod_time=#{modTime}
+	 where id=#{id}
+	</update>
+	<select id="findCustomerLogById" resultMap="customerLogResultMap">
+	select * from customer_log where id=#{id}
+	</select>
+    
+	<sql id="findWhereCond"> 
+		<where>
+			<if test="customerId != 0">
+			customer_id = #{customerId}
+            </if>    
+            and is_deleted = '0'
+		</where>
+	</sql>
+	
+	<select id="findCustomerLogCount" resultType="int" parameterType="com.ihk.customer.data.pojo.CustomerLogCond">
+		SELECT count(0) from customer_log  
+        <include refid="findWhereCond"/>     
+    </select>
+        
+	<select id="findCustomerLog" resultMap="customerLogResultMap" parameterType="com.ihk.customer.data.pojo.CustomerLogCond">
+		SELECT * from  customer_log 
+        <include refid="findWhereCond"/> 
+		<if test="topNum > 0">
+			limit #{topNum};
+		</if>
+    </select>
+    
+	<select id="findCustomerLogPage" resultMap="customerLogResultMap" parameterType="com.ihk.customer.data.pojo.CustomerLogCond">
+		SELECT * from  customer_log 
+        <include refid="findWhereCond"/> 
+    
+		<if test="startLine >= 0">
+		<if test="pageSize > 0">
+			limit #{startLine},#{pageSize};
+		</if>
+		</if>
+	</select>
+</mapper>

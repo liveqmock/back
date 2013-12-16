@@ -1,0 +1,152 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE struts PUBLIC
+    "-//Apache Software Foundation//DTD Struts Configuration 2.0//EN"
+    "http://struts.apache.org/dtds/struts-2.0.dtd">
+<struts>
+
+	<!-- 设置手机全局exception -->
+	<package name="struts-base-mobile" extends="struts-default" namespace="/mbase">
+		<global-results>
+			<result name="input">/m/m404.jsp</result>
+		</global-results>
+		
+	</package>
+	
+	<!-- 手机web jquery-->
+	<package name="customer_mobile_jquery" extends="struts-base-mobile" namespace="/m">
+	
+		<!-- 跳到登陆界面 -->
+		<action name="loginUserAccount" class="com.ihk.mobile.jquery.MobileLoginAction" method="loginUserAccount">
+			<result name="loginUserAccount">/m/customer/login.jsp</result>
+		</action>
+		
+		<!-- 登陆 -->
+		<action name="login" class="com.ihk.mobile.jquery.MobileLoginAction" method="login">
+			<result name="toModifyPwd">/m/customer/modify_pwd.jsp</result>
+			<result name="fail">/m/customer/login.jsp</result>
+			<result name="succ">/m/customer/login_succ.jsp</result>
+		</action>
+		
+		<!-- 修改密码  -->
+		<action name="modifyPwd" class="com.ihk.mobile.jquery.MobileLoginAction" method="modifyPwd">
+			<result name="fail">/m/customer/modify_pwd.jsp</result>
+			<result name="succ">/m/customer/login_succ.jsp</result>
+		</action>
+		
+		<!-- 退出 -->
+		<action name="loginOut" class="com.ihk.mobile.jquery.MobileLoginAction" method="loginOut">
+			<result name="loginOut">/m/customer/login.jsp</result>
+		</action>
+		
+		<!-- 返回 -->
+		<action name="back" class="com.ihk.mobile.jquery.MobileLoginAction" method="back">
+			<result name="back">/m/customer/login_succ.jsp</result>
+		</action>
+		
+		<!-- 跳到录入客户界面 -->
+		<action name="to" class="com.ihk.mobile.jquery.MobileCustomerAction" method="toInputCustomer">
+			<result name="toInputCustomer">/m/customer/input.jsp</result>
+		</action>
+		
+		<!-- 录入客户 -->
+		<action name="inputCustomer" class="com.ihk.mobile.jquery.MobileCustomerAction" method="inputCustomer">
+			<result name="succ">/m/customer/input_succ.jsp</result>
+			<result name="fail">/m/customer/input_fail.jsp</result>
+		</action>
+		
+		<!-- 跳到更新客户界面 -->
+		<action name="toUpdate" class="com.ihk.mobile.jquery.MobileCustomerAction" method="toUpdate">
+			<result name="toUpdate">/m/customer/update.jsp</result>
+		</action>
+		
+		<!--  更新客户 -->
+		<action name="updateCustomer" class="com.ihk.mobile.jquery.MobileCustomerAction" method="updateCustomer">
+			<result name="succ">/m/customer/update_succ.jsp</result>
+			<result name="fail">/m/customer/update_fail.jsp</result>
+		</action>
+		
+		<!-- 跳到选择问卷类型的界面,也就是新增成功的界面 -->
+		<action name="toChangeQuestion" class="com.ihk.mobile.jquery.MobileQuestionAction" method="toChangeQuestion">
+			<result name="toChangeQuestion">/m/customer/input_succ.jsp</result>
+		</action>
+		
+		<!-- 跳到新增问卷界面 -->
+		<action name="toAddQuestion" class="com.ihk.mobile.jquery.MobileQuestionAction" method="toAddQuestion">
+			<result name="default">/m/customer/question_default.jsp</result>
+			<result name="own">/m/customer/question_own.jsp</result>
+		</action>
+		
+		<!-- 验证问卷 -->
+		<action name="validateMobileQuestion" class="com.ihk.mobile.jquery.MobileQuestionAction" method="validateMobileQuestion"/>
+		
+		<!-- 新增默认问卷 -->
+		<action name="addDefaultQuestion" class="com.ihk.mobile.jquery.MobileQuestionAction" method="addDefaultQuestion">
+			<result name="succ">/m/customer/input_question_succ.jsp</result>
+			<result name="fail">/m/customer/input_fail.jsp</result>
+		</action>
+		
+		<!-- 新增自定义问卷 -->
+		<action name="addOwnQuestion" class="com.ihk.mobile.jquery.MobileQuestionAction" method="addOwnQuestion">
+			<result name="validateMobileQuestion">/m/customer/validate_mobile_question.jsp</result>
+			<result name="succ">/m/customer/input_question_succ.jsp</result>
+			<result name="fail">/m/customer/input_fail.jsp</result>
+		</action>
+		
+		<!-- 修改页面跳到选择问卷的页面 -->
+		<action name="toChangeUpdateQuestion" class="com.ihk.mobile.jquery.MobileQuestionAction" method="toChangeUpdateQuestion">
+			<result name="toChangeUpdateQuestion">/m/customer/change_question.jsp</result>
+		</action>
+		
+		<!-- 跳到新增/修改默认问卷或自定义问卷页面 -->
+		<action name="toModifyQuestion" class="com.ihk.mobile.jquery.MobileQuestionAction" method="toModifyQuestion">
+			<result name="default">/m/customer/question_default_update.jsp</result>
+			<result name="ownNoAnswer">/m/customer/question_ownNoAnswer_update.jsp</result>
+			<result name="ownHaveAnswer">/m/customer/question_ownHaveAnswer_update.jsp</result>
+		</action>
+		
+		<!-- 修改之前没有答卷的自定义问卷  -->
+		<action name="modifyOwnNoAnswerQuestion" class="com.ihk.mobile.jquery.MobileQuestionAction" 
+			method="modifyOwnNoAnswerQuestion">
+			<result name="validateMobileQuestion">/m/customer/validate_mobile_question.jsp</result>
+			<result name="succ">/m/customer/input_question_succ.jsp</result>
+			<result name="fail">/m/customer/input_fail.jsp</result>
+		</action>
+		
+		<!-- 修改之前有答卷的自定义问卷 -->
+		<action name="modifyOwnHaveAnswerQuestion" class="com.ihk.mobile.jquery.MobileQuestionAction" 
+			method="modifyOwnHaveAnswerQuestion">
+			<result name="validateMobileQuestion">/m/customer/validate_mobile_question.jsp</result>
+			<result name="succ">/m/customer/input_question_succ.jsp</result>
+			<result name="fail">/m/customer/input_fail.jsp</result>
+		</action>
+		
+		<!-- 跳到查询页面 -->
+		<action name="toSearch" class="com.ihk.mobile.jquery.MobileCustomerAction" method="toSearch">
+			<result name="toSearch">/m/customer/toSearch.jsp</result>
+		</action>
+		
+		<!-- 查询客户 -->
+		<action name="search" class="com.ihk.mobile.jquery.MobileCustomerAction" method="search">
+			<result name="search">/m/customer/search.jsp</result>
+		</action>
+		
+		<!-- 主页查询按钮 -->
+		<action name="indexSearch" class="com.ihk.mobile.jquery.MobileCustomerAction" method="indexSearch">
+			<result name="indexSearch">/m/customer/search.jsp</result>
+		</action>
+		
+		<!-- 客户跟进界面 -->
+		<action name="toFollow" class="com.ihk.mobile.jquery.MobileCustomerFollowAction" method="toFollow">
+			<result name="toFollow">/m/customer/customer_follow.jsp</result>
+		</action>
+		
+		<!-- 跟进客户 -->
+		<action name="inputCustomerFollow" class="com.ihk.mobile.jquery.MobileCustomerFollowAction" method="inputCustomerFollow">
+			<result name="succ">/m/customer/follow_succ.jsp</result>
+			<result name="fail">/m/customer/update_fail.jsp</result>
+		</action>
+		
+	</package>
+	
+</struts>
+

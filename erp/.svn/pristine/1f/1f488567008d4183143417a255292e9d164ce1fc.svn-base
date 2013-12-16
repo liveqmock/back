@@ -1,0 +1,32 @@
+[{
+	"text":"楼盘项目",
+	"state":"closed",
+	"children":[{
+		"id":"j1",
+		"text":"Java"
+	},{
+		"id":"j2",
+		"text":"C#"
+	}]
+},
+{
+	"id":"build1",
+	"text":"楼盘项目",
+	"state":"open",
+	"children":[{
+		"id":"area1",
+		"text":"楼栋分区",
+		"state":"open",		
+		"children":[{
+			"id":"32",
+			"text":"广州",
+			"attributes":{
+				"type":"endNode"
+			}
+		},{
+			"id":"2",
+			"text":"C#"
+		}]
+	}]
+}
+]

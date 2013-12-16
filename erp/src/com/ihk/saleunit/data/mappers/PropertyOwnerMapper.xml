@@ -1,0 +1,127 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.ihk.saleunit.data.IPropertyOwnerMapper">
+
+	<resultMap type="PropertyOwner" id="propertyOwnerResultMap">
+		<id property="id" column="id" />        
+		<result property="confirmType" column="confirm_type" />
+		<result property="mainId" column="main_id" />
+		<result property="customerName" column="customer_name" />
+		<result property="idcardNo" column="idcard_no" />
+		<result property="phone" column="phone" />
+		<result property="rightPercent" column="right_percent" />
+		<result property="agentName" column="agent_name" />
+		<result property="agentNation" column="agent_nation" />
+		<result property="cardNum" column="card_num" />
+		<result property="agentPhone" column="agent_phone" />
+		<result property="isDeleted" column="is_deleted" />
+		<result property="createdId" column="created_id" />
+		<result property="createdTime" column="created_time" />
+		<result property="modId" column="mod_id" />
+		<result property="modTime" column="mod_time" />
+	</resultMap>
+
+	<insert id="addPropertyOwner" parameterType="PropertyOwner">
+		 <selectKey resultType="java.lang.Integer" keyProperty="id" order="AFTER" >
+            SELECT @@IDENTITY
+        </selectKey>		
+		insert into property_owner(
+		confirm_type,
+		main_id,
+		customer_name,
+		idcard_no,
+		phone,
+		right_percent,
+		agent_name,
+		agent_nation,
+		card_num,
+		agent_phone,
+		is_deleted,
+		created_id,
+		created_time,
+		mod_id,
+		mod_time
+		)
+			VALUES(
+		#{confirmType},
+		#{mainId},
+		#{customerName},
+		#{idcardNo},
+		#{phone},
+		#{rightPercent},
+		#{agentName},
+		#{agentNation},
+		#{cardNum},
+		#{agentPhone},
+		#{isDeleted},
+		#{createdId},
+		#{createdTime},
+		#{modId},
+		#{modTime}
+			)
+		
+	</insert>
+	<delete id="deletePropertyOwner" parameterType="int">
+	update property_owner set is_deleted='1' where id=#{id};
+	</delete>
+	<update id="updatePropertyOwner" parameterType="int">
+	update property_owner set 
+		confirm_type=#{confirmType},
+		main_id=#{mainId},
+		customer_name=#{customerName},
+		idcard_no=#{idcardNo},
+		phone=#{phone},
+		right_percent=#{rightPercent},
+		agent_name=#{agentName},
+		agent_nation=#{agentNation},
+		card_num=#{cardNum},
+		agent_phone=#{agentPhone},
+		is_deleted=#{isDeleted},
+		created_id=#{createdId},
+		created_time=#{createdTime},
+		mod_id=#{modId},
+		mod_time=#{modTime}
+	 where id=#{id}
+	</update>
+	<select id="findPropertyOwnerById" resultMap="propertyOwnerResultMap">
+	select * from property_owner where id=#{id}
+	</select>
+    
+	<sql id="findWhereCond"> 
+		<where>
+		
+			<if test="confirmType != null and confirmType != ''">
+				and confirm_type = #{confirmType}
+			</if>
+			
+			<if test="mainId != null and mainId != ''">
+				and main_id = #{mainId}
+			</if>
+        
+		</where>
+	</sql>
+	
+	<select id="findPropertyOwnerCount" resultType="int" parameterType="com.ihk.saleunit.data.pojo.PropertyOwnerCond">
+		SELECT count(0) from property_owner  
+        <include refid="findWhereCond"/>     
+    </select>
+        
+	<select id="findPropertyOwner" resultMap="propertyOwnerResultMap" parameterType="com.ihk.saleunit.data.pojo.PropertyOwnerCond">
+		SELECT * from  property_owner 
+        <include refid="findWhereCond"/> 
+		<if test="topNum > 0">
+			limit #{topNum};
+		</if>
+    </select>
+    
+	<select id="findPropertyOwnerPage" resultMap="propertyOwnerResultMap" parameterType="com.ihk.saleunit.data.pojo.PropertyOwnerCond">
+		SELECT * from  property_owner 
+        <include refid="findWhereCond"/> 
+    
+		<if test="startLine >= 0">
+		<if test="pageSize > 0">
+			limit #{startLine},#{pageSize};
+		</if>
+		</if>
+	</select>
+</mapper>

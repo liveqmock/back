@@ -1,0 +1,236 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.ihk.property.data.IContractManagerMapper">
+
+	<resultMap type="ContractManager" id="contractManagerResultMap">
+		<id property="id" column="id" />        
+		<result property="propertyId" column="property_id" />
+		<result property="areaId" column="area_id" />
+		<result property="buildId" column="build_id" />
+		<result property="contractNo" column="contract_no" />
+		<result property="managerName" column="manager_name" />
+		<result property="managerType" column="manager_type" />
+		<result property="developerName" column="developer_name" />
+		<result property="startDate" column="start_date" />
+		<result property="endDate" column="end_date" />
+		<result property="saleDate" column="sale_date" />
+		<result property="contractType" column="contract_type" />
+		<result property="contractMemo" column="contract_memo" />
+		<result property="refundType" column="refund_type" />
+		<result property="refundPercent" column="refund_percent" />
+		<result property="refundMemo" column="refund_memo" />
+		<result property="tartsetPartya" column="tartset_partyA" />
+		<result property="tartsetPartyb" column="tartset_partyB" />
+		<result property="feeDate" column="fee_date" />
+		<result property="feeMonthly" column="fee_monthly" />
+		<result property="feeTotal" column="fee_total" />
+		<result property="feeMemo" column="fee_memo" />
+		<result property="premiumType" column="premium_type" />
+		<result property="premiumPercent" column="premium_percent" />
+		<result property="saleBuildArea" column="sale_build_area" />
+		<result property="saleCargoCount" column="sale_cargo_count" />
+		<result property="defaultCommission" column="default_commission" />
+		<result property="relationCommission" column="relation_commission" />
+		<result property="relationMoney" column="relation_money" />
+		<result property="remark" column="remark" />
+		<result property="status" column="status" />
+		<result property="isDeleted" column="is_deleted" />
+		<result property="createdId" column="created_id" />
+		<result property="createdTime" column="created_time" />
+		<result property="modId" column="mod_id" />
+		<result property="modTime" column="mod_time" />
+	</resultMap>
+
+	<insert id="addContractManager" parameterType="ContractManager">
+		 <selectKey resultType="java.lang.Integer" keyProperty="id" order="AFTER" >
+            SELECT @@IDENTITY
+        </selectKey>		
+		insert into contract_manager(
+		property_id,
+		area_id,
+		build_id,
+		contract_no,
+		manager_name,
+		manager_type,
+		developer_name,
+		start_date,
+		end_date,
+		sale_date,
+		contract_type,
+		contract_memo,
+		refund_type,
+		refund_percent,
+		refund_memo,
+		tartset_partyA,
+		tartset_partyB,
+		fee_date,
+		fee_monthly,
+		fee_total,
+		fee_memo,
+		premium_type,
+		premium_percent,
+		sale_build_area,
+		sale_cargo_count,
+		default_commission,
+		relation_commission,
+		relation_money,
+		remark,
+		status,
+		is_deleted,
+		created_id,
+		created_time,
+		mod_id,
+		mod_time
+		)
+			VALUES(
+		#{propertyId},
+		#{areaId},
+		#{buildId},
+		#{contractNo},
+		#{managerName},
+		#{managerType},
+		#{developerName},
+		#{startDate},
+		#{endDate},
+		#{saleDate},
+		#{contractType},
+		#{contractMemo},
+		#{refundType},
+		#{refundPercent},
+		#{refundMemo},
+		#{tartsetPartya},
+		#{tartsetPartyb},
+		#{feeDate},
+		#{feeMonthly},
+		#{feeTotal},
+		#{feeMemo},
+		#{premiumType},
+		#{premiumPercent},
+		#{saleBuildArea},
+		#{saleCargoCount},
+		#{defaultCommission},
+		#{relationCommission},
+		#{relationMoney},
+		#{remark},
+		#{status},
+		#{isDeleted},
+		#{createdId},
+		#{createdTime},
+		#{modId},
+		#{modTime}
+			)
+		
+	</insert>
+	<delete id="deleteContractManager" parameterType="com.ihk.utils.base.PojoDeleteCond">
+	update contract_manager set is_deleted='1', mod_id=#{modId}, mod_time=#{modTime} where id=#{id};
+	</delete>
+	<update id="updateContractManager" parameterType="int">
+	update contract_manager set 
+		property_id=#{propertyId},
+		area_id=#{areaId},
+		build_id=#{buildId},
+		contract_no=#{contractNo},
+		manager_name=#{managerName},
+		manager_type=#{managerType},
+		developer_name=#{developerName},
+		start_date=#{startDate},
+		end_date=#{endDate},
+		sale_date=#{saleDate},
+		contract_type=#{contractType},
+		contract_memo=#{contractMemo},
+		refund_type=#{refundType},
+		refund_percent=#{refundPercent},
+		refund_memo=#{refundMemo},
+		tartset_partyA=#{tartsetPartya},
+		tartset_partyB=#{tartsetPartyb},
+		fee_date=#{feeDate},
+		fee_monthly=#{feeMonthly},
+		fee_total=#{feeTotal},
+		fee_memo=#{feeMemo},
+		premium_type=#{premiumType},
+		premium_percent=#{premiumPercent},
+		sale_build_area=#{saleBuildArea},
+		sale_cargo_count=#{saleCargoCount},
+		default_commission=#{defaultCommission},
+		relation_commission=#{relationCommission},
+		relation_money=#{relationMoney},
+		remark=#{remark},
+		status=#{status},
+		mod_id=#{modId},
+		mod_time=#{modTime}
+	 where id=#{id}
+	</update>
+	
+	<select id="findContractManagerById" resultMap="contractManagerResultMap">
+	select * from contract_manager where id=#{id}
+	</select>
+    
+	<sql id="findWhereCond"> 
+	
+		<where>
+		
+			<if test="buildId > 0">
+				and build_id = #{buildId}
+			</if>
+			
+			<if test="areaId > 0">
+				and area_id = #{areaId}
+			</if>
+			
+			<if test="propertyId > 0">
+				and property_id = #{propertyId}
+			</if>
+			
+			<if test="managerType != null and managerType != ''">
+				and manager_type = #{managerType}
+			</if>
+		
+            and is_deleted = '0' and status='0'
+		</where>
+		
+		order by id desc
+		
+	</sql>
+	
+	<select id="findContractManagerCount" resultType="int" parameterType="com.ihk.property.data.pojo.ContractManagerCond">
+		SELECT count(0) from contract_manager  
+        <include refid="findWhereCond"/>     
+    </select>
+        
+	<select id="findContractManager" resultMap="contractManagerResultMap" parameterType="com.ihk.property.data.pojo.ContractManagerCond">
+		SELECT * from  contract_manager 
+        <include refid="findWhereCond"/> 
+		<if test="topNum > 0">
+			limit #{topNum};
+		</if>
+    </select>
+    
+	<select id="findContractManagerPage" resultMap="contractManagerResultMap" parameterType="com.ihk.property.data.pojo.ContractManagerCond">
+		SELECT * from  contract_manager 
+        <include refid="findWhereCond"/> 
+    
+		<if test="startLine >= 0">
+		<if test="pageSize > 0">
+			limit #{startLine},#{pageSize};
+		</if>
+		</if>
+	</select>
+	
+	<select id="findContractManagerByBuildId" resultMap="contractManagerResultMap">
+		select * from contract_manager where build_id=#{buildId} and is_deleted='0' and status='0'
+	</select>
+	
+	<select id="findContractManagerByAreaId" resultMap="contractManagerResultMap">
+		select * from contract_manager where area_id=#{areaId} and is_deleted='0' and status='0'
+	</select>
+	
+	<select id="findContractManagerByProId" resultMap="contractManagerResultMap">
+		select * from contract_manager where property_id=#{proId} and is_deleted='0' and status='0'
+	</select>
+	
+	<update id="cancelContractManager" parameterType="com.ihk.utils.base.PojoDeleteCond">
+		update contract_manager set status='1', mod_id=#{modId}, mod_time=#{modTime} where id=#{id};
+	</update>
+	
+	
+</mapper>

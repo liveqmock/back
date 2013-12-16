@@ -1,0 +1,99 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.ihk.saleunit.data.IReportDefineTypeMapper">
+
+	<resultMap type="ReportDefineType" id="reportDefineTypeResultMap">
+		<id property="id" column="id" />        
+		<result property="projectId" column="project_id" />
+		<result property="reportName" column="report_name" />
+		<result property="typeName" column="type_name" />
+		<result property="orderIndex" column="order_index" />
+		<result property="isDeleted" column="is_deleted" />
+		<result property="createdId" column="created_id" />
+		<result property="createdTime" column="created_time" />
+		<result property="modId" column="mod_id" />
+		<result property="modTime" column="mod_time" />
+	</resultMap>
+
+	<insert id="addReportDefineType" parameterType="ReportDefineType">
+		 <selectKey resultType="java.lang.Integer" keyProperty="id" order="AFTER" >
+            SELECT @@IDENTITY
+        </selectKey>		
+		insert into report_define_type(
+		project_id,
+		report_name,
+		type_name,
+		order_index,
+		is_deleted,
+		created_id,
+		created_time,
+		mod_id,
+		mod_time
+		)
+			VALUES(
+		#{projectId},
+		#{reportName},
+		#{typeName},
+		#{orderIndex},
+		#{isDeleted},
+		#{createdId},
+		#{createdTime},
+		#{modId},
+		#{modTime}
+			)
+		
+	</insert>
+	<delete id="deleteReportDefineType" parameterType="com.ihk.utils.base.PojoDeleteCond">
+	update report_define_type set is_deleted='1', mod_id=#{modId}, mod_time=#{modTime} where id=#{id};
+	</delete>
+	<update id="updateReportDefineType" parameterType="int">
+	update report_define_type set 
+		project_id=#{projectId},
+		report_name=#{reportName},
+		type_name=#{typeName},
+		order_index=#{orderIndex},
+		mod_id=#{modId},
+		mod_time=#{modTime}
+	 where id=#{id}
+	</update>
+	<select id="findReportDefineTypeById" resultMap="reportDefineTypeResultMap">
+	select * from report_define_type where id=#{id}
+	</select>
+    
+	<sql id="findWhereCond"> 
+		<where>
+			<if test="reportName != null and reportName != ''">
+				and report_name = #{reportName}
+			</if>
+        <!--
+			<if test="date1 != null and date1 != ''">
+            </if>    
+            and is_deleted = '0'
+            -->
+		</where>
+	</sql>
+	
+	<select id="findReportDefineTypeCount" resultType="int" parameterType="com.ihk.saleunit.data.pojo.ReportDefineTypeCond">
+		SELECT count(0) from report_define_type  
+        <include refid="findWhereCond"/>     
+    </select>
+        
+	<select id="findReportDefineType" resultMap="reportDefineTypeResultMap" parameterType="com.ihk.saleunit.data.pojo.ReportDefineTypeCond">
+		SELECT * from  report_define_type 
+        <include refid="findWhereCond"/> 
+		<if test="topNum > 0">
+			limit #{topNum};
+		</if>
+    </select>
+    
+	<select id="findReportDefineTypePage" resultMap="reportDefineTypeResultMap" parameterType="com.ihk.saleunit.data.pojo.ReportDefineTypeCond">
+		SELECT * from  report_define_type 
+        <include refid="findWhereCond"/> 
+    
+		<if test="startLine >= 0">
+		<if test="pageSize > 0">
+			limit #{startLine},#{pageSize};
+		</if>
+		</if>
+	</select>
+</mapper>

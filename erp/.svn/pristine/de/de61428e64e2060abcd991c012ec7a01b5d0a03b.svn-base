@@ -1,0 +1,85 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.ihk.setting.data.IProjectCodeMapper">
+
+	<resultMap type="ProjectCode" id="projectCodeResultMap">
+		<id property="projectId" column="project_id" />        
+		<result property="typeName" column="type_name" />
+		<result property="codeVal" column="code_val" />
+		<result property="codeDesc" column="code_desc" />
+		<result property="codeOrder" column="code_order" />
+		<result property="isDeleted" column="is_deleted" />
+	</resultMap>
+	
+	<resultMap type="CodeDtl" id="codeDtlResultMap">
+		<result property="typeName" column="type_name" />        
+		<result property="codeVal" column="code_val" />
+		<result property="codeDesc" column="code_desc" />
+		<result property="isDeleted" column="is_deleted" />
+		<result property="codeOrder" column="code_order" />
+	</resultMap>
+	
+	
+	<insert id="saveProjectCode" parameterType="ProjectCode">		
+		insert into project_code(
+			project_id,
+			type_name,
+			code_val,
+			code_desc,
+			code_order,
+			is_deleted
+			)
+				VALUES(
+			#{projectId},
+			#{typeName},
+			#{codeVal},
+			#{codeDesc},
+			#{codeOrder},
+			#{isDeleted}
+			) 
+	</insert>
+	
+	<update id="deleteAllProjectCode" parameterType="map">		
+		<!-- 
+		update customer set is_deleted ='1' where id=#{id};
+		 -->
+		update project_code set is_deleted = '1' where project_id = #{companyProjectId} and type_name = #{topicName};
+
+	</update>
+
+	<select id="findCodeList" resultMap="codeDtlResultMap" parameterType="com.ihk.setting.data.pojo.ProjectCodeCond">
+	select type_name,code_val,code_desc,is_deleted,code_order from project_code where type_name=#{typeName} and project_id=#{projectId} and is_deleted='0' order by code_order 
+	</select>
+	
+	<select id="findCodeDescByCodeVal" resultMap="projectCodeResultMap" parameterType="com.ihk.setting.data.pojo.ProjectCodeCond">
+	select code_desc from project_code where type_name=#{typeName} and code_val=#{codeVal} and project_id=#{projectId} and is_deleted='0' order by code_order limit 1
+	</select>
+	
+	<select id="findAllProjectCode" resultMap="projectCodeResultMap">
+		select * from project_code where is_deleted='0'
+	</select>
+	
+	<select id="findProjectCodeByProjectIdAndTypeName" resultMap="projectCodeResultMap" parameterType="com.ihk.setting.data.pojo.ProjectCodeCond">
+		select * from project_code where project_id = #{projectId} and type_name = #{typeName} and is_deleted = '0' order by code_order
+	</select>
+	
+	<select id="findProjectCode" resultMap="projectCodeResultMap" parameterType="com.ihk.setting.data.pojo.ProjectCodeCond">
+		select * from project_code 
+		<where> 
+			is_deleted = '0'
+			<if test="codeDesc != null and codeDesc != ''">
+				and code_desc = #{codeDesc}
+			</if>
+			<if test="codeVal != null and codeVal != ''">
+				and code_val = #{codeVal}
+			</if>
+			<if test="typeName != null and typeName != ''">
+				and type_name = #{typeName}
+			</if>
+			<if test="projectId != null and projectId != ''">
+				and project_id = #{projectId}
+			</if>
+			
+		</where>
+	</select>
+</mapper>

@@ -1,0 +1,175 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.ihk.saleunit.data.IQuestionMapper">
+
+	<resultMap type="Question" id="questionResultMap">
+		<id property="id" column="id" />        
+		<result property="questionName" column="question_name" />
+		<result property="remark" column="remark" />
+		<result property="companyProjectId" column="company_project_id" />
+		<result property="projectId" column="project_id" />
+		<result property="areaId" column="area_id" />
+		<result property="buildId" column="build_id" />
+		<result property="isDeleted" column="is_deleted" />
+		<result property="createdId" column="created_id" />
+		<result property="createdTime" column="created_time" />
+		<result property="modId" column="mod_id" />
+		<result property="modTime" column="mod_time" />
+	</resultMap>
+
+	<insert id="addQuestion" parameterType="Question">
+		 <selectKey resultType="java.lang.Integer" keyProperty="id" order="AFTER" >
+            SELECT @@IDENTITY
+        </selectKey>		
+		insert into question(
+		question_name,
+		remark,
+		company_project_id,
+		project_id,
+		area_id,
+		build_id,
+		is_deleted,
+		created_id,
+		created_time,
+		mod_id,
+		mod_time
+		)
+			VALUES(
+		#{questionName},
+		#{remark},
+		#{companyProjectId},
+		#{projectId},
+		#{areaId},
+		#{buildId},
+		#{isDeleted},
+		#{createdId},
+		#{createdTime},
+		#{modId},
+		#{modTime}
+			)
+		
+	</insert>
+	<delete id="deleteQuestion" parameterType="int">
+	update question set is_deleted='1' where id=#{id};
+	</delete>
+	<update id="updateQuestion" parameterType="int">
+	update question set 
+		question_name=#{questionName},
+		remark=#{remark},
+		company_project_id=#{companyProjectId},
+		project_id=#{projectId},
+		area_id=#{areaId},
+		build_id=#{buildId},
+		mod_id=#{modId},
+		mod_time=#{modTime}
+	 where id=#{id}
+	</update>
+	<update id="updateQuestionNameAndRemark" parameterType="int">
+	update question set 
+		question_name=#{questionName},
+		remark=#{remark}
+	 where id=#{id}
+	</update>
+	<select id="findQuestionById" resultMap="questionResultMap">
+	select * from question where id=#{id} 
+	</select>
+    
+	<sql id="findWhereCond"> 
+		<where>
+			<if test="buildId != null and buildId != '' ">
+				and build_id = #{buildId}
+            </if>   
+             <if test="areaId != null and areaId != '' and areaId != '0'">
+				and area_id = #{areaId}
+            </if>
+             <if test="projectId != 0">
+				and project_id = #{projectId}
+            </if>
+            <if test="companyProjectId >0 ">
+				and company_project_id = #{companyProjectId} 
+            </if>
+            <if test="questionName != null and buildId != ''">
+				and question_name = #{questionName} 
+            </if>
+            
+            <if test="companyProjectIds != null and companyProjectIds.size() > 0">
+            	and company_project_id in
+	            <foreach  
+	                collection="companyProjectIds"  
+	                item="pId"  
+	                open="("  
+	                separator=","  
+	                close=")">   
+	                #{pId}  
+	            </foreach>
+            </if>
+            
+			<if test="date1 != null and date1 != ''">
+				and created_time &gt;= #{date1}
+			</if>
+			<if test="date2 != null and date2 != ''">
+				and created_time &lt; date_add(#{date2},interval 1 day)
+			</if>   
+            
+            and is_deleted = '0'
+		</where>
+	</sql>
+	
+	<select id="findQuestionCount" resultType="int" parameterType="com.ihk.saleunit.data.pojo.QuestionCond">
+		SELECT count(0) from question  
+        <include refid="findWhereCond"/>     
+    </select>
+        
+	<select id="findQuestion" resultMap="questionResultMap" parameterType="com.ihk.saleunit.data.pojo.QuestionCond">
+		SELECT * from  question 
+        <include refid="findWhereCond"/> 
+		<if test="topNum > 0">
+			limit #{topNum};
+		</if>
+    </select>
+    
+	<select id="findTopCompanyQuestion" resultType="java.util.Map" parameterType="com.ihk.saleunit.data.pojo.QuestionCond">
+		SELECT company_project.project_name as projectName,question.id as questionId,question.question_name as questionName,COUNT(question_anwser.id) as answerCount FROM question,company_project,question_anwser
+		WHERE question.company_project_id= company_project.id 
+		AND question.id=question_anwser.question_id
+		AND company_project.id IN (SELECT id FROM company_project 
+            <if test="companyIds != null and companyIds.size() > 0">
+            	WHERE company_id  in
+	            <foreach  
+	                collection="companyIds"  
+	                item="cId"  
+	                open="("  
+	                separator=","  
+	                close=")">   
+	                #{cId}  
+	            </foreach>
+            </if>		
+		) 
+		GROUP BY company_project.project_name,question.question_name
+		ORDER BY COUNT(question_anwser.id) DESC,company_project.project_name,question.id,question.question_name		
+		<if test="topNum > 0">
+			limit #{topNum};
+		</if>
+	</select>
+    
+	<select id="findQuestionPage" resultMap="questionResultMap" parameterType="com.ihk.saleunit.data.pojo.QuestionCond">
+		SELECT * from  question 
+        <include refid="findWhereCond"/> 
+    
+		<if test="startLine >= 0">
+		<if test="pageSize > 0">
+			limit #{startLine},#{pageSize};
+		</if>
+		</if>
+	</select>
+	
+	
+	<select id="findByCompanyProjectId" resultMap="questionResultMap">
+		SELECT * from  question where company_project_id = #{companyProjectId} and is_deleted='0' and company_project_id > 0
+    </select>
+    
+    <select id="findQuestionsByProjectId" resultMap="questionResultMap">
+		SELECT * from  question where project_id = #{projectId} and is_deleted='0' and project_id > 0
+    </select>
+    
+</mapper>

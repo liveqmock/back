@@ -1,0 +1,84 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.ihk.sale.data.ISaleMonitorLogbeforeMapper">
+
+	<resultMap type="SaleMonitorLogbefore" id="saleMonitorLogbeforeResultMap">
+		<id property="id" column="id" />        
+		<result property="dataId" column="data_id" />
+		<result property="modTime" column="mod_time" />
+		<result property="isRunPlan" column="is_run_plan" />
+	</resultMap>
+
+	<insert id="addSaleMonitorLogbefore" parameterType="SaleMonitorLogbefore">
+		 <selectKey resultType="java.lang.Integer" keyProperty="id" order="AFTER" >
+            SELECT @@IDENTITY
+        </selectKey>		
+		insert into sale_monitor_logbefore(
+		data_id,
+		mod_time,
+		is_run_plan
+		)
+			VALUES(
+		#{dataId},
+		#{modTime},
+		#{isRunPlan}
+			)
+		
+	</insert>
+	<delete id="deleteSaleMonitorLogbefore" parameterType="int">
+	update sale_monitor_logbefore set is_deleted='1' where id=#{id};
+	</delete>
+	<update id="updateSaleMonitorLogbefore" parameterType="int">
+	update sale_monitor_logbefore set 
+		data_id=#{dataId},
+		mod_time=#{modTime},
+		is_run_plan=#{isRunPlan}
+	 where id=#{id}
+	</update>
+	<select id="findSaleMonitorLogbeforeById" resultMap="saleMonitorLogbeforeResultMap">
+	select * from sale_monitor_logbefore where id=#{id}
+	</select>
+    
+	<sql id="findWhereCond"> 
+		<where>
+        <!--
+			<if test="date1 != null and date1 != ''">
+            </if>    
+            and is_deleted = '0'
+            -->
+		</where>
+	</sql>
+	
+	<select id="findSaleMonitorLogbeforeCount" resultType="int" parameterType="com.ihk.sale.data.pojo.SaleMonitorLogbeforeCond">
+		SELECT count(0) from sale_monitor_logbefore  
+        <include refid="findWhereCond"/>     
+    </select>
+        
+	<select id="findSaleMonitorLogbefore" resultMap="saleMonitorLogbeforeResultMap" parameterType="com.ihk.sale.data.pojo.SaleMonitorLogbeforeCond">
+		SELECT * from  sale_monitor_logbefore 
+        <include refid="findWhereCond"/> 
+		<if test="topNum > 0">
+			limit #{topNum};
+		</if>
+    </select>
+    
+	<select id="findSaleMonitorLogbeforePage" resultMap="saleMonitorLogbeforeResultMap" parameterType="com.ihk.sale.data.pojo.SaleMonitorLogbeforeCond">
+		SELECT * from  sale_monitor_logbefore 
+        <include refid="findWhereCond"/> 
+    
+		<if test="startLine >= 0">
+		<if test="pageSize > 0">
+			limit #{startLine},#{pageSize};
+		</if>
+		</if>
+	</select>
+	
+	<select id="findSaleMonitorLogbeforeForQuartz" resultMap="saleMonitorLogbeforeResultMap" parameterType="com.ihk.sale.data.pojo.SaleMonitorLogbeforeCond">
+		SELECT * from  sale_monitor_logbefore where substring(mod_time,1,10) = #{monitorDate};
+	</select>
+	
+	<select id="findOneDay" resultMap="saleMonitorLogbeforeResultMap" parameterType="com.ihk.sale.data.pojo.SaleMonitorLogbeforeCond">
+		SELECT * from  sale_monitor_logbefore where mod_time like  CONCAT(CONCAT('%', #{modTime}),'%') and data_id = #{dateId} and is_run_plan = '0'
+	</select>
+	
+</mapper>

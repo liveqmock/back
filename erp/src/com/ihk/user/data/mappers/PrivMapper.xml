@@ -1,0 +1,115 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.ihk.user.data.IPrivMapper">
+
+	<resultMap type="Priv" id="privResultMap">
+		<id property="id" column="id" />        
+		<result property="privCode" column="priv_code" />
+		<result property="privName" column="priv_name" />
+		<result property="devFlag" column="dev_flag" />
+		<result property="orderIndex" column="order_index" />
+		<result property="remark" column="remark" />
+	</resultMap>
+	
+	<resultMap type="java.util.Map" id="userPrivResultMap">      
+		<result property="userId" column="user_id" />
+		<result property="roleId" column="role_id" />
+		<result property="privCode" column="priv_code" />
+		<result property="userName" column="user_name" />
+		<result property="realName" column="real_name" />
+		<result property="roleName" column="role_name" />
+		<result property="privName" column="priv_name" />
+		<result property="projectName" column="project_name"/>
+	</resultMap>
+
+	<insert id="addPriv" parameterType="Priv">
+		 <selectKey resultType="java.lang.Integer" keyProperty="id" order="AFTER" >
+            SELECT @@IDENTITY
+        </selectKey>			
+		insert into priv(
+		priv_code,
+		priv_name,
+		dev_flag,
+		order_index,
+        remark
+		)
+			VALUES(
+		#{privCode},
+		#{privName},
+		#{devFlag},
+		#{orderIndex},
+		#{remark}
+			)
+		
+	</insert>
+	
+	<delete id="deletePriv" parameterType="int">
+	delete from priv where priv_code=#{priv_code};
+	</delete>
+	
+	<update id="updatePriv" parameterType="int">
+	update priv set 
+		priv_code=#{privCode},
+		priv_name=#{privName},
+		dev_flag=#{devFlag},
+		order_index=#{orderIndex},
+		remark=#{remark}
+	 where id=#{id}
+	</update>
+	<select id="findPrivById" resultMap="privResultMap">
+	select * from priv where id=#{id}
+	</select>
+	<select id="findAll" resultMap="privResultMap" >
+		SELECT * from  priv where is_deleted="0" and dev_flag="GUANGZHOU" order by priv_name asc
+    
+	</select>
+	<select id="findPrivCount" resultType="int" parameterType="com.ihk.user.data.pojo.PrivCond">
+		SELECT count(0) from priv  
+<!--
+    	<where>			
+	    <if test="studentName!=null and studentName!='' ">  
+	        STUDENT_NAME LIKE CONCAT(CONCAT('%', #{studentName}),'%')   
+	    </if>  
+    </where>
+    -->
+    
+    </select>
+    
+	<sql id="findWhereCond"> 
+		<where>
+			<if test="privCode != null and privCode != ''">
+				and priv_code = #{privCode}
+			</if>
+			<if test="devFlag != null and devFlag != ''">
+				and dev_flag = #{devFlag}
+			</if>
+			<if test="privName != null and privName != ''">
+				and priv_name = #{privName}
+			</if>
+		</where>
+	</sql>
+    
+	<select id="findPrivPage" resultMap="privResultMap" parameterType="com.ihk.user.data.pojo.PrivCond">
+		SELECT * from  priv 
+     <include refid="findWhereCond"/>       
+		<if test="startLine >= 0">
+		<if test="pageSize > 0">
+			limit #{startLine},#{pageSize};
+		</if>
+		</if>
+	</select>
+
+	
+	<select id="findUserPriv" resultMap="userPrivResultMap" parameterType="int">		
+	select r.user_id,r.role_id,p.priv_code,u.user_name,u.real_name,role.role_name,priv.priv_name,pro.project_name
+	from user_role r 
+	inner join user_account u on u.id=r.user_id
+	inner join role on role.id=r.role_id
+	left join role_priv_ref rr on r.role_id=rr.role_id
+	left join role_priv p on r.role_id=p.role_id or rr.ref_role_id=p.role_id
+	inner join priv on priv.priv_code=p.priv_code
+    inner join company_project pro on role.project_id=pro.id
+	where r.user_id=#{userId};
+	</select>
+
+</mapper>

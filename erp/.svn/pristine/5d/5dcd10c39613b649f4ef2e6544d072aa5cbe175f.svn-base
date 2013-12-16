@@ -1,0 +1,176 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.ihk.property.data.IUnitPayBillMapper">
+
+	<resultMap type="UnitPayBill" id="unitPayBillResultMap">
+		<id property="id" column="id" />        
+		<result property="unitId" column="unit_id" />
+		<result property="wayDetailId" column="way_detail_id" />
+		<result property="shouldPay" column="should_pay" />
+		<result property="hadPay" column="had_pay" />
+		<result property="notPay" column="not_pay" />
+		<result property="typeName" column="type_name" />
+		<result property="feeType" column="fee_type" />
+		<result property="seqNum" column="seq_num" />
+		<result property="payPercent" column="pay_percent" />
+		<result property="payDate" column="pay_date" />
+		<result property="remark" column="remark" />
+		<result property="isVoid" column="is_void"/>
+		<result property="isDeleted" column="is_deleted" />
+		<result property="createdId" column="created_id" />
+		<result property="createdTime" column="created_time" />
+		<result property="modId" column="mod_id" />
+		<result property="modTime" column="mod_time" />
+	</resultMap>
+
+	<insert id="addUnitPayBill" parameterType="UnitPayBill">
+		 <selectKey resultType="java.lang.Integer" keyProperty="id" order="AFTER" >
+            SELECT @@IDENTITY
+        </selectKey>		
+		insert into unit_pay_bill(
+		unit_id,
+		way_detail_id,
+		should_pay,
+		had_pay,
+		not_pay,
+		type_name,
+		fee_type,
+		seq_num,
+		pay_percent,
+		pay_date,
+		remark,
+		is_void,
+		is_deleted,
+		created_id,
+		created_time,
+		mod_id,
+		mod_time
+		)
+			VALUES(
+		#{unitId},
+		#{wayDetailId},
+		#{shouldPay},
+		#{hadPay},
+		#{notPay},
+		#{typeName},
+		#{feeType},
+		#{seqNum},
+		#{payPercent},
+		#{payDate},
+		#{remark},
+		#{isVoid},
+		#{isDeleted},
+		#{createdId},
+		#{createdTime},
+		#{modId},
+		#{modTime}
+			)
+		
+	</insert>
+	<delete id="deleteUnitPayBill" parameterType="com.ihk.utils.base.PojoDeleteCond">
+	update unit_pay_bill set is_deleted='1', mod_id=#{modId}, mod_time=#{modTime} where id=#{id};
+	</delete>
+	<update id="updateUnitPayBill" parameterType="int">
+	update unit_pay_bill set 
+		unit_id=#{unitId},
+		way_detail_id=#{wayDetailId},
+		should_pay=#{shouldPay},
+		had_pay=#{hadPay},
+		not_pay=#{notPay},
+		type_name=#{typeName},
+		fee_type=#{feeType},
+		seq_num=#{seqNum},
+		pay_percent=#{payPercent},
+		pay_date=#{payDate},
+		remark=#{remark},
+		is_void=#{isVoid},
+		mod_id=#{modId},
+		mod_time=#{modTime}
+	 where id=#{id}
+	</update>
+	
+	<select id="findUnitPayBillById" resultMap="unitPayBillResultMap">
+	select * from unit_pay_bill where id=#{id}
+	</select>
+    
+	<sql id="findWhereCond"> 
+		<where>
+			<if test="unitId != null and unitId != ''">
+				and unit_id = #{unitId}
+            </if>    
+            
+            <if test="typeName != null and typeName != ''">
+				and type_name = #{typeName}
+            </if>   
+            
+            <if test="feeType != null and feeType != ''">
+				and fee_type = #{feeType}
+            </if> 
+            
+            and is_deleted = '0'
+		</where>
+	</sql>
+	
+	<select id="findUnitPayBillCount" resultType="int" parameterType="com.ihk.property.data.pojo.UnitPayBillCond">
+		SELECT count(0) from unit_pay_bill  
+        <include refid="findWhereCond"/>     
+    </select>
+        
+	<select id="findUnitPayBill" resultMap="unitPayBillResultMap" parameterType="com.ihk.property.data.pojo.UnitPayBillCond">
+		SELECT * from  unit_pay_bill 
+        <include refid="findWhereCond"/> 
+		<if test="topNum > 0">
+			limit #{topNum};
+		</if>
+    </select>
+    
+	<select id="findUnitPayBillPage" resultMap="unitPayBillResultMap" parameterType="com.ihk.property.data.pojo.UnitPayBillCond">
+		SELECT * from  unit_pay_bill 
+        <include refid="findWhereCond"/> 
+    
+		<if test="startLine >= 0">
+		<if test="pageSize > 0">
+			limit #{startLine},#{pageSize};
+		</if>
+		</if>
+	</select>
+	
+	<select id="findUnitPayBillLimit1ByUnitId" resultMap="unitPayBillResultMap">
+		select * from unit_pay_bill where unit_id = #{unitId} and is_deleted = '0'  order by had_pay desc limit 1
+	</select>
+	
+	<select id="findUnitPayBillByUnitId" resultMap="unitPayBillResultMap">
+		select * from unit_pay_bill where unit_id = #{unitId} and is_deleted = '0' order by way_detail_id
+	</select>
+	
+	<update id="disabledUnitPayBill" parameterType="com.ihk.utils.base.PojoDeleteCond">
+		update unit_pay_bill set is_void='1', mod_id=#{modId}, mod_time=#{modTime} where id=#{id};
+	</update>
+	
+	<update id="enabledUnitPayBill" parameterType="com.ihk.utils.base.PojoDeleteCond">
+		update unit_pay_bill set is_void='0', mod_id=#{modId}, mod_time=#{modTime} where id=#{id};
+	</update>
+	
+	<update id="updateUnitPayBillHadAndNotPayForAddReceipt" parameterType="com.ihk.property.data.pojo.UnitPayBillCond">
+		update unit_pay_bill set 
+			had_pay=had_pay + #{thisPay},
+			not_pay=not_pay - #{thisPay},
+			mod_id=#{modId},
+			mod_time=#{modTime}
+	 	where id=#{billId}
+	</update>
+	
+	<update id="updateUnitPayBillHadAndNotPayForDeleteReceipt" parameterType="com.ihk.property.data.pojo.UnitPayBillCond">
+		update unit_pay_bill set 
+			had_pay=had_pay - #{thisPay},
+			not_pay=not_pay + #{thisPay},
+			mod_id=#{modId},
+			mod_time=#{modTime}
+	 	where id=#{billId}
+	</update>
+	
+	<delete id="deleteUnitPayBillByUnitId" parameterType="com.ihk.utils.base.PojoDeleteCond">
+		update unit_pay_bill set is_deleted='1', mod_id=#{modId}, mod_time=#{modTime} where unit_id=#{unitId};
+	</delete>
+	
+</mapper>

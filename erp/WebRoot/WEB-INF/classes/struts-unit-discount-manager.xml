@@ -1,0 +1,63 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE struts PUBLIC
+    "-//Apache Software Foundation//DTD Struts Configuration 2.0//EN"
+    "http://struts.apache.org/dtds/struts-2.0.dtd">
+<struts>
+	<!-- 单元折扣管理 -->
+	<package name="unit_discount_manager" extends="struts-base" namespace="/unit_discount/manager">
+	
+		<action name="createUnitDiscountDialog" class="com.ihk.saleunit.action.discount.UnitDiscountManager" method="createUnitDiscountDialog">
+			<result name="createUnitDiscountDialog">/saleunit_new/guangzhou/unit_discount_manager.jsp</result>
+		</action>
+		
+		<action name="createUnitDiscount" class="com.ihk.saleunit.action.discount.UnitDiscountManager" method="createUnitDiscount">
+			<result name="createUnitDiscount">/saleunit_new/guangzhou/unit_discount_manager.jsp</result>
+		</action>
+		
+		<action name="getUnitDiscountManagerCloseShowByDiscountId" class="com.ihk.saleunit.action.discount.UnitDiscountManager" 
+			method="getUnitDiscountManagerCloseShowByDiscountId"/>
+	
+	</package>
+	
+	<!-- 项目折扣管理 -->
+	<package name="project_discount_manager" extends="struts-base" namespace="/project_discount/manager">
+		<!-- 设置部分 -->
+		<action name="layout" class="com.ihk.setup.discount.ProjectDiscountAction" method="layout">
+			<result name="layout">/setup/discount/layout.jsp</result>
+		</action>
+		
+		<action name="left" class="com.ihk.setup.discount.ProjectDiscountAction" method="left"/>
+		
+		<action name="toProjectDiscountManager" class="com.ihk.setup.discount.ProjectDiscountAction" method="toProjectDiscountManager">
+			<result name="toProjectDiscountManager">/setup/discount/project_discount_manager.jsp</result>
+		</action>
+		
+		<action name="ajaxProjectDiscountList" class="com.ihk.setup.discount.ProjectDiscountAction" method="ajaxProjectDiscountList"/>
+		
+		<action name="discountModify" class="com.ihk.setup.discount.ProjectDiscountAction" method="discountModify"/>
+		
+		<!-- 使用部分 -->
+		<action name="createProjectDiscountDialog" class="com.ihk.saleunit.action.discount.ProjectDiscountManager" method="createProjectDiscountDialog">
+			<result name="createProjectDiscountDialog">/saleunit_new/guangzhou/project_discount_manager.jsp</result>
+		</action>
+		
+		<action name="createProjectDiscount" class="com.ihk.saleunit.action.discount.ProjectDiscountManager" method="createProjectDiscount">
+			<result name="createProjectDiscount">/saleunit_new/guangzhou/project_discount_manager.jsp</result>
+		</action>
+		
+		<action name="getProjectDiscountManagerCloseShowByDiscountId" class="com.ihk.saleunit.action.discount.ProjectDiscountManager" 
+			method="getProjectDiscountManagerCloseShowByDiscountId"/>
+			
+		<action name="getUnitDiscountDetailByDiscountId" class="com.ihk.saleunit.action.discount.ProjectDiscountManager" method="getUnitDiscountDetailByDiscountId"/>
+		
+		<action name="createUpdateProjectDiscountDialog" class="com.ihk.saleunit.action.discount.ProjectDiscountManager" method="createUpdateProjectDiscountDialog">
+			<result name="createUpdateProjectDiscountDialog">/saleunit_new/guangzhou/project_discount_manager.jsp</result>
+		</action>
+		
+		<action name="updateProjectDiscount" class="com.ihk.saleunit.action.discount.ProjectDiscountManager" method="updateProjectDiscount">
+			<result name="updateProjectDiscount">/saleunit_new/guangzhou/project_discount_manager.jsp</result>
+		</action>
+		
+	</package>
+	
+</struts>

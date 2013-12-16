@@ -1,0 +1,171 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.ihk.property.data.IPropertyGroupDetailMapper">
+
+	<resultMap type="PropertyGroupDetail" id="propertyGroupDetailResultMap">
+		<id property="id" column="id" />        
+		<result property="buildId" column="build_id" />
+		<result property="unitId" column="unit_id" />
+		<result property="groupId" column="group_id" />
+		<result property="isDeleted" column="is_deleted" />
+		<result property="createdId" column="created_id" />
+		<result property="createdTime" column="created_time" />
+		<result property="modId" column="mod_id" />
+		<result property="modTime" column="mod_time" />
+	</resultMap>
+
+	<insert id="addPropertyGroupDetail" parameterType="PropertyGroupDetail">
+		 <selectKey resultType="java.lang.Integer" keyProperty="id" order="AFTER" >
+            SELECT @@IDENTITY
+        </selectKey>		
+		insert into property_group_detail(
+		build_id,
+		unit_id,
+		group_id,
+		is_deleted,
+		created_id,
+		created_time,
+		mod_id,
+		mod_time
+		)
+			VALUES(
+		#{buildId},
+		#{unitId},
+		#{groupId},
+		#{isDeleted},
+		#{createdId},
+		#{createdTime},
+		#{modId},
+		#{modTime}
+			)
+		
+	</insert>
+	<delete id="deletePropertyGroupDetail" parameterType="int">
+	update property_group_detail set is_deleted='1' where id=#{id};
+	</delete>
+	
+	<delete id="deletePropertyGroupDetailByGroupIdAndUnitId"  parameterType="com.ihk.property.data.pojo.PropertyGroupDetailCond">
+	update property_group_detail set is_deleted='1' where group_id=#{groupId} and unit_id = #{unitId};
+	</delete>
+	<update id="updatePropertyGroupDetail" parameterType="int">
+	update property_group_detail set 
+		build_id=#{buildId},
+		unit_id=#{unitId},
+		group_id=#{groupId},
+		mod_id=#{modId},
+		mod_time=#{modTime}
+	 where id=#{id}
+	</update>
+	<select id="findPropertyGroupDetailById" resultMap="propertyGroupDetailResultMap">
+	select * from property_group_detail where id=#{id}
+	</select>
+    
+	<sql id="findWhereCond"> 
+		<where>
+        
+			<if test="groupId != null and groupId != ''">
+				group_id = #{groupId}
+            </if>    
+            and is_deleted = '0'
+            
+		</where>
+	</sql>
+	
+	<select id="findPropertyGroupDetailCount" resultType="int" parameterType="com.ihk.property.data.pojo.PropertyGroupDetailCond">
+		SELECT count(0) from property_group_detail  
+        <include refid="findWhereCond"/>     
+    </select>
+        
+	<select id="findPropertyGroupDetail" resultMap="propertyGroupDetailResultMap" parameterType="com.ihk.property.data.pojo.PropertyGroupDetailCond">
+		SELECT * from  property_group_detail 
+        <include refid="findWhereCond"/> 
+		<if test="topNum > 0">
+			limit #{topNum};
+		</if>
+    </select>
+    
+	<select id="findPropertyGroupDetailPage" resultMap="propertyGroupDetailResultMap" parameterType="com.ihk.property.data.pojo.PropertyGroupDetailCond">
+		SELECT * from  property_group_detail 
+        <include refid="findWhereCond"/> 
+    
+		<if test="startLine >= 0">
+		<if test="pageSize > 0">
+			limit #{startLine},#{pageSize};
+		</if>
+		</if>
+	</select>
+	
+	<insert id="addUnitByBuildId" parameterType="com.ihk.property.data.pojo.PropertyGroupDetailCond">
+		 <selectKey resultType="java.lang.Integer" keyProperty="id" order="AFTER" >
+            SELECT @@IDENTITY
+        </selectKey>		
+		insert into property_group_detail(
+		build_id,
+		unit_id,
+		group_id,
+		is_deleted,
+		created_id,
+		created_time,
+		mod_id,
+		mod_time
+		)
+		select 
+		#{buildId} as build_id,
+		id as unit_id ,
+		#{groupId} as group_id  ,
+		"0" as is_deleted ,
+		#{pojo.createdId} as created_id,
+		#{pojo.createdTime} as created_time,
+		#{pojo.modId} as mod_id,
+		#{pojo.modTime} as mod_time 
+		from property_unit where build_id = #{buildId} and is_deleted = "0"
+		and id not in (
+			select unit_id from property_group_detail where group_id = #{groupId} and is_deleted = '0'
+		);
+			
+	</insert>
+	<insert id="addUnitByUnitIds" parameterType="com.ihk.property.data.pojo.PropertyGroupDetailCond">
+		 <selectKey resultType="java.lang.Integer" keyProperty="id" order="AFTER" >
+            SELECT @@IDENTITY
+        </selectKey>		
+		insert into property_group_detail(
+		build_id,
+		unit_id,
+		group_id,
+		is_deleted,
+		created_id,
+		created_time,
+		mod_id,
+		mod_time
+		)
+		select 
+		build_id,
+		id as unit_id ,
+		#{groupId} as group_id  ,
+		"0" as is_deleted ,
+		#{pojo.createdId} as created_id,
+		#{pojo.createdTime} as created_time,
+		#{pojo.modId} as mod_id,
+		#{pojo.modTime} as mod_time 
+		from property_unit 
+		<where>
+			<if test="ids !=null and ids.size() > 0">  
+	             id in
+	            <foreach  
+	                collection="ids"  
+	                item="uId"  
+	                open="("  
+	                separator=","  
+	                close=")">  
+	                #{uId}  
+	            </foreach>  
+	        </if> 
+	        and is_deleted = "0"
+			and id not in (
+			select unit_id from property_group_detail where group_id = #{groupId} and is_deleted = '0'
+		);
+		</where>
+			
+	</insert>
+	
+</mapper>

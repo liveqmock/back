@@ -1,0 +1,65 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE struts PUBLIC
+    "-//Apache Software Foundation//DTD Struts Configuration 2.0//EN"
+    "http://struts.apache.org/dtds/struts-2.0.dtd">
+<struts>
+  
+	<package name="saleunit_common" extends="struts-base" namespace="/saleunit/common">
+		<!-- 获取单元全名 -->
+		<action name="getUnitAllName" class="com.ihk.saleunit.action.common.CommonAction" method="getUnitAllName"/>
+		
+		<!-- 认筹中获取单元全名 -->
+		<action name="getUnitAllNameForChip" class="com.ihk.saleunit.action.common.CommonAction" method="getUnitAllNameForChip"/>
+		
+		<!-- 认筹中获取单元所在的楼栋和分区 -->
+		<action name="getUnitBuildAreaForChip" class="com.ihk.saleunit.action.common.CommonAction" method="getUnitBuildAreaForChip"/>
+		
+		<!-- 项目多选公用弹出框(废弃) -->
+		<action name="modifyProject" class="com.ihk.saleunit.action.common.CommonAction" method="modifyProject">
+			<result name="modifyProject">/common/project_modify.jsp</result>
+		</action>
+		
+		<!-- 销控中心角色的项目多选框(废弃) -->
+		<action name="modifyProjectXKZX" class="com.ihk.saleunit.action.common.CommonAction" method="modifyProjectXKZX">
+			<result name="modifyProjectXKZX">/common/project_modify.jsp</result>
+		</action>
+		
+		<!-- 售前客户角色的项目多选框(废弃) -->
+		<action name="modifyProjectSQKH" class="com.ihk.saleunit.action.common.CommonAction" method="modifyProjectSQKH">
+			<result name="modifyProjectSQKH">/common/company_project_modify.jsp</result>
+		</action>
+		
+		<!-- 销控中心的公司项目下拉框 -->
+		<action name="modifyProjectXKZXajax" class="com.ihk.saleunit.action.common.CommonAction" method="modifyProjectXKZXajax"/>
+		
+		<!-- 售前客户的公司项目下拉框 -->
+		<action name="modifyProjectSQKHajax" class="com.ihk.saleunit.action.common.CommonAction" method="modifyProjectSQKHajax"/>
+		
+		<!-- 售前客户的公司->楼盘项目下拉框 -->
+		<action name="modifyProjectXKZXforPropertyAjax" class="com.ihk.saleunit.action.common.CommonAction" method="modifyProjectXKZXforPropertyAjax"/>
+		
+		<!-- 售前客户的分区下拉框 -->
+		<action name="modifyProjectXKZXforAreaAjax" class="com.ihk.saleunit.action.common.CommonAction" method="modifyProjectXKZXforAreaAjax"/>
+		
+		<!-- 售前客户的楼栋下拉框 -->
+		<action name="modifyProjectXKZXforBuildAjax" class="com.ihk.saleunit.action.common.CommonAction" method="modifyProjectXKZXforBuildAjax"/>
+		
+		<!-- 人员授权的公司项目下拉框 -->
+		<action name="modifyProjectRYSQajax" class="com.ihk.saleunit.action.common.CommonAction" method="modifyProjectRYSQajax"/>
+		
+		<!-- 清空combox的值,只剩下[{"":"请选择"}] -->
+		<action name="emptyCombobox" class="com.ihk.saleunit.action.common.CommonAction" method="emptyCombobox"/>
+		
+		<!-- 通配符 -->
+		<action name="*" class="com.ihk.saleunit.action.common.CommonAction" method="{1}"/>
+		
+		<!-- action modify异常 -->
+		<action name="action_modify_exception">
+			<result>/common/action_modify_exception.jsp</result>
+		</action>
+	</package>
+	
+</struts>
+
+
+

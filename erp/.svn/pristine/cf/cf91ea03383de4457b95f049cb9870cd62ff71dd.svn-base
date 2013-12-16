@@ -1,0 +1,264 @@
+<%@ page contentType="text/html; charset=utf-8" %>
+<%@ taglib prefix="s" uri="/struts-tags" %>
+<%
+String path = request.getContextPath();
+String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.getServerPort()+path+"/";
+%>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+<html>
+<head>
+	
+	<title>项目折扣管理</title>
+	
+	<s:include value="../../customer/guangzhou/header_min.jsp"></s:include>	  
+	
+	<script type="text/javascript" language="javascript" src="./js/jquery.easyui.min.js"></script>
+	<link href="./css/easyui.css" rel="stylesheet" type="text/css" charset="utf-8"/>
+	<link href="./css/icon.css" rel="stylesheet" type="text/css" charset="utf-8"/>
+
+	<script type="text/javascript" language="javascript" src="./js/easyui.utils.js"></script>		
+	<script type="text/javascript" language="javascript" src="./js/saleunit_new_common_min.js"></script>
+	
+	<script type="text/javascript" language="javascript">
+	
+		var types = ${types};
+		var editIndex = ""; //编辑的row索引
+		
+		function typeFormatter(value){
+			for(var i=0; i<types.length; i++){
+				if (types[i].typeId == value) return types[i].name;
+			}
+			return value;
+		}
+		
+		$(function(){
+			
+			$('#detail_table').datagrid({
+				toolbar:[{
+					text:'增加折扣',
+					iconCls:'icon-add',
+					//url:'./saleunit_new/appoint/guangzhou/createDiscountDialog.action',
+					queryParams:{},
+					handler:function(){
+						//$('#detail_table').datagrid('endEdit', lastIndex);
+						$('#detail_table').datagrid('endEdit', editIndex);
+						$('#detail_table').datagrid('appendRow',{
+							typeId:'',
+							percent:'',
+							remark:''
+						});
+						//lastIndex = $('#detail_table').datagrid('getRows').length-1;
+						
+						editIndex = $('#detail_table').datagrid('getRows').length-1;
+						$('#detail_table').datagrid('selectRow', editIndex);
+						$('#detail_table').datagrid('beginEdit', editIndex);
+					}
+				},'-',{
+					text:'删除折扣',
+					iconCls:'icon-remove',
+					handler:function(){
+						var row = $('#detail_table').datagrid('getSelected');
+						if (row){
+						
+							var index = $('#detail_table').datagrid('getRowIndex', row);
+							$('#detail_table').datagrid('deleteRow', index);
+							
+							editIndex = "";
+						}else{
+							myAlert("请选择要删除的行");
+						}
+					}
+				}
+				],
+				loadMsg:"加载中...",
+				url: "${url}",
+				
+				onClickRow:function(rowIndex){
+				
+					if(editIndex == ""){
+						$('#detail_table').datagrid('beginEdit', rowIndex);
+					}else{
+						$('#detail_table').datagrid('endEdit', editIndex);
+						$('#detail_table').datagrid('beginEdit', rowIndex);
+					}
+					editIndex = rowIndex;
+					
+				}
+				
+			});
+		});
+		
+		function formSubmit(submitButton, action){
+			
+			$('#detail_table').datagrid('endEdit', editIndex);
+		
+			var allLine = $('#detail_table').datagrid('getRows');
+			
+			var formStr = "";
+			
+			var length = allLine.length;
+			for(var index=0; index<length; index++){
+				
+				var typeId = $.trim(allLine[index].typeId);
+				var percent = $.trim(allLine[index].percent);
+				var remark = $.trim(allLine[index].remark);
+				
+				formStr += "typeId" + (parseInt(index)+1) + "=" + typeId + "&" 
+						+ "percent" + (parseInt(index)+1) + "=" + percent + "&" 
+						+ "remark" + (parseInt(index)+1) + "=" + remark + "&";
+			}
+			
+			formStr += "detailCount=" + length;
+			
+			$("#someDetail").attr("value" , formStr);
+			
+			//$("#createProjectDiscountManagerFormId").submit();						
+			//return true;						
+			
+			dialogButtonSugg("提交中...", submitButton);
+			$(submitButton).linkbutton({disabled:true}); //禁用"提交"按钮,避免重复提交
+			
+			$.ajax({
+				type:"post",
+				url: "./project_discount/manager/" + action + ".action",
+				data: $("#modifyProjectDiscountManagerFormId").serialize(),
+				dataType: "json",
+				success: function(data){
+					//返回unitDiscountId大于0表示保存成功
+					if(data.unitDiscountId == "0"){
+					
+						dialogButtonSugg("操作失败,请重试", submitButton);	
+						$(submitButton).linkbutton({disabled:false});								
+					}else{
+					
+						dialogButtonSugg("操作成功", submitButton);	
+						window.parent.closeProjectDiscountManagerFn(data.unitDiscountId);
+					}				
+				}
+			});
+			
+			return false;
+		}
+		
+	</script>
+	
+	<style type="text/css">
+		*{margin:0;padding:0;}
+		body{font-size:75%}
+	</style>
+	
+</head>
+
+<body>
+
+<form id="modifyProjectDiscountManagerFormId">
+
+<div class="gbox1">			
+			  
+	<table width="100%" border="0" align="center" cellpadding="0" cellspacing="1" class="gbox" style="font-size:12px; line-height:26px; white-space:nowrap">
+		  
+		 
+		 	   <tr bgcolor="#E9F5FF" style="empty-cells:show">
+				
+				<td colspan="3">
+					<font color="#FF0000">*</font><s:radio list="selComputeWay" name="unitDiscount.computeWay" id="computeWayId"/>
+				</td>
+			  </tr>
+
+              <tr  onMouseOver="this.style.backgroundColor='#f1f9fe'" onMouseOut="this.style.backgroundColor=''" bgcolor="#FFFFFF" 
+			  	style="empty-cells:show">
+				<td id="t15" style="width:15%" align="right">附加价&nbsp;</td>
+                <td id="t16" style="" colspan="2">	
+				
+					<table style="width:100%; white-space:nowrap">
+						<tr>
+						<!--
+							<td style="text-align:right">单价(+)</td>
+							<td><input style="width:80px" type="text" name="unitDiscount.addUnitPrice" value="${unitDiscount.addUnitPrice}" /></td>
+						-->
+							<td style="text-align:right">总价(+)</td>
+							<td><input style="width:80px" type="text" name="unitDiscount.addSumPrice" value="${unitDiscount.addSumPrice}" /></td>
+							<td style="text-align:right">优惠减价</td>
+							<td><input style="width:80px" type="text" name="unitDiscount.reduceSumPrice" value="${unitDiscount.reduceSumPrice}" /></td>
+						</tr>
+					</table>
+					
+				</td>
+				
+				<!--
+                <td id="t16" style="width:25%">
+					<input type="button" value="  计算折后价  " />
+				</td>
+				-->
+              </tr>			
+			  
+			   <tr  onMouseOver="this.style.backgroundColor='#f1f9fe'" onMouseOut="this.style.backgroundColor=''" bgcolor="#FFFFFF" 
+			  	style="empty-cells:show">
+				<td id="t15" style="width:15%" align="right">附加价原因&nbsp;</td>
+                <td id="t16" colspan="2"><input type="text" name="unitDiscount.discountDesc" style="width:80%" value="${unitDiscount.discountDesc}"/></td>
+              </tr>					  
+			  
+			   <tr  onMouseOver="this.style.backgroundColor='#f1f9fe'" onMouseOut="this.style.backgroundColor=''" bgcolor="#FFFFFF" 
+			  	style="empty-cells:show">
+				<td id="t15" style="width:15%" align="right">折扣批准人&nbsp;</td>
+                <td id="t16" style="width:100px" >
+					<input name="unitDiscount.discountMan" type="text" value="${unitDiscount.discountMan}"/>
+				</td>
+            	<td></td>    			
+              </tr>		
+			  
+			  <tr bgcolor="#E9F5FF" style="empty-cells:show">
+				
+				<td colspan="3">
+					项目折扣:
+				</td>
+			  </tr>
+			  
+			   <tr  onMouseOver="this.style.backgroundColor='#f1f9fe'" onMouseOut="this.style.backgroundColor=''" bgcolor="#FFFFFF" 
+			  	style="empty-cells:show" align="center">
+				
+				<td colspan="3" width="100%" height="100%" style="text-align:left">
+					<s:checkboxlist list="selProjectDiscount" name="projectDiscountId" value="#session.changeProjectDiscountIdList"/>
+				</td>
+				
+              </tr>		
+			  			 
+			  <tr  onMouseOver="this.style.backgroundColor='#f1f9fe'" onMouseOut="this.style.backgroundColor=''" bgcolor="#FFFFFF" 
+			  	style="empty-cells:show" align="center">
+				
+				<td colspan="3" width="100%" height="100%">
+				
+					<input type="hidden" name="someDetail" id="someDetail"/>
+					
+					<input type="hidden" id="unitDiscountId" name="unitDiscount.id" value="${unitDiscount.id}" /> <!-- 更新的时候使用 -->
+				
+					<input type="hidden" id="confirmType" name="unitDiscount.confirmType" value="${unitDiscount.confirmType}" />
+					<input type="hidden" id="mainId" name="unitDiscount.mainId" value="${unitDiscount.mainId}" />
+					
+					<input type="hidden" id="hiddenUnitId" name="unitDiscount.unitId" value="${unit.id}" />
+					<input type="hidden" id="hiddenBuildId" name="unitDiscount.buildId" value="${unit.buildId}" />
+					
+				</td>
+				
+              </tr>		
+			  
+    </table>
+
+	
+</div>
+
+<table id="detail_table" style="width:600;height:auto" title="" idField="typeId" iconCls="icon-edit" singleSelect="true">
+	<thead>
+		<tr>
+			<th field="typeId" width="100" formatter="typeFormatter" editor="{type:'combobox',options:{valueField:'typeId',textField:'name',data:types}}">类型</th>
+			<th field="percent" width="100" editor="text">折扣(%)</th>
+			<th field="remark" width="350" align="left" editor="text">说明</th>					
+		</tr>
+	</thead>
+</table>
+
+</form>	
+
+</body>
+</html>

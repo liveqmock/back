@@ -1,0 +1,369 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.ihk.saleunit.data.IContractCustomerChangeMapper">
+
+	<resultMap type="ContractCustomer" id="contractCustomerResultMap">
+		<id property="id" column="id" />        
+		<result property="companyId" column="company_id" />
+		<result property="projectId" column="project_id" />
+		<result property="userId" column="user_id" />
+		<result property="confirmType" column="confirm_type" />
+		<result property="customerName" column="customer_name" />
+		<result property="gender" column="gender" />
+		<result property="idcardType" column="idcard_type" />
+		<result property="idcardNo" column="idcard_no" />
+		<result property="phone" column="phone" />
+		<result property="mobilePhone" column="mobile_phone" />
+		<result property="address" column="address" />
+		<result property="preCustomerId" column="pre_customer_id" />
+		<result property="isDeleted" column="is_deleted" />
+		<result property="createdId" column="created_id" />
+		<result property="createdTime" column="created_time" />
+		<result property="modId" column="mod_id" />
+		<result property="modTime" column="mod_time" />
+	</resultMap>
+	
+	<!-- 自定义类,非数据库中表 -->
+	<resultMap type="ContractCustConfirm" id="contractCustConfirmResultMap">
+		<result property="id" column="id"/> <!-- 客户id -->
+		<result property="confirmType" column="confirm_type"/>
+		<result property="projectName" column="property_name" />
+		<result property="buildName" column="build_name" />
+		<result property="unitNo" column="unit_no" />
+		<result property="buildArea" column="build_area" />
+		<result property="agreeNo" column="agree_no" />
+		<result property="workDate" column="work_date" />
+		<result property="sumMoney" column="sum_money" />
+		<result property="customerName" column="customer_name" />
+		<result property="gender" column="gender" />
+		<result property="idcardType" column="idcard_type" />
+		<result property="idcardNo" column="idcard_no" />
+		<result property="address" column="address" />
+		<result property="phone" column="phone" />
+		
+	</resultMap>
+	
+	<!-- 成交客户管理的结构 -->
+	<resultMap type="java.util.Map" id="contractCustomerManagerResultMap">
+		<result property="id" column="id"/>
+		<result property="confirmType" column="confirm_type"/>
+		<result property="customerName" column="customer_name"/>
+		<result property="gender" column="gender"/>
+		<result property="idcardType" column="idcard_type"/>
+		<result property="idcardNo" column="idcard_no"/>
+		<result property="phone" column="phone"/>
+		<result property="address" column="address"/>
+		<result property="unitNo" column="unit_no"/>
+		<result property="agreeNo" column="agree_no"/>
+		<result property="workDate" column="work_date"/>
+		<result property="sumMoney" column="sum_money"/>
+		
+	</resultMap>
+
+	<insert id="addContractCustomer" parameterType="ContractCustomer">
+		 <selectKey resultType="java.lang.Integer" keyProperty="id" order="AFTER" >
+            SELECT @@IDENTITY
+        </selectKey>		
+		insert into contract_customer(
+		company_id,
+		project_id,
+		user_id,
+		confirm_type,
+		customer_name,
+		gender,
+		idcard_type,
+		idcard_no,
+		phone,
+		mobile_phone,
+		address,
+		pre_customer_id,
+		is_deleted,
+		created_id,
+		created_time,
+		mod_id,
+		mod_time
+		)
+			VALUES(
+		#{companyId},
+		#{projectId},
+		#{userId},
+		#{confirmType},
+		#{customerName},
+		#{gender},
+		#{idcardType},
+		#{idcardNo},
+		#{phone},
+		#{mobilePhone},
+		#{address},
+		#{preCustomerId},
+		#{isDeleted},
+		#{createdId},
+		#{createdTime},
+		#{modId},
+		#{modTime}
+			)
+		
+	</insert>
+	<delete id="deleteContractCustomer" parameterType="int">
+	update contract_customer set is_deleted='1' where id=#{id};
+	</delete>
+	<update id="updateContractCustomer" parameterType="int">
+	update contract_customer set 
+		company_id=#{companyId},
+		project_id=#{projectId},
+		user_id=#{userId},
+		confirm_type=#{confirmType},
+		customer_name=#{customerName},
+		gender=#{gender},
+		idcard_type=#{idcardType},
+		idcard_no=#{idcardNo},
+		phone=#{phone},
+		mobile_phone=#{mobilePhone},
+		address=#{address},
+		pre_customer_id=#{preCustomerId},
+		mod_id=#{modId},
+		mod_time=#{modTime}
+	 where id=#{id}
+	</update>
+	<select id="findContractCustomerById" resultMap="contractCustomerResultMap">
+	select * from contract_customer where id=#{id}
+	</select>
+    
+	<sql id="findWhereCond"> 
+		<where>
+			
+			<if test="confirmType != null and confirmType != ''">
+				and confirm_type = #{confirmType}
+			</if>
+			
+			<if test="customerName != null and customerName != ''">
+				and customer_name like concat(concat('%', #{customerName, jdbcType=VARCHAR}), '%')
+			</if>
+			
+			 and is_deleted = '0' 
+			
+		</where>
+	</sql>
+	
+	<select id="findContractCustomerCount" resultType="int" parameterType="com.ihk.saleunit.data.pojo.ContractCustomerCond">
+		SELECT count(0) from contract_customer  
+        <include refid="findWhereCond"/>     
+    </select>
+        
+	<select id="findContractCustomer" resultMap="contractCustomerResultMap" parameterType="com.ihk.saleunit.data.pojo.ContractCustomerCond">
+		SELECT * from  contract_customer 
+        <include refid="findWhereCond"/> 
+		<if test="topNum > 0">
+			limit #{topNum};
+		</if>
+    </select>
+    
+	<select id="findContractCustomerPage" resultMap="contractCustomerResultMap" parameterType="com.ihk.saleunit.data.pojo.ContractCustomerCond">
+		SELECT * from  contract_customer 
+        <include refid="findWhereCond"/> 
+    
+		<if test="startLine >= 0">
+		<if test="pageSize > 0">
+			limit #{startLine},#{pageSize};
+		</if>
+		</if>
+	</select>
+	
+	<select id="findConfirmCustomerLikeName" resultMap="contractCustomerResultMap" parameterType="com.ihk.saleunit.data.pojo.ContractCustomerCond">
+		SELECT * from  contract_customer where customer_name like concat(concat('%', #{customerName, jdbcType=VARCHAR}), '%')
+		and confirm_type = #{confirmType} 
+		order by created_time desc limit 10
+    </select>
+	
+	<select id="findCustomersForChip" resultMap="contractCustomerResultMap" parameterType="map">		
+		select * from contract_customer where customer_name like CONCAT(CONCAT('%', #{name}),'%') 
+		and confirm_type = #{type} and created_id = #{createdId}
+		and is_deleted ='0' order by customer_name desc limit 10 
+	</select>
+	
+	<select id="findCustomersFromPhoneForChip" resultMap="contractCustomerResultMap" parameterType="map">		
+		select * from contract_customer where phone like CONCAT(CONCAT('%', #{phone}),'%') 
+		and confirm_type = #{type} and created_id = #{createdId}
+		and is_deleted ='0' order by customer_name desc limit 10 
+	</select>
+	
+	<update id="updateContractCustomerConfirmType" parameterType="map">
+		update contract_customer set confirm_type = #{confirmType} where id = #{customerId}
+	</update>
+	
+	<!-- 成交客户管理 start -->
+	<select id="findContractCustomerByBuildIds" resultMap="contractCustomerResultMap" 
+		parameterType="com.ihk.saleunit.data.pojo.ContractCustomerCond" statementType="STATEMENT">
+	
+		select cu.* from contract_customer cu 
+			inner join ${confirmTypeName} c on cu.id = c.customer_id
+			left join property_unit u on c.unit_id = u.id
+			where u.build_id in
+			<foreach
+				collection="buildIds"  
+	            item="bId"  
+	            open="("  
+	            separator=","  
+	            close=")">  
+	            ${bId}  
+	        </foreach>
+        
+	        and c.is_deleted = 0
+			and cu.is_deleted = 0
+			and u.is_deleted = 0
+			
+			<if test="startLine >= 0">
+				<if test="pageSize > 0">
+					limit ${startLine},${pageSize};
+				</if>
+			</if>
+			
+	</select>
+	
+	<select id="findContractCustomerCountByBuildIds" resultType="int" 
+		parameterType="com.ihk.saleunit.data.pojo.ContractCustomerCond" statementType="STATEMENT">
+		
+		select count(1) from contract_customer cu 
+			inner join ${confirmTypeName} c on cu.id = c.customer_id
+			left join property_unit u on c.unit_id = u.id
+			where u.build_id in
+			<foreach
+				collection="buildIds"  
+	            item="bId"  
+	            open="("  
+	            separator=","  
+	            close=")">  
+	            ${bId}  
+	        </foreach>
+        
+	        and c.is_deleted = 0
+			and cu.is_deleted = 0
+			and u.is_deleted = 0
+		
+	</select>
+	
+	<!-- 成交客户管理 end -->
+	
+	<!-- 成交客户明细 start -->
+	
+	<select id="findcontractCustAndConfirm" resultMap="contractCustConfirmResultMap" 
+		parameterType="com.ihk.saleunit.data.pojo.ContractCustomerCond" statementType="STATEMENT">
+		select
+		<if test="confirmTypeName == 'confirm'">
+			1
+		</if>
+		<if test="confirmTypeName == 'contract'">
+			2
+		</if> 
+		as confirm_type, 
+		pro.property_name,build.build_name, unit.unit_no,unit.build_area,
+		${agreeNoName} as agree_no,c.work_date,c.sum_money,
+		cu.customer_name,cu.gender,cu.idcard_type,cu.idcard_no,cu.address,cu.phone
+		from contract_customer cu
+		inner join ${confirmTypeName} c on cu.id = c.customer_id
+		left join property_unit unit on unit.id = c.unit_id
+		left join property_build build on build.id = unit.build_id
+		left join property_project pro on pro.id = build.property_id
+		
+		<where>
+			<if test="date1 != null and date1 != ''">
+				and c.work_date &gt;= '${date1}'
+			</if>
+			<if test="date2 != null and date2 != ''">
+				and c.work_date &lt; date_add('${date2}',interval 1 day)
+			</if>
+			
+			<if test="searchProjectIds != null and searchProjectIds.size() > 0">
+            	and pro.company_project_id in
+	            <foreach  
+	                collection="searchProjectIds"  
+	                item="pId"  
+	                open="("  
+	                separator=","  
+	                close=")">  
+	                ${pId}  
+	            </foreach>  
+            </if>
+            
+            <if test="buildIds != null and buildIds.size() > 0">
+            	and build.id in
+	            <foreach  
+	                collection="buildIds"  
+	                item="bId"  
+	                open="("  
+	                separator=","  
+	                close=")">  
+	                ${bId}  
+	            </foreach>  
+            </if>
+            
+			and cu.is_deleted = 0
+			and c.is_deleted = 0
+			and unit.is_deleted = 0
+			and build.is_deleted = 0
+			and pro.is_deleted = 0
+			
+			order by pro.property_name,c.work_date desc
+				
+			<if test="startLine >= 0">
+				<if test="pageSize > 0">
+					limit ${startLine},${pageSize};
+				</if>
+			</if>
+		</where>
+		
+	</select>
+	
+	<select id="findcontractCustAndConfirmCount" resultType="int" 
+		parameterType="com.ihk.saleunit.data.pojo.ContractCustomerCond" statementType="STATEMENT">
+		
+		select count(1) from contract_customer cu
+		inner join ${confirmTypeName} c on cu.id = c.customer_id
+		left join property_unit unit on unit.id = c.unit_id
+		left join property_build build on build.id = unit.build_id
+		left join property_project pro on pro.id = build.property_id
+		
+		<where>
+			<if test="date1 != null and date1 != ''">
+				and c.work_date &gt;= '${date1}'
+			</if>
+			<if test="date2 != null and date2 != ''">
+				and c.work_date &lt; date_add('${date2}',interval 1 day)
+			</if>
+			
+			<if test="searchProjectIds != null and searchProjectIds.size() > 0">
+            	and pro.company_project_id in
+	            <foreach  
+	                collection="searchProjectIds"  
+	                item="uId"  
+	                open="("  
+	                separator=","  
+	                close=")">  
+	                ${uId}  
+	            </foreach>  
+            </if>
+            
+             <if test="buildIds != null and buildIds.size() > 0">
+            	and build.id in
+	            <foreach  
+	                collection="buildIds"  
+	                item="bId"  
+	                open="("  
+	                separator=","  
+	                close=")">  
+	                ${bId}  
+	            </foreach>  
+            </if>
+            
+			and cu.is_deleted = 0
+			and c.is_deleted = 0
+			and unit.is_deleted = 0
+			and build.is_deleted = 0
+			and pro.is_deleted = 0
+			
+		</where>
+			
+	</select>
+	<!-- 成交客户明细 end -->
+	
+</mapper>

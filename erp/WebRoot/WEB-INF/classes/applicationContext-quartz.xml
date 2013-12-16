@@ -1,0 +1,73 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<beans xmlns="http://www.springframework.org/schema/beans"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:aop="http://www.springframework.org/schema/aop"
+	xmlns:tx="http://www.springframework.org/schema/tx" xmlns:jdbc="http://www.springframework.org/schema/jdbc"
+	xmlns:context="http://www.springframework.org/schema/context"
+	xsi:schemaLocation="       
+      http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context-3.0.xsd       
+      http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-3.0.xsd       
+      http://www.springframework.org/schema/jdbc http://www.springframework.org/schema/jdbc/spring-jdbc-3.0.xsd       
+      http://www.springframework.org/schema/tx http://www.springframework.org/schema/tx/spring-tx-3.0.xsd       
+      http://www.springframework.org/schema/aop http://www.springframework.org/schema/aop/spring-aop-3.0.xsd
+      http://www.springframework.org/schema/task http://www.springframework.org/schema/task/spring-task-3.0.xsd"
+	default-autowire="byName">
+	
+	<!-- 恒大的自动公告 start -->
+	<bean id="hengDaArticleQurtz" class="com.ihk.quartz.HengDaArticleQuartz">
+		<property name="articleType" value="1"/>
+		<property name="title" value="{titleDate}:未录入数据情况"/>
+		<property name="summary" value="未录入数据公司名单"/>
+		<property name="createdId" value="0"/>
+		<property name="modId" value="0"/>
+	</bean>
+  
+	<bean id="hengDaArticleJobDetail" class="org.springframework.scheduling.quartz.MethodInvokingJobDetailFactoryBean">
+		<property name="targetObject" ref="hengDaArticleQurtz"/>
+		<property name="targetMethod" value="addHangDaNotDataCompanyArticle"/>
+		<property name="concurrent" value="false"/><!-- false表示多个job不会并发运行，第二个job将会在第一个job完成之后才开始 -->
+	</bean>
+	
+	<bean id="hengDaArticleTrigger" class="org.springframework.scheduling.quartz.CronTriggerBean">
+		<property name="jobDetail" ref="hengDaArticleJobDetail"/>
+		<property name="cronExpression">
+			<value>0 0 17 * * ?</value> <!-- 时间大小由小到大排列，从秒开始，顺序为 秒，分，时，天，月，年    *为任意 ，?为无限制 -->
+			<!--   秒分时天月年     -->
+		</property>
+	</bean>
+	<!-- 恒大的自动公告 end -->
+	
+	<!-- 手机归属地 start -->
+	<!-- 
+	<bean id="customerPhoneFromQurtz" class="com.ihk.quartz.CustomerPhoneFromQuartz"/>
+	
+	<bean id="customerPhoneFromJobDetail" class="org.springframework.scheduling.quartz.MethodInvokingJobDetailFactoryBean">
+		<property name="targetObject" ref="customerPhoneFromQurtz"/>
+		<property name="targetMethod" value="setUpCustomerPhoneFrom"/>
+		<property name="concurrent" value="false"/>
+	</bean>
+	
+	<bean id="customerPhoneTrigger" class="org.springframework.scheduling.quartz.CronTriggerBean">
+		<property name="jobDetail" ref="customerPhoneFromJobDetail"/>
+		<property name="cronExpression">
+			<value>0 30 23 * * ?</value>
+		</property>
+	</bean>
+	 -->
+	<!-- 手机归属地 end -->
+		
+	<bean class="org.springframework.scheduling.quartz.SchedulerFactoryBean" autowire="no" lazy-init="false">
+	<!-- 要加上 autowire="no", 因为配置了default-autowire=byName时,dataSource bean被自动注入,
+		这时quartz认为项目既然能连到数据库,就想当然的认为其内部对应的那些表也一定存在,
+		没找到时就抛出异常类似 Table 'crm.qrtz_locks' doesn't exist -->
+		<property name="triggers">
+			<list>
+				<ref bean="hengDaArticleTrigger"/>
+				<!-- 
+				<ref bean="customerPhoneTrigger"/>
+				 -->
+			</list>
+		</property>
+	</bean>
+	 
+</beans>

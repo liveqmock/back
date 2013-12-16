@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.kn.data.IKN_XSGL_YZJL_Mapper">
+
+	<resultMap type="KN_XSGL_YZJL" id="knKN_XSGL_YZJLResultMap">
+		<result property="认购书ID" column="认购书ID" />        
+		<result property="业主实际交楼日期" column="业主实际交楼日期" />
+		<result property="备注" column="备注" />
+		<result property="经办人" column="经办人" />
+	</resultMap>
+	<sql id="findWhereCond"> 
+		<where>
+        <!--
+			<if test="date1 != null and date1 != ''">
+            </if>    
+            and is_deleted = '0'
+            -->
+		</where>
+	</sql>
+        
+	<select id="findKN_XSGL_YZJL" resultMap="knKN_XSGL_YZJLResultMap">
+		SELECT * from  climb.销售管理_业主交楼 
+        <include refid="findWhereCond"/> 
+    </select>
+    
+   
+</mapper>

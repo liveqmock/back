@@ -1,0 +1,119 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.ihk.property.data.IBuildDiscountMapper">
+
+	<resultMap type="BuildDiscount" id="buildDiscountResultMap">
+		<id property="id" column="id" />        
+		<result property="discountName" column="discount_name" />
+		<result property="buildId" column="build_id" />
+		<result property="discountType" column="discount_type" />
+		<result property="computeWay" column="compute_way" />
+		<result property="discountMoney" column="discount_money" />
+		<result property="discountPercent" column="discount_percent" />
+		<result property="startDate" column="start_date" />
+		<result property="endDate" column="end_date" />
+		<result property="discountDesc" column="discount_desc" />
+		<result property="isDeleted" column="is_deleted" />
+		<result property="createdId" column="created_id" />
+		<result property="createdTime" column="created_time" />
+		<result property="modId" column="mod_id" />
+		<result property="modTime" column="mod_time" />
+	</resultMap>
+
+	<insert id="addBuildDiscount" parameterType="BuildDiscount">
+		 <selectKey resultType="java.lang.Integer" keyProperty="id" order="AFTER" >
+            SELECT @@IDENTITY
+        </selectKey>		
+		insert into build_discount(
+		discount_name,
+		build_id,
+		discount_type,
+		compute_way,
+		discount_money,
+		discount_percent,
+		start_date,
+		end_date,
+		discount_desc,
+		is_deleted,
+		created_id,
+		created_time,
+		mod_id,
+		mod_time
+		)
+			VALUES(
+		#{discountName},
+		#{buildId},
+		#{discountType},
+		#{computeWay},
+		#{discountMoney},
+		#{discountPercent},
+		#{startDate},
+		#{endDate},
+		#{discountDesc},
+		#{isDeleted},
+		#{createdId},
+		#{createdTime},
+		#{modId},
+		#{modTime}
+			)
+		
+	</insert>
+	<delete id="deleteBuildDiscount" parameterType="int">
+	update build_discount set is_deleted='1' where id=#{id};
+	</delete>
+	<update id="updateBuildDiscount" parameterType="int">
+	update build_discount set 
+		discount_name=#{discountName},
+		build_id=#{buildId},
+		discount_type=#{discountType},
+		compute_way=#{computeWay},
+		discount_money=#{discountMoney},
+		discount_percent=#{discountPercent},
+		start_date=#{startDate},
+		end_date=#{endDate},
+		discount_desc=#{discountDesc},
+		is_deleted=#{isDeleted},
+		created_id=#{createdId},
+		created_time=#{createdTime},
+		mod_id=#{modId},
+		mod_time=#{modTime}
+	 where id=#{id}
+	</update>
+	<select id="findBuildDiscountById" resultMap="buildDiscountResultMap">
+	select * from build_discount where id=#{id}
+	</select>
+    
+	<sql id="findWhereCond"> 
+		<where>
+        <!--
+			<if test="date1 != null and date1 != ''">
+            </if>    
+            and is_deleted = '0'
+            -->
+		</where>
+	</sql>
+	
+	<select id="findBuildDiscountCount" resultType="int" parameterType="com.ihk.property.data.pojo.BuildDiscountCond">
+		SELECT count(0) from build_discount  
+        <include refid="findWhereCond"/>     
+    </select>
+        
+	<select id="findBuildDiscount" resultMap="buildDiscountResultMap" parameterType="com.ihk.property.data.pojo.BuildDiscountCond">
+		SELECT * from  build_discount 
+        <include refid="findWhereCond"/> 
+		<if test="topNum > 0">
+			limit #{topNum};
+		</if>
+    </select>
+    
+	<select id="findBuildDiscountPage" resultMap="buildDiscountResultMap" parameterType="com.ihk.property.data.pojo.BuildDiscountCond">
+		SELECT * from  build_discount 
+        <include refid="findWhereCond"/> 
+    
+		<if test="startLine >= 0">
+		<if test="pageSize > 0">
+			limit #{startLine},#{pageSize};
+		</if>
+		</if>
+	</select>
+</mapper>

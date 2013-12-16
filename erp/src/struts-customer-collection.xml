@@ -1,0 +1,147 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE struts PUBLIC
+    "-//Apache Software Foundation//DTD Struts Configuration 2.0//EN"
+    "http://struts.apache.org/dtds/struts-2.0.dtd">
+<struts>
+<!-- vip客户 (广州公司需求) -->	
+	<constant name="struts.i18n.encoding" value="UTF-8" /> <!-- 解决乱码  -->
+	<constant name="struts.configuration.xml.reload" value="true" /> <!--配置文件修改后是否重新加载  -->
+	
+	<package name="customer_collection" extends="struts-default" namespace="/customer/collection">
+	<!-- 跳转 vip客户导入-->
+		<action name="vip_information_data">
+			<result>/customer/collection/vip_information_data.jsp</result>
+		</action> 
+	<!-- 跳转vip客户数据分析 -->
+		<action name="analysis_vip_customer">
+			<result>/customer/collection/analysis_vip_customer.jsp</result>
+		</action>
+	<!-- 跳转vip客户管理 -->
+		<action name="query_vip_customer">
+			<result>/customer/collection/query_vip_customer.jsp</result>
+		</action>
+	<!-- 上传excel客户数据 -->
+		<action name="uploadFile" class="com.ihk.customer.collection.action.UploadAction" method="upload">
+			<result name="succ">/customer/collection/vip_information_data.jsp</result>
+			<result name="input">/404.jsp</result>
+		</action>
+		
+	<!-- 修改核对的客户信息 -->
+		<action name="editImp" class="com.ihk.customer.collection.action.EditVipCustImpAction" method="editImp" />
+		
+	<!-- 查询导入vip客户信息-->
+		<action name="query" class="com.ihk.customer.collection.action.EditVipCustImpAction" method="query">
+			<result name="success">/customer/collection/edit_vip_information_data.jsp</result>
+		</action>
+		
+	<!-- 删除核对的客户信息 -->	
+		<action name="delete" class="com.ihk.customer.collection.action.EditVipCustImpAction" method="delete">
+			<result name="success">/customer/collection/vip_information_data.jsp</result>
+		</action>
+		
+	<!-- 整理vip原始数据 -->
+		<action name="analysisData" class="com.ihk.customer.collection.action.AnalysisOriginalDataAction" method="analysisData" >
+			<result name="success">/customer/collection/analysis_vip_customer.jsp</result>
+		</action>
+	
+	<!--vip客户管理  编辑  -->	
+		<action name="editVipCust" class="com.ihk.customer.collection.action.EditVipCustomerAction" method="editVipCust" >
+			<result name="success">/customer/collection/vip_customer_detail.jsp</result>
+		</action>
+		
+	<!-- vip客户管理 跟进 -->	
+		<action name="followVipCust" class="com.ihk.customer.collection.action.FollowVipCustomerAction" method="followVipCust" >
+			<result  name="success">/customer/collection/vip_follow_detail.jsp</result>
+		</action>
+		
+	<!-- 一键转化为vip客户 -->
+		<action name="analysisVipCustomer" class="com.ihk.customer.collection.action.AnalysisOriginalDataAction" method="analysisVipCustomer" />
+		
+		<action name="addFollowCust" class="com.ihk.customer.collection.action.FollowVipCustomerAction" method="addFollowCust" />
+		
+		<action name="saveVipCust" class="com.ihk.customer.collection.action.EditVipCustomerAction" method="saveVipCust" />
+		
+		<action name="vipcustomerFollow" class="com.ihk.customer.collection.action.VipCustomerFollowAction" method="follow" />
+		
+		<action name="exportData" class="com.ihk.customer.collection.action.AnalysisOriginalDataAction" method="exportData" >
+			<!-- 设置文件名参数，由页面上传入 -->
+             <param name="fileName"></param>
+             <result name="success" type="stream">
+	             <!-- 下载文件类型定义 -->
+	             <param name="contentType">application/vnd.ms-excel</param>
+	             <!-- 下载文件处理方法 -->
+	             <param name="contentDisposition">
+	                attachment;filename="${downloadChineseFileName}"
+	             </param>
+	             <!-- 下载文件输出流定义 -->
+	             <param name="inputName">downloadFile</param>
+             </result>
+		</action>
+		
+		<action name="download" class="com.ihk.customer.collection.action.DownloadAction" method="download" >
+    		 <!-- 设置文件名参数，由页面上传入 -->
+             <param name="fileName">model.xls</param>
+             <result name="success" type="stream">
+	             <!-- 下载文件类型定义 -->
+	             <param name="contentType">application/vnd.ms-excel</param>
+	             <!-- 下载文件处理方法 -->
+	             <param name="contentDisposition">
+	                attachment;filename="${downloadChineseFileName}"
+	             </param>
+	             <!-- 下载文件输出流定义 -->
+	             <param name="inputName">downloadFile</param>
+             </result>
+		</action>
+		
+	</package>
+	<package name="customer_collection_json" extends="json-default" namespace="/customer/collection">
+	
+		<action name="search" class="com.ihk.customer.collection.action.SearchErrorAction" method="search">
+			<result type="json">
+                <param name="root">result</param>
+            </result>
+		</action>
+		<!-- 下载导入 -->
+		<action name="exportErrorData" class="com.ihk.customer.collection.action.SearchErrorAction" method="exportErrorData" />
+        <!-- 允许导入有误的信息 -->
+        <action name="allowsImport" class="com.ihk.customer.collection.action.SearchErrorAction" method="allowsImport" />
+
+        <!-- 统计 -->
+ 		<action name="statistics" class="com.ihk.customer.collection.action.AnalysisOriginalDataAction" method="statistics" >
+			<result type="json">
+                <param name="root">result</param>
+            </result>
+		</action>
+		<!-- 统计分析显示明细 -->
+		<action name="analysisDetail" class="com.ihk.customer.collection.action.AnalysisOriginalDataAction" method="analysisDetail" >
+			<result type="json">
+                <param name="root">details</param>
+            </result>
+		</action>
+
+        <!-- vip 客户管理 搜索 -->
+		<action name="queryVipCust" class="com.ihk.customer.collection.action.QueryVipCustomerAction" method="querycust" >
+			<result type="json">
+                <param name="root">custs</param>
+            </result>
+		</action>
+
+        <!-- 编辑 vip 客户 -->
+		<action name="InitailItem" class="com.ihk.customer.collection.action.EditVipCustomerAction" method="InitailItem">
+			<result type="json">
+				<param name="root">result</param>
+			</result>
+		</action>
+		
+		<action name="IniFollowList" class="com.ihk.customer.collection.action.FollowVipCustomerAction" method="IniFollowList">
+			<result type="json">
+				<param name="root">result</param>
+			</result>
+		</action>
+
+	</package>
+
+</struts>
+
+
+

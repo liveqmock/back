@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.kn.data.IKN_CUGL_SSK_Mapper">
+
+	<resultMap type="KN_CUGL_SSK" id="kN_CUGL_SSK_ResultMap">
+		<id property="应收款id" column="应收款ID" />        
+		<result property="收据id" column="收据ID" />
+		<result property="已收金额" column="已收金额" />
+		<result property="本次收款" column="本次收款" />
+	</resultMap>
+
+        
+	<select id="findKN_CUGL_SSK" resultMap="kN_CUGL_SSK_ResultMap" >
+		select * from climb.财务管理_实收款
+        
+    </select>
+    
+</mapper>

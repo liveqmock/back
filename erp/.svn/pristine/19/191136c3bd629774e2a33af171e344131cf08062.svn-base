@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE struts PUBLIC
+    "-//Apache Software Foundation//DTD Struts Configuration 2.0//EN"
+    "http://struts.apache.org/dtds/struts-2.0.dtd">
+<struts>
+	
+	<!-- 设置全局exception -->
+	<package name="struts-base" extends="struts-default" namespace="/base">
+		<global-results>
+			<result name="input">/404.jsp</result>
+			<result name="noPermissonForShowCustomer">/404.jsp</result>
+			<result name="noPermissonForPriv">/action_exception.jsp</result>
+		</global-results>
+		
+		<global-exception-mappings>
+			<exception-mapping exception="com.ihk.utils.exception.CustomerException" result="noPermissonForShowCustomer"/>
+			<exception-mapping exception="com.ihk.utils.exception.PrivException" result="noPermissonForPriv"/>
+		</global-exception-mappings>
+		
+	</package>
+	
+	<!-- 项目共有action -->
+	<package name="ihk_common" extends="struts-base" namespace="/ihk/common">
+		<!-- 文件上传 -->
+		<action name="upload" class="com.ihk.utils.upload.KindEditorUploadAction" method="upload"/>
+		
+	</package>
+	
+</struts>
+

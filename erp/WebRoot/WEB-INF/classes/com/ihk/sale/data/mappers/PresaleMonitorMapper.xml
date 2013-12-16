@@ -1,0 +1,197 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.ihk.sale.data.IPresaleMonitorMapper">
+
+	<resultMap type="PresaleMonitor" id="presaleMonitorResultMap">
+		<id property="id" column="id" />        
+		<result property="monitorDate" column="monitor_date" />
+		<result property="projectId" column="project_id" />
+		<result property="companyId" column="company_id" />
+		<result property="phoneNum" column="phone_num" />
+		<result property="visitorNum" column="visitor_num" />
+		<result property="intentionNum" column="intention_num" />
+		<result property="intentionAll" column="intention_all" />
+		<result property="isDeleted" column="is_deleted" />
+		<result property="createdId" column="created_id" />
+		<result property="createdTime" column="created_time" />
+		<result property="modId" column="mod_id" />
+		<result property="modTime" column="mod_time" />
+	</resultMap>
+
+	<insert id="addPresaleMonitor" parameterType="PresaleMonitor">
+		 <selectKey resultType="java.lang.Integer" keyProperty="id" order="AFTER" >
+            SELECT @@IDENTITY
+        </selectKey>		
+		insert into presale_monitor(
+		monitor_date,
+		project_id,
+		company_id,
+		phone_num,
+		visitor_num,
+		intention_num,
+		intention_all,
+		is_deleted,
+		created_id,
+		created_time,
+		mod_id,
+		mod_time
+		)
+			VALUES(
+		#{monitorDate},
+		#{projectId},
+		#{companyId},
+		#{phoneNum},
+		#{visitorNum},
+		#{intentionNum},
+		#{intentionAll},
+		#{isDeleted},
+		#{createdId},
+		#{createdTime},
+		#{modId},
+		#{modTime}
+			)
+		
+	</insert>
+	<update id="deletePresaleMonitor" parameterType="int">
+	update presale_monitor set is_deleted = '1' where id=#{id};
+	</update>
+	<update id="updatePresaleMonitor" parameterType="com.ihk.sale.data.pojo.PresaleMonitor">
+	update presale_monitor set 
+		monitor_date=#{monitorDate},
+		project_id=#{projectId},
+		company_id=#{companyId},
+		phone_num=#{phoneNum},
+		visitor_num=#{visitorNum},
+		intention_num=#{intentionNum},
+		intention_all=#{intentionAll},
+		is_deleted=#{isDeleted},
+		created_id=#{createdId},
+		created_time=#{createdTime},
+		mod_id=#{modId},
+		mod_time=#{modTime}
+	 where id=#{id}
+	</update>
+	<select id="findPresaleMonitorById" resultMap="presaleMonitorResultMap">
+	select * from presale_monitor where id=#{id}
+	</select>
+	
+	<select id="findPresaleMonitorCount" resultType="int" parameterType="com.ihk.sale.data.pojo.PresaleMonitorCond">
+		SELECT count(0) from presale_monitor 
+<!--
+    	<where>			
+	    <if test="studentName!=null and studentName!='' ">  
+	        STUDENT_NAME LIKE CONCAT(CONCAT('%', #{studentName}),'%')   
+	    </if>  
+    </where>
+    -->
+    <where>
+       is_deleted = '0'
+    		<if test="monitorDate!=null and monitorDate!='' ">  
+	        and monitor_date LIKE CONCAT(CONCAT('%', #{monitorDate}),'%')   
+	  	  </if>  
+	  	 <if test="projectId !=null and projectId !='' ">  
+	        and project_id = #{projectId}   
+	  	  </if> 
+    	</where>
+    
+    </select>
+    
+	<select id="findPresaleMonitorPage" resultMap="presaleMonitorResultMap" parameterType="com.ihk.sale.data.pojo.PresaleMonitorCond">
+		SELECT * from  presale_monitor 
+        <!--
+    	<where>			
+	    <if test="studentName!=null and studentName!='' ">  
+	        STUDENT_NAME LIKE CONCAT(CONCAT('%', #{studentName}),'%')   
+	    </if>  
+    </where>
+    -->
+    	<where>
+    		is_deleted = '0'
+    		<if test="monitorDate!=null and monitorDate!='' ">  
+	        and monitor_date LIKE CONCAT(CONCAT('%', #{monitorDate}),'%')  
+	  	  </if>  
+	  	  <if test="projectId !=null and projectId !='' ">  
+	        and project_id = #{projectId}   
+	  	  </if> 
+	  	  
+    	</where>
+    	<if test="orderByFiled == null or orderByFiled == ''">
+			order by monitor_date desc
+		</if>
+    	<if test="orderByFiled == 11">
+    		order by monitor_date asc
+    	</if>
+    	<if test="orderByFiled == 12">
+    		order by monitor_date desc
+    	</if>
+    	<if test="orderByFiled == 21">
+    		order by phone_num asc
+    	</if>
+    	<if test="orderByFiled == 22">
+    		order by phone_num desc
+    	</if>
+    	<if test="orderByFiled == 31">
+    		order by visitor_Num asc
+    	</if>
+    	<if test="orderByFiled == 32">
+    		order by visitor_Num desc
+    	</if>
+    	<if test="orderByFiled == 41">
+    		order by company_id asc
+    	</if>
+    	<if test="orderByFiled == 42">
+    		order by company_id desc
+    	</if>
+    	<if test="orderByFiled == 51">
+    		order by project_id asc
+    	</if>
+    	<if test="orderByFiled == 52">
+    		order by project_id desc
+    	</if>
+		<if test="startLine >= 0">
+		<if test="pageSize > 1">
+			limit #{startLine},#{pageSize};
+		</if>
+		</if>
+	</select >
+	<select id="findPresaleMonitorByMonitorDate" resultType="int" parameterType="com.ihk.sale.data.pojo.PresaleMonitor" >
+		SELECT count(*) from presale_monitor 
+		where monitor_date = #{monitorDate}
+		and is_deleted = '0' 
+		and project_id = #{projectId}
+	</select>
+	<!-- intention_all 需要的一些方法  
+	1:新增信息 intention_all 字段为上一条信息intention_all + 本次intention_num
+	2:新增信息日期之后的数据 intention_all 全部加上本次 intention_num
+	3:符合条件 project_id等 , isdeleted = 0
+	4:删除数据本次以后所有数据 intention_all 减去删除数据的intention_num
+	 -->
+ 
+	 <select id="intentionAll_select" resultMap="presaleMonitorResultMap" parameterType="com.ihk.sale.data.pojo.PresaleMonitor">
+	 	SELECT * from presale_monitor
+	 	
+    	where #{monitorDate} > monitor_date
+	 	and project_id = #{projectId}
+	 	and is_deleted = '0'
+    
+
+	 	 order by monitor_date desc limit 0,1;  
+	 </select>
+	 <update id="intentionAll_add" parameterType="com.ihk.sale.data.pojo.PresaleMonitor">
+	 	UPDATE presale_monitor set intention_all = intention_all + #{intentionNum} 
+	 	<where>
+	 	 monitor_date > #{monitorDate}
+	 	and project_id = #{projectId}
+	 	and is_deleted = '0'
+	 	</where>
+	 	
+	 </update>
+	 <update id="intentionAll_del" parameterType="com.ihk.sale.data.pojo.PresaleMonitor">
+	 	UPDATE presale_monitor set intention_all = intention_all - #{intentionNum} 
+	 	<where>
+	 	monitor_date > #{monitorDate}
+	 	and project_id = #{projectId}
+	 	and is_deleted = '0'
+	 	</where>
+	 </update>
+</mapper>

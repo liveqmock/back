@@ -1,0 +1,109 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.ihk.property.data.IPropertyAreaMapper">
+
+	<resultMap type="PropertyArea" id="propertyAreaResultMap">
+		<id property="id" column="id" />        
+		<result property="propertyId" column="property_id" />
+		<result property="areaName" column="area_name" />
+		<result property="remark" column="remark" />
+		<result property="orderIndex" column="order_index" />
+		<result property="isDeleted" column="is_deleted" />
+		<result property="createdId" column="created_id" />
+		<result property="createdTime" column="created_time" />
+		<result property="modId" column="mod_id" />
+		<result property="modTime" column="mod_time" />
+		<result property="companyProjectId" column="company_project_id" />
+	</resultMap>
+
+	<insert id="addPropertyArea" parameterType="PropertyArea">
+		 <selectKey resultType="java.lang.Integer" keyProperty="id" order="AFTER" >
+            SELECT @@IDENTITY
+        </selectKey>		
+		insert into property_area(
+		property_id,
+		area_name,
+		remark,
+		order_index,
+		is_deleted,
+		created_id,
+		created_time,
+		mod_id,
+		mod_time,
+		company_project_id
+		)
+			VALUES(
+		#{propertyId},
+		#{areaName},
+		#{remark},
+		#{orderIndex},
+		#{isDeleted},
+		#{createdId},
+		#{createdTime},
+		#{modId},
+		#{modTime},
+		#{companyProjectId}
+			)
+		
+	</insert>
+	<delete id="deletePropertyArea" parameterType="int">
+	update property_area set is_deleted='1' where id=#{id};
+	</delete>
+	<update id="updatePropertyArea" parameterType="int">
+	update property_area set 
+		property_id=#{propertyId},
+		area_name=#{areaName},
+		remark=#{remark},
+		order_index=#{orderIndex},
+		mod_id=#{modId},
+		mod_time=#{modTime}
+	 where id=#{id}
+	</update>
+	<select id="findPropertyAreaById" resultMap="propertyAreaResultMap">
+	select * from property_area where id=#{id}
+	</select>
+    
+	<sql id="findWhereCond"> 
+		<where>
+        
+			<if test="propertyId != 0">
+			and property_id = #{propertyId}
+            </if>    
+            
+			<if test="likeAreaName ==  'yes' and areaName != null and areaName != ''">
+			and area_name like concat(concat('%', #{areaName, jdbcType=VARCHAR}), '%')
+            </if>    
+            
+            <if test="likeAreaName !=  'yes' and areaName != null and areaName != ''">
+			and area_name = #{areaName}
+            </if>
+               
+            and is_deleted = '0'
+         
+		</where>
+	</sql>
+	
+	<select id="findPropertyAreaCount" resultType="int" parameterType="com.ihk.property.data.pojo.PropertyAreaCond">
+		SELECT count(0) from property_area  
+        <include refid="findWhereCond"/>     
+    </select>
+        
+	<select id="findPropertyArea" resultMap="propertyAreaResultMap" parameterType="com.ihk.property.data.pojo.PropertyAreaCond">
+		SELECT * from  property_area 
+        <include refid="findWhereCond"/> 
+		<if test="topNum > 0">
+			limit #{topNum};
+		</if>
+    </select>
+    
+	<select id="findPropertyAreaPage" resultMap="propertyAreaResultMap" parameterType="com.ihk.property.data.pojo.PropertyAreaCond">
+		SELECT * from  property_area 
+        <include refid="findWhereCond"/> 
+    
+		<if test="startLine >= 0">
+		<if test="pageSize > 0">
+			limit #{startLine},#{pageSize};
+		</if>
+		</if>
+	</select>
+</mapper>

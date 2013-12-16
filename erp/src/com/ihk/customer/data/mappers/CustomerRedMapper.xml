@@ -1,0 +1,235 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.ihk.customer.data.ICustomerRedMapper">
+
+	<resultMap type="CustomerRed" id="customerRedResultMap">
+		<id property="id" column="id" />        
+		<result property="projectId" column="project_id" />
+		<result property="customerName" column="customer_name" />
+		<result property="phone" column="phone" />
+		<result property="homePhone" column="home_phone" />
+		<result property="homeRegion" column="home_region" />
+		<result property="workRegion" column="work_region" />
+		<result property="buyUse" column="buy_use" />
+		<result property="buyCount" column="buy_count" />
+		<result property="priceAmount" column="price_amount" />
+		<result property="houseType" column="house_type" />
+		<result property="customerSource" column="customer_source" />
+		<result property="visitCount" column="visit_count" />
+		<result property="gender" column="gender" />
+		<result property="nationality" column="nationality" />
+		<result property="idcardNo" column="idcard_no" />
+		<result property="trafficDesc" column="traffic_desc" />
+		<result property="age" column="age" />
+		<result property="address" column="address" />
+		<result property="postcode" column="postcode" />
+		<result property="familyType" column="family_type" />
+		<result property="familyIncome" column="family_income" />
+		<result property="jobType" column="job_type" />
+		<result property="jobIndustry" column="job_industry" />
+		<result property="intentUnit1" column="intent_unit1" />
+		<result property="intentUnit2" column="intent_unit2" />
+		<result property="buyAim" column="buy_aim" />
+		<result property="payType" column="pay_type" />
+		<result property="requestArea" column="request_area" />
+		<result property="intentBuynum" column="intent_buynum" />
+		<result property="roomType" column="room_type" />
+		<result property="knownFrom" column="known_from" />
+		<result property="focusPoint" column="focus_point" />
+		<result property="rating" column="rating" />
+		<result property="isDeleted" column="is_deleted" />
+		<result property="createdId" column="created_id" />
+		<result property="createdTime" column="created_time" />
+		<result property="modId" column="mod_id" />
+		<result property="modTime" column="mod_time" />
+	</resultMap>
+
+	<insert id="addCustomerRed" parameterType="CustomerRed">
+		 <selectKey resultType="java.lang.Integer" keyProperty="id" order="AFTER" >
+            SELECT @@IDENTITY
+        </selectKey>		
+		insert into customer_red(
+		project_id,
+		customer_name,
+		phone,
+		home_phone,
+		home_region,
+		work_region,
+		buy_use,
+		buy_count,
+		price_amount,
+		house_type,
+		customer_source,
+		visit_count,
+		gender,
+		nationality,
+		idcard_no,
+		traffic_desc,
+		age,
+		address,
+		postcode,
+		family_type,
+		family_income,
+		job_type,
+		job_industry,
+		intent_unit1,
+		intent_unit2,
+		buy_aim,
+		pay_type,
+		request_area,
+		intent_buynum,
+		room_type,
+		known_from,
+		focus_point,
+		rating,
+		is_deleted,
+		created_id,
+		created_time,
+		mod_id,
+		mod_time
+		)
+			VALUES(
+		#{projectId},
+		#{customerName},
+		#{phone},
+		#{homePhone},
+		#{homeRegion},
+		#{workRegion},
+		#{buyUse},
+		#{buyCount},
+		#{priceAmount},
+		#{houseType},
+		#{customerSource},
+		#{visitCount},
+		#{gender},
+		#{nationality},
+		#{idcardNo},
+		#{trafficDesc},
+		#{age},
+		#{address},
+		#{postcode},
+		#{familyType},
+		#{familyIncome},
+		#{jobType},
+		#{jobIndustry},
+		#{intentUnit1},
+		#{intentUnit2},
+		#{buyAim},
+		#{payType},
+		#{requestArea},
+		#{intentBuynum},
+		#{roomType},
+		#{knownFrom},
+		#{focusPoint},
+		#{rating},
+		#{isDeleted},
+		#{createdId},
+		#{createdTime},
+		#{modId},
+		#{modTime}
+			)
+		
+	</insert>
+	<delete id="deleteCustomerRed" parameterType="int">
+	update customer_red set is_deleted='1' where id=#{id};
+	</delete>
+	<update id="updateCustomerRed" parameterType="int">
+	update customer_red set 
+		project_id=#{projectId},
+		customer_name=#{customerName},
+		phone=#{phone},
+		home_phone=#{homePhone},
+		home_region=#{homeRegion},
+		work_region=#{workRegion},
+		buy_use=#{buyUse},
+		buy_count=#{buyCount},
+		price_amount=#{priceAmount},
+		house_type=#{houseType},
+		customer_source=#{customerSource},
+		visit_count=#{visitCount},
+		gender=#{gender},
+		nationality=#{nationality},
+		idcard_no=#{idcardNo},
+		traffic_desc=#{trafficDesc},
+		age=#{age},
+		address=#{address},
+		postcode=#{postcode},
+		family_type=#{familyType},
+		family_income=#{familyIncome},
+		job_type=#{jobType},
+		job_industry=#{jobIndustry},
+		intent_unit1=#{intentUnit1},
+		intent_unit2=#{intentUnit2},
+		buy_aim=#{buyAim},
+		pay_type=#{payType},
+		request_area=#{requestArea},
+		intent_buynum=#{intentBuynum},
+		room_type=#{roomType},
+		known_from=#{knownFrom},
+		focus_point=#{focusPoint},
+		rating=#{rating},
+		mod_id=#{modId},
+		mod_time=#{modTime}
+	 where id=#{id}
+	</update>
+	<select id="findCustomerRedById" resultMap="customerRedResultMap">
+	select * from customer_red where id=#{id}
+	</select>
+    
+	<sql id="findWhereCond"> 
+		<where>
+        <!--
+			<if test="date1 != null and date1 != ''">
+            </if>    
+            and is_deleted = '0'
+            -->
+            <if test="projectId != null and projectId != '' and projectId !='0' ">
+            	and project_id = #{projectId}
+            </if>
+            <if test="projectIds!=null and projectIds.size() > 0">  
+            and project_id in
+            <foreach  
+                collection="projectIds"  
+                item="projectId"  
+                open="("  
+                separator=","  
+                close=")">  
+                #{projectId} 
+            </foreach>  
+            </if>
+		</where>
+	</sql>
+	
+	<select id="findCustomerRedCount" resultType="int" parameterType="com.ihk.customer.data.pojo.CustomerRedCond">
+		SELECT count(0) from customer_red  
+        <include refid="findWhereCond"/>     
+    </select>
+        
+	<select id="findCustomerRed" resultMap="customerRedResultMap" parameterType="com.ihk.customer.data.pojo.CustomerRedCond">
+		SELECT * from  customer_red 
+        <include refid="findWhereCond"/> 
+		<if test="topNum > 0">
+			limit #{topNum};
+		</if>
+    </select>
+    
+	<select id="findCustomerRedPage" resultMap="customerRedResultMap" parameterType="com.ihk.customer.data.pojo.CustomerRedCond">
+		SELECT * from  customer_red 
+        <include refid="findWhereCond"/> 
+    
+		<if test="startLine >= 0">
+		<if test="pageSize > 0">
+			limit #{startLine},#{pageSize};
+		</if>
+		</if>
+	</select>
+	
+	<select id="findCustomerRedByProjectId" resultMap="customerRedResultMap">
+	select * from customer_red where project_id=#{projectId} and is_deleted = '0'
+	</select>
+	
+	<select id="findCustomerRedByProjectIdForMap" resultType="map">
+	select * from customer_red where project_id=#{projectId} and is_deleted = '0'
+	</select>
+	
+</mapper>

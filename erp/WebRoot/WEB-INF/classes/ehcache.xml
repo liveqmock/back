@@ -1,0 +1,106 @@
+<ehcache xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:noNamespaceSchemaLocation="ehcache.xsd" updateCheck="false"
+	monitoring="autodetect">
+	
+	<diskStore path="java.io.tmpdir"/>
+	
+    <defaultCache
+            maxElementsInMemory="10000"
+            eternal="false"
+            timeToIdleSeconds="1440"
+            timeToLiveSeconds="2880"
+            overflowToDisk="true"
+            diskSpoolBufferSizeMB="30"
+            maxElementsOnDisk="10000000"
+            diskPersistent="false"
+            diskExpiryThreadIntervalSeconds="120"
+            memoryStoreEvictionPolicy="LRU"
+            />
+            
+		 <cache name="sample"          
+	        maxElementsInMemory="500"   
+	        maxElementsOnDisk = "500"  
+	        eternal="false"   
+	        timeToIdleSeconds="1440"   
+	        diskPersistent="false"  
+	        timeToLiveSeconds="2880"   
+	        overflowToDisk="false"  
+	        memoryStoreEvictionPolicy="LRU"  
+	        statistics="true"  
+    	/>    
+    
+		 <cache name="customer.list"          
+	        maxElementsInMemory="500"   
+	        maxElementsOnDisk = "500"  
+	        eternal="false"   
+	        timeToIdleSeconds="1440"   
+	        diskPersistent="false"  
+	        timeToLiveSeconds="2880"   
+	        overflowToDisk="false"  
+	        memoryStoreEvictionPolicy="LRU"  
+	        statistics="true"  
+    	/> 
+    	
+		 <cache name="customer.one"          
+	        maxElementsInMemory="500"   
+	        maxElementsOnDisk = "500"  
+	        eternal="false"   
+	        timeToIdleSeconds="1440"   
+	        diskPersistent="false"  
+	        timeToLiveSeconds="2880"   
+	        overflowToDisk="false"  
+	        memoryStoreEvictionPolicy="LRU"  
+	        statistics="true"  
+	    />    
+    
+		 <cache name="useraccount.list"          
+	        maxElementsInMemory="500"   
+	        maxElementsOnDisk = "500"  
+	        eternal="false"   
+	        timeToIdleSeconds="1440"   
+	        diskPersistent="false"  
+	        timeToLiveSeconds="2880"   
+	        overflowToDisk="false"  
+	        memoryStoreEvictionPolicy="LRU"  
+	        statistics="true"  
+	    /> 
+	    
+		<cache name="useraccount.one"          
+	        maxElementsInMemory="500"   
+	        maxElementsOnDisk = "500"  
+	        eternal="false"   
+	        timeToIdleSeconds="1440"   
+	        diskPersistent="false"  
+	        timeToLiveSeconds="2880"   
+	        overflowToDisk="false"  
+	        memoryStoreEvictionPolicy="LRU"  
+	        statistics="true"  
+    	/>     
+    	
+    	<!-- 页面缓存,eternal="true"表示设置为永久缓存 -->
+    	<cache name="mySimplePageCachingFilter"          
+	        maxElementsInMemory="500"   
+	        maxElementsOnDisk = "500"  
+	        eternal="true"   
+	        timeToIdleSeconds="120"   
+	        diskPersistent="false"  
+	        timeToLiveSeconds="120"   
+	        overflowToDisk="false"  
+	        memoryStoreEvictionPolicy="LRU"  
+	        statistics="true"  
+    	/> 
+    	
+    	<!-- 页面过滤处理cache -->
+    	<cache name="myDealPageCachingFilter"          
+	        maxElementsInMemory="500"   
+	        maxElementsOnDisk = "500"  
+	        eternal="true"   
+	        timeToIdleSeconds="120"   
+	        diskPersistent="false"  
+	        timeToLiveSeconds="120"   
+	        overflowToDisk="false"  
+	        memoryStoreEvictionPolicy="LRU"  
+	        statistics="true"  
+    	/>           
+    	
+</ehcache>

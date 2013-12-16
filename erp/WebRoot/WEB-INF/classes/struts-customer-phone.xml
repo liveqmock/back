@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE struts PUBLIC
+    "-//Apache Software Foundation//DTD Struts Configuration 2.0//EN"
+    "http://struts.apache.org/dtds/struts-2.0.dtd">
+<struts>
+	
+	<!-- 该package下的action已经废弃 -->
+	<package name="customer_phone_from" extends="struts-default" namespace="/customer/phone_from">
+		
+		<action name="to" class="com.ihk.customer.action.CustomerPhoneFromAction" method="to">
+			<result name="to">/customer/phone/setup_from.jsp</result>
+		</action>
+	
+		<action name="getCustomerBySql" class="com.ihk.customer.action.CustomerPhoneFromAction" method="getCustomerBySql">
+			<result name="getCustomerBySql">/customer/phone/setup_from.jsp</result>
+		</action>
+		
+	</package>
+	
+</struts>
+
+
+

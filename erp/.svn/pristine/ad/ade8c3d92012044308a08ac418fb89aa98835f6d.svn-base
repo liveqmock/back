@@ -1,0 +1,102 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.ihk.property.data.IPropertyPrivMapper">
+
+	<resultMap type="PropertyPriv" id="propertyPrivResultMap">
+		<id property="id" column="id" />        
+		<result property="userId" column="user_id" />
+		<result property="companyProjectId" column="company_project_id" />
+		<result property="propertyId" column="property_id" />
+		<result property="buildId" column="build_id" />
+		<result property="isDeleted" column="is_deleted" />
+		<result property="createdId" column="created_id" />
+		<result property="createdTime" column="created_time" />
+		<result property="modId" column="mod_id" />
+		<result property="modTime" column="mod_time" />
+	</resultMap>
+
+	<insert id="addPropertyPriv" parameterType="PropertyPriv">
+		 <selectKey resultType="java.lang.Integer" keyProperty="id" order="AFTER" >
+            SELECT @@IDENTITY
+        </selectKey>		
+		insert into property_priv(
+		company_project_id,
+		user_id,
+		property_id,
+		build_id,
+		is_deleted,
+		created_id,
+		created_time,
+		mod_id,
+		mod_time
+		)
+			VALUES(
+		#{companyProjectId},
+		#{userId},
+		#{propertyId},
+		#{buildId},
+		#{isDeleted},
+		#{createdId},
+		#{createdTime},
+		#{modId},
+		#{modTime}
+			)
+		
+	</insert>
+	<delete id="deletePropertyPriv" parameterType="int">
+	update property_priv set is_deleted='1' where id=#{id};
+	</delete>
+	<update id="updatePropertyPriv" parameterType="int">
+	update property_priv set 
+		company_project_id = #{companyProjectId},
+		user_id=#{userId},
+		property_id=#{propertyId},
+		build_id=#{buildId},
+		is_deleted=#{isDeleted},
+		created_id=#{createdId},
+		created_time=#{createdTime},
+		mod_id=#{modId},
+		mod_time=#{modTime}
+	 where id=#{id}
+	</update>
+	<select id="findPropertyPrivById" resultMap="propertyPrivResultMap">
+	select * from property_priv where id=#{id}
+	</select>
+    
+	<sql id="findWhereCond"> 
+		<where>
+			<if test="companyProjectId != null and companyProjectId != '' and companyProjectId != 'companyProjectId'">
+			and company_project_id = #{companyProjectId}
+            </if>    
+            and is_deleted = '0'
+		</where>
+	</sql>
+	
+	<select id="findPropertyPrivCount" resultType="int" parameterType="com.ihk.property.data.pojo.PropertyPrivCond">
+		SELECT count(0) from property_priv  
+        <include refid="findWhereCond"/>     
+    </select>
+        
+	<select id="findPropertyPriv" resultMap="propertyPrivResultMap" parameterType="com.ihk.property.data.pojo.PropertyPrivCond">
+		SELECT * from  property_priv 
+        <include refid="findWhereCond"/> 
+		<if test="topNum > 0">
+			limit #{topNum};
+		</if>
+    </select>
+    
+	<select id="findPropertyPrivPage" resultMap="propertyPrivResultMap" parameterType="com.ihk.property.data.pojo.PropertyPrivCond">
+		SELECT * from  property_priv 
+        <include refid="findWhereCond"/> 
+    
+		<if test="startLine >= 0">
+		<if test="pageSize > 0">
+			limit #{startLine},#{pageSize};
+		</if>
+		</if>
+	</select>
+	
+	
+	
+	
+</mapper>

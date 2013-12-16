@@ -1,0 +1,93 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE struts PUBLIC
+    "-//Apache Software Foundation//DTD Struts Configuration 2.0//EN"
+    "http://struts.apache.org/dtds/struts-2.0.dtd">
+<struts>
+	<package name="saleunit_new_unit_group" extends="struts-base" namespace="/saleunit_new/unit/group">
+		<!-- 查询列表(组团)  -->
+		<action name="searchPropertyGroup" class="com.ihk.saleunit.action.new_unit_group.SearchPropertyGroupAction" method="searchPropertyGroup">
+			<result name="finish">/saleunit_new_unit_group/guangzhou/search_propertygroup.jsp</result>
+		</action>	
+		
+		<!-- ajax新增数据提交后的处理(组团) -->	
+		<action name="ajaxCreatePropertyGroup" class="com.ihk.saleunit.action.new_unit_group.SearchPropertyGroupAction" method="ajaxCreatePropertyGroup"/>
+			
+		<!-- ajax取得一条数据显示(组团) -->
+		<action name="ajaxGetPropertyGroupById" class="com.ihk.saleunit.action.new_unit_group.SearchPropertyGroupAction" method="ajaxGetPropertyGroupById"/>
+		
+		<!-- ajax执行修改数据的处理(组团) -->
+		<action name="ajaxUpdatePropertyGroup" class="com.ihk.saleunit.action.new_unit_group.SearchPropertyGroupAction" method="ajaxUpdatePropertyGroup"/>
+			
+		<!-- 查询列表(组团明细)  -->
+		<action name="searchPropertyGroupDetail" class="com.ihk.saleunit.action.new_unit_group.SearchPropertyGroupDetailAction" method="searchPropertyGroupDetail">
+			<result name="finish">/saleunit_new_unit_group/guangzhou/search_propertygroup_detail.jsp</result>
+		</action>	
+		<!-- 查询列表(组团明细MAP)  -->
+		<action name="searchPropertyGroupDetailMap" class="com.ihk.saleunit.action.new_unit_group.SearchPropertyGroupDetailAction" method="searchPropertyGroupDetailMap">
+			<result name="finish">/saleunit_new_unit_group/guangzhou/group_map_new.jsp</result>
+		</action>	
+		
+		<!-- 添加单元(组团明细)  -->
+		<action name="dialogAddUnitForGroup" class="com.ihk.saleunit.action.new_unit_group.SearchPropertyGroupDetailAction" method="dialogAddUnitForGroup">
+			<result name="finish">/saleunit_new_unit_group/guangzhou/search_propertygroup_detail.jsp</result>
+		</action>
+	
+		<!-- 组团主页面   已经没有使用 -->
+		<action name="layout" class="com.ihk.saleunit.action.new_.GuangZhouAppointNewLeftAction" method="layout">
+			<result name="layout">/saleunit_new_unit_group/guangzhou/layout.jsp</result>
+		</action>
+		
+		<!-- 组团主页面 -->
+		<action name="layout_new" class="com.ihk.saleunit.action.new_.GuangZhouAppointNewLeftAction" method="layout">
+			<result name="layout">/saleunit_new_unit_group/guangzhou/layout_new.jsp</result>
+		</action>
+		
+		<!-- 得到房间 map Table 已没有使用 -->
+		<action name="unitMap" class="com.ihk.saleunit.action.new_init.GuangZhouNewUnitList" method="indexMap">
+			<result name="suc">/saleunit_new_unit_group/guangzhou/unit_map.jsp</result>
+		</action>
+		<action name="unitMapForAddGroup" class="com.ihk.saleunit.action.new_init.GuangZhouNewUnitList" method="indexMap">
+			<result name="suc">/saleunit_new_unit_group/guangzhou/unit_map_for_add_group.jsp</result>
+		</action>
+		
+		<!-- 得到组团MAP -->
+		<action name="getGro" class="com.ihk.saleunit.action.new_.GuangZhouAppointNewLeftAction" method="getGroup">
+			<result name="suc">/saleunit_new_unit_group/guangzhou/group_map.jsp</result>
+		</action>
+		
+		<!-- 删除组团房间 -->
+		<action name="delGroupUnit" class="com.ihk.saleunit.action.new_unit_group.UnitGroupAction" method="delGroupUnit"/>
+		
+		<!-- 修改组团 -->
+		<action name="dialogUpdateUnitGroup" class="com.ihk.saleunit.action.new_unit_group.UnitGroupAction" method="dialogUpdateUnitGroup">
+			<result name="suc">/saleunit_new_unit_group/guangzhou/dialog_update_unit_group.jsp</result>
+		</action>
+		<!-- 修改组团  提交表单 -->
+		<action name="dialogUpdateUnitGroupForm" class="com.ihk.saleunit.action.new_unit_group.UnitGroupAction" method="dialogUpdateUnitGroupForm">
+			<result name="suc">/saleunit_new_unit_group/guangzhou/dialog_update_unit_group.jsp</result>
+		</action>
+		
+		<!-- new 新建组团弹出框 -->
+		<action name="dialogAddUnitForGroup" class="com.ihk.saleunit.action.new_unit_group.SearchPropertyGroupDetailAction" method="dialogAddUnitForGroup">
+			<result name="dialog">/saleunit_new_unit_group/guangzhou/dialog_add_unit_group_by_groupId.jsp</result>
+		</action>
+		<!-- new 新建组团弹出框  提交表单-->
+		<action name="dialogAddUnitForGroupForm" class="com.ihk.saleunit.action.new_unit_group.SearchPropertyGroupDetailAction" method="dialogAddUnitForGroupForm">
+		</action>
+		
+		<!-- old -->
+		<action name="dialogAddUnitGroup" class="com.ihk.saleunit.action.new_unit_group.UnitGroupAction" method="dialogAddUnitGroup">
+			<result name="suc">/saleunit_new_unit_group/guangzhou/dialog_add_unit_group_next.jsp</result>
+		</action>
+		<action name="dialogAddUnitForGroupForm" class="com.ihk.saleunit.action.new_unit_group.SearchPropertyGroupDetailAction" method="dialogAddUnitForGroupForm">
+		</action>
+				
+		<!-- 添加房间列表 到组团 -->
+		<action name="addUnitByUnitIds" class="com.ihk.saleunit.action.new_unit_group.UnitGroupAction" method="addUnitByUnitIds"/>
+		<!-- 添加楼栋的所有房间 到组团 -->
+		<action name="addAddUnitByBuildId" class="com.ihk.saleunit.action.new_unit_group.UnitGroupAction" method="addAddUnitByBuildId"/>
+	</package>
+</struts>
+
+
+

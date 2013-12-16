@@ -1,0 +1,85 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.ihk.customer.data.ICustomerFocusMapper">
+
+	<resultMap type="CustomerFocus" id="customerFocusResultMap">
+		<id property="id" column="id" />        
+		<result property="customerId" column="customer_id" />
+		<result property="focusPoint" column="focus_point" />
+	</resultMap>
+
+	<insert id="addCustomerFocus" parameterType="CustomerFocus">
+		 <selectKey resultType="java.lang.Integer" keyProperty="id" order="AFTER" >
+            SELECT @@IDENTITY
+        </selectKey>		
+		insert into customer_focus(
+		customer_id,
+		focus_point
+		)
+			VALUES(
+		#{customerId},
+		#{focusPoint}
+			)
+		
+	</insert>
+	<delete id="deleteCustomerFocus" parameterType="int">
+	update customer_focus set is_deleted='1' where id=#{id};
+	</delete>
+	<update id="updateCustomerFocus" parameterType="int">
+	update customer_focus set 
+		customer_id=#{customerId},
+		focus_point=#{focusPoint}
+	 where id=#{id}
+	</update>
+	<select id="findCustomerFocusById" resultMap="customerFocusResultMap">
+	select * from customer_focus where id=#{id}
+	</select>
+	
+	<select id="findAllCustomerFocus" resultMap="customerFocusResultMap">
+	select * from customer_focus 
+	</select>
+    
+	<sql id="findWhereCond"> 
+		<where>
+        <!--
+			<if test="date1 != null and date1 != ''">
+            </if>    
+            and is_deleted = '0'
+            -->
+		</where>
+	</sql>
+	
+	<select id="findCustomerFocusCount" resultType="int" parameterType="com.ihk.customer.data.pojo.CustomerFocusCond">
+		SELECT count(0) from customer_focus  
+        <include refid="findWhereCond"/>     
+    </select>
+        
+	<select id="findCustomerFocus" resultMap="customerFocusResultMap" parameterType="com.ihk.customer.data.pojo.CustomerFocusCond">
+		SELECT * from  customer_focus 
+        <include refid="findWhereCond"/> 
+		<if test="topNum > 0">
+			limit #{topNum};
+		</if>
+    </select>
+    
+	<select id="findCustomerFocusPage" resultMap="customerFocusResultMap" parameterType="com.ihk.customer.data.pojo.CustomerFocusCond">
+		SELECT * from  customer_focus 
+        <include refid="findWhereCond"/> 
+    
+		<if test="startLine >= 0">
+		<if test="pageSize > 0">
+			limit #{startLine},#{pageSize};
+		</if>
+		</if>
+	</select>
+	
+	<select id="findCustomerFocusByCustomerId" resultMap="customerFocusResultMap">
+		select * from customer_focus where customer_id=#{id}
+	</select>
+	
+	<delete id="deleteCustomerFocusByCusotmerId" parameterType="int">
+		delete from customer_focus where customer_id=#{id};
+	</delete>
+	
+	
+</mapper>

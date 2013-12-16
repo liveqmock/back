@@ -1,0 +1,411 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.ihk.saleunit.data.IContractMapper">
+
+	<resultMap type="Contract" id="contractResultMap">
+		<id property="id" column="id" />        
+		<result property="confirmId" column="confirm_id" />
+		<result property="customerId" column="customer_id" />
+		<result property="phone" column="phone" />
+		<result property="unitId" column="unit_id" />
+		<result property="propertyType" column="property_type" />
+		<result property="priceWay" column="price_way" />
+		<result property="payWayId" column="pay_way_id" />
+		<result property="discountPercent" column="discount_percent" />
+		<result property="buildPrice" column="build_price" />
+		<result property="insideUnitPrice" column="inside_unit_price" />
+		<result property="discountDesc" column="discount_desc" />
+		<result property="sumMoney" column="sum_money" />
+		<result property="renovateDesc" column="renovate_desc" />
+		<result property="renovatePrice" column="renovate_price" />
+		<result property="isMerge" column="is_merge" />
+		<result property="isSecondLinkage" column="is_second_linkage" />
+		<result property="isRelation" column="is_relation" />
+		<result property="renovateMoney" column="renovate_money" />
+		<result property="finishDate" column="finish_date" />
+		<result property="contractNo" column="contract_no" />
+		<result property="shouldDeposit" column="should_deposit" />
+		<result property="contractMoney" column="contract_money" />
+		<result property="signDate" column="sign_date" />
+		<result property="workDate" column="work_date" />
+		<result property="deliveryDate" column="delivery_date" />
+		<result property="realHouseDate" column="real_house_date" />
+		<result property="delayDate" column="delay_date" />
+		<result property="recordNo" column="record_no" />
+		<result property="recordDate" column="record_date" />
+		<result property="recommendMan" column="recommend_man" />
+		<result property="salesId" column="sales_id" />
+		<result property="mortgageBank" column="mortgage_bank" />
+		<result property="mortgageMoney" column="mortgage_money" />
+		<result property="mortgageYear" column="mortgage_year" />
+		<result property="fundBank" column="fund_bank" />
+		<result property="fundMoney" column="fund_money" />
+		<result property="fundYear" column="fund_year" />
+		<result property="confirmDeliveryDate" column="confirm_delivery_date" />
+		<result property="refUnitId" column="ref_unit_id" />
+		<result property="remark" column="remark"/>
+		<result property="companyProjectId" column="company_project_id" />
+		<result property="propertyProjectId" column="property_project_id"/>
+		<result property="shouldAmount" column="should_amount" />
+		<result property="paymentAmount" column="payment_amount" />
+		<result property="isDeleted" column="is_deleted" />
+		<result property="createdId" column="created_id" />
+		<result property="createdTime" column="created_time" />
+		<result property="modId" column="mod_id" />
+		<result property="modTime" column="mod_time" />
+		<result property="takeTime" column="take_time" />
+		<result property="takeUnitTime" column="take_unit_time" />
+	</resultMap>
+
+	<insert id="addContract" parameterType="Contract">
+		 <selectKey resultType="java.lang.Integer" keyProperty="id" order="AFTER" >
+            SELECT @@IDENTITY
+        </selectKey>		
+		insert into contract(
+		confirm_id,
+		customer_id,
+		phone,
+		unit_id,
+		property_type,
+		price_way,
+		pay_way_id,
+		discount_percent,
+		build_price,
+		inside_unit_price,
+		discount_desc,
+		sum_money,
+		renovate_desc,
+		renovate_price,
+		is_merge,
+		is_second_linkage,
+		is_relation,
+		renovate_money,
+		finish_date,
+		contract_no,
+		should_deposit,
+		contract_money,
+		sign_date,
+		work_date,
+		delivery_date,
+		real_house_date,
+		delay_date,
+		record_no,
+		record_date,
+		recommend_man,
+		sales_id,
+		mortgage_bank,
+		mortgage_money,
+		mortgage_year,
+		fund_bank,
+		fund_money,
+		fund_year,
+		confirm_delivery_date,
+		ref_unit_id,
+		remark,
+		company_project_id,
+		property_project_id,
+		should_amount,
+		payment_amount,
+		is_deleted,
+		created_id,
+		created_time,
+		mod_id,
+		mod_time,
+		take_time,
+		take_unit_time
+		)
+			VALUES(
+		#{confirmId},
+		#{customerId},
+		#{phone},
+		#{unitId},
+		#{propertyType},
+		#{priceWay},
+		#{payWayId},
+		#{discountPercent},
+		#{buildPrice},
+		#{insideUnitPrice},
+		#{discountDesc},
+		#{sumMoney},
+		#{renovateDesc},
+		#{renovatePrice},
+		#{isMerge},
+		#{isSecondLinkage},
+		#{isRelation},
+		#{renovateMoney},
+		#{finishDate},
+		#{contractNo},
+		#{shouldDeposit},
+		#{contractMoney},
+		#{signDate},
+		#{workDate},
+		#{deliveryDate},
+		#{realHouseDate},
+		#{delayDate},
+		#{recordNo},
+		#{recordDate},
+		#{recommendMan},
+		#{salesId},
+		#{mortgageBank},
+		#{mortgageMoney},
+		#{mortgageYear},
+		#{fundBank},
+		#{fundMoney},
+		#{fundYear},
+		#{confirmDeliveryDate},
+		#{refUnitId},
+		#{remark},
+		#{companyProjectId},
+		#{propertyProjectId},
+		#{shouldAmount},
+		#{paymentAmount},
+		#{isDeleted},
+		#{createdId},
+		#{createdTime},
+		#{modId},
+		#{modTime},
+		#{takeTime},
+		#{takeUnitTime}
+			)
+		
+	</insert>
+	<delete id="deleteContract" parameterType="com.ihk.utils.base.PojoDeleteCond">
+	update contract set is_deleted='1', mod_id=#{modId}, mod_time=#{modTime} where id=#{id};
+	</delete>
+	<delete id="reloadContract" parameterType="com.ihk.utils.base.PojoDeleteCond">
+	update contract set is_deleted='0', mod_id=#{modId}, mod_time=#{modTime} where id=#{id};
+	</delete>
+	<update id="updateContract" parameterType="int">
+	update contract set 
+		confirm_id=#{confirmId},
+		customer_id=#{customerId},
+		phone=#{phone},
+		unit_id=#{unitId},
+		property_type=#{propertyType},
+		price_way=#{priceWay},
+		pay_way_id=#{payWayId},
+		discount_percent=#{discountPercent},
+		build_price=#{buildPrice},
+		inside_unit_price=#{insideUnitPrice},
+		discount_desc=#{discountDesc},
+		sum_money=#{sumMoney},
+		renovate_desc=#{renovateDesc},
+		renovate_price=#{renovatePrice},
+		is_merge=#{isMerge},
+		is_second_linkage=#{isSecondLinkage},
+		is_relation=#{isRelation},
+		renovate_money=#{renovateMoney},
+		finish_date=#{finishDate},
+		contract_no=#{contractNo},
+		should_deposit=#{shouldDeposit},
+		contract_money=#{contractMoney},
+		sign_date=#{signDate},
+		work_date=#{workDate},
+		delivery_date=#{deliveryDate},
+		real_house_date=#{realHouseDate},
+		delay_date=#{delayDate},
+		record_no=#{recordNo},
+		record_date=#{recordDate},
+		recommend_man=#{recommendMan},
+		sales_id=#{salesId},
+		mortgage_bank=#{mortgageBank},
+		mortgage_money=#{mortgageMoney},
+		mortgage_year=#{mortgageYear},
+		fund_bank=#{fundBank},
+		fund_money=#{fundMoney},
+		fund_year=#{fundYear},
+		confirm_delivery_date=#{confirmDeliveryDate},
+		ref_unit_id=#{refUnitId},
+		remark=#{remark},
+		company_project_id=#{companyProjectId},
+		property_project_id=#{propertyProjectId},
+		should_amount=#{shouldAmount},
+		payment_amount=#{paymentAmount},
+		mod_id=#{modId},
+		mod_time=#{modTime},
+		take_time=#{takeTime},
+		take_unit_time=#{takeUnitTime}
+	 where id=#{id}
+	</update>
+	
+	<select id="findContractById" resultMap="contractResultMap">
+	select * from contract where id=#{id}
+	</select>
+    
+	<sql id="findWhereCond"> 
+		<where>
+		
+			<if test="unitIds !=null and unitIds.size() > 0">  
+	            and unit_id in
+	            <foreach  
+	                collection="unitIds"  
+	                item="uId"  
+	                open="("  
+	                separator=","  
+	                close=")">  
+	                #{uId}  
+	            </foreach>  
+	        </if> 
+		
+			<if test="payWayId != 0">
+				and pay_way_id = #{payWayId}
+			</if>
+		
+			<if test="unitId != null and unitId != ''">
+				and unit_id = #{unitId}
+			</if>
+			
+			 <if test="customerId != null and customerId != ''">
+				and customer_id = #{customerId}
+			</if>
+			
+	        <if test="salesIds !=null and salesIds.size() > 0">  
+	            and sales_id in
+	            <foreach  
+	                collection="salesIds"  
+	                item="sId"  
+	                open="("  
+	                separator=","  
+	                close=")">  
+	                #{sId}  
+	            </foreach>  
+	        </if> 
+	        
+	        <if test="salesId != null and salesId != ''">
+				and sales_id = #{salesId}
+			</if>
+			
+			<if test="contractNo != null and contractNo != ''">
+				and contract_no = #{contractNo}
+			</if>
+			
+			<if test="propertyProjectId != null and propertyProjectId != ''">
+				and property_project_id = #{propertyProjectId}
+			</if>
+	        
+	         and is_deleted = '0' 
+			
+		</where>
+	</sql>
+	
+	<select id="findContractCount" resultType="int" parameterType="com.ihk.saleunit.data.pojo.ContractCond">
+		SELECT count(0) from contract  
+        <include refid="findWhereCond"/>     
+    </select>
+        
+	<select id="findContract" resultMap="contractResultMap" parameterType="com.ihk.saleunit.data.pojo.ContractCond">
+		SELECT * from  contract 
+        <include refid="findWhereCond"/> 
+		<if test="topNum > 0">
+			limit #{topNum};
+		</if>
+    </select>
+    
+	<select id="findContractPage" resultMap="contractResultMap" parameterType="com.ihk.saleunit.data.pojo.ContractCond">
+		SELECT * from  contract 
+        <include refid="findWhereCond"/> 
+        
+         <if test="orderByFiled == null or orderByFiled == ''">
+			order by id desc
+		</if>
+		<if test="orderByFiled=='11'">
+			order by sign_date desc 
+		</if>
+		<if test="orderByFiled=='12'">
+			order by sign_date 
+		</if>
+    
+		<if test="startLine >= 0">
+		<if test="pageSize > 0">
+			limit #{startLine},#{pageSize};
+		</if>
+		</if>
+	</select>
+	
+	<select id="findCompanyReport" resultType="map" parameterType="com.ihk.saleunit.data.pojo.ContractCond">
+	
+		select tmp2.pId, sum(cou) as cou, sum(depMoney) as depMoney, sum(conMoney) as conMoney from 
+		(
+			select b.property_id as pId, tmp.cou, tmp.depMoney, tmp.conMoney from property_unit u
+			inner join 
+				(
+					select unit_id as uId, count(1) as cou, sum(should_deposit) as depMoney,
+					sum(contract_money) as conMoney
+					from contract
+					<where>
+						<if test="date1 != null and date1 != ''">
+							and sign_date &gt;= #{date1}
+						</if>
+						<if test="date2 != null and date2 != ''">
+							and sign_date &lt; date_add(#{date2},interval 1 day)
+						</if>
+						
+							and is_deleted = '0'
+					</where>
+					group by unit_id
+					order by cou
+				)tmp 
+			on u.id = tmp.uId
+			inner join property_build b
+			on b.id = u.build_id
+			
+		) tmp2
+		group by tmp2.pId
+			
+	</select>
+	
+	<select id="findPropertyReport" resultType="map" parameterType="com.ihk.saleunit.data.pojo.ContractCond">
+	
+		select tmp2.bId as bId, sum(tmp2.cou) as cou, sum(tmp2.depMoney) as depMoney, sum(tmp2.conMoney) as conMoney from
+		(
+		select  u.build_id as bId, tmp.cou, tmp.depMoney, tmp.conMoney from property_unit u
+		inner join 
+		    (
+		    select unit_id as uId, count(1) as cou, sum(should_deposit) as depMoney,
+		    sum(contract_money) as conMoney
+		    from contract
+			 <where>
+				<if test="date1 != null and date1 != ''">
+					and sign_date &gt;= #{date1}
+				</if>
+				<if test="date2 != null and date2 != ''">
+					and sign_date &lt; date_add(#{date2},interval 1 day)
+				</if>
+				
+					and is_deleted = '0'
+			</where>
+		    group by unit_id
+		    order by cou
+		    )tmp 
+		on u.id = tmp.uId
+		inner join property_build b
+		on b.id = u.build_id
+		<where>
+			<if test="propertyId != null and propertyId != ''">
+				b.property_id = #{propertyId}
+			</if>
+		</where>
+		
+		) tmp2
+		group by tmp2.bId
+			
+	</select>
+	
+	<select id="findContractByUnitId" resultMap="contractResultMap">
+		select * from contract where unit_id = #{unitId} and is_deleted = '0' order by mod_time desc limit 1
+	</select>
+	<select id="findContractByUnitIdIncludeIsDelete" resultMap="contractResultMap">
+		select * from contract where unit_id = #{unitId} order by mod_time desc limit 1
+	</select>
+	
+	<!-- ////// -->
+	<select id="findContractByCustomerId" resultMap="contractResultMap">
+		select * from contract where customer_id = #{customerId} and is_deleted = '0'
+	</select>
+	
+	<!-- 修改对应合同单的payWayId -->
+	<update id="updateContractPayWayId" parameterType="map">
+		update contract set pay_way_id = #{payWayId} where id = #{id}
+	</update>
+	
+</mapper>

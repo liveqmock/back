@@ -1,0 +1,452 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.ihk.property.data.ICheckcommissionMapper">
+
+	<resultMap type="Checkcommission" id="checkcommissionResultMap">
+		<id property="id" column="id" />        
+		<result property="unitId" column="unit_id" />
+		<result property="checkfeeId" column="checkfee_id" />
+		<result property="checkcommissionDate" column="checkcommission_date" />
+		<result property="checkcommissionType" column="checkcommission_type" />
+		<result property="repayMoney" column="repay_money" />
+		<result property="repayAmount" column="repay_amount" />
+		<result property="commission" column="commission" />
+		<result property="commissionAmount" column="commission_amount" />
+		<result property="sec_commission" column="sec_commission" />
+		<result property="sec_commissionAmount" column="sec_commission_amount" />
+		<result property="rel_commission" column="rel_commission" />
+		<result property="rel_commissionAmount" column="rel_commission_amount" />
+		<result property="commissionTime" column="commission_time"/>
+		<result property="remark" column="remark" />
+		<result property="isDeleted" column="is_deleted" />
+		<result property="createdId" column="created_id" />
+		<result property="createdTime" column="created_time" />
+		<result property="modId" column="mod_id" />
+		<result property="modTime" column="mod_time" />
+	</resultMap>
+
+	<insert id="addCheckcommission" parameterType="Checkcommission">
+		 <selectKey resultType="java.lang.Integer" keyProperty="id" order="AFTER" >
+            SELECT @@IDENTITY
+        </selectKey>		
+		insert into checkcommission(
+		unit_id,
+        checkfee_id,
+		checkcommission_date,
+		checkcommission_type,
+		repay_money,
+		repay_amount,
+        commission,
+        commission_amount,
+        sec_commission,
+        sec_commission_amount,
+        rel_commission,
+        rel_commission_amount,
+		remark,
+		is_deleted,
+		created_id,
+		created_time,
+		mod_id,
+		mod_time
+		)
+			VALUES(
+		#{unitId},
+		#{checkfeeId},
+		#{checkcommissionDate},
+		#{checkcommissionType},
+		#{repayMoney},
+		#{repayAmount},
+		#{commission},
+		#{commissionAmount},
+		#{sec_commission},
+		#{sec_commissionAmount},
+		#{rel_commission},
+		#{rel_commissionAmount},
+		#{remark},
+		#{isDeleted},
+		#{createdId},
+		#{createdTime},
+		#{modId},
+		#{modTime}
+			)
+		
+	</insert>
+	<delete id="deleteCheckcommission" parameterType="com.ihk.utils.base.PojoDeleteCond">
+	update checkcommission set is_deleted='1', mod_id=#{modId}, mod_time=#{modTime} where id=#{id};
+	</delete>
+
+    <delete id="deleteCheckcommissionByUnitId" parameterType="com.ihk.property.data.pojo.CheckcommissionCond">
+    	delete from checkcommission where id=#{id}
+
+        <if test="checkCommissionDate != null and checkCommissionDate != ''">
+            and checkcommission_date=#{checkCommissionDate};
+        </if>
+
+    </delete>
+
+	<update id="updateCheckcommissionByUnitId" parameterType="int">
+	update checkcommission set
+		checkcommission_type=#{checkcommissionType},
+		mod_id=#{modId},
+		mod_time=#{modTime}
+	 where unit_id=#{unitId}
+	</update>
+
+    <update id="saveCommission" parameterType="int">
+	 update checkcommission set
+
+		mod_id=#{modId},
+		mod_time=#{modTime},
+
+        commission=#{commission},
+        commission_amount=#{commissionAmount},
+        sec_commission=#{sec_commission},
+        sec_commission_amount=#{sec_commissionAmount},
+        rel_commission=#{rel_commission},
+        rel_commission_amount=#{rel_commissionAmount},
+        commission_time =#{commissionTime}
+	 where id=#{id}
+	</update>
+    <update id="savePayment" parameterType="int">
+	 update checkcommission set
+
+		mod_id=#{modId},
+		mod_time=#{modTime},
+
+        payment_amount= payment_amount + #{paymentAmount}
+
+	 where id=#{id}
+	</update>
+
+	<update id="updateCheckcommission" parameterType="int">
+	 update checkcommission set
+
+		mod_id=#{modId},
+		mod_time=#{modTime}
+        <if test="unitId != null and unitId != ''">
+            ,unit_id=#{unitId}
+        </if>
+        <if test="checkfeeId != null and checkfeeId != ''">
+            ,checkfee_id=#{checkfeeId}
+        </if>
+        <if test="checkcommissionDate != null and checkcommissionDate != ''">
+            ,checkcommission_date=#{checkcommissionDate}
+        </if>
+        <if test="checkcommissionType != null and checkcommissionType != ''">
+            ,checkcommission_type=#{checkcommissionType}
+        </if>
+        <if test="repayMoney != null and repayMoney != ''">
+            ,repay_money=#{repayMoney}
+        </if>
+        <if test="repayAmount != null and repayAmount != ''">
+            ,repay_amount=#{repayAmount}
+        </if>
+        <if test="remark != null and remark != ''">
+            ,remark=#{remark}
+        </if>
+
+	 where id=#{id}
+	</update>
+	<select id="findCheckcommissionById" resultMap="checkcommissionResultMap">
+	select * from checkcommission where id=#{id}
+	</select>
+    
+	<sql id="findWhereCond"> 
+		<where>
+            and is_deleted = '0'
+
+            <if test="unitId != null and unitId != ''">
+                and unit_id = #{unitId}
+            </if>
+
+            <if test="checkCommissionDate != null and checkCommissionDate != ''">
+                and checkcommission_date = #{checkCommissionDate}
+            </if>
+		</where>
+	</sql>
+	
+	<select id="findCheckcommissionCount" resultType="int" parameterType="com.ihk.property.data.pojo.CheckcommissionCond">
+		SELECT count(0) from checkcommission  
+        <include refid="findWhereCond"/>     
+    </select>
+        
+	<select id="findCheckcommission" resultMap="checkcommissionResultMap" parameterType="com.ihk.property.data.pojo.CheckcommissionCond">
+		SELECT * from  checkcommission 
+        <include refid="findWhereCond"/> 
+		<if test="topNum > 0">
+			limit #{topNum};
+		</if>
+    </select>
+    
+	<select id="findCheckcommissionPage" resultMap="checkcommissionResultMap" parameterType="com.ihk.property.data.pojo.CheckcommissionCond">
+		SELECT * from  checkcommission 
+        <include refid="findWhereCond"/> 
+    
+		<if test="startLine >= 0">
+		<if test="pageSize > 0">
+			limit #{startLine},#{pageSize};
+		</if>
+		</if>
+	</select>
+    
+    <!-- ajax分页使用 -->	
+   <sql id="findCheckcommissionForAjaxComm">
+		<where>		
+            and is_deleted = '0'
+		</where>
+		
+	</sql>
+    
+    <select id="findCheckcommissionForAjax" resultMap="checkcommissionResultMap" parameterType="com.ihk.property.data.pojo.CheckcommissionCond">
+		SELECT * from  checkcommission 
+        <include refid="findCheckcommissionForAjaxComm"/> 
+    
+		<if test="startLine >= 0">
+		<if test="pageSize > 0">
+			limit #{startLine},#{pageSize};
+		</if>
+		</if>
+	</select>
+    
+    <select id="findCheckcommissionCountForAjax" resultType="int" parameterType="com.ihk.property.data.pojo.CheckcommissionCond">
+		SELECT count(1) from checkcommission  
+        <include refid="findCheckcommissionForAjaxComm"/>     
+    </select>
+
+    <update id="updateCheckcommissionByRepay" parameterType="com.ihk.property.data.pojo.CheckcommissionCond">
+   	update checkcommission set
+   		repay_money=repay_money + #{repayMoney},
+   		commission=commission + #{commission},
+   		commission_amount=commission_amount + #{commissionAmount},
+   		sec_commission=sec_commission + #{sec_commission},
+   		sec_commission_amount=sec_commission_amount + #{sec_commissionAmount},
+   		rel_commission=rel_commission + #{rel_commission},
+   		rel_commission_amount=rel_commission_amount + #{rel_commissionAmount},
+   		mod_id=#{modId},
+   		mod_time=#{modTime}
+   	 where id=#{id}
+   	</update>
+
+    <!-- 全额回款 -->
+    <select id="findCheckfeeEd" resultType="map" parameterType="com.ihk.saleunit.data.pojo.ConfirmCond">
+        select k.ID as checkfeeID,k.*,a.*,d.*,e.*,f.*,c.*,h.pay_name as confirm_pay_name,i.pay_name as contract_pay_name
+        from property_build c,property_project d ,company_project e,company f ,v_confirm_contract a
+        LEFT JOIN pay_way h ON a.confirm_pay_way_id=h.id
+        LEFT JOIN pay_way i ON a.contract_pay_way_id=i.id
+        LEFT JOIN checkfee k ON a.unit_id=k.unit_id
+        where a.build_id = c.id
+        and c.property_id = d.id
+        and d.company_project_id = e.id
+        and e.company_id = f.id
+        and c.is_deleted='0'
+        and d.is_deleted='0'
+        and e.is_deleted='0'
+        and f.is_deleted='0'
+        and k.is_deleted='0'
+        and (k.checkcommission_type=0 or k.checkcommission_type=4)
+
+        <if test="saleState != null and saleState !='' and saleState != 'null'">
+            and sale_state = #{saleState}
+        </if>
+        <if test="projectIds != null and projectIds.size() > 0">
+            and d.id in
+            <foreach
+                    collection="projectIds"
+                    item="pId"
+                    open="("
+                    separator=","
+                    close=")">
+                #{pId}
+            </foreach>
+        </if>
+        <if test="buildId != null and buildId !=''">
+            and c.id = #{buildId}
+        </if>
+        <if test="areaId != null and areaId !=''">
+            and c.area_id = #{areaId}
+        </if>
+        <if test="checkFeeDate != null and checkFeeDate !=''">
+            and k.checkfee_date = #{checkFeeDate}
+        </if>
+        <if test="date1 != null and date1 !=''">
+            and sign_date &gt;= #{date1}
+        </if>
+        <if test="date2 != null and date2 !=''">
+            and sign_date &lt; #{date2}
+        </if>
+        <if test="startDate != null and startDate !=''">
+            and sign_date &gt;= #{startDate}
+        </if>
+        <if test="endDate != null and endDate !=''">
+            and sign_date &lt; #{endDate}
+        </if>
+
+        <if test="checkFeeType != null and checkFeeType !=''">
+            and k.checkfee_type = #{checkFeeType}
+        </if>
+        order by a.unit_id asc
+    </select>
+    <!-- 部分回款 -->
+    <select id="findCheckfeePart" resultType="map" parameterType="com.ihk.saleunit.data.pojo.ConfirmCond">
+        select k.ID as checkfeeID,k.*,j.*,a.*,d.*,e.*,f.*,c.*,h.pay_name as confirm_pay_name,i.pay_name as contract_pay_name
+        from property_build c,property_project d ,company_project e,company f ,v_confirm_contract a
+        LEFT JOIN pay_way h ON a.confirm_pay_way_id=h.id
+        LEFT JOIN pay_way i ON a.contract_pay_way_id=i.id
+        LEFT JOIN checkfee k ON a.unit_id=k.unit_id
+        LEFT JOIN sale_unit_receipt j ON a.unit_id=j.unit_id
+        where a.build_id = c.id
+        and c.property_id = d.id
+        and d.company_project_id = e.id
+        and e.company_id = f.id
+        and c.is_deleted='0'
+        and d.is_deleted='0'
+        and e.is_deleted='0'
+        and f.is_deleted='0'
+        and k.is_deleted='0'
+        and (k.checkcommission_type=0 or k.checkcommission_type=4)
+        and (j.checkfee_id=0 or j.checkfee_id is null)
+
+        <if test="saleState != null and saleState !='' and saleState != 'null'">
+            and sale_state = #{saleState}
+        </if>
+        <if test="projectIds != null and projectIds.size() > 0">
+            and d.id in
+            <foreach
+                    collection="projectIds"
+                    item="pId"
+                    open="("
+                    separator=","
+                    close=")">
+                #{pId}
+            </foreach>
+        </if>
+        <if test="buildId != null and buildId !=''">
+            and c.id = #{buildId}
+        </if>
+        <if test="areaId != null and areaId !=''">
+            and c.area_id = #{areaId}
+        </if>
+        <if test="checkFeeDate != null and checkFeeDate !=''">
+            and k.checkfee_date = #{checkFeeDate}
+        </if>
+        <if test="date1 != null and date1 !=''">
+            and receipt_date &gt;= #{date1}
+        </if>
+        <if test="date2 != null and date2 !=''">
+            and receipt_date &lt; #{date2}
+        </if>
+        <if test="startDate != null and startDate !=''">
+            and work_date &gt;= #{date1}
+        </if>
+        <if test="endDate != null and endDate !=''">
+            and work_date &lt; #{date2}
+        </if>
+
+        <if test="checkFeeType != null and checkFeeType !=''">
+            and k.checkfee_type = #{checkFeeType}
+        </if>
+        GROUP BY a.unit_id
+        order by a.unit_id asc
+    </select>
+
+    <!-- 查看对佣表 -->
+    <select id="findCheckcommissionView" resultType="map" parameterType="com.ihk.saleunit.data.pojo.ConfirmCond">
+        SELECT l.id as checkcommission_id,l.checkfee_id as checkfee_id ,l.*,a.*,d.*,e.*,f.*,c.*,h.pay_name AS confirm_pay_name,i.pay_name AS contract_pay_name
+        FROM checkcommission l,property_build c,property_project d ,company_project e,company f ,v_confirm_contract a
+        LEFT JOIN pay_way h ON a.confirm_pay_way_id=h.id
+        LEFT JOIN pay_way i ON a.contract_pay_way_id=i.id
+
+        WHERE a.build_id = c.id
+        AND c.property_id = d.id
+        AND d.company_project_id = e.id
+        AND e.company_id = f.id
+        AND c.is_deleted='0'
+        AND d.is_deleted='0'
+        AND e.is_deleted='0'
+        AND f.is_deleted='0'
+        AND l.is_deleted='0'
+        AND a.unit_id=l.unit_id
+
+
+        <if test="saleState != null and saleState !='' and saleState != 'null'">
+            and sale_state = #{saleState}
+        </if>
+        <if test="projectIds != null and projectIds.size() > 0">
+            and d.id in
+            <foreach
+                    collection="projectIds"
+                    item="pId"
+                    open="("
+                    separator=","
+                    close=")">
+                #{pId}
+            </foreach>
+        </if>
+        <if test="buildId != null and buildId !=''">
+            and c.id = #{buildId}
+        </if>
+        <if test="areaId != null and areaId !=''">
+            and c.area_id = #{areaId}
+        </if>
+
+        <if test="date1 != null and date1 !=''">
+            and sign_date &gt;= #{date1}
+        </if>
+        <if test="date2 != null and date2 !=''">
+            and sign_date &lt; #{date2}
+        </if>
+        <if test="startDate != null and startDate !=''">
+            and work_date &gt;= #{date1}
+        </if>
+        <if test="endDate != null and endDate !=''">
+            and work_date &lt; #{date2}
+        </if>
+
+        <if test="checkCommissionDate != null and checkCommissionDate !=''">
+            and l.checkcommission_date = #{checkCommissionDate}
+        </if>
+        <if test="checkCommissionType != null and checkCommissionType !=''">
+            and l.checkcommission_type = #{checkCommissionType}
+        </if>
+        order by a.unit_id desc
+    </select>
+
+    <!-- 对佣日期列表 -->
+    <select id="checkDateList" resultType="map" parameterType="com.ihk.property.data.pojo.CheckcommissionCond">
+        SELECT checkcommission_date
+        FROM checkcommission a , v_confirm_contract b ,property_build c
+        WHERE a.unit_id=b.unit_id
+        AND checkcommission_date is not null
+        AND b.build_id = c.id
+
+        <if test="checkCommissionType != null and checkCommissionType !=''">
+            AND a.checkcommission_type=#{checkCommissionType}
+        </if>
+        <if test="propertyId != null and propertyId !=''">
+            AND c.property_id=#{propertyId}
+        </if>
+
+        GROUP BY checkcommission_date
+    </select>
+
+    <!-- 对佣表统计 -->
+    <select id="sumByUnitId" resultType="map" parameterType="com.ihk.property.data.pojo.CheckcommissionCond">
+        SELECT commission ,SUM(commission_amount) as commission_amount,sec_commission,SUM(sec_commission_amount) as sec_commission_amount ,
+                rel_commission,SUM(rel_commission_amount) as rel_commission_amount,sum(payment_amount) as payment_amount,commission_time
+          FROM checkcommission
+          WHERE unit_id = #{unitId}
+           AND is_deleted = '0'
+    </select>
+    
+    
+    <!-- 批量查找，根据传入的unitIds -->
+    <select id="findCheckcommissionByUnitIdList" resultType="map" parameterType="map">
+    	select * from checkcommission 
+    		where
+    			unit_id in
+    			<foreach collection="idList" item="ids" index="index" open="(" separator="," close=")" >
+				#{ids}
+				</foreach>
+				and is_deleted = '0'
+    </select>
+</mapper>

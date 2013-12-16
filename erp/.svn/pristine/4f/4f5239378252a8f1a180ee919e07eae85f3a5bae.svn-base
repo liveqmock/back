@@ -1,0 +1,102 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.ihk.property.data.IUnitImageMapper">
+
+	<resultMap type="UnitImage" id="unitImageResultMap">
+		<id property="id" column="id" />        
+		<result property="uid" column="uid" />
+		<result property="type" column="type"/>
+		<result property="context" column="context"/>
+		<result property="url" column="url" />
+		<result property="isDeleted" column="is_deleted" />
+		<result property="createdId" column="created_id" />
+		<result property="createdTime" column="created_time" />
+		<result property="modId" column="mod_id" />
+		<result property="modTime" column="mod_time" />
+	</resultMap>
+
+	<insert id="addUnitImage" parameterType="UnitImage">
+		 <selectKey resultType="java.lang.Integer" keyProperty="id" order="AFTER" >
+            SELECT @@IDENTITY
+        </selectKey>		
+		insert into unit_image(
+		uid,
+		type,
+		context,
+		url,
+		is_deleted,
+		created_id,
+		created_time,
+		mod_id,
+		mod_time
+		)
+			VALUES(
+		#{uid},
+		#{type},
+		#{context},
+		#{url},
+		#{isDeleted},
+		#{createdId},
+		#{createdTime},
+		#{modId},
+		#{modTime}
+			)
+		
+	</insert>
+	<delete id="deleteUnitImage" parameterType="int">
+	update unit_image set is_deleted='1' where id=#{id};
+	</delete>
+	<update id="updateUnitImage" parameterType="int">
+	update unit_image set 
+		uid=#{uid},
+		type=#{type},
+		context=#{context},
+		url=#{url},
+		mod_id=#{modId},
+		mod_time=#{modTime}
+	 where id=#{id}
+	</update>
+	<select id="findUnitImageById" resultMap="unitImageResultMap">
+	select * from unit_image where id=#{id}
+	</select>
+    
+	<sql id="findWhereCond"> 
+		<where>
+        <!--
+			<if test="date1 != null and date1 != ''">
+            </if>    
+            and is_deleted = '0'
+            -->
+		</where>
+	</sql>
+	
+	<select id="findUnitImageCount" resultType="int" parameterType="com.ihk.property.data.pojo.UnitImageCond">
+		SELECT count(0) from unit_image  
+        <include refid="findWhereCond"/>     
+    </select>
+        
+	<select id="findUnitImage" resultMap="unitImageResultMap" parameterType="com.ihk.property.data.pojo.UnitImageCond">
+		SELECT * from  unit_image 
+        <include refid="findWhereCond"/> 
+		<if test="topNum > 0">
+			limit #{topNum};
+		</if>
+    </select>
+    
+	<select id="findUnitImagePage" resultMap="unitImageResultMap" parameterType="com.ihk.property.data.pojo.UnitImageCond">
+		SELECT * from  unit_image 
+        <include refid="findWhereCond"/> 
+    
+		<if test="startLine >= 0">
+		<if test="pageSize > 0">
+			limit #{startLine},#{pageSize};
+		</if>
+		</if>
+	</select>
+	
+	<select id="findUnitImageByUnitId" resultMap="unitImageResultMap">
+		select * from unit_image where uid = #{unitId} and is_deleted='0' order by id desc
+	</select>
+	
+	
+</mapper>

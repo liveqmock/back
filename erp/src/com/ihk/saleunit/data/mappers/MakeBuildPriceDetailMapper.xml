@@ -1,0 +1,159 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.ihk.saleunit.data.IMakeBuildPriceDetailMapper">
+
+	<resultMap type="MakeBuildPriceDetail" id="makeBuildPriceDetailResultMap">
+		<id property="id" column="id" />        
+		<result property="unitId" column="unit_id" />
+		<result property="makeId" column="make_id" />
+		<result property="insidePrice" column="inside_price" />
+		<result property="buildPrice" column="build_price" />
+		<result property="buildArea" column="build_area" />
+		<result property="insideArea" column="inside_area" />
+		<result property="sumPrice" column="sum_price" />
+		<result property="priceWay" column="price_way" />
+		<result property="scenery" column="scenery" />
+		<result property="orientation" column="orientation" />
+		<result property="productType" column="product_type" />
+		<result property="roomType" column="room_type" />
+		<result property="remark" column="remark" />
+		<result property="saleState" column="sale_state" />
+		<result property="renovateDesc" column="renovate_desc" />
+		<result property="renovatePrice" column="renovate_price" />
+		<result property="renovateMoney" column="renovate_money" />
+		<result property="roomNum" column="room_num" />
+		<result property="hallNum" column="hall_num" />
+		<result property="toiletNum" column="toilet_num" />
+		<result property="isDeleted" column="is_deleted" />
+		<result property="createdId" column="created_id" />
+		<result property="createdTime" column="created_time" />
+		<result property="modId" column="mod_id" />
+		<result property="modTime" column="mod_time" />
+	</resultMap>
+
+	<insert id="addMakeBuildPriceDetail" parameterType="MakeBuildPriceDetail">
+		 <selectKey resultType="java.lang.Integer" keyProperty="id" order="AFTER" >
+            SELECT @@IDENTITY
+        </selectKey>		
+		insert into make_build_price_detail(
+		unit_id,
+		make_id,
+		inside_price,
+		build_price,
+		build_area,
+		inside_area,
+		sum_price,
+		price_way,
+		scenery,
+		orientation,
+		product_type,
+		room_type,
+		remark,
+		sale_state,
+		renovate_desc,
+		renovate_price,
+		renovate_money,
+		room_num,
+		hall_num,
+		toilet_num,
+		is_deleted,
+		created_id,
+		created_time,
+		mod_id,
+		mod_time
+		)
+			VALUES(
+		#{unitId},
+		#{makeId},
+		#{insidePrice},
+		#{buildPrice},
+		#{buildArea},
+		#{insideArea},
+		#{sumPrice},
+		#{priceWay},
+		#{scenery},
+		#{orientation},
+		#{productType},
+		#{roomType},
+		#{remark},
+		#{saleState},
+		#{renovateDesc},
+		#{renovatePrice},
+		#{renovateMoney},
+		#{roomNum},
+		#{hallNum},
+		#{toiletNum},
+		#{isDeleted},
+		#{createdId},
+		#{createdTime},
+		#{modId},
+		#{modTime}
+			)
+		
+	</insert>
+	<delete id="deleteMakeBuildPriceDetail" parameterType="int">
+	update make_build_price_detail set is_deleted='1' where id=#{id};
+	</delete>
+	<update id="updateMakeBuildPriceDetail" parameterType="int">
+	update make_build_price_detail set 
+		unit_id=#{unitId},
+		make_id=#{makeId},
+		inside_price=#{insidePrice},
+		build_price=#{buildPrice},
+		build_area=#{buildArea},
+		inside_area=#{insideArea},
+		sum_price=#{sumPrice},
+		price_way=#{priceWay},
+		scenery=#{scenery},
+		orientation=#{orientation},
+		product_type=#{productType},
+		room_type=#{roomType},
+		remark=#{remark},
+		sale_state=#{saleState},
+		renovate_desc=#{renovateDesc},
+		renovate_price=#{renovatePrice},
+		renovate_money=#{renovateMoney},
+		room_num=#{roomNum},
+		hall_num=#{hallNum},
+		toilet_num=#{toiletNum},
+		mod_id=#{modId},
+		mod_time=#{modTime}
+	 where id=#{id}
+	</update>
+	<select id="findMakeBuildPriceDetailById" resultMap="makeBuildPriceDetailResultMap">
+	select * from make_build_price_detail where id=#{id}
+	</select>
+    
+	<sql id="findWhereCond"> 
+		<where>
+			<if test="makeId != null and makeId != '' and makeId !='0'">
+				make_id = #{makeId}
+            </if>    
+            and is_deleted = '0'
+		</where>
+	</sql>
+	
+	<select id="findMakeBuildPriceDetailCount" resultType="int" parameterType="com.ihk.saleunit.data.pojo.MakeBuildPriceDetailCond">
+		SELECT count(0) from make_build_price_detail  
+        <include refid="findWhereCond"/>     
+    </select>
+        
+	<select id="findMakeBuildPriceDetail" resultMap="makeBuildPriceDetailResultMap" parameterType="com.ihk.saleunit.data.pojo.MakeBuildPriceDetailCond">
+		SELECT * from  make_build_price_detail 
+        <include refid="findWhereCond"/> 
+		<if test="topNum > 0">
+			limit #{topNum};
+		</if>
+    </select>
+    
+	<select id="findMakeBuildPriceDetailPage" resultMap="makeBuildPriceDetailResultMap" parameterType="com.ihk.saleunit.data.pojo.MakeBuildPriceDetailCond">
+		SELECT * from  make_build_price_detail 
+        <include refid="findWhereCond"/> 
+    
+		<if test="startLine >= 0">
+		<if test="pageSize > 0">
+			limit #{startLine},#{pageSize};
+		</if>
+		</if>
+	</select>
+</mapper>

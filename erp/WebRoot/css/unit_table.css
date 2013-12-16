@@ -1,0 +1,79 @@
+@CHARSET "UTF-8";
+
+
+.unittable td{line-height:19px;}
+.tdnull {background-color: #000000;width: 17px;float: left;height: 15px;border:
+	 1px;margin: 0px;border: solid 2px;border-color: gray;cursor: pointer}/*未知*/
+.td {background-color: #000000;width: 17px;float: left;height: 12px;border:
+	 1px;margin: 0px;border: solid 2px;border-color: gray;cursor: pointer}/*未知*/
+.td1 {background-color: #DCDCDC;width: 17px;float: left;height: 12px;border:
+	 1px;margin: 0px;border: solid 2px;border-color: gray;cursor: pointer}/*待售 */
+.td2 {background-color: #FFFFFF;width: 17px;float: left;height: 12px;border:
+	 1px;margin: 0px;border: solid 2px;border-color: gray;cursor: pointer}/*待售 */
+.td3 {background-color: #7FFF00;width: 17px;float: left;height: 
+	15px;border: 1px;margin: 0px;border: solid 2px;border-color: gray;cursor: pointer}/*预约*/
+.td4 {background-color: #FFFF00;width: 17px;float: left;height: 
+	15px;border: 1px;margin: 0px;border: solid 2px;border-color: gray;cursor: pointer}/*预留*/
+.td5 {background-color: #F4A460;width: 17px;float: left;height: 
+	15px;border: 1px;margin: 0px;border: solid 2px;border-color: gray;cursor: pointer}/*小订*/
+.td6 {background-color: #CC0000;width: 17px;float: left;height: 
+	15px;border: 1px;margin: 0px;border: solid 2px;border-color: gray;cursor: pointer}/*认购*/
+.td7 {background-color: #BA55D3;width: 17px;float: left;height:
+	 15px;border: 1px;margin: 0px;border: solid 2px;border-color: gray;cursor: pointer}/*签约*/
+.td8 {background-color: #808080;width: 17px;float: left;height: 
+	15px;border: 1px;margin: 0px;border: solid 2px;border-color: gray;cursor: pointer}/*非售*/
+.td9 {background-color: #228B22;width: 17px;float: left;height: 
+	15px;border: 1px;margin: 0px;border: solid 2px;border-color: gray;cursor: pointer}/*交楼*/
+.td10 {background-color: #808000;width: 17px;float: left;height:
+	 15px;border: 1px;margin: 0px;border: solid 2px;border-color: gray;cursor: pointer}/*出证*/
+	 
+	 
+/* 新的css */
+.sale_state_null {background-color: #000000;width: 10px;float: left;height: 15px;border:
+	 1px;margin: 0px;border: solid 2px;border-color: gray;cursor: pointer}/*默认*/
+	 
+.sale_state_0 {background-color: #000000;width: 10px;float: left;height: 15px;border:
+	 1px;margin: 0px;border: solid 2px;border-color: gray;cursor: pointer}/*默认*/
+	 
+.sale_state_ {background-color: #000000;width: 10px;float: left;height: 15px;border:
+	 1px;margin: 0px;border: solid 2px;border-color: gray;cursor: pointer}/*未知*/
+	 
+.sale_state_1 {background-color: #DCDCDC;width: 10px;float: left;height: 15px;border:
+	 1px;margin: 0px;border: solid 2px;border-color: gray;cursor: pointer}/*待售 */
+.sale_state_2 {background-color: #FFFFFF;width: 10px;float: left;height: 15px;border:
+	 1px;margin: 0px;border: solid 2px;border-color: gray;cursor: pointer}/*待售 */
+.sale_state_8 {background-color: #7FFF00;width: 10px;float: left;height: 
+	15px;border: 1px;margin: 0px;border: solid 2px;border-color: gray;cursor: pointer}/*预约*/
+.sale_state_5 {background-color: #F4A460;width: 10px;float: left;height: 
+	15px;border: 1px;margin: 0px;border: solid 2px;border-color: gray;cursor: pointer}/*小订*/
+.sale_state_9 {background-color: #CC0000;width: 10px;float: left;height: 
+	15px;border: 1px;margin: 0px;border: solid 2px;border-color: gray;cursor: pointer}/*认购*/
+
+.sale_state_3 {background-color: #808080;width: 10px;float: left;height: 
+	15px;border: 1px;margin: 0px;border: solid 2px;border-color: gray;cursor: pointer}/*非售*/
+.sale_state_6 {background-color: #228B22;width: 10px;float: left;height: 
+	15px;border: 1px;margin: 0px;border: solid 2px;border-color: gray;cursor: pointer}/*交楼*/
+.sale_state_11 {background-color: #808000;width: 10px;float: left;height:
+	 15px;border: 1px;margin: 0px;border: solid 2px;border-color: gray;cursor: pointer}/*出证*/
+.sale_state_12 {background-color: #FFFF00;width: 10px;float: left;height: 
+	15px;border: 1px;margin: 0px;border: solid 2px;border-color: gray;cursor: pointer}/*预留*/	
+.sale_state_14 {background-color: #BA55D3;width: 10px;float: left;height:
+	 15px;border: 1px;margin: 0px;border: solid 2px;border-color: gray;cursor: pointer}/*签约*/
+	 
+	.sale_state_4 {background-color: #DDE32C;width: 10px;float: left;height:
+		 15px;border: 1px;margin: 0px;border: solid 2px;border-color: gray;cursor: pointer}/*签约*/	 
+	.sale_state_7 {background-color: #188884;width: 10px;float: left;height:
+		 15px;border: 1px;margin: 0px;border: solid 2px;border-color: gray;cursor: pointer}/*签约*/
+	.sale_state_10 {background-color: #3D7229;width: 10px;float: left;height:
+		 15px;border: 1px;margin: 0px;border: solid 2px;border-color: gray;cursor: pointer}/*签约*/
+	.sale_state_13 {background-color: #4C202D;width: 10px;float: left;height:
+		 15px;border: 1px;margin: 0px;border: solid 2px;border-color: gray;cursor: pointer}/*签约*/
+	.sale_state_15 {background-color: #1D5AE9;width: 10px;float: left;height:
+		 15px;border: 1px;margin: 0px;border: solid 2px;border-color: gray;cursor: pointer}/*签约*/
+	.sale_state_16 {background-color: #1B6CB2;width: 10px;float: left;height:
+	 15px;border: 1px;margin: 0px;border: solid 2px;border-color: gray;cursor: pointer}/*不能认筹*/
+	 .sale_state_17 {background-color: #C1FFC1;width: 10px;float: left;height:
+	 15px;border: 1px;margin: 0px;border: solid 2px;border-color: gray;cursor: pointer}/*签约*/
+	 .sale_state_18 {background-color: #000000;width: 10px;float: left;height: 15px;border:
+	 1px;margin: 0px;border: solid 2px;border-color: gray;cursor: pointer}/*默认*/
+	 

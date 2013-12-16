@@ -1,0 +1,146 @@
+package com.ihk.setting.action;
+
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+
+import net.sf.json.JSONArray;
+
+import org.springframework.beans.factory.annotation.Autowired;
+
+import com.ihk.setting.data.pojo.ActionRecordLog;
+import com.ihk.setting.data.pojo.ActionRecordLogCond;
+import com.ihk.setting.data.services.IActionRecordLogServices;
+import com.ihk.utils.ActionAjaxPageByFooterCallback;
+import com.ihk.utils.ActionAjaxPageCallback;
+import com.ihk.utils.ActionTemplate;
+import com.ihk.utils.CommonUtils;
+import com.ihk.utils.DescUtils;
+import com.ihk.utils.SupperAction;
+import com.ihk.utils.common.setup.RecordActionUtils;
+
+/**
+ * 显示功能点击日记
+ * @author xushaojia
+ *
+ */
+public class ActionRecordLogAction extends SupperAction {
+	private static final long serialVersionUID = -7542973131132137878L;
+	private Map<String, String> recordAction;
+
+	private List<ActionRecordLog> actionRecordLogs;
+
+	private ActionRecordLogCond cond;
+
+	@Autowired IActionRecordLogServices actionRecordLogServices;
+	public String indexForm() throws Exception {
+		recordAction = RecordActionUtils.recordAction;
+		
+		return SUCCESS;
+	}
+
+	public String searchLog() throws Exception {
+		this.initLists();
+		return null;
+	}
+
+//	private void initLists() {
+//		recordAction = RecordActionUtils.recordAction;
+//		if(cond.getUserName() != null && !cond.getUserName().trim().equals("")){
+//			cond.setSearchName(DescUtils.getUserAccountByUserName(cond.getUserName()).getRealName());
+//		}
+//		String action = CustomerUtils.getActionNameFromRequest(request);
+//		Pager page = new Pager(ActionContext.getContext(), 10, action);
+//		cond.recordCount = actionRecordLogServices.findActionRecordLogCount(cond);
+//		page.setCond(cond);
+//		actionRecordLogs = actionRecordLogServices.findActionRecordLogPage(cond);
+//		for (ActionRecordLog log : actionRecordLogs) {
+//			if(recordAction.containsKey(log.getLogType()))
+//				log.setLogType(recordAction.get(log.getLogType()));
+//		}
+//		this.setShowPage(page.toHtmlString());
+//	}
+
+	private void initLists(){
+		recordAction = RecordActionUtils.recordAction;
+		
+		if(cond.getUserName() != null && !cond.getUserName().trim().equals("")){
+			cond.setSearchName(DescUtils.getUserAccountByUserName(cond.getUserName()).getRealName());
+		}
+		
+		ActionTemplate.executeAjaxPage(this, cond, new ActionAjaxPageCallback() {
+			
+			@Override
+			public int initTotal() throws Exception {
+				return actionRecordLogServices.findActionRecordLogCount(cond);
+			}
+			
+			@Override
+			public List<Map<String, String>> initRows() throws Exception {
+				
+				List<Map<String, String>> retList = new ArrayList<Map<String,String>>();
+				actionRecordLogs  = actionRecordLogServices.findActionRecordLogPage(cond);
+				if(!CommonUtils.isCollectionEmpty(actionRecordLogs)){
+					for (ActionRecordLog log : actionRecordLogs) {
+						Map<String, String> map = new HashMap<String, String>();
+						map.put("userName", log.getUserName());
+						map.put("realName", log.getRealName());
+						map.put("companyName", log.getCompanyName());
+						map.put("descProjectId", log.getDescProjectId());
+						map.put("logTime", log.getLogTime().toLocaleString());
+						
+						if(recordAction.containsKey(log.getLogType())){
+//							log.setLogType(recordAction.get(log.getLogType()));
+							map.put("logType", recordAction.get(log.getLogType()));
+						}
+						map.put("logDesc", log.getLogDesc());
+						
+						retList.add(map);
+					}
+			}
+				return retList;
+			}
+
+
+			
+
+		});
+	}
+	
+	public Map<String, String> getRecordAction() {
+		return recordAction;
+	}
+
+	public void setRecordAction(Map<String, String> recordAction) {
+		this.recordAction = recordAction;
+	}
+
+	public List<ActionRecordLog> getActionRecordLogs() {
+		return actionRecordLogs;
+	}
+
+	public void setActionRecordLogs(List<ActionRecordLog> actionRecordLogs) {
+		this.actionRecordLogs = actionRecordLogs;
+	}
+
+	public ActionRecordLogCond getCond() {
+		return cond;
+	}
+
+	public void setCond(ActionRecordLogCond cond) {
+		this.cond = cond;
+	}
+
+	public IActionRecordLogServices getActionRecordLogServices() {
+		return actionRecordLogServices;
+	}
+
+	public void setActionRecordLogServices(
+			IActionRecordLogServices actionRecordLogServices) {
+		this.actionRecordLogServices = actionRecordLogServices;
+	}
+
+	
+
+}

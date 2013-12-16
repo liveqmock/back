@@ -1,0 +1,161 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.ihk.saleunit.data.IOtherExpensesMapper">
+
+	<resultMap type="OtherExpenses" id="otherExpensesResultMap">
+		<id property="id" column="id" />        
+		<result property="projectId" column="project_id" />
+		<result property="expensesName" column="expenses_name" />
+		<result property="expensesMoney" column="expenses_money" />
+		<result property="remark" column="remark" />
+		<result property="enterId" column="enter_id" />
+		<result property="enterTime" column="enter_time" />
+		<result property="isDeleted" column="is_deleted" />
+		<result property="createdId" column="created_id" />
+		<result property="createdTime" column="created_time" />
+		<result property="modId" column="mod_id" />
+		<result property="modTime" column="mod_time" />
+	</resultMap>
+	
+	<resultMap type="java.util.Map" id="sumExpensesMoneyList">
+		<result property="projectId" column="project_id" />
+		<result property="sumExpensesMoney" column="sum_expenses_money" />
+	</resultMap>
+
+	<insert id="addOtherExpenses" parameterType="OtherExpenses">
+		 <selectKey resultType="java.lang.Integer" keyProperty="id" order="AFTER" >
+            SELECT @@IDENTITY
+        </selectKey>		
+		insert into other_expenses(
+		project_id,
+		expenses_name,
+		expenses_money,
+		remark,
+		enter_id,
+		enter_time,
+		is_deleted,
+		created_id,
+		created_time,
+		mod_id,
+		mod_time
+		)
+			VALUES(
+		#{projectId},
+		#{expensesName},
+		#{expensesMoney},
+		#{remark},
+		#{enterId},
+		#{enterTime},
+		#{isDeleted},
+		#{createdId},
+		#{createdTime},
+		#{modId},
+		#{modTime}
+			)
+		
+	</insert>
+	<delete id="deleteOtherExpenses" parameterType="com.ihk.utils.base.PojoDeleteCond">
+	update other_expenses set is_deleted='1', mod_id=#{modId}, mod_time=#{modTime} where id=#{id};
+	</delete>
+	<update id="updateOtherExpenses" parameterType="int">
+	update other_expenses set 
+		project_id=#{projectId},
+		expenses_name=#{expensesName},
+		expenses_money=#{expensesMoney},
+		remark=#{remark},
+		enter_id=#{enterId},
+		enter_time=#{enterTime},
+		mod_id=#{modId},
+		mod_time=#{modTime}
+	 where id=#{id}
+	</update>
+	<select id="findOtherExpensesById" resultMap="otherExpensesResultMap">
+	select * from other_expenses where id=#{id}
+	</select>
+    
+	<sql id="findWhereCond"> 
+		<where>
+			
+			and is_deleted = '0'
+		</where>
+	</sql>
+	
+	<select id="findOtherExpensesCount" resultType="int" parameterType="com.ihk.saleunit.data.pojo.OtherExpensesCond">
+		SELECT count(0) from other_expenses  
+        <include refid="findWhereCond"/>     
+    </select>
+        
+	<select id="findOtherExpenses" resultMap="otherExpensesResultMap" parameterType="com.ihk.saleunit.data.pojo.OtherExpensesCond">
+		SELECT * from  other_expenses 
+        <include refid="findWhereCond"/> 
+		<if test="topNum > 0">
+			limit #{topNum};
+		</if>
+    </select>
+    
+	<select id="findOtherExpensesPage" resultMap="otherExpensesResultMap" parameterType="com.ihk.saleunit.data.pojo.OtherExpensesCond">
+		SELECT * from  other_expenses 
+        <include refid="findWhereCond"/> 
+    
+		<if test="startLine >= 0">
+		<if test="pageSize > 0">
+			limit #{startLine},#{pageSize};
+		</if>
+		</if>
+	</select>
+
+	<!-- ajax分页使用 -->	
+	<sql id="findOtherExpensesForAjaxComm">
+		<where>
+			
+			<if test="projectId != null and projectId != ''">
+				and project_id = #{projectId}
+			</if>
+			
+			and is_deleted = '0'
+			
+		</where>
+		
+	</sql>
+	
+	<select id="findOtherExpensesForAjax" resultMap="otherExpensesResultMap" parameterType="com.ihk.saleunit.data.pojo.OtherExpensesCond">
+	
+		select * from other_expenses 
+		<include refid="findOtherExpensesForAjaxComm"/>
+		
+		order by project_id
+		
+		<if test="startLine >= 0">
+			<if test="pageSize > 0">
+				limit ${startLine},${pageSize};
+			</if>
+		</if>
+		
+	</select>
+	
+	<select id="findOtherExpensesCountForAjax" resultType="int" parameterType="com.ihk.saleunit.data.pojo.OtherExpensesCond">
+		select count(1) from other_expenses 
+		<include refid="findOtherExpensesForAjaxComm"/>
+	</select>
+	
+	
+	<select id ="findOtherExpensesByProjectIds" resultMap="sumExpensesMoneyList" parameterType ="map">
+			SELECT
+				o.project_id as project_id, 
+				sum(o.expenses_money) as sum_expenses_money
+			FROM
+				other_expenses o
+			LEFT JOIN
+				property_project p
+			on p.id=o.project_id
+			WHERE
+				o.project_id in
+			<foreach collection="list" item="ids" index="index" open="(" separator="," close=")" >
+				#{ids}
+			</foreach>
+			and o.is_deleted = '0'
+			GROUP BY
+				o.project_id	
+	</select> 
+	
+</mapper>

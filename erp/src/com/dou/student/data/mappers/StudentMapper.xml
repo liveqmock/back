@@ -1,0 +1,70 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.dou.student.data.IStudentMapper">
+
+	<resultMap type="Student" id="studentResultMap">
+		<id property="id" column="id" />
+		<result property="studentName" column="student_name" />
+		<result property="className" column="class_name" />	
+		<result property="schoolId" column="school_id" />	
+	</resultMap>
+
+
+	<!-- 查询班级list -->
+	<select id="findAllStudent" resultMap="studentResultMap">
+		SELECT * from student;
+	</select>
+
+	<insert id="saveStudent" parameterType="Student">
+		<selectKey keyProperty="id" resultType="int" order="BEFORE">
+			SELECT LAST_INSERT_ID() AS VALUE
+		</selectKey>
+		
+		INSERT INTO student(
+		 student_name
+		,class_name
+		,school_id
+		)
+			VALUES(
+			#{studentName}
+			,#{className}
+			,#{schoolId} 
+			)
+		
+	</insert>
+	<delete id="deleteStudent" parameterType="int">
+	delete from student where id=#{id};
+	</delete>
+	<update id="updateStudent" parameterType="int">
+	update student set student_name=#{studentName},class_name=#{className},school_id=#{schoolId}
+	 where id=#{id}
+	</update>
+	<select id="findStudentById" resultMap="studentResultMap">
+	select * from student where id=#{id}
+	</select>
+	
+	
+	<select id="findStudentCount" resultType="int" parameterType="com.dou.student.data.pojo.StudentCond">
+		SELECT count(0) from student 
+		<where>			
+	    <if test="studentName!=null and studentName!='' ">  
+	        STUDENT_NAME LIKE CONCAT(CONCAT('%', #{studentName}),'%')   
+	    </if>  
+    </where>
+    </select>
+    
+	<select id="findStudentPage" resultMap="studentResultMap" parameterType="com.dou.student.data.pojo.StudentCond">
+		SELECT * from student 
+		<where>			
+	    <if test="studentName!=null and studentName!='' ">  
+	        STUDENT_NAME LIKE CONCAT(CONCAT('%', #{studentName}),'%')   
+	    </if>  
+    </where>
+    
+		<if test="startLine >= 0">
+		<if test="pageSize > 0"> 
+			limit #{startLine},#{pageSize};
+		</if>
+		</if>
+	</select>
+</mapper>

@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.kn.data.IKN_DATABASES_Mapper">
+
+	<resultMap type="KN_DATABASES" id="knDatabasesResultMap">
+		<id property="dbId" column="DB_ID" />        
+		<result property="dbLongName" column="DB_LONG_NAME" />
+		<result property="parentDbId" column="PARENT_DB_ID" />
+		<result property="description" column="DESCRIPTION" />
+		<result property="position" column="POSITION" />
+	</resultMap>
+
+	<select id="findKN_DATABASES" resultMap="knDatabasesResultMap" parameterType="com.kn.data.pojo.KN_DATABASES_Cond">
+			SELECT * from  climb.databases
+		<where>
+		</where>	
+    </select>
+    
+    <select id="findKN_DATABASES_byId" resultMap="knDatabasesResultMap" >
+			SELECT * from  climb.databases where db_id = #{id}
+		<where>
+		</where>	
+    </select>
+</mapper>

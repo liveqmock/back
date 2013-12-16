@@ -1,0 +1,452 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.ihk.report.data.IReportPreCustomerMapper">
+
+	<resultMap type="com.ihk.report.data.pojo.precustomer.ReportPreCustomerCompany" id="preCustomerCompany">   
+		<result property="companyId" column="company_id" />
+		<result property="companyName" column="company_name" />
+		<result property="sumCount" column="sum_count" />
+	</resultMap>
+	
+	<resultMap type="com.ihk.report.data.pojo.precustomer.ReportPreCustomerProject" id="preCustomerProject">   
+		<result property="projectId" column="project_id" />
+		<result property="projectName" column="project_name" />
+		<result property="sumCount" column="sum_count" />
+	</resultMap>
+	
+	<resultMap type="com.ihk.report.data.pojo.precustomer.ReportPreCustomerSalesman" id="preCustomerSalesman">   
+		<result property="salesmanId" column="Salesman_id" />
+		<result property="salesmanName" column="salesman_name" />
+		<result property="projectName" column="project_name" />		
+		<result property="sumCount" column="sum_count" />
+	</resultMap>
+	
+	<resultMap type="com.ihk.report.data.pojo.precustomer.ReportPreCustomerDate" id="preCustomerDate">   
+		<result property="reportDate" column="report_date" />
+		<result property="sumCount" column="sum_count" />
+	</resultMap>
+	
+	<resultMap type="com.ihk.customer.data.pojo.Customer" id="customerResultMap">
+		<id property="id" column="id" />        
+		<result property="customerNo" column="customer_no" />
+		<result property="customerName" column="customer_name" />
+		<result property="companyId" column="company_id" />
+		<result property="projectId" column="project_id" />
+		<result property="teamId" column="team_id" />
+		<result property="userId" column="user_id" />
+		<result property="managerId" column="manager_id" />
+		<result property="customerSource" column="customer_source" />
+		<result property="intentEstate" column="intent_estate" />
+		<result property="customerState" column="customer_state" />
+		<result property="phone" column="phone" />
+		<result property="phoneFrom" column="phone_from"/>
+		<result property="homePhone" column="home_phone" />
+		<result property="officePhone" column="office_phone" />
+		<result property="gender" column="gender" />
+		<result property="email" column="email" />
+		<result property="peerNumber" column="peer_number" />
+		<result property="isFirst" column="is_first" />
+		<result property="firstDate" column="first_date" />
+		<result property="firstHour" column="first_hour" />
+		<result property="visitCount" column="visit_count" />
+		<result property="isRelation" column="is_relation" />
+		<result property="relationDesc" column="relation_desc" />
+		<result property="isOwner" column="is_owner" />
+		<result property="nationality" column="nationality" />
+		<result property="background" column="background" />
+		<result property="requestArea" column="request_area" />
+		<result property="priceAmount" column="price_amount" />
+		<result property="areaNum" column="area_num" />
+		<result property="priceNum" column="price_num" />
+		<result property="buyReson" column="buy_reson" />
+		<result property="notBuyReson" column="not_buy_reson" />
+		<result property="intentionPart" column="intention_part" />
+		<result property="rating" column="rating" />
+		<result property="ratingRemark" column="rating_remark" />
+		<result property="payType" column="pay_type" />
+		<result property="familyType" column="family_type" />
+		<result property="familyIncome" column="family_income" />
+		<result property="remark1" column="remark1" />
+		<result property="remark2" column="remark2" />
+		<result property="remark3" column="remark3" />
+		<result property="remark4" column="remark4" />
+		<result property="marriage" column="marriage" />
+		<result property="age" column="age" />
+		<result property="birthday" column="birthday" />
+		<result property="idcardType" column="idcard_type" />
+		<result property="idcardNo" column="idcard_no" />
+		<result property="faceLook" column="face_look" />
+		<result property="workUnit" column="work_unit" />
+		<result property="jobPosition" column="job_position" />
+		<result property="wage" column="wage" />
+		<result property="jobType" column="job_type" />
+		<result property="jobIndustry" column="job_industry" />
+		<result property="jobDesc" column="job_desc" />
+		<result property="homeProvince" column="home_province" />
+		<result property="homeCity" column="home_city" />
+		<result property="homeRegion" column="home_region" />
+		<result property="homeBlock" column="home_block" />
+		<result property="homeContent" column="home_content" />
+		<result property="workProvince" column="work_province" />
+		<result property="workCity" column="work_city" />
+		<result property="workRegion" column="work_region" />
+		<result property="workBlock" column="work_block" />
+		<result property="workContent" column="work_content" />
+		<result property="customerRegion" column="customer_region" />
+		<result property="visitDate" column="visit_date" />
+		<result property="address" column="address" />
+		<result property="postcode" column="postcode" />
+		<result property="family" column="family" />
+		<result property="interest" column="interest" />
+		<result property="trafficTool" column="traffic_tool" />
+		<result property="trafficDesc" column="traffic_desc" />
+		<result property="knownFrom" column="known_from" />
+		<result property="buyAim" column="buy_aim" />
+		<result property="buyUse" column="buy_use" />
+		<result property="productClaim" column="product_claim" />
+		<result property="unitPrice" column="unit_price" />
+		<result property="houseType" column="house_type" />
+		<result property="roomType" column="room_type" />
+		<result property="floor" column="floor" />
+		<result property="parking" column="parking" />
+		<result property="buyFactor" column="buy_factor" />
+		<result property="intentLease" column="intent_lease" />
+		<result property="payBy" column="pay_by" />
+		<result property="rejectFactor" column="reject_factor" />
+		<result property="intentUnit1" column="intent_unit1" />
+		<result property="intentUnit2" column="intent_unit2" />
+		<result property="intentBuynum" column="intent_buynum" />
+		<result property="intentionDesc" column="intention_desc" />
+		<result property="buyCount" column="buy_count" />
+		<result property="subject1" column="subject1" />
+		<result property="content1" column="content1" />
+		<result property="subject2" column="subject2" />
+		<result property="content2" column="content2" />
+		<result property="subject3" column="subject3" />
+		<result property="content3" column="content3" />
+		<result property="subject4" column="subject4" />
+		<result property="content4" column="content4" />
+		<result property="followTime" column="follow_time"/>
+		<result property="isDeleted" column="is_deleted" />
+		<result property="createdId" column="created_id" />
+		<result property="createdTime" column="created_time" />
+		<result property="modId" column="mod_id" />
+		<result property="modTime" column="mod_time" />
+	</resultMap>
+	
+	<resultMap type="com.ihk.report.data.pojo.precustomer.ReportPreCustomerPhoneMulProject" id="preCustomerPhoneMulProject">   
+		<result property="phone" column="phone" />
+		<result property="projectCount" column="project_count" />
+	</resultMap>	
+	
+	<resultMap type="com.ihk.report.data.pojo.precustomer.ReportPreCustomerProjectDate" id="preCustomerProjectDate">   
+		<result property="reportDate" column="report_date" />
+		<result property="projectId" column="project_id" />
+		<result property="projectName" column="project_name" />
+		<result property="sumCount" column="sum_count" />
+	</resultMap>
+	
+	<resultMap type="com.ihk.report.data.pojo.precustomer.ReportPreCustomerCompanyDate" id="preCustomerCompanyDate">   
+		<result property="reportDate" column="report_date" />
+		<result property="companyId" column="company_id" />
+		<result property="companyName" column="company_name" />
+		<result property="sumCount" column="sum_count" />
+	</resultMap>
+	
+	<resultMap type="com.ihk.report.data.pojo.precustomer.ReportPreCustomerSalesDate" id="preCustomerSalesDate">   
+		<result property="reportDate" column="report_date" />
+		<result property="projectId" column="project_id" />
+		<result property="salesName" column="sales_name" />
+		<result property="sumCount" column="sum_count" />
+	</resultMap>		
+	
+	<resultMap type="QuestionAnswerDetail" id="questionAnswerDetailResultMap">
+		<id property="id" column="id" />        
+		<result property="anwserId" column="anwser_id" />
+		<result property="topicName" column="topic_name" />
+		<result property="topicType" column="topic_type" />
+		<result property="topicGroup" column="topic_group" />
+		<result property="orderIndex" column="order_index" />
+		<result property="topicId" column="topic_id" />
+		<result property="anwserContent" column="anwser_content" />
+		<result property="otherOption" column="other_option" />
+		<result property="isDeleted" column="is_deleted" />
+		<result property="createdId" column="created_id" />
+		<result property="createdTime" column="created_time" />
+		<result property="modId" column="mod_id" />
+		<result property="modTime" column="mod_time" />
+		<result property="column13" column="Column_13" />
+	</resultMap>
+	
+	<resultMap type="com.ihk.report.data.pojo.precustomer.ReportPreCustomerQuestionCompany" id="preCustomerQuestionCompany">   
+		<result property="topicName" column="topic_name" />
+		<result property="topicContent" column="topic_content" />
+		<result property="sumCount" column="sum_count" />
+	</resultMap>	
+	<resultMap type="com.ihk.report.data.pojo.precustomer.ReportPreCustomerQuestion" id="preCustomerQuestion">   
+		<result property="topicName" column="topic_name" />
+		<result property="topicContent" column="topic_content" />
+		<result property="sumCount" column="sum_count" />
+	</resultMap>	
+	<resultMap type="com.ihk.report.data.pojo.precustomer.ReportPreCustomerQuestionSalesman" id="preCustomerQuestionSalesman">   
+		<result property="topicName" column="topic_name" />
+		<result property="topicContent" column="topic_content" />
+		<result property="sumCount" column="sum_count" />
+	</resultMap>		
+	
+	<sql id="findWhereDate">
+		<if test="date1 != null and date1 != ''">
+			and a.visit_date &gt;= #{date1}
+		</if>
+		<if test="date2 != null and date2 != ''">
+			and a.visit_date &lt; date_add(#{date2},interval 1 day)
+		</if>
+	</sql>
+			
+	<sql id="findWhereSalesId">
+		<if test="salesId>0 ">
+			and a.user_id = #{salesId}
+		</if>
+	</sql>
+	
+	<sql id="findWhereDateProjectIds">
+     	<include refid="findWhereDate"/>
+           <if test="companyProjectIds != null and companyProjectIds.size() > 0">
+               and a.project_id in
+               <foreach collection="companyProjectIds" item="pId" open="(" separator="," close=")">
+                   #{pId}
+               </foreach>
+           </if>
+	</sql>
+	
+	<sql id="findWhereDateCompanyIds">
+     	<include refid="findWhereDate"/>
+           <if test="companyIds != null and companyIds.size() > 0">
+               and a.company_id in
+               <foreach collection="companyIds" item="cId" open="(" separator="," close=")">
+                   #{cId}
+               </foreach>
+           </if>
+	</sql>
+
+	<select id="groupByCompany" resultMap="preCustomerCompany" parameterType="com.ihk.report.data.pojo.precustomer.ReportPreCustomerCompanyCond">	
+	SELECT a.company_id,b.company_name,COUNT(a.id) as sum_count FROM customer a,company b
+	WHERE a.company_id=b.id AND b.dev_code='customer_guangzhou'
+	AND a.is_deleted='0' 
+     <include refid="findWhereDateProjectIds"/>
+	GROUP BY b.id,b.company_name	
+		ORDER BY COUNT(a.id) DESC
+		<if test="returnCount > 0">
+			limit #{returnCount}
+		</if>
+	</select>
+	
+	<select id="getSumNumber" resultType="int" parameterType="com.ihk.report.data.pojo.precustomer.ReportPreCustomerCond">		
+		SELECT count(a.id) AS sum_number FROM customer a,company b
+		where a.is_deleted='0' and a.company_id=b.id AND b.dev_code='customer_guangzhou'
+            <if test="companyProjectIds != null and companyProjectIds.size() > 0">
+                and a.project_id in
+                <foreach collection="companyProjectIds" item="pId" open="(" separator="," close=")">
+                    #{pId}
+                </foreach>
+            </if>    
+			<if test="salesId>0">
+			and a.user_id = #{salesId, jdbcType=VARCHAR}
+			</if>
+	</select>
+	
+	<select id="groupByProject" resultMap="preCustomerProject" parameterType="com.ihk.report.data.pojo.precustomer.ReportPreCustomerProjectCond">	
+	SELECT a.project_id,b.project_name,COUNT(a.id) as sum_count FROM customer a,company_project b
+	WHERE a.project_id=b.id AND b.dev_code='customer_guangzhou'
+	AND a.is_deleted='0'
+     <include refid="findWhereDateProjectIds"/>
+     <include refid="findWhereDateCompanyIds"/>     
+	GROUP BY b.id,b.project_name	
+		ORDER BY COUNT(a.id) DESC
+		<if test="returnCount > 0">
+			limit #{returnCount}
+		</if>
+	</select>
+	
+	<select id="groupBySalesman" resultMap="preCustomerSalesman" parameterType="com.ihk.report.data.pojo.precustomer.ReportPreCustomerSalesmanCond">	
+	SELECT a.user_id as Salesman_id ,b.real_name as salesman_name ,p.project_name,COUNT(a.id) as sum_count FROM customer a,user_account b,company_project p 
+	WHERE a.user_id=b.id and a.project_id=p.id
+	AND a.is_deleted='0'
+     <include refid="findWhereDateProjectIds"/>
+	GROUP BY b.id,b.real_name
+		ORDER BY COUNT(a.id) DESC
+		<if test="returnCount > 0">
+			limit #{returnCount}
+		</if>
+	</select>
+	
+	<select id="groupByDate" resultMap="preCustomerDate" parameterType="com.ihk.report.data.pojo.precustomer.ReportPreCustomerDateCond">
+        SELECT a.report_date, a.sum_count FROM (
+            SELECT a.visit_date as report_date,COUNT(a.id) as sum_count FROM customer a
+            WHERE a.is_deleted='0'
+     		<include refid="findWhereDateProjectIds"/>
+			<if test="salesId>0">
+			and a.user_id = #{salesId, jdbcType=VARCHAR}
+			</if>
+            GROUP BY a.visit_date
+            ORDER BY a.visit_date desc
+            <if test="returnCount > 0">
+                limit #{returnCount}
+            </if>
+        ) a
+        ORDER BY report_date asc
+	</select>
+	
+	<select id="groupByProjectDate" resultMap="preCustomerProjectDate" parameterType="com.ihk.report.data.pojo.precustomer.ReportPreCustomerProjectDateCond">	
+	SELECT a.project_id,b.project_name,COUNT(a.id) as sum_count,DATE_FORMAT(visit_date,'%Y-%m-%d') report_date FROM customer a,company_project b
+	WHERE a.project_id=b.id AND b.dev_code='customer_guangzhou'
+	AND a.is_deleted='0'
+     <include refid="findWhereDateProjectIds"/>
+	GROUP BY b.id,b.project_name,DATE_FORMAT(visit_date,'%Y-%m-%d')	
+		ORDER BY COUNT(a.id) DESC
+		<if test="returnCount > 0">
+			limit #{returnCount}
+		</if>
+	</select>
+	
+	<select id="groupByCompanyDate" resultMap="preCustomerCompanyDate" parameterType="com.ihk.report.data.pojo.precustomer.ReportPreCustomerCompanyDateCond">	
+	SELECT a.project_id,b.company_name,COUNT(a.id) as sum_count,DATE_FORMAT(visit_date,'%Y-%m-%d') report_date FROM customer a,company b
+	WHERE a.company_id=b.id AND b.dev_code='customer_guangzhou'
+	AND a.is_deleted='0'
+     <include refid="findWhereDateCompanyIds"/>
+	GROUP BY b.id,b.company_name,DATE_FORMAT(visit_date,'%Y-%m-%d')	
+		ORDER BY COUNT(a.id) DESC
+		<if test="returnCount > 0">
+			limit #{returnCount}
+		</if>
+	</select>
+	
+	<select id="groupBySalesDate" resultMap="preCustomerSalesDate" parameterType="com.ihk.report.data.pojo.precustomer.ReportPreCustomerSalesDateCond">	
+	SELECT a.user_id as Sales_id ,b.real_name as sales_name ,COUNT(a.id) as sum_count,DATE_FORMAT(visit_date,'%Y-%m-%d') report_date FROM customer a,user_account b
+	WHERE a.user_id=b.id
+	AND a.is_deleted='0'
+	
+	
+     <include refid="findWhereDateProjectIds"/>
+	GROUP BY b.id,b.real_name,DATE_FORMAT(visit_date,'%Y-%m-%d')
+		ORDER BY COUNT(a.id) DESC
+		<if test="returnCount > 0">
+			limit #{returnCount}
+		</if>
+	</select>
+	
+
+	<select id="phoneMulProject" resultMap="preCustomerPhoneMulProject" parameterType="com.ihk.report.data.pojo.precustomer.ReportPreCustomerPhoneMulProjectCond">	
+	SELECT a.phone,COUNT(a.id) as project_count FROM customer a,company b
+	WHERE a.company_id=b.id AND b.dev_code='customer_guangzhou'
+	AND a.is_deleted='0' and a.phone &lt;&gt;'' 
+     <include refid="findWhereDateProjectIds"/>
+	GROUP BY a.phone	
+	having count(a.id) &gt;= #{mulProjectCount}
+	ORDER BY COUNT(a.id) DESC
+	</select>
+
+	<select id="phoneMulProjectDetail" resultMap="customerResultMap" parameterType="com.ihk.report.data.pojo.precustomer.ReportPreCustomerPhoneMulProjectCond">	
+	SELECT a.* FROM customer a,company b
+	WHERE a.company_id=b.id AND b.dev_code='customer_guangzhou'
+	AND a.is_deleted='0'
+		<if test="phone != null and phone != ''">
+			and a.phone = #{phone}
+		</if>
+        <if test="phoneList != null and phoneList.size() > 0">
+            and a.phone in
+            <foreach collection="phoneList" item="p" open="(" separator="," close=")">
+                #{p}
+            </foreach>
+        </if>   
+     <include refid="findWhereDateProjectIds"/>
+		ORDER BY a.phone,a.project_id		
+	</select>
+	
+        
+	<select id="findQuestionAnswerDetail" resultMap="questionAnswerDetailResultMap" parameterType="com.ihk.saleunit.data.pojo.QuestionAnswerDetailCond">
+		SELECT a.* FROM question_answer_detail a,question_anwser WHERE a.anwser_id=question_anwser.id
+		and a.is_deleted='0'	
+		<if test="createdId>0 ">
+			and a.created_id = #{createdId}
+		</if>
+		<if test="date1 != null and date1 != ''">
+			and a.created_time &gt;= #{date1}
+		</if>
+		<if test="date2 != null and date2 != ''">
+			and a.created_time &lt; date_add(#{date2},interval 1 day)
+		</if>
+		<if test="questionId != null and questionId != ''">
+		and question_anwser.question_id = #{questionId}
+        </if>    
+    </select>
+    
+	<select id="findQuestionGroupByTopicCompany" resultMap="preCustomerQuestionCompany" parameterType="com.ihk.report.data.pojo.precustomer.ReportPreCustomerQuestionCompanyCond">		
+	SELECT 'RATING' AS topic_name,RATING AS topic_content,COUNT(0) AS sum_count FROM customer a where a.is_deleted='0' <include refid="findWhereDateCompanyIds"/> GROUP BY rating UNION ALL 
+	SELECT 'HOME_DISTRICT' AS topic_name,home_region AS topic_content,COUNT(0) AS sum_count FROM customer a where a.is_deleted='0' <include refid="findWhereDateCompanyIds"/> GROUP BY home_region UNION ALL 
+	SELECT 'WORK_DISTRICT' AS topic_name,work_region AS topic_content,COUNT(0) AS sum_count FROM customer a where a.is_deleted='0' <include refid="findWhereDateCompanyIds"/> GROUP BY work_region UNION ALL 
+	SELECT 'BUY_USE' AS topic_name,buy_use AS topic_content,COUNT(0) AS sum_count FROM customer a where a.is_deleted='0' <include refid="findWhereDateCompanyIds"/> GROUP BY buy_use UNION ALL 
+	SELECT 'BUY_COUNT' AS topic_name,BUY_COUNT AS topic_content,COUNT(0) AS sum_count FROM customer a where a.is_deleted='0' <include refid="findWhereDateCompanyIds"/> GROUP BY BUY_COUNT UNION ALL 
+	SELECT 'PRICE_AMOUNT' AS topic_name,PRICE_AMOUNT AS topic_content,COUNT(0) AS sum_count FROM customer a where a.is_deleted='0' <include refid="findWhereDateCompanyIds"/> GROUP BY PRICE_AMOUNT UNION ALL 
+	SELECT 'REQUEST_AREA' AS topic_name,REQUEST_AREA AS topic_content,COUNT(0) AS sum_count FROM customer a where a.is_deleted='0' <include refid="findWhereDateCompanyIds"/> GROUP BY REQUEST_AREA UNION ALL 
+	SELECT 'HOUSE_TYPE' AS topic_name,HOUSE_TYPE AS topic_content,COUNT(0) AS sum_count FROM customer a where a.is_deleted='0' <include refid="findWhereDateCompanyIds"/> GROUP BY HOUSE_TYPE UNION ALL 
+	SELECT 'CUSTOMER_SOURCE' AS topic_name,customer_SOURCE AS topic_content,COUNT(0) AS sum_count FROM customer a where a.is_deleted='0' <include refid="findWhereDateCompanyIds"/> GROUP BY customer_SOURCE UNION ALL 
+	SELECT 'VISIT_COUNT' AS topic_name,VISIT_COUNT AS topic_content,COUNT(0) AS sum_count FROM customer a where a.is_deleted='0' <include refid="findWhereDateCompanyIds"/> GROUP BY VISIT_COUNT UNION ALL 
+	SELECT 'GENDER' AS topic_name,GENDER AS topic_content,COUNT(0) AS sum_count FROM customer a where a.is_deleted='0' <include refid="findWhereDateCompanyIds"/> GROUP BY GENDER UNION ALL 
+	SELECT 'AGE_RANGE' AS topic_name,age AS topic_content,COUNT(0) AS sum_count FROM customer a where a.is_deleted='0' <include refid="findWhereDateCompanyIds"/> GROUP BY age  UNION ALL 
+	SELECT 'FAMILY_TYPE' AS topic_name,FAMILY_TYPE AS topic_content,COUNT(0) AS sum_count FROM customer a where a.is_deleted='0' <include refid="findWhereDateCompanyIds"/> GROUP BY FAMILY_TYPE  UNION ALL 
+	SELECT 'FAMILY_INCOME' AS topic_name,FAMILY_INCOME AS topic_content,COUNT(0) AS sum_count FROM customer a where a.is_deleted='0' <include refid="findWhereDateCompanyIds"/> GROUP BY FAMILY_INCOME  UNION ALL 
+	SELECT 'JOB_TYPE' AS topic_name,JOB_TYPE AS topic_content,COUNT(0) AS sum_count FROM customer a where a.is_deleted='0' <include refid="findWhereDateCompanyIds"/> GROUP BY JOB_TYPE  UNION ALL 
+	SELECT 'JOB_INDUSTRY' AS topic_name,JOB_INDUSTRY AS topic_content,COUNT(0) AS sum_count FROM customer a where a.is_deleted='0' <include refid="findWhereDateCompanyIds"/> GROUP BY JOB_INDUSTRY  UNION ALL 
+	SELECT 'BUY_AIM' AS topic_name,BUY_AIM AS topic_content,COUNT(0) AS sum_count FROM customer a where a.is_deleted='0' <include refid="findWhereDateCompanyIds"/> GROUP BY BUY_AIM  UNION ALL 
+	SELECT 'PAY_TYPE' AS topic_name,PAY_TYPE AS topic_content,COUNT(0) AS sum_count FROM customer a where a.is_deleted='0' <include refid="findWhereDateCompanyIds"/> GROUP BY PAY_TYPE  UNION ALL 
+	SELECT 'INTENT_BUYNUM' AS topic_name,INTENT_BUYNUM AS topic_content,COUNT(0) AS sum_count FROM customer a where a.is_deleted='0' <include refid="findWhereDateCompanyIds"/> GROUP BY INTENT_BUYNUM  UNION ALL 
+	SELECT 'ROOM_TYPE' AS topic_name,ROOM_TYPE AS topic_content,COUNT(0) AS sum_count FROM customer a where a.is_deleted='0' <include refid="findWhereDateCompanyIds"/> GROUP BY ROOM_TYPE  
+	</select>
+	
+	<select id="findQuestionGroupByTopicProject" resultMap="preCustomerQuestion" parameterType="com.ihk.report.data.pojo.precustomer.ReportPreCustomerQuestionCond">		
+	SELECT 'RATING' AS topic_name,RATING AS topic_content,COUNT(0) AS sum_count FROM customer a where a.is_deleted='0' <include refid="findWhereDateProjectIds"/> GROUP BY rating UNION ALL 
+	SELECT 'HOME_DISTRICT' AS topic_name,home_region AS topic_content,COUNT(0) AS sum_count FROM customer a where a.is_deleted='0' <include refid="findWhereDateProjectIds"/> GROUP BY home_region UNION ALL 
+	SELECT 'WORK_DISTRICT' AS topic_name,work_region AS topic_content,COUNT(0) AS sum_count FROM customer a where a.is_deleted='0' <include refid="findWhereDateProjectIds"/> GROUP BY work_region UNION ALL 
+	SELECT 'BUY_USE' AS topic_name,buy_use AS topic_content,COUNT(0) AS sum_count FROM customer a where a.is_deleted='0' <include refid="findWhereDateProjectIds"/> GROUP BY buy_use UNION ALL 
+	SELECT 'BUY_COUNT' AS topic_name,BUY_COUNT AS topic_content,COUNT(0) AS sum_count FROM customer a where a.is_deleted='0' <include refid="findWhereDateProjectIds"/> GROUP BY BUY_COUNT UNION ALL 
+	SELECT 'PRICE_AMOUNT' AS topic_name,PRICE_AMOUNT AS topic_content,COUNT(0) AS sum_count FROM customer a where a.is_deleted='0' <include refid="findWhereDateProjectIds"/> GROUP BY PRICE_AMOUNT UNION ALL 
+	SELECT 'REQUEST_AREA' AS topic_name,REQUEST_AREA AS topic_content,COUNT(0) AS sum_count FROM customer a where a.is_deleted='0' <include refid="findWhereDateProjectIds"/> GROUP BY REQUEST_AREA UNION ALL 
+	SELECT 'HOUSE_TYPE' AS topic_name,HOUSE_TYPE AS topic_content,COUNT(0) AS sum_count FROM customer a where a.is_deleted='0' <include refid="findWhereDateProjectIds"/> GROUP BY HOUSE_TYPE UNION ALL 
+	SELECT 'CUSTOMER_SOURCE' AS topic_name,customer_SOURCE AS topic_content,COUNT(0) AS sum_count FROM customer a where a.is_deleted='0' <include refid="findWhereDateProjectIds"/> GROUP BY customer_SOURCE UNION ALL 
+	SELECT 'VISIT_COUNT' AS topic_name,VISIT_COUNT AS topic_content,COUNT(0) AS sum_count FROM customer a where a.is_deleted='0' <include refid="findWhereDateProjectIds"/> GROUP BY VISIT_COUNT UNION ALL 
+	SELECT 'GENDER' AS topic_name,GENDER AS topic_content,COUNT(0) AS sum_count FROM customer a where a.is_deleted='0' <include refid="findWhereDateProjectIds"/> GROUP BY GENDER UNION ALL 
+	SELECT 'AGE_RANGE' AS topic_name,age AS topic_content,COUNT(0) AS sum_count FROM customer a where a.is_deleted='0' <include refid="findWhereDateProjectIds"/> GROUP BY age  UNION ALL 
+	SELECT 'FAMILY_TYPE' AS topic_name,FAMILY_TYPE AS topic_content,COUNT(0) AS sum_count FROM customer a where a.is_deleted='0' <include refid="findWhereDateProjectIds"/> GROUP BY FAMILY_TYPE  UNION ALL 
+	SELECT 'FAMILY_INCOME' AS topic_name,FAMILY_INCOME AS topic_content,COUNT(0) AS sum_count FROM customer a where a.is_deleted='0' <include refid="findWhereDateProjectIds"/> GROUP BY FAMILY_INCOME  UNION ALL 
+	SELECT 'JOB_TYPE' AS topic_name,JOB_TYPE AS topic_content,COUNT(0) AS sum_count FROM customer a where a.is_deleted='0' <include refid="findWhereDateProjectIds"/> GROUP BY JOB_TYPE  UNION ALL 
+	SELECT 'JOB_INDUSTRY' AS topic_name,JOB_INDUSTRY AS topic_content,COUNT(0) AS sum_count FROM customer a where a.is_deleted='0' <include refid="findWhereDateProjectIds"/> GROUP BY JOB_INDUSTRY  UNION ALL 
+	SELECT 'BUY_AIM' AS topic_name,BUY_AIM AS topic_content,COUNT(0) AS sum_count FROM customer a where a.is_deleted='0' <include refid="findWhereDateProjectIds"/> GROUP BY BUY_AIM  UNION ALL 
+	SELECT 'PAY_TYPE' AS topic_name,PAY_TYPE AS topic_content,COUNT(0) AS sum_count FROM customer a where a.is_deleted='0' <include refid="findWhereDateProjectIds"/> GROUP BY PAY_TYPE  UNION ALL 
+	SELECT 'INTENT_BUYNUM' AS topic_name,INTENT_BUYNUM AS topic_content,COUNT(0) AS sum_count FROM customer a where a.is_deleted='0' <include refid="findWhereDateProjectIds"/> GROUP BY INTENT_BUYNUM  UNION ALL 
+	SELECT 'ROOM_TYPE' AS topic_name,ROOM_TYPE AS topic_content,COUNT(0) AS sum_count FROM customer a where a.is_deleted='0' <include refid="findWhereDateProjectIds"/> GROUP BY ROOM_TYPE  
+	</select>
+	
+	<select id="findQuestionGroupByTopicSalesman" resultMap="preCustomerQuestionSalesman" parameterType="com.ihk.report.data.pojo.precustomer.ReportPreCustomerQuestionSalesmanCond">		
+	SELECT 'RATING' AS topic_name,RATING AS topic_content,COUNT(0) AS sum_count FROM customer a where a.is_deleted='0' <include refid="findWhereSalesId"/> <include refid="findWhereDateProjectIds"/> GROUP BY rating UNION ALL 
+	SELECT 'HOME_DISTRICT' AS topic_name,home_region AS topic_content,COUNT(0) AS sum_count FROM customer a where a.is_deleted='0' <include refid="findWhereSalesId"/> <include refid="findWhereDateProjectIds"/> GROUP BY home_region UNION ALL 
+	SELECT 'WORK_DISTRICT' AS topic_name,work_region AS topic_content,COUNT(0) AS sum_count FROM customer a where a.is_deleted='0' <include refid="findWhereSalesId"/> <include refid="findWhereDateProjectIds"/> GROUP BY work_region UNION ALL 
+	SELECT 'BUY_USE' AS topic_name,buy_use AS topic_content,COUNT(0) AS sum_count FROM customer a where a.is_deleted='0' <include refid="findWhereSalesId"/> <include refid="findWhereDateProjectIds"/> GROUP BY buy_use UNION ALL 
+	SELECT 'BUY_COUNT' AS topic_name,BUY_COUNT AS topic_content,COUNT(0) AS sum_count FROM customer a where a.is_deleted='0' <include refid="findWhereSalesId"/> <include refid="findWhereDateProjectIds"/> GROUP BY BUY_COUNT UNION ALL 
+	SELECT 'PRICE_AMOUNT' AS topic_name,PRICE_AMOUNT AS topic_content,COUNT(0) AS sum_count FROM customer a where a.is_deleted='0' <include refid="findWhereSalesId"/> <include refid="findWhereDateProjectIds"/> GROUP BY PRICE_AMOUNT UNION ALL 
+	SELECT 'REQUEST_AREA' AS topic_name,REQUEST_AREA AS topic_content,COUNT(0) AS sum_count FROM customer a where a.is_deleted='0' <include refid="findWhereSalesId"/> <include refid="findWhereDateProjectIds"/> GROUP BY REQUEST_AREA UNION ALL 
+	SELECT 'HOUSE_TYPE' AS topic_name,HOUSE_TYPE AS topic_content,COUNT(0) AS sum_count FROM customer a where a.is_deleted='0' <include refid="findWhereSalesId"/> <include refid="findWhereDateProjectIds"/> GROUP BY HOUSE_TYPE UNION ALL 
+	SELECT 'CUSTOMER_SOURCE' AS topic_name,customer_SOURCE AS topic_content,COUNT(0) AS sum_count FROM customer a where a.is_deleted='0' <include refid="findWhereSalesId"/> <include refid="findWhereDateProjectIds"/> GROUP BY customer_SOURCE UNION ALL 
+	SELECT 'VISIT_COUNT' AS topic_name,VISIT_COUNT AS topic_content,COUNT(0) AS sum_count FROM customer a where a.is_deleted='0' <include refid="findWhereSalesId"/> <include refid="findWhereDateProjectIds"/> GROUP BY VISIT_COUNT UNION ALL 
+	SELECT 'GENDER' AS topic_name,GENDER AS topic_content,COUNT(0) AS sum_count FROM customer a where a.is_deleted='0' <include refid="findWhereSalesId"/> <include refid="findWhereDateProjectIds"/> GROUP BY GENDER UNION ALL 
+	SELECT 'AGE_RANGE' AS topic_name,age AS topic_content,COUNT(0) AS sum_count FROM customer a where a.is_deleted='0' <include refid="findWhereSalesId"/> <include refid="findWhereDateProjectIds"/> GROUP BY age  UNION ALL 
+	SELECT 'FAMILY_TYPE' AS topic_name,FAMILY_TYPE AS topic_content,COUNT(0) AS sum_count FROM customer a where a.is_deleted='0' <include refid="findWhereSalesId"/> <include refid="findWhereDateProjectIds"/> GROUP BY FAMILY_TYPE  UNION ALL 
+	SELECT 'FAMILY_INCOME' AS topic_name,FAMILY_INCOME AS topic_content,COUNT(0) AS sum_count FROM customer a where a.is_deleted='0' <include refid="findWhereSalesId"/> <include refid="findWhereDateProjectIds"/> GROUP BY FAMILY_INCOME  UNION ALL 
+	SELECT 'JOB_TYPE' AS topic_name,JOB_TYPE AS topic_content,COUNT(0) AS sum_count FROM customer a where a.is_deleted='0' <include refid="findWhereSalesId"/> <include refid="findWhereDateProjectIds"/> GROUP BY JOB_TYPE  UNION ALL 
+	SELECT 'JOB_INDUSTRY' AS topic_name,JOB_INDUSTRY AS topic_content,COUNT(0) AS sum_count FROM customer a where a.is_deleted='0' <include refid="findWhereSalesId"/> <include refid="findWhereDateProjectIds"/> GROUP BY JOB_INDUSTRY  UNION ALL 
+	SELECT 'BUY_AIM' AS topic_name,BUY_AIM AS topic_content,COUNT(0) AS sum_count FROM customer a where a.is_deleted='0' <include refid="findWhereSalesId"/> <include refid="findWhereDateProjectIds"/> GROUP BY BUY_AIM  UNION ALL 
+	SELECT 'PAY_TYPE' AS topic_name,PAY_TYPE AS topic_content,COUNT(0) AS sum_count FROM customer a where a.is_deleted='0' <include refid="findWhereSalesId"/> <include refid="findWhereDateProjectIds"/> GROUP BY PAY_TYPE  UNION ALL 
+	SELECT 'INTENT_BUYNUM' AS topic_name,INTENT_BUYNUM AS topic_content,COUNT(0) AS sum_count FROM customer a where a.is_deleted='0' <include refid="findWhereSalesId"/> <include refid="findWhereDateProjectIds"/> GROUP BY INTENT_BUYNUM  UNION ALL 
+	SELECT 'ROOM_TYPE' AS topic_name,ROOM_TYPE AS topic_content,COUNT(0) AS sum_count FROM customer a where a.is_deleted='0' <include refid="findWhereSalesId"/> <include refid="findWhereDateProjectIds"/> GROUP BY ROOM_TYPE  
+	</select>
+</mapper>

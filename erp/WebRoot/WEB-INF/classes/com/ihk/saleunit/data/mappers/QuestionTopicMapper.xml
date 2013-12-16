@@ -1,0 +1,167 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.ihk.saleunit.data.IQuestionTopicMapper">
+
+	<resultMap type="QuestionTopic" id="questionTopicResultMap">
+		<id property="id" column="id" />        
+		<result property="questionId" column="question_id" />
+		<result property="topicGroup" column="topic_group" />
+		<result property="topicName" column="topic_name" />
+		<result property="topicType" column="topic_type" />
+		<result property="fillType" column="fill_type" />
+		<result property="topicContent" column="topic_content" />
+		<result property="orderIndex" column="order_index" />
+		<result property="isDeleted" column="is_deleted" />
+		<result property="createdId" column="created_id" />
+		<result property="createdTime" column="created_time" />
+		<result property="modId" column="mod_id" />
+		<result property="modTime" column="mod_time" />
+	</resultMap>
+
+	<insert id="addQuestionTopic" parameterType="QuestionTopic">
+		 <selectKey resultType="java.lang.Integer" keyProperty="id" order="AFTER" >
+            SELECT @@IDENTITY
+        </selectKey>		
+		insert into question_topic(
+		question_id,
+		topic_group,
+		topic_name,
+		topic_type,
+		topic_content,
+		order_index,
+		fill_type,
+		is_deleted,
+		created_id,
+		created_time,
+		mod_id,
+		mod_time
+		)
+			VALUES(
+		#{questionId},
+		#{topicGroup},
+		#{topicName},
+		#{topicType},
+		#{topicContent},
+		#{orderIndex},
+		#{fillType},
+		#{isDeleted},
+		#{createdId},
+		#{createdTime},
+		#{modId},
+		#{modTime}
+			)
+		
+	</insert>
+	<delete id="deleteQuestionTopic" parameterType="int">
+	update question_topic set is_deleted='1' where id=#{id};
+	</delete>
+	<update id="updateQuestionTopic" parameterType="int">
+	update question_topic set 
+		question_id=#{questionId},
+		topic_group=#{topicGroup},
+		topic_name=#{topicName},
+		topic_type=#{topicType},
+		topic_content=#{topicContent},
+		order_index=#{orderIndex},
+		fill_type = #{fillType},
+		mod_id=#{modId},
+		mod_time=#{modTime}
+	 where id=#{id}
+	</update>
+	<select id="findQuestionTopicById" resultMap="questionTopicResultMap">
+	select * from question_topic where id=#{id}
+	</select>
+    
+	<sql id="findWhereCond"> 
+		<where>
+     		
+     		<if test=" topicName !=null and topicName != '' ">
+				topic_name = #{topicName}
+            </if>
+			<if test="questionId >0 ">
+				and question_id = #{questionId}
+            </if>    
+            
+            <if test="companyProjectIds != null and companyProjectIds.size() > 0">
+            	and question_id in (select id from question where company_project_id in 
+	            <foreach  
+	                collection="companyProjectIds"  
+	                item="pId"  
+	                open="("  
+	                separator=","  
+	                close=")">   
+	                #{pId}  
+	            </foreach>
+	             and is_deleted='0' )
+            </if>
+            
+            <if test="companyProjectId !=null and companyProjectId !=''">
+            	and question_id in (select id from question where company_project_id =#{companyProjectId} and is_deleted='0')
+            </if>
+            
+			<if test="date1 != null and date1 != ''">
+				and created_time &gt;= #{date1}
+			</if>
+			<if test="date2 != null and date2 != ''">
+				and created_time &lt; date_add(#{date2},interval 1 day)
+			</if> 
+            and is_deleted = '0'
+		</where>
+	</sql>
+	
+	<select id="findQuestionTopicCount" resultType="int" parameterType="com.ihk.saleunit.data.pojo.QuestionTopicCond">
+		SELECT count(0) from question_topic  
+        <include refid="findWhereCond"/>     
+    </select>
+        
+	<select id="findQuestionTopic" resultMap="questionTopicResultMap" parameterType="com.ihk.saleunit.data.pojo.QuestionTopicCond">
+		SELECT * from  question_topic 
+        <include refid="findWhereCond"/> 
+        order by order_index
+		<if test="topNum > 0">
+			limit #{topNum};
+		</if>
+    </select>
+    
+	<select id="findQuestionTopicPage" resultMap="questionTopicResultMap" parameterType="com.ihk.saleunit.data.pojo.QuestionTopicCond">
+		SELECT * from  question_topic 
+        <include refid="findWhereCond"/> 
+    
+		<if test="startLine >= 0">
+		<if test="pageSize > 0">
+			limit #{startLine},#{pageSize};
+		</if>
+		</if>
+	</select>
+	
+	<insert id="insertBaseTopic" parameterType="int">
+		insert into question_topic (question_id,topic_group,topic_name,topic_type,topic_content,is_deleted,created_time,created_id,mod_time,mod_id)
+		select #{qid} ,topic_group,topic_name,topic_type,topic_content,is_deleted,created_time,created_id,mod_time,mod_id from  question_topic where question_id = -1
+	</insert>
+	
+	
+	
+	<insert id="copyByDemo" parameterType="com.ihk.saleunit.data.pojo.QuestionTopicCond">
+		insert into question_topic (question_id,topic_group,topic_name,topic_type,topic_content,is_deleted,created_time,created_id,mod_time,mod_id)
+		select #{questionId} as question_id ,
+		topic_group,topic_name,topic_type,
+		topic_content,#{topic.isDeleted} as is_deleted,
+		#{topic.createdTime} as created_time,#{topic.createdId} as created_id,
+		#{topic.modTime} as mod_time,#{topic.modId} as mod_id
+		from  question_topic where question_id = #{likeQuestionId} and is_deleted = '0'
+	</insert>
+</mapper>
+
+
+
+
+
+
+
+
+
+
+
+
+
+

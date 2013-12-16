@@ -1,0 +1,94 @@
+@charset "utf-8";
+/* nav */
+body{ background:#f6f6f6; font-size:12px;color:#4c4c4c; margin:0;}
+.boxnavtop{background:url(../images/tianluan/top.jpg) no-repeat right;height:58px;}
+.boxnav{background:#f6f6f6; margin-top:21px; height:auto;}
+.l{float:left;}
+.r{float:right;}
+.c{clear:both;}
+
+/* top */
+.logo{background:url(../images/tianluan/logo.png) no-repeat; width:300px; height:58px; margin-left:20px; margin-right:20px; float:left;}
+.logoword{ font-size:14px; font-weight:bold;  margin-top:30px; color:#fff; float:left;}
+.welcome{ margin-top:16px;float:right; height:32px; min-width:200px; max-width:400px;}
+.welcome01{background:url(../images/welcomebg.gif) no-repeat; width:8px; height:32px; float:left;}
+.welcome02{background:url(../images/welcomebgc.gif) repeat-x; height:32px; float:left; line-height:32px; font-size:12px; padding-left:10px; padding-right:15px;}
+.topline{background:url(../images/tianluan/topline.gif) repeat-x; height:4px; margin-bottom:5px; clear:both;}
+
+/*--font--*/
+a:link {color:#4c4c4c; text-decoration:none;}
+a:visited {color:#4c4c4c; text-decoration:none;}
+a:hover {color:#4c4c4c; text-decoration:underline;}
+.fontblue{ color:#5482de;}
+.fontblue a:link{color:#5482de; text-decoration:none;}
+.fontblue a:visited{color:#5482de; text-decoration:none;}
+.fontblue a:hover{color:#5482de; text-decoration:none;}
+
+/*left*/
+.leftnav{ margin-left:2px; float:left; width:211px;}
+.lefttop{background:url(../images/tianluan/leftboxtop.gif) no-repeat; width:211px; height:5px; margin:0; padding:0; overflow:hidden;}
+.leftbg{background:url(../images/tianluan/leftboxbg.gif) repeat-y; width:211px; margin:0px; padding:0px;}
+.leftbottom{background:url(../images/tianluan/leftboxbottom.gif) no-repeat; width:211px; height:5px; margin:0; padding:0;}
+.leftl{ background:url(../images/tianluan/leftl.gif) no-repeat; float:left; width:6px; height:32px;}
+.leftm{background:url(../images/tianluan/leftm.gif) repeat-x; float:left; height:32px; width:188px; line-height:32px; padding-left:10px; font-weight:bold;}
+.leftr{background:url(../images/tianluan/leftr.gif) no-repeat; float:left; height:32px; width:6px;}
+.leftls{ background:url(../images/tianluan/leftl_s.gif) no-repeat; float:left; width:6px; height:32px;}
+.leftms{border-left:#98c3e3 1px solid; border-right:#98c3e3 1px solid; background:#FFF; padding:5px;}
+.leftms ul li{ line-height:24px; list-style:none; text-align:left;}
+.leftms li{ margin-left:10px;}
+.leftrs{background:url(../images/tianluan/leftr_s.gif) no-repeat; float:left; height:32px; width:6px; }
+
+/*right*/
+.right99{ repeat-x; height:5px; float:left; width:98%; overflow:hidden;}
+.right01{background:url(../images/tianluan/lefttop.gif) no-repeat; float:left; height:5px; width:5px; overflow:hidden;}
+.right02{ background:url(../images/tianluan/topbg.gif) repeat-x; height:5px; float:left; width:98%; overflow:hidden;}
+.right03{ background:url(../images/tianluan/righttop.gif) no-repeat; float:left; height:5px; width:5px; overflow:hidden;}
+.right04{ background:url(../images/tianluan/leftbg.gif) repeat-y;width:5px; float:left; overflow:hidden;padding-bottom:1000px;margin-bottom:-1000px;}
+.right05{ float:left; background:#FFF;width:98%; margin-left:5px;}
+.right06{ background:url(../images/tianluan/rightbg.gif) repeat-y;width:5px; float:left; overflow:hidden;padding-bottom:1000px;margin-bottom:-1000px;}
+.right07{background:url(../images/tianluan/leftbottom.gif) no-repeat; float:left; height:5px; width:5px;}
+.right08{ background:url(../images/tianluan/bottombg.gif) repeat-x; height:5px; float:left; width:98%;}
+.right09{ background:url(../images/tianluan/rightbottom.gif) no-repeat; float:left; height:5px; width:5px;}
+.titlel{background:url(../images/tianluan/titlel.gif) no-repeat; width:5px; height:30px; float:left;}
+.titlebg{background:url(../images/tianluan/titlebg.gif) repeat-x; height:30px; line-height:30px;  float:left; width:96%; }
+.titler{background:url(../images/tianluan/titler.gif) no-repeat; height:30px; width:5px; float:left;}
+.title01{ margin:0; padding:0;margin-left:5px; float:left;font-weight:bold; color:#FFF;text-align:center; padding-left:10px; padding-right:10px;}
+.title01 a:link{color:#FFF; text-decoration:none;padding-left:10px; padding-right:10px;}
+.title01 a:visited{ color:#FFF; text-decoration:none;}
+.title01 a:hover{ color:#fff; text-decoration:none;}
+.title02{ margin:0; padding:0;width:100px;margin-left:5px; float:left;font-weight:bold; color:#4c4c4c; background:#FFF;text-align:center; height:28px; line-height:28px; margin-top:2px; text-decoration:none; padding-left:10px; padding-right:10px;}
+.box{width:130px; float:left; background:url(../images/tianluan/boxbg.gif) repeat-x;border:#64b3f6 1px solid; line-height:16px; padding-left:5px; padding-right:5px;}
+.box td tr{line-height:16px;}
+.blueline{background:url(../images/tianluan/blueline.jpg) repeat-x; height:4px; width:100%; overflow:hidden;}
+.main td{height:16px;}
+.box1{width:140px; float:left; height:20px; background:url(../images/tianluan/boxbg.gif) repeat-x; border:#64b3f6 1px solid; line-height:20px;}
+#t1 {height:18px;width:60px; }
+#t2 {height:18px;width:120px;}
+.gbox{background:#a9d9ff;}
+.gbox1{border:2px solid #ebf5ff;}
+.gboxbg{ background:url(../images/tianluan/gboxbg.gif) repeat-x; height:30px; line-height:30px;}
+.gboxbg2{ background:url(../images/tianluan/gboxbg.gif) repeat-x; height:30px; line-height:0px;}
+/*CSS manu style pagination*/
+
+.manu {
+	PADDING-RIGHT: 3px; PADDING-LEFT: 3px; PADDING-BOTTOM: 3px; MARGIN: 3px; PADDING-TOP: 3px; TEXT-ALIGN: center
+}
+.manu A {
+	BORDER-RIGHT: #eee 1px solid; PADDING-RIGHT: 5px; BORDER-TOP: #eee 1px solid; PADDING-LEFT: 5px; PADDING-BOTTOM: 2px; MARGIN: 2px; BORDER-LEFT: #eee 1px solid; COLOR: #036cb4; PADDING-TOP: 2px; BORDER-BOTTOM: #eee 1px solid; TEXT-DECORATION: none
+}
+.manu A:hover {
+	BORDER-RIGHT: #999 1px solid; BORDER-TOP: #999 1px solid; BORDER-LEFT: #999 1px solid; COLOR: #666; BORDER-BOTTOM: #999 1px solid
+}
+.manu A:active {
+	BORDER-RIGHT: #999 1px solid; BORDER-TOP: #999 1px solid; BORDER-LEFT: #999 1px solid; COLOR: #666; BORDER-BOTTOM: #999 1px solid
+}
+.manu .current {
+	BORDER-RIGHT: #036cb4 1px solid; PADDING-RIGHT: 5px; BORDER-TOP: #036cb4 1px solid; PADDING-LEFT: 5px; FONT-WEIGHT: bold; PADDING-BOTTOM: 2px; MARGIN: 2px; BORDER-LEFT: #036cb4 1px solid; COLOR: #fff; PADDING-TOP: 2px; BORDER-BOTTOM: #036cb4 1px solid; BACKGROUND-COLOR: #036cb4
+}
+.manu .disabled {
+	BORDER-RIGHT: #eee 1px solid; PADDING-RIGHT: 5px; BORDER-TOP: #eee 1px solid; PADDING-LEFT: 5px; PADDING-BOTTOM: 2px; MARGIN: 2px; BORDER-LEFT: #eee 1px solid; COLOR: #ddd; PADDING-TOP: 2px; BORDER-BOTTOM: #eee 1px solid
+}
+
+
+/*footer*/
+.footer{ text-align:center; line-height:32px; background:#FFF;border-top:1px solid #3a3a3a;}

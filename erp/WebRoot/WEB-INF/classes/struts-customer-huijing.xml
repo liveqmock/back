@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE struts PUBLIC
+    "-//Apache Software Foundation//DTD Struts Configuration 2.0//EN"
+    "http://struts.apache.org/dtds/struts-2.0.dtd">
+<struts>
+	
+	<!-- 汇景客户action -->
+	<package name="customer_huijing" extends="struts-default">
+		<action name="customer_huijing!*" class="com.ihk.customer.action.CustomerAction">
+			<result name="customerAdd" type="redirectAction">
+				customer_huijing!doSomeForAddCustomer?from=huijing&amp;deleteSession=false
+				<!-- 表示要清除提示的session -->
+			</result>
+			<result name="loginFail" type="redirect">/login.jsp</result>
+			<result name="loginSucc">/customer/huijing/index.jsp</result>
+			<result name="queryCustomerLimit">/customer/huijing/index.jsp</result>
+			<result name="queryCustomerByIdForUpdate">/customer/huijing/update.jsp</result>
+			<result name="forAdd">/customer/huijing/input.jsp</result>
+			<result name="download">/customer/huijing/exp_cust_002.jsp</result>
+			<result name="deleteCustomer" type="redirectAction">./customer_huijing!searchCustomer.action</result>
+			<result name="input" type="redirectAction">
+				customer_huijing!doSomeForAddCustomer?from=huijing&amp;deleteSession=input
+			</result>
+		</action>
+		
+	</package>
+
+</struts>

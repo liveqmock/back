@@ -1,0 +1,263 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.ihk.property.data.IPropertyProjectMapper">
+
+	<resultMap type="PropertyProject" id="propertyProjectResultMap">
+		<id property="id" column="id" />        
+		<result property="propertyName" column="property_name" />
+		<result property="simpleName" column="simple_name" />
+		<result property="developerId" column="developer_id" />
+		<result property="parentId" column="parent_id" />
+		<result property="areaName" column="area_name" />
+		<result property="propertyAddress" column="property_address" />
+		<result property="projectProvince" column="project_province" />
+		<result property="projectCity" column="project_city" />
+		<result property="projectRegion" column="project_region" />
+		<result property="blockName" column="block_name" />
+		<result property="adName" column="ad_name" />
+		<result property="projectFeatures" column="project_features" />
+		<result property="designFeatures" column="design_features" />
+		<result property="startLandLife" column="start_land_life" />
+		<result property="endLandLife" column="end_land_life" />
+		<result property="preSalePermit" column="pre_sale_permit" />
+		<result property="contractLimitDate" column="contract_limit_date" />
+		<result property="startSaleDate" column="start_sale_date" />
+		<result property="endSaleDate" column="end_sale_date" />
+		<result property="startBuildDate" column="start_build_date" />
+		<result property="endBuildDate" column="end_build_date" />
+		<result property="saleCard" column="sale_card" />
+		<result property="projectState" column="project_state" />
+		<result property="customerDesc" column="customer_desc" />
+		<result property="projectDesc" column="project_desc" />
+		<result property="coverArea" column="cover_area" />
+		<result property="buildArea" column="build_area" />
+		<result property="saleArea" column="sale_area" />
+		<result property="remark" column="remark" />
+		
+		<result property="companyProjectId" column="company_project_id" />
+		<result property="isDeleted" column="is_deleted" />
+		<result property="createdId" column="created_id" />
+		<result property="createdTime" column="created_time" />
+		<result property="modId" column="mod_id" />
+		<result property="modTime" column="mod_time" />
+	</resultMap>
+
+	<insert id="addPropertyProject" parameterType="PropertyProject">
+		 <selectKey resultType="java.lang.Integer" keyProperty="id" order="AFTER" >
+            SELECT @@IDENTITY
+        </selectKey>		
+		insert into property_project(
+		property_name,
+		simple_name,
+		developer_id,
+		parent_id,
+		area_name,
+		property_address,
+		project_province,
+		project_city,
+		project_region,
+		block_name,
+		ad_name,
+		project_features,
+		design_features,
+		start_land_life,
+		end_land_life,
+		pre_sale_permit,
+		contract_limit_date,
+		start_sale_date,
+		end_sale_date,
+		start_build_date,
+		end_build_date,
+		sale_card,
+		project_state,
+		customer_desc,
+		project_desc,
+		cover_area,
+		build_area,
+		sale_area,
+		remark,
+		company_project_id,
+		is_deleted,
+		created_id,
+		created_time,
+		mod_id,
+		mod_time
+		)
+			VALUES(
+		#{propertyName},
+		#{simpleName},
+		#{developerId},
+		#{parentId},
+		#{areaName},
+		#{propertyAddress},
+		#{projectProvince},
+		#{projectCity},
+		#{projectRegion},
+		#{blockName},
+		#{adName},
+		#{projectFeatures},
+		#{designFeatures},
+		#{startLandLife},
+		#{endLandLife},
+		#{preSalePermit},
+		#{contractLimitDate},
+		#{startSaleDate},
+		#{endSaleDate},
+		#{startBuildDate},
+		#{endBuildDate},
+		#{saleCard},
+		#{projectState},
+		#{customerDesc},
+		#{projectDesc},
+		#{coverArea},
+		#{buildArea},
+		#{saleArea},
+		#{remark},
+		#{companyProjectId},
+		#{isDeleted},
+		#{createdId},
+		#{createdTime},
+		#{modId},
+		#{modTime}
+			)
+		
+	</insert>
+	<delete id="deletePropertyProject" parameterType="int">
+	update property_project set is_deleted='1' where id=#{id};
+	</delete>
+		<update id="updatePropertyProject" parameterType="int">
+	update property_project set 
+		property_name=#{propertyName},
+		simple_name=#{simpleName},
+		developer_id=#{developerId},
+		parent_id=#{parentId},
+		area_name=#{areaName},
+		property_address=#{propertyAddress},
+		project_province=#{projectProvince},
+		project_city=#{projectCity},
+		project_region=#{projectRegion},
+		block_name=#{blockName},
+		ad_name=#{adName},
+		project_features=#{projectFeatures},
+		design_features=#{designFeatures},
+		start_land_life=#{startLandLife},
+		end_land_life=#{endLandLife},
+		pre_sale_permit=#{preSalePermit},
+		contract_limit_date=#{contractLimitDate},
+		start_sale_date=#{startSaleDate},
+		end_sale_date=#{endSaleDate},
+		start_build_date=#{startBuildDate},
+		end_build_date=#{endBuildDate},
+		sale_card=#{saleCard},
+		project_state=#{projectState},
+		customer_desc=#{customerDesc},
+		project_desc=#{projectDesc},
+		cover_area=#{coverArea},
+		build_area=#{buildArea},
+		sale_area=#{saleArea},
+		remark=#{remark},
+		mod_id=#{modId},
+		mod_time=#{modTime},
+		company_project_id=#{companyProjectId}
+	 where id=#{id}
+	</update>
+	
+	<select id="findPropertyProjectById" resultMap="propertyProjectResultMap">
+	select * from property_project where id=#{id}
+	</select>
+    
+	<sql id="findWhereCond"> 
+		<where>
+        <if test="searchName != null and searchName != ''">
+				property_name like CONCAT(CONCAT('%', #{searchName}),'%')    
+            </if> 
+            <if test="companyProjectId != 0">
+				company_project_id = #{companyProjectId} 
+            </if>             
+	         <if test="companyProjectIds!=null and companyProjectIds.size() > 0">  
+	            and company_project_id in
+	            <foreach  
+	                collection="companyProjectIds"  
+	                item="pid"  
+	                open="("  
+	                separator=","  
+	                close=")">  
+	                #{pid} 
+	            </foreach>  
+	            </if>
+            and is_deleted = '0'
+            order by property_name asc
+		</where>
+	</sql>
+	
+	<select id="findPropertyProjectCount" resultType="int" parameterType="com.ihk.property.data.pojo.PropertyProjectCond">
+		SELECT count(0) from property_project  
+        <include refid="findWhereCond"/>     
+    </select>
+        
+	<select id="findPropertyProject" resultMap="propertyProjectResultMap" parameterType="com.ihk.property.data.pojo.PropertyProjectCond">
+		SELECT * from  property_project 
+        <include refid="findWhereCond"/> 
+		<if test="topNum > 0">
+			limit #{topNum};
+		</if>
+    </select>
+    
+	<select id="findPropertyProjectPage" resultMap="propertyProjectResultMap" parameterType="com.ihk.property.data.pojo.PropertyProjectCond">
+		SELECT * from  property_project 
+        <include refid="findWhereCond"/> 
+    
+		<if test="startLine >= 0">
+		<if test="pageSize > 0">
+			limit #{startLine},#{pageSize};
+		</if>
+		</if>
+	</select>
+	
+	<select id="findPropertyProjectsLikeName" resultMap="propertyProjectResultMap">
+		select * from property_project where property_name like CONCAT(CONCAT('%', #{name}),'%') order by property_name desc limit 10
+	</select>
+	
+	<select id="findPropertyProjectIsExistsByProjectName" resultMap="propertyProjectResultMap">
+		select * from property_project where property_name = #{name}
+	</select>
+	
+	<select id="findPropertyProjectByIds" resultMap="propertyProjectResultMap" parameterType="com.ihk.property.data.pojo.PropertyProjectCond">
+		SELECT * from  property_project 
+        <where>
+         <if test="ids!=null and ids.size() > 0">  
+            and id in
+            <foreach  
+                collection="ids"  
+                item="thisid"  
+                open="("  
+                separator=","  
+                close=")">  
+                #{thisid} 
+            </foreach>  
+            </if>
+            and is_deleted = '0'
+        </where> 
+    
+		<if test="startLine >= 0">
+		<if test="pageSize > 0">
+			limit #{startLine},#{pageSize};
+		</if>
+		</if>
+	</select>
+	
+	<select id="findPropertyProjectIdByUnitId" resultType="int" parameterType="int">
+		select property_id from property_build b inner join property_unit u on b.id = u.build_id where u.id = #{unitId}
+    </select>
+    
+    <select id="findPropertyProjectByCompanyId" resultMap="propertyProjectResultMap" parameterType="int">
+    	select pp.* from property_project pp inner join company_project cp on pp.company_project_id = cp.id
+    		inner join company c on cp.company_id = c.id 
+    		where c.id = #{comId} and pp.is_deleted = 0 and cp.is_deleted = 0 and c.is_deleted = 0    	
+    </select>
+    
+    <select id="findPropertyProjectByCompanyProjectId" resultMap="propertyProjectResultMap" parameterType="int">
+    	select * from property_project where company_project_id = #{companyProjectId} and is_deleted = '0' order by property_name
+    </select>
+	
+</mapper>

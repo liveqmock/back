@@ -1,0 +1,108 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.ihk.saleunit.data.IArAmountMapper">
+
+	<resultMap type="ArAmount" id="arAmountResultMap">
+		<id property="id" column="id" />        
+		<result property="tranId" column="tran_id" />
+		<result property="companyId" column="company_id" />
+		<result property="propertyId" column="property_id" />
+		<result property="areaId" column="area_id" />
+		<result property="buildId" column="build_id" />
+		<result property="unitId" column="unit_id" />
+		<result property="impdate" column="impdate" />
+		<result property="arDate" column="ar_date" />
+		<result property="amount" column="amount" />
+		<result property="remark" column="remark" />
+	</resultMap>
+
+	<insert id="addArAmount" parameterType="ArAmount">
+		 <selectKey resultType="java.lang.Integer" keyProperty="id" order="AFTER" >
+            SELECT @@IDENTITY
+        </selectKey>		
+		insert into ar_amount(
+        tran_id,
+		company_id,
+		property_id,
+		area_id,
+		build_id,
+		unit_id,
+		impdate,
+		ar_date,
+		amount,
+		remark
+		)
+			VALUES(
+		#{tranId},
+		#{companyId},
+		#{propertyId},
+		#{areaId},
+		#{buildId},
+		#{unitId},
+		#{impdate},
+		#{arDate},
+		#{amount},
+		#{remark}
+			)
+		
+	</insert>
+	<delete id="deleteArAmount" parameterType="com.ihk.utils.base.PojoDeleteCond">
+	    delete from ar_amount where id=#{id};
+	</delete>
+	<update id="updateArAmount" parameterType="int">
+	update ar_amount set
+		impdate=#{impdate},
+		ar_date=#{arDate},
+		amount=#{amount},
+		remark=#{remark}
+	 where tran_id=#{tranId}
+	</update>
+	<select id="findArAmountById" resultMap="arAmountResultMap">
+	select * from ar_amount where id=#{id}
+	</select>
+    
+	<sql id="findWhereCond"> 
+		<where>
+
+            <if test="tranId != null and tranId != ''">
+                and tran_id = #{tranId}
+            </if>
+            <if test="build_id != null and build_id != ''">
+                and build_id = #{build_id}
+            </if>
+            <if test="impdate != null and impdate != ''">
+                and impdate = #{impdate}
+            </if>
+
+        <!--
+			<if test="date1 != null and date1 != ''">
+            </if>    
+            and is_deleted = '0'
+            -->
+		</where>
+	</sql>
+	
+	<select id="findArAmountCount" resultType="int" parameterType="com.ihk.saleunit.data.pojo.ArAmountCond">
+		SELECT count(*) from ar_amount
+        <include refid="findWhereCond"/>     
+    </select>
+        
+	<select id="findArAmount" resultMap="arAmountResultMap" parameterType="com.ihk.saleunit.data.pojo.ArAmountCond">
+		SELECT * from  ar_amount 
+        <include refid="findWhereCond"/> 
+		<if test="topNum > 0">
+			limit #{topNum};
+		</if>
+    </select>
+    
+	<select id="findArAmountPage" resultMap="arAmountResultMap" parameterType="com.ihk.saleunit.data.pojo.ArAmountCond">
+		SELECT * from  ar_amount 
+        <include refid="findWhereCond"/> 
+        order by ${str_sort} ${str_order}
+		<if test="startLine >= 0">
+		<if test="pageSize > 0">
+			limit #{startLine},#{pageSize};
+		</if>
+		</if>
+	</select>
+</mapper>

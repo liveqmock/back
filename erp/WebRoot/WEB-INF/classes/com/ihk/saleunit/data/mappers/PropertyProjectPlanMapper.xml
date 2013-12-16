@@ -1,0 +1,113 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.ihk.saleunit.data.IPropertyProjectPlanMapper">
+<resultMap type="PropertyProjectPlan" id="propertyProjectPlanResultMap">
+		<id property="id" column="id" />        
+		<result property="propertyId" column="property_id" />
+		<result property="planArea" column="plan_area" />
+		<result property="planMoney" column="plan_money" />
+		<result property="planPrice" column="plan_price" />
+		<result property="planMonth" column="plan_month" />
+		<result property="remark" column="remark" />
+		<result property="isDeleted" column="is_deleted" />
+		<result property="createdId" column="created_id" />
+		<result property="createdTime" column="created_time" />
+		<result property="modId" column="mod_id" />
+		<result property="modTime" column="mod_time" />
+	</resultMap>
+
+	<insert id="addPropertyProjectPlan" parameterType="PropertyProjectPlan">
+		 <selectKey resultType="java.lang.Integer" keyProperty="id" order="AFTER" >
+            SELECT @@IDENTITY
+        </selectKey>		
+		insert into property_project_plan(
+		property_id,
+		plan_area,
+		plan_money,
+		plan_price,
+		plan_month,
+		remark,
+		is_deleted,
+		created_id,
+		created_time,
+		mod_id,
+		mod_time
+		)
+			VALUES(
+		#{propertyId},
+		#{planArea},
+		#{planMoney},
+		#{planPrice},
+		#{planMonth},
+		#{remark},
+		#{isDeleted},
+		#{createdId},
+		#{createdTime},
+		#{modId},
+		#{modTime}
+			)
+		
+	</insert>
+	<delete id="deletePropertyProjectPlan" parameterType="com.ihk.utils.base.PojoDeleteCond">
+	update property_project_plan set is_deleted='1', mod_id=#{modId}, mod_time=#{modTime} where id=#{id};
+	</delete>
+	<update id="updatePropertyProjectPlan" parameterType="int">
+	update property_project_plan set 
+		property_id=#{propertyId},
+		plan_area=#{planArea},
+		plan_money=#{planMoney},
+		plan_price=#{planPrice},
+		plan_month=#{planMonth},
+		remark=#{remark},
+		mod_id=#{modId},
+		mod_time=#{modTime}
+	 where id=#{id}
+	</update>
+	<select id="findPropertyProjectPlanById" resultMap="propertyProjectPlanResultMap">
+	select * from property_project_plan where id=#{id}
+	</select>
+    
+	<sql id="findWhereCond"> 
+		<where>
+			<if test="propertyId != null and propertyId != ''">
+				and property_id = #{propertyId}
+            </if>  
+            <if test="searchProjectIds != null and searchProjectIds.size() > 0">
+            	and property_id in
+	            <foreach  
+	                collection="searchProjectIds"  
+	                item="pId"  
+	                open="("  
+	                separator=","  
+	                close=")">   
+	                #{pId}  
+	            </foreach>
+            </if>
+            and is_deleted = '0'
+		</where>
+	</sql>
+	
+	<select id="findPropertyProjectPlanCount" resultType="int" parameterType="com.ihk.saleunit.data.pojo.PropertyProjectPlanCond">
+		SELECT count(0) from property_project_plan  
+        <include refid="findWhereCond"/>     
+    </select>
+        
+	<select id="findPropertyProjectPlan" resultMap="propertyProjectPlanResultMap" parameterType="com.ihk.saleunit.data.pojo.PropertyProjectPlanCond">
+		SELECT * from  property_project_plan 
+        <include refid="findWhereCond"/> 
+		<if test="topNum > 0">
+			limit #{topNum};
+		</if>
+    </select>
+    
+	<select id="findPropertyProjectPlanPage" resultMap="propertyProjectPlanResultMap" parameterType="com.ihk.saleunit.data.pojo.PropertyProjectPlanCond">
+		SELECT * from  property_project_plan 
+        <include refid="findWhereCond"/> 
+    
+		<if test="startLine >= 0">
+		<if test="pageSize > 0">
+			limit #{startLine},#{pageSize};
+		</if>
+		</if>
+	</select>
+</mapper>

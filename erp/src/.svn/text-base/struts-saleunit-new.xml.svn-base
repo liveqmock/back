@@ -1,0 +1,550 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE struts PUBLIC
+    "-//Apache Software Foundation//DTD Struts Configuration 2.0//EN"
+    "http://struts.apache.org/dtds/struts-2.0.dtd">
+<struts>
+  
+	<!-- 
+	<package name="saleunit_appoint_guangzhou" extends="struts-base" namespace="/saleunit_new/appoint/guangzhou">
+	 -->
+	<package name="saleunit_new_appoint_guangzhou" extends="struts-base" namespace="/saleunit_new/appoint/guangzhou">
+	
+		<!-- 自动去除左右空格拦截器 -->
+		<interceptors>
+			<interceptor name="checkInterceptor" class="com.ihk.saleunit.action.new_.CheckInterceptor"></interceptor>
+			<interceptor-stack name="baseInterceptorStack">
+				<interceptor-ref name="checkInterceptor"></interceptor-ref>
+				<interceptor-ref name="defaultStack"></interceptor-ref>
+			</interceptor-stack>
+		</interceptors>
+	
+		<action name="layout" class="com.ihk.saleunit.action.new_.GuangZhouAppointNewLeftAction" method="layout">
+			<result name="layout">/saleunit_new/guangzhou/layout.jsp</result>
+		</action>
+		
+		<action name="layoutFrom" class="com.ihk.saleunit.action.new_.GuangZhouAppointNewLeftAction" method="layout">
+			<result name="layout">/saleunit_new/guangzhou/layout.jsp</result>
+		</action>		
+		
+		<!-- ajax加载公司项目的下拉框 -->
+		<action name="layoutAjax" class="com.ihk.saleunit.action.new_.GuangZhouAppointNewLeftAction" method="layoutAjax"/>
+		
+		<action name="getDefaultBuildFromProperty" class="com.ihk.saleunit.action.new_.GuangZhouAppointNewLeftAction" method="getDefaultBuildFromProperty"/>
+		
+		<!-- 多个销控中心权限的跳转 -->
+		<action name="selectSaleUnitIndex" class="com.ihk.saleunit.action.new_.GuangZhouAppointNewLeftAction" method="selectLayout">
+			<result name="suc">/saleunit_new/guangzhou/select_sale_unit_index.jsp</result>
+		</action>
+		
+		<!-- 左边项目,楼栋,分区导航条(公用),得到各种级别的tree下面子节点-->
+		<action name="layoutLeft" class="com.ihk.saleunit.action.new_.GuangZhouAppointNewLeftAction" method="layoutLeft"/>
+		
+		<!-- 楼盘项目id固定获取对应的分区,楼栋tree,主要用于单元操作的换房 -->
+		<action name="layoutLeftForOper" class="com.ihk.saleunit.action.new_.GuangZhouAppointNewLeftAction" method="layoutLeftForOper"/>
+		
+		<action name="getUnit" class="com.ihk.saleunit.action.new_.GuangZhouAppointNewLeftAction" method="getUnit">
+			<result name="getUnit">/saleunit_new/guangzhou/unit.jsp</result>
+			<result name="getUnitList">/saleunit_new/guangzhou/unitList.jsp</result>
+			<result name="getUnitForOper">/saleunit_new/guangzhou/unit_oper.jsp</result>
+		</action>
+		<action name="getAreaUnit" class="com.ihk.saleunit.action.new_.GuangZhouAppointNewLeftAction" method="getAreaUnit">
+			<result name="getAreaUnit">/saleunit_new/guangzhou/unit.jsp</result>
+		</action>
+		<action name="getGro" class="com.ihk.saleunit.action.new_.GuangZhouAppointNewLeftAction" method="getGroup">
+			<result name="suc">/saleunit_new/guangzhou/unit.jsp</result>
+		</action>
+		
+		<!-- 自动刷新 -->
+		<action name="getUnitForRefresh" class="com.ihk.saleunit.action.new_.GuangZhouAppointNewLeftAction" method="getUnitForRefresh"/>
+		
+		<!-- 房间信息 -->
+		<action name="unitInfo" class="com.ihk.saleunit.action.new_.GuangZhouAppointNewUnitInfoAction" method="unitInfo">
+			<result name="unit_info">/saleunit_new/guangzhou/unit_info.jsp</result>
+			<result name="unitInfoForContractManager">/saleunit_new/manager/unit_info.jsp</result>
+		</action>
+		<!-- 房间信息列表 -->
+		<action name="unitList" class="com.ihk.property.action.ajax.PropertyUnitDateAction" method="index">
+			<result name="suc">/saleunit_new/guangzhou/unitList.jsp</result>
+		</action>
+		
+		<!-- 获取组合点击单元的具体显示 -->
+		<action name="getUnitShowContent" class="com.ihk.saleunit.action.new_.GuangZhouAppointNewUnitInfoAction" method="getUnitShowContent"/>
+		<!-- 置业计划相关信息 -->
+		<action name="getUnitInfoForCalc" class="com.ihk.saleunit.action.new_.GuangZhouAppointNewUnitInfoAction" method="getUnitInfoForCalc">
+			<result name="getUnitInfoForCalc">/saleunit_new/guangzhou/calc_iframe.jsp</result>
+		</action>
+		
+		<!-- 表contract_customer智能提示框 -->
+		<action name="contractCustomerList" class="com.ihk.saleunit.action.customer.ContractCustomerAction" method="contractCustomerList"/>
+		
+		<!-- 通过身份证获取区域 -->
+		<action name="getLocationFromIdCard" class="com.ihk.saleunit.action.customer.ContractCustomerAction" method="getLocationFromIdCard"/>
+		
+		<!-- 新建,查看认购 -->
+		<action name="createConfirmDialog" class="com.ihk.saleunit.action.new_.GuangZhouAppointNewUnitInfoAction" method="createConfirmDialog">
+			<result name="createConfirmDialog">/saleunit_new/guangzhou/confirm_dialog.jsp</result>
+		</action>
+		<action name="saveConfirmCustomerForDialog" class="com.ihk.saleunit.action.new_.GuangZhouAppointNewUnitInfoAction" method="saveConfirmCustomerForDialog"/>
+		<action name="inputConfirm" class="com.ihk.saleunit.action.new_.GuangZhouAppointNewUnitInfoAction" method="inputConfirm">
+			<result name="inputConfirm">/saleunit_new/guangzhou/confirm_dialog.jsp</result>
+		</action>
+		<action name="showConfirmDialog" class="com.ihk.saleunit.action.new_.GuangZhouAppointNewUnitInfoAction" method="showConfirmDialog">
+			<result name="showConfirmDialog">/saleunit_new/guangzhou/confirm_dialog_show.jsp</result>
+		</action>
+		<action name="updateConfirmDialog" class="com.ihk.saleunit.action.new_.GuangZhouAppointNewUnitInfoAction" method="updateConfirmDialog">
+			<result name="updateConfirmDialog">/saleunit_new/guangzhou/confirm_dialog_show.jsp</result>
+		</action>
+		<!-- 转签约 -->
+		<action name="changeToContract" class="com.ihk.saleunit.action.new_.GuangZhouAppointNewUnitInfoAction" method="changeToContract"/>
+		<!-- 认购退房 -->
+		<action name="confirmCheckOut" class="com.ihk.saleunit.action.new_.GuangZhouAppointNewUnitInfoAction" method="confirmCheckOut"/>
+		<!-- 大学小筑的认购(成交) -->
+		<action name="createXiaoZhuConfirmDialog" class="com.ihk.saleunit.action.new_.GuangZhouConfirmXiaoZhuAction" method="createXiaoZhuConfirmDialog">
+			<result name="createXiaoZhuConfirmDialog">/saleunit_new/guangzhou/confirm_dialog_xiaozhu.jsp</result>
+			<result name="changeUnitaddConfirmDialog">/saleunit_new/guangzhou/change_unit_add_confirm.jsp</result>
+		</action>
+		
+		<action name="saveXiaoZhuConfirmDialog" class="com.ihk.saleunit.action.new_.GuangZhouConfirmXiaoZhuAction" method="saveXiaoZhuConfirmDialog">
+			<interceptor-ref name="baseInterceptorStack"></interceptor-ref>
+			<result name="saveXiaoZhuConfirmDialog">/saleunit_new/guangzhou/confirm_dialog_xiaozhu.jsp</result>
+		</action>
+		<action name="showXiaoZhuConfirmDialog" class="com.ihk.saleunit.action.new_.GuangZhouConfirmXiaoZhuAction" method="showXiaoZhuConfirmDialog">
+			<result name="showXiaoZhuConfirmDialog">/saleunit_new/guangzhou/confirm_dialog_xiaozhu_show.jsp</result>
+		</action>
+		<action name="updateXiaoZhuConfirmDialog" class="com.ihk.saleunit.action.new_.GuangZhouConfirmXiaoZhuAction" method="updateXiaoZhuConfirmDialog">
+			<result name="updateXiaoZhuConfirmDialog">/saleunit_new/guangzhou/confirm_dialog_xiaozhu_show.jsp</result>
+		</action>
+		<action name="getDetailTrByPayWayIdForXiaoZhu" class="com.ihk.saleunit.action.new_.GuangZhouConfirmXiaoZhuAction" method="getDetailTrByPayWayIdForXiaoZhu"/>
+		
+		<!-- 基于easyui的成交,合同start -->
+		
+		<!-- 跳到新建成交页面 -->
+		<action name="toCreateConfirmDialog" class="com.ihk.saleunit.action.easyui.confirm.EasyUIConfirmAction" method="toCreateConfirmDialog">
+			<result name="toCreateConfirmDialog">/saleunit_new/guangzhou/confirm_dialog_easyui.jsp</result>
+		</action>
+		
+		<!-- 保存成交 -->
+		<action name="saveEasyUIConfirm" class="com.ihk.saleunit.action.easyui.confirm.EasyUIConfirmAction" method="saveEasyUIConfirm" >
+			<interceptor-ref name="baseInterceptorStack"></interceptor-ref>
+		</action>
+		
+		<!-- 跳到查看或修改成交页面 -->
+		<action name="toShowConfirmDialog" class="com.ihk.saleunit.action.easyui.confirm.EasyUIConfirmAction" method="toShowConfirmDialog">
+			<result name="toShowConfirmDialog">/saleunit_new/guangzhou/confirm_dialog_easyui_show.jsp</result>
+		</action>
+		
+		<!-- 修改成交 -->
+		<action name="updateEasyUIConfirm" class="com.ihk.saleunit.action.easyui.confirm.EasyUIConfirmAction" method="updateEasyUIConfirm">
+			<interceptor-ref name="baseInterceptorStack"></interceptor-ref>
+		</action>
+		
+		<!-- 跳到新建合同页面 -->
+		<action name="toCreateContractDialog" class="com.ihk.saleunit.action.easyui.contract.EasyUIContractAction" method="toCreateContractDialog">
+			<result name="toCreateContractDialog">/saleunit_new/guangzhou/contract_dialog_easyui.jsp</result>
+		</action>
+		
+		<!-- 保存合同 -->
+		<action name="saveEasyUIContract" class="com.ihk.saleunit.action.easyui.contract.EasyUIContractAction" method="saveEasyUIContract">
+			<interceptor-ref name="baseInterceptorStack"></interceptor-ref>
+		</action>
+		
+		<!-- 跳到查看或修改合同页面 -->
+		<action name="toShowContractDialog" class="com.ihk.saleunit.action.easyui.contract.EasyUIContractAction" method="toShowContractDialog">
+			<result name="toShowContractDialog">/saleunit_new/guangzhou/contract_dialog_easyui_show.jsp</result>
+		</action>
+		
+		<!-- 修改合同 -->
+		<action name="updateEasyUIContract" class="com.ihk.saleunit.action.easyui.contract.EasyUIContractAction" method="updateEasyUIContract">
+			<interceptor-ref name="baseInterceptorStack"></interceptor-ref>
+		</action>
+		
+		<!-- 基于easyui的成交,合同end -->
+		
+		<action name="searchSale" class="com.ihk.saleunit.action.sale.SaleAction" method="searchSale">
+			<result name="searchSale">/saleunit_new/guangzhou/sale_search.jsp</result>
+		</action>
+		<action name="searchSaleForCompany" class="com.ihk.saleunit.action.sale.SaleAction" method="searchSaleForCompany"/>
+		<action name="deleteSale" class="com.ihk.saleunit.action.sale.SaleAction" method="deleteSale">
+			<result name="deleteSale">/saleunit_new/guangzhou/sale_delete.jsp</result>
+		</action>
+		<action name="modifySale" class="com.ihk.saleunit.action.sale.SaleAction" method="modifySale">
+			<result name="modifySale">/saleunit_new/guangzhou/sale_modify.jsp</result>
+		</action>
+		
+		<!-- 新建,查看签约 -->
+		<action name="createContractDialog" class="com.ihk.saleunit.action.new_.GuangZhouAppointNewUnitInfoAction" method="createContractDialog">
+			<interceptor-ref name="baseInterceptorStack"></interceptor-ref>
+			<result name="createContractDialog">/saleunit_new/guangzhou/contract_dialog.jsp</result>
+		</action>
+		
+		<action name="saveContractCustomerForDialog" class="com.ihk.saleunit.action.new_.GuangZhouAppointNewUnitInfoAction" method="saveContractCustomerForDialog"/>
+		<action name="updateContractCustomerForDialog" class="com.ihk.saleunit.action.new_.GuangZhouAppointNewUnitInfoAction" method="updateContractCustomerForDialog"/>
+		<action name="inputContract" class="com.ihk.saleunit.action.new_.GuangZhouAppointNewUnitInfoAction" method="inputContract">
+			<result name="inputContract">/saleunit_new/guangzhou/contract_dialog.jsp</result>
+		</action>
+		<action name="showContractDialog" class="com.ihk.saleunit.action.new_.GuangZhouAppointNewUnitInfoAction" method="showContractDialog">
+			<result name="showContractDialog">/saleunit_new/guangzhou/contract_dialog_show.jsp</result>
+		</action>
+		<action name="updateContractDialog" class="com.ihk.saleunit.action.new_.GuangZhouAppointNewUnitInfoAction" method="updateContractDialog">
+			<result name="updateContractDialog">/saleunit_new/guangzhou/contract_dialog_show.jsp</result>
+		</action>
+		
+		<!-- 签约退房 -->
+		<action name="contractCheckOut" class="com.ihk.saleunit.action.new_.GuangZhouAppointNewUnitInfoAction" method="contractCheckOut"/>
+		
+		<!-- 大学小筑的签约 -->
+		<action name="isCanCreateXiaoZhuContractDialog" class="com.ihk.saleunit.action.new_.GuangZhouContractXiaoZhuAction" method="isCanCreateXiaoZhuContractDialog"/>
+		
+		<action name="createXiaoZhuContractDialog" class="com.ihk.saleunit.action.new_.GuangZhouContractXiaoZhuAction" method="createXiaoZhuContractDialog">
+			<result name="createXiaoZhuContractDialog">/saleunit_new/guangzhou/contract_dialog_xiaozhu.jsp</result>
+		</action>
+		
+		<action name="createContractDialogFromConfirm" class="com.ihk.saleunit.action.new_.GuangZhouContractXiaoZhuAction" 
+			method="createContractDialogFromConfirm">
+			<result name="createContractDialogFromConfirm">/saleunit_new/guangzhou/contract_dialog_from_confirm.jsp</result>
+		</action>
+		
+		<action name="inputXiaoZhuContract" class="com.ihk.saleunit.action.new_.GuangZhouContractXiaoZhuAction" method="inputXiaoZhuContract">
+			<interceptor-ref name="baseInterceptorStack"></interceptor-ref>
+			<result name="inputXiaoZhuContract">/saleunit_new/guangzhou/contract_dialog_from_confirm.jsp</result>
+		</action>
+		<action name="showXiaoZhuContractDialog" class="com.ihk.saleunit.action.new_.GuangZhouContractXiaoZhuAction" method="showXiaoZhuContractDialog">
+			<result name="showXiaoZhuContractDialog">/saleunit_new/guangzhou/contract_dialog_xiaozhu_show.jsp</result>
+		</action>
+		<action name="updateXiaoZhuContractDialog" class="com.ihk.saleunit.action.new_.GuangZhouContractXiaoZhuAction" method="updateXiaoZhuContractDialog">
+			<result name="updateXiaoZhuContractDialog">/saleunit_new/guangzhou/contract_dialog_xiaozhu_show.jsp</result>
+		</action>
+		
+		<!-- 判断该楼盘项目是否包含对应的合同编号 -->
+		<action name="isContractNoRepeatInPropertyProject" class="com.ihk.saleunit.action.new_.GuangZhouContractXiaoZhuAction" method="isContractNoRepeatInPropertyProject"/>
+		
+		<!-- 新建签约中的查找客户 -->
+		<action name="searchCustomersForContract" class="com.ihk.saleunit.action.customer.ContractCustomerAction" method="searchCustomersForContract"/>
+		<action name="searchCustomersFromPhoneForContract" class="com.ihk.saleunit.action.customer.ContractCustomerAction" method="searchCustomersFromPhoneForContract"/>
+		<action name="saveContractCustomerFromCustomerId" class="com.ihk.saleunit.action.customer.ContractCustomerAction" method="saveContractCustomerFromCustomerId"/>
+		
+		<!-- 临定(未合并客户),没有使用easyui.utils.js中的弹出框 -->
+		<action name="createTempConfirmDialog" class="com.ihk.saleunit.action.tempconfirm.GuangzhouTempConfirmAction" method="createTempConfirmDialog">
+			<result name="createTempConfirmDialog">/saleunit_new/guangzhou/temp_confirm_dialog.jsp</result>
+		</action>
+		<action name="saveTempConfirmDialog" class="com.ihk.saleunit.action.tempconfirm.GuangzhouTempConfirmAction" method="saveTempConfirmDialog">
+			<result name="saveTempConfirmDialog">/saleunit_new/guangzhou/temp_confirm_dialog.jsp</result>
+		</action>
+		<action name="showTempConfirmDialog" class="com.ihk.saleunit.action.tempconfirm.GuangzhouTempConfirmAction" method="showTempConfirmDialog">
+			<result name="showTempConfirmDialog">/saleunit_new/guangzhou/temp_confirm_dialog_show.jsp</result>
+		</action>
+		<action name="updateTempConfirmDialog" class="com.ihk.saleunit.action.tempconfirm.GuangzhouTempConfirmAction" method="updateTempConfirmDialog">
+			<result name="updateTempConfirmDialog">/saleunit_new/guangzhou/temp_confirm_dialog_show.jsp</result>
+		</action>
+		
+		<!-- 新的临定(合并客户),使用easyui.utils.js中的弹出框 -->
+		<!-- 跳到新建临定页面 -->
+		<action name="toCreateConfirmBookDialog" class="com.ihk.saleunit.action.tempconfirm.EasyuiConfirmBookAction" method="toCreateConfirmBookDialog">
+			<result name="toCreateConfirmBookDialog">/saleunit_new/guangzhou/confirm_book_dialog.jsp</result>
+		</action>
+		
+		<!-- 新建临定 -->
+		<action name="addConfirmBook" class="com.ihk.saleunit.action.tempconfirm.EasyuiConfirmBookAction" method="addConfirmBook"/>
+		
+		<!-- 跳到查看修改页面 -->
+		<action name="toShowConfirmBookDialog" class="com.ihk.saleunit.action.tempconfirm.EasyuiConfirmBookAction" method="toShowConfirmBookDialog">
+			<result name="toShowConfirmBookDialog">/saleunit_new/guangzhou/confirm_book_dialog_show.jsp</result>
+		</action>
+		
+		<!-- 修改临定 -->
+		<action name="updateConfirmBook" class="com.ihk.saleunit.action.tempconfirm.EasyuiConfirmBookAction" method="updateConfirmBook"/>
+		
+		<!-- 分割后的成交客户start -->
+		<!-- 跳到新增成交客户界面 -->
+		<action name="toAddContractCustomer" class="com.ihk.saleunit.action.contract_customer.ModifyContractCustomerAction" method="toAddContractCustomer">
+			<result name="toAddContractCustomer">/saleunit_new/guangzhou/add_contract_customer.jsp</result>
+			<result name="toAddChipContractCustomer">/saleunit_new/guangzhou/add_chip_contract_customer.jsp</result>
+		</action>
+		
+		<!-- 根据客户类型判断其对应的项目下是否存在该手机号码 -->
+		<action name="isMobilePhoneExistsByProjectIdAndConfirmType" class="com.ihk.saleunit.action.contract_customer.ModifyContractCustomerAction" 
+			method="isMobilePhoneExistsByProjectIdAndConfirmType">
+			<result name="isMobilePhoneExistsByProjectIdAndConfirmType">/saleunit_new/guangzhou/copy_customer.jsp</result>
+		</action>
+		
+		<!-- 增加客户 -->
+		<action name="addContractCustomer" class="com.ihk.saleunit.action.contract_customer.ModifyContractCustomerAction" method="addContractCustomer"/>
+		
+		<!-- 根据客户类型及id复制相关的资料,用于新增合同客户 -->
+		<action name="copyForAddContractCustomer" class="com.ihk.saleunit.action.contract_customer.ModifyContractCustomerAction" method="copyForAddContractCustomer">
+			<result name="copyForAddContractCustomer">/saleunit_new/guangzhou/add_contract_customer_for_copy.jsp</result>
+			<result name="copyForAddChipContractCustomer">/saleunit_new/guangzhou/add_chip_contract_customer_for_copy.jsp</result>
+		</action>
+		
+		<!-- 跳到修改成交客户界面 -->
+		<action name="toModifyContractCustomer" class="com.ihk.saleunit.action.contract_customer.ModifyContractCustomerAction" method="toModifyContractCustomer">
+			<result name="toModifyContractCustomer">/saleunit_new/guangzhou/add_contract_customer_for_modify.jsp</result>
+			<result name="toModifyChipContractCustomer">/saleunit_new/guangzhou/add_chip_contract_customer_for_modify.jsp</result>
+		</action>
+		
+		<!-- 跳到查看成交客户界面 -->
+		<action name="toModifyContractCustomerReadOnly" class="com.ihk.saleunit.action.contract_customer.ModifyContractCustomerAction" method="toModifyContractCustomerReadOnly">
+			<result name="toModifyContractCustomerReadOnly">/saleunit_new/guangzhou/add_contract_customer_for_modify_readonly.jsp</result>
+			<result name="toModifyChipContractCustomerReadOnly">/saleunit_new/guangzhou/add_chip_contract_customer_for_modify_readonly.jsp</result>
+		</action>
+		
+		<!-- 修改客户 -->
+		<action name="updateContractCustomer" class="com.ihk.saleunit.action.contract_customer.ModifyContractCustomerAction" method="updateContractCustomer"/>
+		
+		<!-- 删除客户 -->
+		<action name="deleteContractCustomer" class="com.ihk.saleunit.action.contract_customer.ModifyContractCustomerAction" method="deleteContractCustomer"/>
+		
+		<!-- 修改认筹,临定,成交,合同...时要获取的客户数据 -->
+		<action name="getContractCustomerJson" class="com.ihk.saleunit.action.contract_customer.ModifyContractCustomerAction" method="getContractCustomerJson"/>
+		<action name="getOldContractCustomerJson" class="com.ihk.saleunit.action.contract_customer.ModifyContractCustomerAction" method="getOldContractCustomerJson"/>
+		
+		<action name="tmpModifyContractCustomer1" class="com.ihk.saleunit.action.contract_customer.ModifyContractCustomerAction" method="tmpModifyContractCustomer1"/>
+		<action name="tmpModifyContractCustomer3" class="com.ihk.saleunit.action.contract_customer.ModifyContractCustomerAction" method="tmpModifyContractCustomer3"/>
+		
+
+		<!-- 分割后的成交客户end -->
+		
+		<!-- 折扣管理 -->
+		<action name="createDiscountDialog" class="com.ihk.saleunit.action.new_.GuangZhouDiscountManagerAction" method="createDiscountDialog">
+			<result name="createDiscountDialog">/saleunit_new/guangzhou/discount_manager.jsp</result>
+		</action>
+		<action name="createDiscountManager" class="com.ihk.saleunit.action.new_.GuangZhouDiscountManagerAction" method="createDiscountManager">
+			<result name="createDiscountManager">/saleunit_new/guangzhou/discount_manager.jsp?loadClose=unitDiscount.id</result>
+		</action>
+		<action name="applyHistoryDiscountManager" class="com.ihk.saleunit.action.new_.GuangZhouDiscountManagerAction" method="applyHistoryDiscountManager">
+			<result name="applyHistoryDiscountManager">/saleunit_new/guangzhou/discount_manager.jsp</result>
+		</action>
+		<action name="initHistoryDiscountDetail" class="com.ihk.saleunit.action.new_.GuangZhouDiscountManagerAction" method="initHistoryDiscountDetail"/>
+		<action name="getDiscountDetailShowByDiscountId" class="com.ihk.saleunit.action.new_.GuangZhouDiscountManagerAction" method="getDiscountDetailShowByDiscountId"/>
+		<action name="forUpdateDiscountDialog" class="com.ihk.saleunit.action.new_.GuangZhouDiscountManagerAction" method="forUpdateDiscountDialog">
+			<result name="forUpdateDiscountDialog">/saleunit_new/guangzhou/discount_manager_update.jsp</result>
+		</action>
+		<action name="updateDiscountManager" class="com.ihk.saleunit.action.new_.GuangZhouDiscountManagerAction" method="updateDiscountManager">
+			<result name="updateDiscountManager">/saleunit_new/guangzhou/discount_manager_update.jsp</result>
+		</action>
+		
+		<!-- 客户信息 -->
+		<action name="customerInfo" class="com.ihk.saleunit.action.new_.GuangZhouAppointNewCustomerInfoAction" method="customerInfo">
+			<result name="customer_info">/saleunit_new/guangzhou/customer_info.jsp</result>
+		</action>
+		
+		<!-- 操作日志-->
+		<action name="unitTransactionLogInfo" class="com.ihk.saleunit.action.new_.GuangZhouAppointNewSaleUnitLogAction" method="unitTransactionLogInfo">
+			<result name="sale_unit_log_info">/saleunit_new/guangzhou/sale_unit_log.jsp</result>
+		</action>
+		<action name="buildingAreaUnitInitLogInfo" class="com.ihk.saleunit.action.new_.GuangZhouAppointNewSaleUnitLogAction" method="buildingAreaUnitInitLogInfo">
+			<result name="sale_unit_log_info">/saleunit_new/guangzhou/sale_unit_log.jsp</result>
+		</action>
+		<action name="moreLogInfo" class="com.ihk.saleunit.action.new_.GuangZhouAppointNewSaleUnitLogAction" method="more">
+			<result name="success">/saleunit_new/guangzhou/sale_unit_log.jsp</result>
+		</action>
+		
+		<!-- 楼盘状态信息-->
+		<action name="unitStateInfo" class="com.ihk.saleunit.action.new_.GuangZhouAppointNewUnitStateInfoAction" method="unitStateInfo">
+			<result name="unit_state_info">/saleunit_new/guangzhou/sale_state_info.jsp</result>
+		</action>
+		
+		<!-- 付款情况-->
+		<action name="unitPayInfo" class="com.ihk.saleunit.action.new_.GuangZhouAppointNewUnitPayBillAction" method="unitPayInfo">
+			<result name="unit_pay_info">/saleunit_new/guangzhou/pay_info.jsp</result>
+		</action>
+		<!-- 付款  具体操作已经转移到财务管理界面  这里很多功能已经没有在使用-->
+		<action name="payForUnit" class="com.ihk.saleunit.action.new_.GuangzhouAppointPayForUnitAction" method="payForUnit">
+			<result name="pay_for_unit">/saleunit_new/guangzhou/unit_pay_bill.jsp</result>
+		</action>
+		<action name="payForUnitForm" class="com.ihk.saleunit.action.new_.GuangzhouAppointPayForUnitAction" method="payForUnitForm">
+			<result name="pay_form">/saleunit_new/guangzhou/unit_pay_bill.jsp</result>
+		</action>
+		
+		<!-- 单元图片 -->
+		<action name="toUploadUnitImage" class="com.ihk.saleunit.action.new_.GuangZhouAppointUnitImageAction" method="toUploadUnitImage">
+			<result name="toUploadUnitImage">/saleunit_new/guangzhou/unit_image.jsp?loadClose=false</result>
+		</action>
+		<action name="unitImage" class="com.ihk.saleunit.action.new_.GuangZhouAppointUnitImageAction" method="unitImage">
+			<result name="unitImage">/saleunit_new/guangzhou/unit_image.jsp</result>
+		</action>
+		<action name="uploadUnitImage" class="com.ihk.saleunit.action.new_.GuangZhouAppointUnitImageAction" method="uploadUnitImage">
+			<result name="uploadUnitImage">/saleunit_new/guangzhou/unit_image.jsp?loadClose=${loadClose}</result>
+		</action>
+		<action name="getUnitImageUrl" class="com.ihk.saleunit.action.new_.GuangZhouAppointUnitImageAction" method="getUnitImageUrl"/>
+		
+		<action name="getUnitImageIsCanShow" class="com.ihk.saleunit.action.new_.GuangZhouAppointUnitImageAction" method="getUnitImageIsCanShow"/>
+		
+		<action name="getUnitImageInfo" class="com.ihk.saleunit.action.new_.GuangZhouAppointUnitImageAction" method="getUnitImageInfo"/>
+		
+		<action name="toShowImageIframe" class="com.ihk.saleunit.action.new_.GuangZhouAppointUnitImageAction" method="toShowImageIframe">
+			<result name="toShowImageIframe">/saleunit_new/guangzhou/unit_image_show_iframe.jsp</result>
+		</action>
+		
+		<action name="deleteUnitImage" class="com.ihk.saleunit.action.new_.GuangZhouAppointUnitImageAction" method="deleteUnitImage"/>
+		
+		<!-- 修改客户-->
+		<action name="showContract" class="com.ihk.saleunit.action.new_.GuangzhouAppointContractCustomerAction" method="showContract">
+			<result name="suc">/saleunit_new/guangzhou/updat_contract_customer.jsp</result>
+		</action>
+		<action name="updateContract" class="com.ihk.saleunit.action.new_.GuangzhouAppointContractCustomerAction" method="updateContract">
+			<result name="suc">/saleunit_new/guangzhou/dialog_customer_update.jsp</result>
+		</action>
+		<action name="updateContractForm" class="com.ihk.saleunit.action.new_.GuangzhouAppointContractCustomerAction" method="updateContractForm">
+			<result name="suc">/saleunit_new/guangzhou/dialog_customer_update.jsp</result>
+		</action>
+		
+		<!-- 自定义数据-->
+		<action name="propertyUnitDefineTab" class="com.ihk.saleunit.action.new_.GuangzhouAppointPropertyUnitDefineAction" method="showTab">
+			<result name="suc">/saleunit_new/guangzhou/property_unit_define_tab.jsp</result>
+		</action>
+		<!-- 保存自定义数据 -->
+		<action name="propertyUnitDefineTabForm" class="com.ihk.saleunit.action.new_.GuangzhouAppointPropertyUnitDefineAction" method="saveTab">
+			<result name="suc">/saleunit_new/guangzhou/property_unit_define_tab.jsp</result>
+		</action>
+
+		<!-- 客户服务事件-->
+		<action name="customerEvent" class="com.ihk.saleunit.action.new_.GuangzhouAppointCustomerEventAction" method="showList">
+			<result name="suc">/saleunit_new/guangzhou/customer_event.jsp</result>
+		</action>
+		<!-- 客户服务事件 弹出框-->
+		<action name="customerEventDialog" class="com.ihk.saleunit.action.new_.GuangzhouAppointCustomerEventAction" method="addDialog">
+			<result name="suc">/saleunit_new/guangzhou/add_customer_event.jsp</result>
+		</action>
+		<!-- 客户服务事件 提交表单-->
+		<action name="customerEventDialogForm" class="com.ihk.saleunit.action.new_.GuangzhouAppointCustomerEventAction" method="addDialogForm">
+			<result name="suc">/saleunit_new/guangzhou/add_customer_event.jsp</result>
+		</action>
+		<!-- 客户服务事件(导出)-->
+		<action name="customerEventExport" class="com.ihk.saleunit.action.new_.GuangzhouAppointCustomerEventAction" method="downLoad">
+		</action>
+
+		<!-- 单元礼品(赠品管理)-->
+		<action name="unitGiftIndex" class="com.ihk.saleunit.action.new_.GuangZhouAppointGiftManagerAction" method="index">
+			<result name="suc">/saleunit_new/guangzhou/unit_gift.jsp</result>
+		</action>
+		<!-- 单元礼品 弹出框 -->
+		<action name="unitGiftDialog" class="com.ihk.saleunit.action.new_.GuangZhouAppointGiftManagerAction" method="dialog">
+			<result name="suc">/saleunit_new/guangzhou/unit_gift_dialog.jsp</result>
+		</action>
+		<!-- 单元礼品 提交表单 -->
+		<action name="unitGiftDialogForm" class="com.ihk.saleunit.action.new_.GuangZhouAppointGiftManagerAction" method="form">
+			<result name="suc">/saleunit_new/guangzhou/unit_gift_dialog.jsp</result>
+		</action>
+
+		
+		<!-- 延期签约 -->
+		<action name="showAllExtensionContract" class="com.ihk.saleunit.action.new_.GuangZhouAppointExtensionContractAction" method="showAllExtensionContract">
+			<result name="showAllExtensionContract">/saleunit_new/guangzhou/extension_contract_all.jsp</result>
+		</action>
+		<action name="extensionContractList" class="com.ihk.saleunit.action.new_.GuangZhouAppointExtensionContractAction" method="extensionContractList">
+			<result name="extensionContractList">/saleunit_new/guangzhou/extension_contract.jsp</result>
+		</action>
+		<action name="toAddExtensionContract" class="com.ihk.saleunit.action.new_.GuangZhouAppointExtensionContractAction" method="toAddExtensionContract">
+			<result name="toAddExtensionContract">/saleunit_new/guangzhou/extension_contract_add.jsp</result>
+		</action>
+		<action name="addExtensionContract" class="com.ihk.saleunit.action.new_.GuangZhouAppointExtensionContractAction" method="addExtensionContract">
+			<result name="addExtensionContract">/saleunit_new/guangzhou/extension_contract_add.jsp?loadClose=${loadClose}</result>
+		</action>
+		<action name="showExtensionContract" class="com.ihk.saleunit.action.new_.GuangZhouAppointExtensionContractAction" method="showExtensionContract">
+			<result name="showExtensionContract">/saleunit_new/guangzhou/extension_contract_show.jsp</result>
+		</action>
+		<action name="toUpdateExtensionContract" class="com.ihk.saleunit.action.new_.GuangZhouAppointExtensionContractAction" method="toUpdateExtensionContract">
+			<result name="toUpdateExtensionContract">/saleunit_new/guangzhou/extension_contract_update.jsp</result>
+		</action>
+		<action name="updateExtensionContract" class="com.ihk.saleunit.action.new_.GuangZhouAppointExtensionContractAction" method="updateExtensionContract">
+			<result name="updateExtensionContract">/saleunit_new/guangzhou/extension_contract_update.jsp?loadClose=${loadClose}</result>
+		</action>
+		<action name="deleteEx" class="com.ihk.saleunit.action.new_.GuangZhouAppointExtensionContractAction" method="deleteEx"/>
+		<action name="getAjaxExtensionContract" class="com.ihk.saleunit.action.new_.GuangZhouAppointExtensionContractAction" method="getAjaxExtensionContract"/>
+		
+		<!-- 数据分组 -->
+		<action name="groupLayout" class="com.ihk.saleunit.action.new_group.Layout" method="groupLayout">
+			<result name="groupLayout">/saleunit_new_group/guangzhou/layout.jsp</result>
+		</action>
+		<action name="layoutLeftGroup" class="com.ihk.saleunit.action.new_group.Layout" method="layoutLeftGroup"/>
+		<action name="groupDataGrid" class="com.ihk.saleunit.action.new_group.Layout" method="groupDataGrid">
+			<result name="groupDataGrid">/saleunit_new_group/guangzhou/group.jsp</result>
+		</action>
+		<action name="groupData" class="com.ihk.saleunit.action.new_group.Layout" method="groupData" />
+		
+		<!-- 财务管理(迁移到struts-saleunit-financial-manager.xml) -->
+		<action name="financialManagerLayout" class="com.ihk.saleunit.action.new_financial.Layout" method="financialManagerLayout">
+			<result name="financialManagerLayout">/saleunit_new_financial/guangzhou/layout.jsp</result>
+		</action>
+		<action name="layoutLeftFinancial" class="com.ihk.saleunit.action.new_financial.Layout" method="layoutLeftFinancial"/>
+		<action name="download" class="com.ihk.saleunit.action.new_financial.Layout" method="download"/>
+		
+		
+		<!-- 多个销控中心权限处理   当有多个项目权限的人进入的收  需要先进来选择了操作项目然后再进入销控中心界面-->
+		<action name="saleUnitInitSelect" class="com.ihk.saleunit.action.new_.SelectSaleUnitAction" method="saleUnitInitSelect">
+			<result name="type1">/saleunit_new/guangzhou/select_sale_unit_type1.jsp</result>
+			<result name="type2">/saleunit_new/guangzhou/select_sale_unit_type2.jsp</result>
+			<result name="type3">/saleunit_new/guangzhou/select_sale_unit_type3.jsp</result>
+			<result name="type4">/saleunit_new/guangzhou/select_sale_unit_type3.jsp</result>
+			<result name="type5">/saleunit_new/guangzhou/select_sale_unit_type3.jsp</result>
+			<result name="type6">/saleunit_new/guangzhou/select_sale_unit_type3.jsp</result>
+			 <result name="onlyone1" type="chain">
+				<param name="namespace">/saleunit_new_init/appoint/guangzhou</param>
+				<param name="actionName">layout</param>
+			</result>
+			 <result name="onlyone2" type="redirectAction">
+				layout
+			 </result>
+			 <result name="onlyone3" type="redirectAction">
+				financialManagerLayout
+			 </result>
+			 <result name="onlyone4" type="redirectAction">
+				<param name="namespace">/saleunit_new/unit/group</param>
+				<param name="actionName">layout_new</param>
+			 </result>
+			 <result name="onlyone5" type="redirectAction">
+				<param name="namespace">/saleunit_chip_manager/guangzhou</param>
+				<param name="actionName">layout</param>
+			 </result>
+			 
+			  <result name="onlyone6" type="redirectAction">
+				<param name="namespace">/saleunit_new_report/report/guangzhou</param>
+				<param name="actionName">layout</param>
+			 </result>
+		</action>
+		<!-- 跳转到对应的销控中心页面 -->
+		<action name="joinSaleunit" class="com.ihk.saleunit.action.new_.SelectSaleUnitAction" method="joinSaleunit">
+			 <result name="onlyone1" type="chain">
+				<param name="namespace">/saleunit_new_init/appoint/guangzhou</param>
+				<param name="actionName">layout</param>
+			</result>
+			 <result name="onlyone2" type="redirectAction">
+				layout
+			 </result>
+			 <result name="onlyone3" type="redirectAction">
+				financialManagerLayout
+			 </result>
+			 <result name="onlyone4" type="redirectAction">
+				<param name="namespace">/saleunit_new/unit/group</param>
+				<param name="actionName">layout_new</param>
+			 </result>
+			 <result name="onlyone5" type="redirectAction">
+				<param name="namespace">/saleunit_chip_manager/guangzhou</param>
+				<param name="actionName">layout</param>
+			 </result>
+			 
+			  <result name="onlyone6" type="redirectAction">
+				<param name="namespace">/saleunit_new_report/report/guangzhou</param>
+				<param name="actionName">layout</param>
+			 </result>
+		</action>
+		
+		<!-- 2012-11-02 显示项目基本信息 -->
+		<action name="proInfoBySaleUnit" class="com.ihk.saleunit.action.new_.PropertyProjectInfoAction" method="proInfoBySaleUnit">
+			<result name="suc">/saleunit_new/guangzhou/property_project_info.jsp</result>
+		</action>
+	</package>
+	
+	
+	<!-- easyui 异步数据 -->
+	<package name="saleunit_new_appoint_guangzhou_date" extends="json-default" namespace="/saleunit_new/appoint/guangzhou/date">
+	<!-- 查询房间数据 (包含confirm contract) -->
+		<action name="searchUnit" class="com.ihk.property.action.ajax.PropertyUnitDateAction" method="search">
+			<result name="suc" type="json">
+				<param name="root">result</param>
+			</result>
+		</action>
+    </package>
+    
+</struts>

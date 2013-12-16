@@ -1,0 +1,12 @@
+@charset "utf-8";
+/* CSS Document */
+
+
+.loginnav{ width:443px; height:346px; margin:auto; margin-top:100px; font-family:"宋体",Arial, Helvetica, sans-serif; font-size:12px; background-image: url(../images/loginbg.jpg); background-repeat: no-repeat; }
+.loginnavcrm{ background:url(../images/loginbg_crm.jpg) no-repeat; width:443px; height:346px; margin:auto; margin-top:100px;font-family:"宋体",Arial, Helvetica, sans-serif; font-size:12px;}
+.loginword{ width:250px; margin:auto; padding-top:136px; color:#fff; }
+.loginword01{ float:left; line-height:24px; margin-right:10px; font-size: 14px; }
+.logininputbox{ float:left; height:22px; width:150px; overflow:hidden; border:1 solid #CCC; color:#666; background-color: #FFF; font-size: 14px; padding-right: 5px; padding-left: 5px; display:inline}
+.c{clear:both; height:10px; _height:0px; overflow:hidden; line-height:10px;_line-height:0px;}
+.logininputbox_s{ float:left; height:22px; width:60px; overflow:hidden; border:1 solid #CCC; color:#666; margin-right:5px; background-color: #FFF; padding-right: 3px; padding-left: 3px; display:inline}
+.loginicon{ margin-left:45px;_margin-left:23px; float:left;}

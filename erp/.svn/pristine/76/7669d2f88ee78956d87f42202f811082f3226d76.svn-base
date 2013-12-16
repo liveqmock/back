@@ -1,0 +1,112 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.ihk.saleunit.data.ICustomerEventMapper">
+
+	<resultMap type="CustomerEvent" id="customerEventResultMap">
+		<id property="id" column="id" />        
+		<result property="customerId" column="customer_id" />
+		<result property="unitId" column="unit_id" />
+		<result property="customerOpinion" column="customer_opinion" />
+		<result property="salesName" column="sales_name" />
+		<result property="startTime" column="start_time" />
+		<result property="finishTime" column="finish_time" />
+		<result property="finishWay" column="finish_way" />
+		<result property="remark" column="remark" />
+		<result property="isDeleted" column="is_deleted" />
+		<result property="createdId" column="created_id" />
+		<result property="createdTime" column="created_time" />
+		<result property="modId" column="mod_id" />
+		<result property="modTime" column="mod_time" />
+	</resultMap>
+
+	<insert id="addCustomerEvent" parameterType="CustomerEvent">
+		 <selectKey resultType="java.lang.Integer" keyProperty="id" order="AFTER" >
+            SELECT @@IDENTITY
+        </selectKey>		
+		insert into customer_event(
+		customer_id,
+		unit_id,
+		customer_opinion,
+		sales_name,
+		start_time,
+		finish_time,
+		finish_way,
+		remark,
+		is_deleted,
+		created_id,
+		created_time,
+		mod_id,
+		mod_time
+		)
+			VALUES(
+		#{customerId},
+		#{unitId},
+		#{customerOpinion},
+		#{salesName},
+		#{startTime},
+		#{finishTime},
+		#{finishWay},
+		#{remark},
+		#{isDeleted},
+		#{createdId},
+		#{createdTime},
+		#{modId},
+		#{modTime}
+			)
+		
+	</insert>
+	<delete id="deleteCustomerEvent" parameterType="com.ihk.utils.base.PojoDeleteCond">
+	update customer_event set is_deleted='1', mod_id=#{modId}, mod_time=#{modTime} where id=#{id};
+	</delete>
+	<update id="updateCustomerEvent" parameterType="int">
+	update customer_event set 
+		customer_id=#{customerId},
+		unit_id=#{unitId},
+		customer_opinion=#{customerOpinion},
+		sales_name=#{salesName},
+		start_time=#{startTime},
+		finish_time=#{finishTime},
+		finish_way=#{finishWay},
+		remark=#{remark},
+		mod_id=#{modId},
+		mod_time=#{modTime}
+	 where id=#{id}
+	</update>
+	<select id="findCustomerEventById" resultMap="customerEventResultMap">
+	select * from customer_event where id=#{id}
+	</select>
+    
+	<sql id="findWhereCond"> 
+		<where>
+        <!--
+			<if test="date1 != null and date1 != ''">
+            </if>    
+            and is_deleted = '0'
+            -->
+		</where>
+	</sql>
+	
+	<select id="findCustomerEventCount" resultType="int" parameterType="com.ihk.saleunit.data.pojo.CustomerEventCond">
+		SELECT count(0) from customer_event  
+        <include refid="findWhereCond"/>     
+    </select>
+        
+	<select id="findCustomerEvent" resultMap="customerEventResultMap" parameterType="com.ihk.saleunit.data.pojo.CustomerEventCond">
+		SELECT * from  customer_event 
+        <include refid="findWhereCond"/> 
+		<if test="topNum > 0">
+			limit #{topNum};
+		</if>
+    </select>
+    
+	<select id="findCustomerEventPage" resultMap="customerEventResultMap" parameterType="com.ihk.saleunit.data.pojo.CustomerEventCond">
+		SELECT * from  customer_event 
+        <include refid="findWhereCond"/> 
+    
+		<if test="startLine >= 0">
+		<if test="pageSize > 0">
+			limit #{startLine},#{pageSize};
+		</if>
+		</if>
+	</select>
+</mapper>

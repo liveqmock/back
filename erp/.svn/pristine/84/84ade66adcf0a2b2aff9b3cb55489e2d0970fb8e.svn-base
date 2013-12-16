@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE struts PUBLIC
+    "-//Apache Software Foundation//DTD Struts Configuration 2.0//EN"
+    "http://struts.apache.org/dtds/struts-2.0.dtd">
+<struts>
+	
+	<!-- 山水庭院action -->
+	<package name="customer_shanshui" extends="struts-default">
+		<action name="customer_shanshui!*" class="com.ihk.customer.action.CustomerAction">
+			<result name="customerAdd" type="redirectAction">
+				customer_shanshui!doSomeForAddCustomer?from=huijing&amp;deleteSession=false
+				<!-- 表示要清除提示的session -->
+			</result>
+			<result name="loginFail" type="redirect">/login.jsp</result>
+			<result name="loginSucc">/customer/shanshui/index.jsp</result>
+			<result name="queryCustomerLimit">/customer/shanshui/index.jsp</result>
+			<result name="queryCustomerByIdForUpdate">/customer/shanshui/update.jsp</result>
+			<result name="forAdd">/customer/shanshui/input.jsp</result>
+			<result name="download">/customer/shanshui/exp_cust_002.jsp</result>
+			<result name="deleteCustomer" type="redirectAction">./customer_shanshui!searchCustomer.action</result>
+			<result name="input" type="redirectAction">
+				customer_shanshui!doSomeForAddCustomer?from=shanshui&amp;deleteSession=input
+			</result>
+		</action>
+		
+	</package>
+
+</struts>

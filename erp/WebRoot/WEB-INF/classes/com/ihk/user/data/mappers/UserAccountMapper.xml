@@ -1,0 +1,424 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.ihk.user.data.IUserAccountMapper">
+	<resultMap type="UserAccount" id="userAccountResultMap">
+		<id property="id" column="id" />        
+		<result property="userName" column="user_name" />
+		<result property="userPwd" column="user_pwd" />
+		<result property="mobilePhone" column="mobile_phone" />
+		<result property="companyId" column="company_id" />
+		<result property="projectId" column="project_id" />
+		<result property="departmentId" column="department_id" />
+		<result property="teamId" column="team_id" />
+		<result property="realName" column="real_name" />
+		<result property="accountType" column="account_type" />
+		<result property="jobNumber" column="job_number" />
+		<result property="innerUserName" column="inner_user_name" />
+		<result property="remark" column="remark" />
+		<result property="isDeleted" column="is_deleted" />
+		<result property="createdId" column="created_id" />
+		<result property="createdTime" column="created_time" />
+		<result property="modId" column="mod_id" />
+		<result property="modTime" column="mod_time" />
+	</resultMap>
+	<!-- 
+	<resultMap type="Company" id="CompanyResultMap">
+		<id property="id" column="company.id" />        
+		<result property="companyName" column="company_name" />
+		<result property="isDeleted" column="is_deleted" />
+		<result property="createdId" column="created_id" />
+		<result property="createdTime" column="created_time" />
+		<result property="modId" column="mod_id" />
+		<result property="modTime" column="mod_time" />
+	</resultMap>
+	<resultMap type="Team" id="TeamResultMap">
+		<id property="id" column="team.id" />        
+		<result property="teamName" column="team_name" />
+		<result property="projectId" column="Project_id" />
+		<result property="isDeleted" column="is_deleted" />
+		<result property="createdId" column="created_id" />
+		<result property="createdTime" column="created_time" />
+		<result property="modId" column="mod_id" />
+		<result property="modTime" column="mod_time" />
+	</resultMap>
+	<resultMap type="CompanyProject" id="CompanyProjectResultMap">
+		<id property="id" column="company_projecy.id" />        
+		<result property="companyId" column="company_id" />
+		<result property="projectName" column="project_name" />
+		<result property="isDeleted" column="is_deleted" />
+		<result property="createdId" column="created_id" />
+		<result property="createdTime" column="created_time" />
+		<result property="modId" column="mod_id" />
+		<result property="modTime" column="mod_time" />
+	</resultMap>
+	 -->
+
+	<!--  
+	<select id="findCompany" resultMap="CompanyResultMap">
+		select * from company;
+	</select>
+	<select id="findTeam" resultMap="TeamResultMap">
+		select * from team;
+	</select>
+	<select id="findCompanyProject" resultMap="CompanyProjectResultMap">
+		select * from company_project where is_deleted ="0";
+	</select>
+	<select id="findCompanyById" resultMap="CompanyResultMap">
+		select * from company where id =#{id};
+	</select>
+	-->
+
+	<insert id="saveUserAccount" parameterType="UserAccount">
+		 <selectKey resultType="java.lang.Integer" keyProperty="id" order="AFTER" >
+            SELECT @@IDENTITY
+        </selectKey>	
+		insert into user_account(
+		user_name,
+		user_pwd,
+		mobile_phone,
+		company_id,
+		project_id,
+		department_id,
+		team_id,
+		real_name,
+		account_type,
+		job_number,
+		inner_user_name,
+		remark,
+		is_deleted,
+		created_id,
+		created_time,
+		mod_id,
+		mod_time
+		)
+			VALUES(
+		#{userName},
+		#{userPwd},
+		#{mobilePhone},
+		#{companyId},
+		#{projectId},
+		#{departmentId},
+		#{teamId},
+		#{realName},
+		#{accountType},
+		#{jobNumber},
+		#{innerUserName},
+		#{remark},
+		#{isDeleted},
+		#{createdId},
+		#{createdTime},
+		#{modId},
+		#{modTime}
+			)
+		
+	</insert>
+	
+	<update id="deleteUserAccount" parameterType="com.ihk.user.data.pojo.UserAccountCond">
+	update user_account set is_deleted = "1",mod_id=#{operUserId},mod_time=now() where id=#{recordId}
+	</update>
+	
+	<update id="undoDeleteUserAccount" parameterType="com.ihk.user.data.pojo.UserAccountCond">
+	update user_account set is_deleted = "0",mod_id=#{operUserId},mod_time=now() where id=#{recordId}
+	</update>
+	
+	<update id="updateUserAccount" parameterType="int">
+	update user_account set
+	
+		<if test="userPwd !=null and userPwd!= ''" >
+		user_pwd=#{userPwd},
+		</if>
+		mobile_phone=#{mobilePhone},
+		
+		company_id=#{companyId},
+		project_id=#{projectId},
+		department_id=#{departmentId},
+		team_id=#{teamId},
+		real_name=#{realName},
+		account_type=#{accountType},
+		job_number=#{jobNumber},
+		inner_user_name=#{innerUserName},
+		remark=#{remark},
+		is_deleted=#{isDeleted},
+		created_id=#{createdId},
+		created_time=#{createdTime},
+		mod_id=#{modId},
+		mod_time=#{modTime}
+	 where id=#{id}
+	</update>
+	
+	<select id="findUserAccountById" resultMap="userAccountResultMap">
+	select * from user_account where id=#{id} 
+	</select>
+	
+	<select id="findUserAccountByName" resultType="int">
+	select count(*) from user_account where user_name=#{userName} and is_deleted ='0'
+	</select>
+	
+	<select id="findAllUserAccount" resultMap="userAccountResultMap">
+		select * from user_account;
+	</select>
+	
+	<select id="findUserAccountName" resultMap="userAccountResultMap">
+		select user_name from user_account where id=#{id};
+	</select>
+	
+	<sql id="findWhereCond">
+		<where>
+			
+			<if test="companyId >0 ">  
+		        and company_id = #{companyId}
+		    </if> 		
+			<if test="proId !=null and proId!='' and proId!= 0 ">  
+		        and project_id = #{proId}
+		    </if> 
+		    <if test="userName != null and userName != '' ">  
+		        and user_name like CONCAT(CONCAT('%', #{userName}),'%')          
+		    </if>   
+		     <if test="realName != null and realName != ''  ">  
+		        and real_name like CONCAT(CONCAT('%', #{realName}),'%')          
+		    </if>   
+		     <if test="userRoleProjectId !=null and userRoleProjectId != '' and userRoleProjectId != 0">  
+		        and id in (select user_id from user_role where project_id = #{userRoleProjectId} and is_deleted = '0')          
+		    </if>
+		    <if test="roleId != '' and roleId != null and roleId != 0">  
+		        and id in (select user_id from user_role where role_id = #{roleId} and is_deleted = '0')          
+		    </if>
+		    <if test="date1 != null and date1 != '' ">
+				and created_time &gt;= #{date1}
+			</if>
+			<if test="date2 != null and date2 != ''">
+				and created_time &lt; date_add(#{date2},interval 1 day)
+			</if>
+			
+			<!-- 工号 -->
+			<if test="jobNumber != null and jobNumber != ''">  
+		        and job_number = #{jobNumber}
+		    </if> 
+			
+			<!-- 
+	         <if test="companyProjectIds != null and companyProjectIds.size() > 0 and projectIds>0">
+	         -->
+	        <if test="companyProjectIds != null and companyProjectIds.size() > 0">
+	             and project_id in
+	             <foreach collection="companyProjectIds" item="pId" open="(" separator="," close=")">
+	                 #{pId}
+	             </foreach>
+	         </if>
+	         
+		     <if test="projectIds!=null and projectIds.size() > 0 and projectIds>0">
+	            and project_id in
+	            <foreach  
+	                collection="projectIds"  
+	                item="projectId"  
+	                open="("  
+	                separator=","  
+	                close=")">  
+	                #{projectId} 
+	            </foreach>  
+	        </if>
+	        
+		    <if test="isDeleted != -1 ">  
+	            and is_deleted = #{isDeleted}
+	         </if>
+	         
+    	</where>
+    	
+	</sql>
+	
+	<select id="findUserAccountCount" resultType="int" parameterType="com.ihk.user.data.pojo.UserAccountCond">
+		SELECT count(0) from user_account 
+		 <include refid="findWhereCond"/>   
+    </select>
+
+	<select id="loginUserAccount" parameterType="UserAccount" resultMap="userAccountResultMap">
+		select * from user_account where user_name = #{userName}
+										and user_pwd = #{userPwd} and is_deleted = '0';
+	</select>
+	
+	<select id="findUserAccountPage" resultMap="userAccountResultMap" parameterType="com.ihk.user.data.pojo.UserAccountCond">
+		SELECT * from user_account 
+		 <include refid="findWhereCond"/>  
+		  
+    	<if test="orderByFiled == null or orderByFiled == ''">
+			order by created_time desc
+		</if>
+    	<if test="orderByFiled == 11">
+    		order by user_name asc
+    	</if>
+    	<if test="orderByFiled == 12">
+    		order by user_name desc
+    	</if>
+    	<if test="orderByFiled == 21">
+    		order by company_id asc
+    	</if>
+    	<if test="orderByFiled == 22">
+    		order by company_id desc
+    	</if>
+    	<if test="orderByFiled == 31">
+    		order by project_id asc
+    	</if>
+    	<if test="orderByFiled == 32">
+    		order by project_id desc
+    	</if>
+    	
+    	<!-- 用户管理 -->
+    	<if test="orderByFiled == 41">
+    		order by user_name asc
+    	</if>
+    	
+    	<if test="orderByFiled == 42">
+    		order by user_name desc
+    	</if>
+    	
+    	<if test="orderByFiled == 51">
+    		order by real_name asc
+    	</if>
+    	
+    	<if test="orderByFiled == 52">
+    		order by real_name desc
+    	</if>
+    	
+    	<if test="orderByFiled == 61">
+    		order by job_number asc
+    	</if>
+    	
+    	<if test="orderByFiled == 62">
+    		order by job_number desc
+    	</if>
+    	
+    	<if test="orderByFiled == 71">
+    		order by project_id asc
+    	</if>
+    	
+    	<if test="orderByFiled == 72">
+    		order by project_id desc
+    	</if>
+    	
+		<if test="startLine >= 0">
+		<if test="pageSize > 0"> 
+			 limit #{startLine},#{pageSize};
+		</if>
+		</if>
+		
+	</select>
+	
+	<select id="findHDuser" resultMap="userAccountResultMap">
+		select * from user_account where project_id between 8 and 46 and is_deleted ='0'
+	</select>
+	
+	<select id="findUserAccountsByProjectId" resultMap="userAccountResultMap">
+		select * from user_account where project_id=#{projectId} and is_deleted = '0' order by real_name desc
+	</select>
+	
+	<select id="findUserAccounts" resultMap="userAccountResultMap">
+		select * from user_account where is_deleted = '0' order by real_name desc
+	</select>
+	
+	<select id="findUserAccountsLikeName" resultMap="userAccountResultMap">
+		select * from user_account where real_name like CONCAT(CONCAT('%', #{name}),'%') and is_deleted ='0' order by real_name desc limit 10 
+	</select>
+	
+	<select id="findUserAccountsLikeNameByCompanyId" resultMap="userAccountResultMap" parameterType="map">
+		select * from user_account where real_name like CONCAT(CONCAT('%', #{name}),'%') and company_id = #{companyId} 
+		and is_deleted ='0' order by real_name desc limit 10 
+	</select>
+	
+	<select id="findUserAccountsLikeNameByCompanyIdIncludeDelete" resultMap="userAccountResultMap" parameterType="map">
+		select * from user_account where real_name like CONCAT(CONCAT('%', #{name}),'%') and company_id = #{companyId} 
+		order by real_name desc limit 10 
+	</select>
+	
+	<select id="findUserAccountByRealName" resultMap="userAccountResultMap">
+		select * from user_account where real_name= #{realName} and is_deleted ='0'
+	</select>
+	
+	<select id="findUserAccountByUserName" resultMap="userAccountResultMap">
+		select * from user_account where user_name= #{userName} and is_deleted ='0'
+	</select>
+	
+	<select id="findUserAccountByUserNameIncludeDelete" resultMap="userAccountResultMap">
+		select * from user_account where user_name= #{userName} order by mod_time desc limit 1
+	</select>
+	
+	<select id="findHDUserByRole" resultMap="userAccountResultMap" parameterType="com.ihk.user.data.pojo.UserAccountCond">
+		select * from user_account 
+	</select>
+	<select id="findGuangZhouUser" resultMap="userAccountResultMap" parameterType="com.ihk.user.data.pojo.UserAccountCond">
+		select * from user_account where company_id = #{companyId} and is_deleted ='0' and real_name like CONCAT(CONCAT('%', #{userName}),'%') 
+		order by real_name desc limit 10 
+	</select>
+	
+	<select id="loginInnerUser" resultMap="userAccountResultMap" parameterType="UserAccount">
+		select * from user_account where inner_user_name = #{userName} and is_deleted ='0' limit 1 
+	</select>
+	
+	<update id="knUpdateUserIdById" parameterType="Map">
+		update customer t, olddb_idlog tt set t.user_id = #{userId} and t.created_id = #{userId}
+		where tt.olddb_id in
+		  <foreach  
+                collection="ids"  
+                item="aid"  
+                open="("  
+                separator=","  
+                close=")">  
+                #{aid.II} 
+            </foreach>  
+            and t.id = tt.my_id 
+            and tt.my_table = 'tj6_customer'
+            
+	</update>
+	
+	<update id="updateUserAccountJobNumber" parameterType="UserAccount">
+		update user_account set job_number = #{jobNumber} where id = #{id}
+	</update>
+	
+	<select id="findUserAccountByCompanyIdAndRealNameOrJobNumberIncludeDelete" resultMap="userAccountResultMap" parameterType="UserAccount">
+	
+		select * from user_account where company_id = #{companyId} and real_name = #{realName}
+		<if test="jobNumber != null and jobNumber != ''">  
+	        and job_number = #{jobNumber}
+	    </if>
+	     
+	</select>
+	
+	<select id="findProjectAndRoleByUserAccountId" resultType="java.util.Map">
+	
+		select cp.project_name as projectName, tmp.role_name as roleName from 
+		(
+		select ur.project_id, r.role_name from user_role ur,
+		role r
+		where ur.role_id = r.id 
+		and ur.is_deleted = 0
+		and ur.user_id = #{userAccountId}
+		)tmp
+		left join company_project cp
+		on tmp.project_id = cp.id
+		
+	</select>
+	
+	<select useCache="true" id="findUserAccount" resultMap="userAccountResultMap" parameterType="com.ihk.user.data.pojo.UserAccountCond">
+	SELECT
+	*
+	FROM
+	user_account ua
+	JOIN user_role ur ON ua.id = ur.user_id
+	<if test="roleId != '' and roleId != null and roleId != 0">
+		AND ur.role_id = #{roleId}
+	</if>
+	<if test="isDeleted != -1 ">
+		and ur.is_deleted = #{isDeleted}
+	</if>
+	<if test="companyProjectIds !=null">
+		AND ua.project_id IN
+		<foreach collection="companyProjectIds" item="id" index="index"
+			open="(" separator="," close=")">
+			#{id}
+		</foreach>
+	</if>
+	ORDER BY ua.created_time DESC 
+	<if test="pageSize > 0"> 
+			   limit  #{startLine},#{pageSize};
+	</if>
+	</select>
+	
+</mapper>

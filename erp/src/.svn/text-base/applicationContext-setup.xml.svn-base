@@ -1,0 +1,220 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<beans xmlns="http://www.springframework.org/schema/beans"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:aop="http://www.springframework.org/schema/aop"
+	xmlns:tx="http://www.springframework.org/schema/tx" xmlns:jdbc="http://www.springframework.org/schema/jdbc"
+	xmlns:context="http://www.springframework.org/schema/context"
+	xsi:schemaLocation="       
+      http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context-3.0.xsd       
+      http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-3.0.xsd       
+      http://www.springframework.org/schema/jdbc http://www.springframework.org/schema/jdbc/spring-jdbc-3.0.xsd       
+      http://www.springframework.org/schema/tx http://www.springframework.org/schema/tx/spring-tx-3.0.xsd       
+      http://www.springframework.org/schema/aop http://www.springframework.org/schema/aop/spring-aop-3.0.xsd
+      http://www.springframework.org/schema/task http://www.springframework.org/schema/task/spring-task-3.0.xsd"
+      default-autowire="byName">
+      
+      <!-- 一些设置的内容,例如一些项目本地和服务器上的不一样(这样可以不用重新升级整个项目就可以调整使用), 
+      	可以把companyDefaultProjectId.properties,contCompanyId.properties,contProjectId.properties等类似文件的内容合并过来
+       -->
+       
+       <!-- 旧项目id -->
+       <bean class="com.ihk.utils.projectid.OldProjectIdBeanUtils">
+       		<property name="oldIds" value="5,6,7,47,48,49,50,51,52,53,54,55,56,57,58,59,62,63,64,65,66,67,68,69,133,131,151"/>
+       </bean>
+       
+       <!-- 销控中心role id -->
+       <bean class="com.ihk.utils.common.setup.RoleSetUpUtils">
+       		<property name="xkzxRoleId" value="19"/>
+       </bean>
+       
+       <!-- 新建售前用户可以跨公司的用户id -->
+       <bean class="com.ihk.utils.common.setup.IgnoreCompanyUserAccountIdUtils">
+       	<property name="ids">
+       		<list>
+       			<value>2</value>
+       			<value>167</value>
+       		</list>
+       	</property>
+       </bean>
+       
+       <!-- 应收款的收款类别  -->
+       <bean class="com.ihk.utils.common.setup.PayTypeUtils">
+       		<property name="payTypeMap">
+       			<map>
+       				<entry key="" value="请选择"/>
+       				<entry key="TEXT_FEE_TYPE_HOUSING_LOAN" value="房款"/>
+       				<entry key="TEXT_FEE_TYPE_DUTY" value="税金"/>
+       				<entry key="TEXT_FEE_TYPE_OTHER" value="其他费用"/>
+       			</map>
+       		</property>
+       		
+       		<property name="payTypeFixedFeeMap">
+       			<map>
+       				<entry key="房款">	
+       					<list>
+       						<value>定金</value>
+       						<value>首期</value>
+       						<value>按揭</value>
+       					</list>
+       				</entry>
+       			</map>
+       		</property>
+       		
+       </bean>
+       
+       <!-- 销控中心下的新建合同,该公司下单元id要先新建成交,才能新建合同 -->
+       <!-- 已经改成所有的单元都是要先建成交,才能建合同2013.4.16 -->
+       <bean class="com.ihk.utils.saleunit.UnitSaleStateUtils">
+       		<property name="restrictId" value="21"/>
+       </bean>
+       
+       <!-- 设置销控中心下的跳转的状态map -->
+       <bean class="com.ihk.utils.saleunitnew.UnitConfirmContractUtils">
+       		<property name="skipMap">
+       			<map>
+       				<entry key="1" value="冻结状态的单元"/><!-- 冻结 -->
+       				<entry key="17" value="竞争对手所售的单元"/><!-- 他售 -->
+       				<entry key="18" value="不可售状态的单元"/><!-- 不可售 -->
+       			</map>
+       		</property>
+       </bean>
+       
+       <!-- 房间总价的计算方式computeWay -->
+        <bean class="com.ihk.utils.saleunitnew.DiscountManagerUtils">
+        	<property name="computeWayMap">
+        		<map>
+        			<entry key="1" value="(标准总价+附加价-优惠减价)×折扣 "/>
+        			<entry key="2" value="标准总价×折扣+附加价-优惠减价 "/>
+        			<entry key="3" value="(标准总价-优惠减价)×折扣+附加价 "/>
+        		</map>
+        	</property>
+       </bean>
+	
+	
+	<bean class="com.ihk.utils.common.setup.RecordActionUtils">
+		<property name="recordAction">
+			<map>
+				<entry key="" value="请选择"/>
+			
+				<entry key="CUSTOMER_GUANGZHOU_INPUT_FORADD" value="新建客户"/>
+				<entry key ="CUSTOMER_GUANGZHOU_SEARCH_INDEX" value="查询客户"/>
+				<entry key="SALEUNIT_NEW_INIT_APPOINT_GUANGZHOU_CUSTOMERBEFORETABFORMAINAJAX" value="售前客户问卷"/>
+				<!-- 数量分析 -->
+				<entry key="SALEUNIT_NEW_REPORT_REPORT_GUANGZHOU_CUSTOMERNUMCOMPARECOMPANY" value="客户数量对比(公司)"/>
+				<entry key="SALEUNIT_NEW_REPORT_REPORT_GUANGZHOU_CUSTOMERNUMCOMPAREPROJECT" value="客户数量对比(项目)"/>
+				<entry key="SALEUNIT_NEW_REPORT_REPORT_GUANGZHOU_CUSTOMERNUMCOMPARESALES" value="客户数量对比(销售)"/>
+				
+				<entry key="SALEUNIT_NEW_REPORT_REPORT_GUANGZHOU_CUSTOMERNUMCOMPANY" value="客户数量环比图(公司)"/>
+				<entry key="SALEUNIT_NEW_REPORT_REPORT_GUANGZHOU_CUSTOMERNUM" value="客户数量环比图(项目)"/>
+				<entry key="SALEUNIT_NEW_REPORT_REPORT_GUANGZHOU_CUSTOMERNUMSALES" value="客户数量环比图(销售)"/>
+				<!-- 问卷分析 -->
+				<entry key="SALEUNIT_NEW_REPORT_REPORT_GUANGZHOU_CUSTOMERQUESTIONCOMPANY" value="客户问卷分类(公司)"/>
+				<entry key="SALEUNIT_NEW_REPORT_REPORT_GUANGZHOU_CUSTOMERQUESTIONPROJECT" value="客户问卷分类(项目)"/>
+				<entry key="SALEUNIT_NEW_REPORT_REPORT_GUANGZHOU_CUSTOMERQUESTIONSALES" value="客户问卷分类(销售)"/>
+				
+				<entry key="SALEUNIT_NEW_REPORT_REPORT_GUANGZHOU_CUSTOMERTABLE" value="客户分类明细表(项目)"/>
+				<entry key="SALEUNIT_NEW_REPORT_REPORT_GUANGZHOU_CUSTOMERPIE" value="客户分类比例(项目)"/>
+				<entry key="SALEUNIT_NEW_REPORT_REPORT_GUANGZHOU_CATEGORYNUM" value="分类环比走势图(项目)"/>		
+				
+				<entry key="SALEUNIT_NEW_REPORT_REPORT_GUANGZHOU_CUSTOMERTABLE" value="交叉分析组合图"/>
+				<entry key="SALEUNIT_NEW_REPORT_REPORT_GUANGZHOU_CUSTOMERPIE" value="售前客户分类统计"/>
+				<!-- 跟进情况 -->
+				<entry key="SALEUNIT_NEW_REPORT_REPORT_GUANGZHOU_CUSTOMERQUERY" value="活跃客户筛选报表"/>
+				<entry key="SALEUNIT_NEW_REPORT_REPORT_GUANGZHOU_CUSTOMERFOLLOWCOMPANY" value="客户跟进情况(公司)"/>
+				<entry key="SALEUNIT_NEW_REPORT_REPORT_GUANGZHOU_XMGJQKREPORT" value="客户跟进情况(项目)"/>
+				<entry key="SALEUNIT_NEW_REPORT_REPORT_GUANGZHOU_XSGJQKREPORT" value="客户跟进情况(销售)"/>
+				<!-- 录入质量分析 -->
+				<entry key="SALEUNIT_NEW_REPORT_REPORT_GUANGZHOU_REDANALYSIS" value="客户质量分析"/>
+				
+				<entry key="CUSTOMER_GUANGZHOU_SEARCH_INDEXCONTRACTCUSTOMER" value="查询成交客户"/>
+				
+				
+				<!-- 交易管理  -->
+				<entry key="SALEUNIT_NEW_INIT_APPOINT_GUANGZHOU_LAYOUT" value="楼盘初始"/>
+				<entry key="SALEUNIT_SETUP_MANAGER_LAYOUT" value="付款方式"/> 
+				<entry key="SALEUNIT_CHIP_MANAGER_GUANGZHOU_LAYOUT" value="认筹管理"/>
+				<entry key="SALEUNIT_SCENE_GUANGZHOU_LAYOUTSCENE" value="现场销控情况"/>
+				<entry key="SALEUNIT_NEW_APPOINT_GUANGZHOU_LAYOUTFROM" value="销售中心"/>
+				<!-- 财务管理 -->
+				<entry key="SALEUNIT_FINANCIAL_MANAGER_GUANGZHOU_LAYOUT" value="财务管理"/>
+				<entry key="SALEUNIT_CONTRACT_MANAGER_LAYOUT" value="成交单元管理"/>
+				
+				<!-- 对数管理 -->
+				<entry key="SALEUNIT_NEW_CHECKFEE_CHECKFEE_LIST" value="新建预对数表"/> 
+				<entry key="SALEUNIT_NEW_CHECKFEE_CHECKFEE_MOD" value="修改预对数表"/> 
+				<entry key="SALEUNIT_NEW_CHECKFEE_CHECKFEE_CONFIRM" value="查询对数表"/> 
+				<!-- 对佣管理 -->
+				<entry key="SALEUNIT_NEW_CHECKCOMMISSION_CHECKCOMMISSION_LIST" value="新建预对佣表"/> 
+				<entry key="SALEUNIT_NEW_CHECKCOMMISSION_CHECKCOMMISSION_MOD" value="修改预对佣表"/> 
+				<entry key="SALEUNIT_NEW_CHECKCOMMISSION_CHECKCOMMISSION_CONFIRM" value="查询对佣表"/> 
+				<!-- 对佣管理 （一二手联动）-->
+				<entry key="SALEUNIT_NEW_CHECKCOMMISSION_SEC_CHECKCOMMISSION_LIST" value="新建预对佣表 （一二手联动）"/> 
+				<entry key="SALEUNIT_NEW_CHECKCOMMISSION_SEC_CHECKCOMMISSION_MOD" value="修改预对佣表 （一二手联动）"/> 
+				<entry key="SALEUNIT_NEW_CHECKCOMMISSION_SEC_CHECKCOMMISSION_CONFIRM" value="查询对佣表 （一二手联动）"/> 				
+				<!-- 结佣 -->
+				<entry key="SALEUNIT_NEW_RESULTCOMMISSION_RESULTCOMMISSION_LIST" value="结佣"/>
+				<entry key="SALEUNIT_NEW_RESULTCOMMISSION_SEC_RESULTCOMMISSION_LIST" value="结佣（一二手联动）"/>
+				<!-- 销售货量分析 -->
+				<entry key="SALEUNIT_NEW_REPORT_REPORT_GUANGZHOU_ZTHLFXREPORTFIRST" value="总体货量分析"/>
+				<entry key="SALEUNIT_NEW_REPORT_REPORT_GUANGZHOU_XSHLFXLCREPORTFIRST" value="销售货量分析(按楼层)"/>
+				<entry key="SALEUNIT_NEW_REPORT_REPORT_GUANGZHOU_XSHLFXJGREPORTFIRST" value="销售货量分析(按价格)"/>
+				<entry key="SALEUNIT_NEW_REPORT_REPORT_GUANGZHOU_XSHLFXFLREPORTFIRST" value="销售货量分析(按分类)"/>
+				<!-- 客户管理 -->
+				<entry key="SALEUNIT_NEW_REPORT_REPORT_GUANGZHOU_CJKHBJFIRST" value="成交客户背景分析"/>
+				<entry key="SALEUNIT_NEW_REPORT_REPORT_GUANGZHOU_CJSJJCREPORTFIRST" value="成交数据交叉分析"/>
+				<entry key="SALEUNIT_NEW_REPORT_REPORT_GUANGZHOU_CJKHFLREPORTFIRST" value="成交客户分类统计"/>
+				<entry key="SALEUNIT_NEW_REPORT_REPORT_GUANGZHOU_KHCJ" value="客户交易明细(项目)"/>				
+				<entry key="SALEUNIT_NEW_CONTRACT_CUSTOMER_LAYOUTDATAGRID" value="客户交易明细(楼栋)"/>	
+				<!-- 销售情况分析 -->
+				<entry key="SALEUNIT_NEW_REPORT_REPORT_GUANGZHOU_SALEREPORTCOMPANY" value="销售分析(公司)"/>
+				<entry key="SALEUNIT_NEW_REPORT_REPORT_GUANGZHOU_SALEREPORTPROJECT" value="销售分析(项目)"/>				
+				<entry key="SALEUNIT_NEW_REPORT_REPORT_GUANGZHOU_SALEREPORTSALE" value="销售分析(销售人员)"/>	
+				<entry key="SALEUNIT_NEW_REPORT_REPORT_GUANGZHOU_SALEREPORTSALEUNIT" value="销售分析(单元明细)"/>
+				<entry key="SALEUNIT_NEW_REPORT_REPORT_GUANGZHOU_RCFXREPORTFIRST" value="认筹分析"/>
+				<entry key="SALEUNIT_NEW_REPORT_REPORT_GUANGZHOU_SHWJREPORTFIRST" value="售后问卷分析"/>
+				<!-- 财务应收 -->	
+				<entry key="SALEUNIT_NEW_REPORT_REPORT_GUANGZHOU_COMMISSION_COMPANYFIRST" value="公司结佣表"/>
+				<entry key="SALEUNIT_NEW_REPORT_REPORT_GUANGZHOU_COMMISSION_PRJFIRST" value="项目结佣表"/>
+				<entry key="SALEUNIT_NEW_REPORT_REPORT_GUANGZHOU_COMMISSION_DETAILFIRST" value="单元结佣表"/>
+				<entry key="SALEUNIT_NEW_REPORT_REPORT_GUANGZHOU_XMJYQKREPORTFIRST" value="项目结佣情况一览表"/>
+				<entry key="SALEUNIT_NEW_REPORT_REPORT_GUANGZHOU_NDXSJHREPORTFIRST" value="年度销售计划及落实情况"/>
+				<!-- 销售数据统计 -->
+				<entry key="SALEUNIT_NEW_REPORT_REPORT_GUANGZHOU_QDQYHKJREPORTFIRST" value="齐定签约回款情况"/>
+				<entry key="SALEUNIT_NEW_REPORT_REPORT_GUANGZHOU_CJQYHKREPORTFIRST" value="成交签约回款情况"/>
+				<entry key="SALEUNIT_NEW_REPORT_REPORT_GUANGZHOU_LJCJTJBREPORTFIRST" value="累计成交统计表"/>
+				<entry key="SALEUNIT_NEW_REPORT_REPORT_GUANGZHOU_LJQYHKTJREPORTFIRST" value="累计签约回款统计"/>
+				<entry key="SALEUNIT_NEW_REPORT_REPORT_GUANGZHOU_XSRYJXREPORT" value="销售人员绩效"/>
+				<!-- 中山公司报表 -->
+				<entry key="SALEUNIT_NEW_REPORT_REPORT_ZHONGSHAN_ZHONGSHANCONFIRMDETAIL" value="来访来电成交简况"/>
+				<entry key="SALEUNIT_NEW_REPORT_REPORT_ZHONGSHAN_PROJECTPUSHDETAIL" value="项目推货情况"/>
+				<entry key="SALEUNIT_NEW_REPORT_REPORT_ZHONGSHAN_TOCUSTOMERMANAGER" value="客户情况分析"/>
+				<entry key="SALEUNIT_NEW_REPORT_REPORT_GUANGZHOU_PROJECTANDCUSTNUMFIRST" value="成交客户分析"/>
+				<!-- 后台管理 -->				
+				<entry key="CUSTOMER_GUANGZHOU_ARTICLE_SEARCHARTICLE" value="公告查询"/>
+				<entry key="USER_MANAGER_EASYUILAYOUT" value="用户管理"/>
+				<entry key="USER_MANAGER_SEARCHROLEPRIV" value="角色权限"/>
+				<entry key="USER_MANAGER_SEARCHPRIV" value="权限管理"/>
+				<!-- 登录情况查询 -->
+				<entry key="PROPERTY_OPER_PROJECT_UNIT_INDEX" value="项目登录情况"/>
+				<entry key="PROPERTY_OPER_USER_INDEX" value="用户登录情况"/>
+				<entry key="PROPERTY_OPER_INDEX" value="详细登录情况"/>
+				<entry key="PROPERTY_OPER_ACTIONRECORDLOGFORM" value="系统功能点击记录"/>
+				
+				<!-- 在线用户及缓存管理/异常 -->
+				<entry key="CUSTOMER_GUANGZHOU_CACHE_CACHEINDEX" value="在线用户及缓存管理"/>
+				<entry key="SALEUNIT_COMMON_ACTION_MODIFY_EXCEPTION" value="action modify异常"/>
+				
+				<entry key="PROJECR_MANAGER_INDEXSEARCH" value="项目管理"/>
+				
+				<entry key="GUANGZHOU_USERACCOUNT_SETPWD" value="帐号管理"/>
+				
+				<!-- vip -->
+				<entry key="CUSTOMER_COLLECTION_VIP_INFORMATION_DATA" value="vip客户导入"/>
+				<entry key="CUSTOMER_COLLECTION_ANALYSIS_VIP_CUSTOMER" value="vip客户数据分析"/>
+				<entry key="CUSTOMER_COLLECTION_QUERY_VIP_CUSTOMER" value="vip客户管理"/>
+				
+			
+			</map>
+		</property>
+	</bean>
+</beans>

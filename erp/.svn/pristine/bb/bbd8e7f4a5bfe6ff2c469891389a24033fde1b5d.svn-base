@@ -1,0 +1,313 @@
+
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<title>CRM客户管理系统</title>
+
+
+<link href="../css/tianluan_index.css" rel="stylesheet" type="text/css" />
+
+<script type="text/javascript" language="javascript" src="../../js/jquery-1.6.2.min.js"></script>
+
+<script type="text/javascript" language="javascript">
+//等待dom元素加载完毕.
+$(document).ready(function(){
+	$(".title01").click(function(){
+		$(this).addClass("title02")
+			.siblings().removeClass("title02");
+	});
+	$(".leftlist").click(function(){
+		$(this)			//为当前元素增加highlight类
+			.children(".leftms").show().end()			//将子节点的a元素显示出来并重新定位到上次操作的元素
+		.siblings()	//获取元素的兄弟元素，并去掉他们的highlight类
+			.children(".leftms").hide();				
+	});
+
+	$("#leftbut").click(function(){
+		$(".leftnav").toggle();
+	});
+});
+</script>
+
+</head>
+
+
+<body>
+<!--top-->
+	<div class="boxnavtop">
+    <div class="logo"></div>
+    <div class="logoword">房王房产超市项目</div>
+    <!--welcome-->
+<div class="welcome">
+    	<div class="welcome01"></div>
+        <div class="welcome02">欢迎, <span class="fontblue"><a href="#" title="judy" target="_blank">judy</a></span> | <a href="#" title="注销" target="_blank">注销</a> ｜ <a href="#" title="培训" target="_blank">培训</a> ｜ <a href="#" title="帮助" target="_blank">帮助</a> ｜<a href="#" title="关于" target="_blank">关于</a></div>
+  </div>
+    <!--welcome.end-->
+    </div>
+<div class="topline"></div>
+<!--top.end-->
+
+
+<!--main-->
+<table width="100%" border="0" cellspacing="0">
+  <tr>
+    <td width="213" valign="top">
+    <div class="leftnav">
+    	<div class="lefttop"></div>
+        <div class="leftbg">
+        <div class= "leftlist">
+        	<div class="leftl"></div>
+            <div class="leftm">+ <a href="#" target="_blank">新建项目</a></div>
+            <div class="leftr">
+           </div>
+            <div class="c"></div>
+            <div class="leftms" style="display:none;">
+	      	<ul>+ <a href="#">新建项目1</a>
+	      	<li>- <a href="#">新建项目1</a></li>
+            <li>- <a href="#">新建项目1</a></li>
+            <li>- <a href="#">新建项目1</a></li>
+            <li>- <a href="#">新建项目1</a></li>
+            </ul> 
+            <ul>+ <a href="#">新建项目2</a>
+            </ul>     
+            </div> 
+         </div>
+      
+         <div class="leftlist">
+        	<div class="leftls"></div>
+            <div class="leftm"><a href="#" target="_blank">客户</a></div>
+            <div class="leftrs"></div>
+            <div class="c"></div>
+            <div class="leftms" style="display:none;">
+	      	<ul>+ <a href="#">新建项目1</a>
+	      	<li>- <a href="#">新建项目1</a></li>
+            <li>- <a href="#">新建项目1</a></li>
+            <li>- <a href="#">新建项目1</a></li>
+            <li>- <a href="#">新建项目1</a></li>
+            </ul> 
+            <ul>+ <a href="#">新建项目2</a>
+            </ul>     
+            </div>
+         </div>
+         <div>
+        	<div class="leftl"></div>
+            <div class="leftm"><a href="#" target="_blank">Chatter</a></div>
+            <div class="leftr"></div>
+            <div class="c"></div>
+         </div>
+        </div>
+        
+        
+        <div class="leftbottom"></div>
+    </div>
+    </td>
+    <td width="9" valign="middle"><a href="#"><img src="images/blue/arrow01.gif" width="9" height="90" border="0" id="leftbut"/></a></td>
+    <td width="100%" valign="top" height="100%" style="overflow:hidden;">
+    <div class="right01"></div>
+    <div class="right02"></div>
+    <div class="right03"></div>
+    <div class="c"></div>
+    <div >
+    <div class="right04"></div>
+    <div class="right05">
+      <div class="titlel"></div>
+        <div class="titlebg" style=" height:auto;overflow:hidden;">
+
+          <div class="title01" ><a href="#">列表</a></div>
+            <div class="title01"><a href="#">新建</a></div>
+            <div class="title02" style="display:none;"><a href="#">录入</a></div>
+            <div class="title01"><a href="#">录入2</a></div>
+            <div class="title02" style="display:none;"><a href="#">录入</a></div>
+            <div class="title01"><a href="#">录入3</a></div>
+            <div class="title02" style="display:none;"><a href="#">录入</a></div>
+            <div class="title01"><a href="#">录入4</a></div>
+            <div class="title02" style="display:none;"><a href="#">录入</a></div>
+          <div class="c"></div>
+          <div class="c"></div>
+          <table width="98%" border="0" align="left" cellspacing="0">
+            <tr>
+              <td width="10%" height="0"><label> <span>搜索项目：</span></label></td>
+              <td width="199" height="0"><input name="select4" id="select5" class="box">
+                </input></td>
+              <td width="10%" height="0">搜索项目：</td>
+              <td height="0"><select name="select4" id="select5" class="box1">
+              	<option>搜索类容1</option>
+                </select></td>
+              <td width="10%" height="0">搜索项目：</td>
+              <td height="0"><select name="select4" id="select5" class="box1">
+                </select></td>
+            </tr>
+            <tr>
+              <td width="10%" height="0">搜索项目：</td>
+              <td height="0"><select name="select4" id="select6" class="box1">
+              </select></td>
+              <td width="10%" height="0">搜索项目：</td>
+              <td height="0"><select name="select4" id="select6" class="box1">
+              </select></td>
+              <td width="10%" height="0"><input type="submit" name="button3" id="button3" value="搜索" /></td>
+              <td height="0">&nbsp;</td>
+            </tr>
+            <tr>
+              <td height="10" colspan="6">
+              <div class="blueline"></div>
+              </td>
+              </tr>
+            <tr>
+              <td height="20" colspan="6">操作：<a href="#" target="_blank">删除</a> | <a href="#" target="_blank">增加</a> | <a href="#" target="_blank">追加</a> | <a href="#" target="_blank">批量删除</a></td>
+            </tr>
+            <tr>
+              <td colspan="6"><div class="gbox1"><table width="100%" border="0" align="center" cellpadding="0" cellspacing="1" class="gbox" >
+  <tr class="gboxbg">
+    <td width="52"><label for="checkbox">
+      <input type="checkbox" name="checkbox" id="checkbox" />
+      全选
+      </label></td>
+    <td width="17" align="center">&nbsp;</td>
+    <td width="80"><table  border="0" align="center" cellspacing="0" height="28">
+      <tr>
+        <td width="60" align="center" valign="middle">客户名称</td>
+        <td align="center" valign="middle"><table width="5" border="0" cellspacing="0">
+          <tr>
+            <td><a href="#"><img src="images/up.gif" width="6" height="6" border="0" /></a></td>
+          </tr>
+          <tr>
+            <td><a href="#"><img src="images/down.gif" width="6" height="6" border="0" /></a></td>
+          </tr>
+        </table></td>
+      </tr>
+      </table></td>
+    <td width="73"><table  border="0" align="center" cellspacing="0" height="28">
+      <tr>
+        <td width="60" align="center" valign="middle">开单城市</td>
+        <td align="center" valign="middle"><table width="5" border="0" cellspacing="0">
+          <tr>
+            <td><a href="#"><img src="images/blue/up.gif" width="6" height="6" border="0" /></a></td>
+          </tr>
+          <tr>
+            <td><a href="#"><img src="images/down.gif" width="6" height="6" border="0" /></a></td>
+          </tr>
+        </table></td>
+      </tr>
+    </table></td>
+    <td width="89"><table  border="0" align="center" cellspacing="0" height="28">
+      <tr>
+        <td width="60" align="center" valign="middle">联系电话</td>
+        <td align="center" valign="middle"><table width="5" border="0" cellspacing="0">
+          <tr>
+            <td><a href="#"><img src="images/up.gif" width="6" height="6" border="0" /></a></td>
+          </tr>
+          <tr>
+            <td><a href="#"><img src="images/blue/down.gif" width="6" height="6" border="0" /></a></td>
+          </tr>
+        </table></td>
+      </tr>
+    </table></td>
+    <td width="99">&nbsp;</td>
+    <td width="80">&nbsp;</td>
+    <td width="80">&nbsp;</td>
+    <td width="116">&nbsp;</td>
+    <td width="45">&nbsp;</td>
+    <td width="51">&nbsp;</td>
+  </tr>
+  <tr onmouseover="this.style.backgroundColor='#f1f9fe'" onmouseout="this.style.backgroundColor=''" bgcolor="#FFFFFF";>
+    <td width="52"><input type="checkbox" name="checkbox3" id="checkbox7" /></td>
+    <td width="17" align="center"><img src="images/star.gif" width="17" height="16" /></td>
+    <td align="center" valign="middle" class="fontblue"><a href="#" target="_blank">顾小朋</a></td>
+    <td align="center" valign="middle">广州</td>
+    <td align="center" valign="middle">020-84511012</td>
+    <td align="center" valign="middle">&nbsp;</td>
+    <td align="center" valign="middle">&nbsp;</td>
+    <td align="center" valign="middle">&nbsp;</td>
+    <td align="center" valign="middle">&nbsp;</td>
+    <td align="center" valign="middle">&nbsp;</td>
+    <td align="center" valign="middle">&nbsp;</td>
+  </tr>
+  <tr onmouseover="this.style.backgroundColor='#f1f9fe'" onmouseout="this.style.backgroundColor=''" bgcolor="#FFFFFF";>
+    <td width="52"><input type="checkbox" name="checkbox3" id="checkbox6" /></td>
+    <td width="17" align="center"><img src="images/star-y.gif" width="17" height="16" /></td>
+    <td align="center" valign="middle" class="fontblue"><a href="#" target="_blank">顾小朋</a></td>
+    <td align="center" valign="middle">广州</td>
+    <td align="center" valign="middle">020-84511012</td>
+    <td align="center" valign="middle">&nbsp;</td>
+    <td align="center" valign="middle">&nbsp;</td>
+    <td align="center" valign="middle">&nbsp;</td>
+    <td align="center" valign="middle">&nbsp;</td>
+    <td align="center" valign="middle">&nbsp;</td>
+    <td align="center" valign="middle">&nbsp;</td>
+  </tr>
+  <tr onmouseover="this.style.backgroundColor='#f1f9fe'" onmouseout="this.style.backgroundColor=''" bgcolor="#FFFFFF";>
+    <td width="52"><input type="checkbox" name="checkbox3" id="checkbox7" /></td>
+    <td width="17" align="center"><img src="images/star.gif" width="17" height="16" /></td>
+    <td align="center" valign="middle" class="fontblue"><a href="#" target="_blank">顾小朋</a></td>
+    <td align="center" valign="middle">广州</td>
+    <td align="center" valign="middle">020-84511012</td>
+    <td align="center" valign="middle">&nbsp;</td>
+    <td align="center" valign="middle">&nbsp;</td>
+    <td align="center" valign="middle">&nbsp;</td>
+    <td align="center" valign="middle">&nbsp;</td>
+    <td align="center" valign="middle">&nbsp;</td>
+    <td align="center" valign="middle">&nbsp;</td>
+  </tr>
+  <tr onmouseover="this.style.backgroundColor='#f1f9fe'" onmouseout="this.style.backgroundColor=''" bgcolor="#FFFFFF";>
+    <td width="52"><input type="checkbox" name="checkbox3" id="checkbox6" /></td>
+    <td width="17" align="center"><img src="images/star-y.gif" width="17" height="16" /></td>
+    <td align="center" valign="middle" class="fontblue"><a href="#" target="_blank">顾小朋</a></td>
+    <td align="center" valign="middle">广州</td>
+    <td align="center" valign="middle">020-84511012</td>
+    <td align="center" valign="middle">&nbsp;</td>
+    <td align="center" valign="middle">&nbsp;</td>
+    <td align="center" valign="middle">&nbsp;</td>
+    <td align="center" valign="middle">&nbsp;</td>
+    <td align="center" valign="middle">&nbsp;</td>
+    <td align="center" valign="middle">&nbsp;</td>
+  </tr>
+  <tr onmouseover="this.style.backgroundColor='#f1f9fe'" onmouseout="this.style.backgroundColor=''" bgcolor="#FFFFFF";>
+    <td><input type="checkbox" name="checkbox3" id="checkbox7" /></td>
+    <td align="center"><img src="images/star.gif" width="17" height="16" /></td>
+    <td align="center" valign="middle" class="fontblue"><a href="#" target="_blank">顾小朋</a></td>
+    <td align="center" valign="middle">广州</td>
+    <td align="center" valign="middle">020-84511012</td>
+    <td align="center" valign="middle">&nbsp;</td>
+    <td align="center" valign="middle">&nbsp;</td>
+    <td align="center" valign="middle">&nbsp;</td>
+    <td align="center" valign="middle">&nbsp;</td>
+    <td align="center" valign="middle">&nbsp;</td>
+    <td align="center" valign="middle">&nbsp;</td>
+  </tr>
+</table></div>
+</td>
+            </tr>
+            <tr>
+              <td colspan="6">
+                <div class="manu"><span class="disabled"> <  Prev</span><span class="current">1</span><a href="#?page=2">2</a><a href="#?page=3">3</a><a href="#?page=4">4</a><a href="#?page=5">5</a><a href="#?page=6">6</a><a href="#?page=7">7</a>...<a href="#?page=199">199</a><a href="#?page=200">200</a><a href="#?page=2">Next  > </a></div>                </td>
+            </tr>
+            </table>
+        </div>
+        <div class="titler"></div>
+        <div class="c"></div>
+    </div>
+    <div class="right06"></div>
+    <div class="c"></div>
+    </div>
+    <div class="right07"></div>
+    <div class="right08"></div>
+    <div class="right09"></div>
+    <div class="c" ></div>
+    </td>
+  </tr>
+  <!--main.end-->
+  <tr>
+    <td height="5" colspan="3">
+    </td>
+  </tr>
+  <tr>
+    <td colspan="3" class="footer"><!--footer-->
+Copyright ⓒ 2000-2011 ihouseking.com 公司版权所有。保留所有权利。 <a href="#" target="_blank">隐私声明</a> ｜ <a href="#">安全声明</a> ｜ <a href="#" target="_blank">使用条款</a>
+<!--footer.end--></td>
+  </tr>
+</table>
+
+
+</body>
+</html>

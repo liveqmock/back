@@ -1,0 +1,471 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE struts PUBLIC
+    "-//Apache Software Foundation//DTD Struts Configuration 2.0//EN"
+    "http://struts.apache.org/dtds/struts-2.0.dtd">
+<struts>
+ 	<!--<constant name="struts.i18n.encoding" value="UTF-8" />  解决乱码  -->
+	<constant name="struts.configuration.xml.reload" value="true" /> <!--配置文件修改后是否重新加载  -->
+ 	
+	<!-- 成交客户管理 -->	
+	<package name="saleunit_contract_customer" extends="struts-base" namespace="/saleunit_new/contract/customer">
+	
+		<action name="layout" class="com.ihk.saleunit.action.new_.GuangZhouAppointNewLeftAction" method="layout">
+			<result name="layout">/saleunit_new/customer/layout.jsp</result>
+		</action>
+		
+		<action name="layoutDataGrid" class="com.ihk.saleunit.action.contract_customer.SearchAction" method="layoutDataGrid">
+			<result name="layoutDataGrid">/saleunit_new/customer/layout_datagrid.jsp</result>
+		</action>
+		
+		<action name="customerAjaxTable" class="com.ihk.saleunit.action.contract_customer.SearchAction" method="customerAjaxTable"/>
+		
+		<action name="getRowDataToShow" class="com.ihk.saleunit.action.contract_customer.SearchAction" method="getRowDataToShow">
+			<result name="getRowDataToShow">/saleunit_new/customer/show_one.jsp</result>
+		</action>
+		
+		<action name="download" class="com.ihk.saleunit.action.contract_customer.SearchAction" method="download"/>
+		
+		<action name="projectDownload" class="com.ihk.customer.action.KhcjReportAction" method="download"/>
+		
+	</package>
+  
+  	<!-- 成交单元管理 -->
+	<package name="saleunit_contract_manager" extends="struts-base,json-default" namespace="/saleunit_contract/manager">
+		
+		<!-- 主页面 -->
+		<action name="layout" class="com.ihk.saleunit.action.new_.GuangZhouAppointNewLeftAction" method="layout">
+			<result name="layout">/saleunit_new/manager/layout.jsp</result>
+		</action>
+		
+		<!-- 汇总 -->
+		<action name="toGatherTabs" class="com.ihk.saleunit.action.contract_unit.GatherManagerAction" method="toGatherTabs">
+			<result name="toGatherTabs">/saleunit_new/manager/gather_tabs.jsp</result>
+		</action>
+		
+		<!-- 汇总顶上部分数据 -->
+		<action name="gatherAjaxCount" class="com.ihk.saleunit.action.contract_unit.GatherManagerAction" method="gatherAjaxCount"/>
+		
+		<!-- 汇总table -->
+		<action name="gatherAjaxTable" class="com.ihk.saleunit.action.contract_unit.GatherManagerAction" method="gatherAjaxTable"/>
+		
+		<!-- 明细 -->
+		<action name="toDetailTabs" class="com.ihk.saleunit.action.contract_unit.DetailManagerAction" method="toDetailTabs">
+			<result name="toDetailTabs">/saleunit_new/manager/detail_tabs.jsp</result>
+		</action>
+		<action name="unitDetailAjaxTable" class="com.ihk.saleunit.action.contract_unit.DetailManagerAction" method="unitDetailAjaxTable"/>
+		
+		<!-- 其他费用 -->
+		<action name="toOtherExpensesTabs" class="com.ihk.saleunit.action.contract_unit.OtherExpensesAction" method="toOtherExpensesTabs">
+			<result name="toOtherExpensesTabs">/saleunit_new/manager/other_expenses_tabs.jsp</result>
+		</action>
+		<action name="otherExpensesAjaxTable" class="com.ihk.saleunit.action.contract_unit.OtherExpensesAction" method="otherExpensesAjaxTable"/>
+		
+		<action name="toAddOtherExpenses" class="com.ihk.saleunit.action.contract_unit.OtherExpensesAction" method="toAddOtherExpenses">
+			<result name="toAddOtherExpenses">/saleunit_new/manager/add_other_expenses.jsp</result>
+		</action>
+		<action name="addOtherExpenses" class="com.ihk.saleunit.action.contract_unit.OtherExpensesAction" method="addOtherExpenses"/>
+		
+		<action name="toModifyOtherExpenses" class="com.ihk.saleunit.action.contract_unit.OtherExpensesAction" method="toModifyOtherExpenses">
+			<result name="toModifyOtherExpenses">/saleunit_new/manager/modify_other_expenses.jsp</result>
+		</action>
+		
+		<action name="modifyOtherExpenses" class="com.ihk.saleunit.action.contract_unit.OtherExpensesAction" method="modifyOtherExpenses"/>
+		
+		<action name="deleteOtherExpenses" class="com.ihk.saleunit.action.contract_unit.OtherExpensesAction" method="deleteOtherExpenses"/>
+		
+		<!-- 合同管理,合并在struts-saleunit-new-init.xml中的合同管理contractManager -->
+		
+		<!-- 底价管理 -->
+		<action name="basePriceManager" class="com.ihk.saleunit.action.contract_unit.BasePriceManagerAction" method="basePriceManager" >
+			<result name="suc" >/saleunit_new/manager/base_price_manager.jsp</result>
+		</action>
+		<!-- 底价模板上传 -->
+		<action name="excelUpload" class="com.ihk.saleunit.action.contract_unit.BasePriceManagerAction" method="excelUpload" >
+		</action>
+		<!-- 底价模板数据下载 -->
+		<action name="excelDownLoad" class="com.ihk.saleunit.action.contract_unit.BasePriceManagerAction" method="excelDownLoad" >
+			 <!-- 设置文件名参数，由页面上传入 -->
+             <param name="fileName">base_price.xls</param>
+             <result name="success" type="stream">
+	             <!-- 下载文件类型定义 -->
+	             <param name="contentType">application/vnd.ms-excel</param>
+	             <!-- 下载文件处理方法 -->
+	             <param name="contentDisposition">
+	                attachment;filename="${downloadChineseFileName}"
+	             </param>
+	             <!-- 下载文件输出流定义 -->
+	             <param name="inputName">downloadFile</param>
+             </result>
+		</action>
+		<!-- 实收管理 -->
+		<action name="paidInManager" class="com.ihk.saleunit.action.contract_unit.PaidInManagerAction" method="paidInManager" >
+			<result name="success" >/saleunit_new/manager/paid_in_manager.jsp</result>
+		</action>
+		<!-- 实收管理 查找 -->
+		<action name="searchPaidIn" class="com.ihk.saleunit.action.contract_unit.PaidInManagerAction" method="searchPaidIn" >
+			<result type="json">
+                <param name="root">result</param>
+            </result>
+		</action>
+		<!-- 实收编辑页面初始化 -->
+		<action name="editPaidIn" class="com.ihk.saleunit.action.contract_unit.EditPaidInAction" method="editPaidIn" >
+			<result name="success" >/saleunit_new/manager/edit_paid_in.jsp</result>
+		</action>
+		<!-- 实收 修改 -->
+		<action name="updatePaidIn" class="com.ihk.saleunit.action.contract_unit.EditPaidInAction" method="updatePaidIn" />
+        <!-- 应收管理 删除 -->
+        <action name="deleteApPayment" class="com.ihk.saleunit.action.contract_unit.EditPaidInAction" method="deleteApPayment" />
+
+		<!-- 实收管理 导出 -->
+		<action name="excelPaid" class="com.ihk.saleunit.action.contract_unit.PaidInManagerAction" method="excelPaid" >
+			<!-- 设置文件名参数，由页面上传入 -->
+             <param name="fileName">paid_in.xls</param>
+             <result name="success" type="stream">
+	             <!-- 下载文件类型定义 -->
+	             <param name="contentType">application/vnd.ms-excel</param>
+	             <!-- 下载文件处理方法 -->
+	             <param name="contentDisposition">
+	                attachment;filename="${downloadChineseFileName}"
+	             </param>
+	             <!-- 下载文件输出流定义 -->
+	             <param name="inputName">downloadFile</param>
+             </result>
+		</action>
+		<!-- 实收管理 导入 -->
+		<action name="excelPaidUpload" class="com.ihk.saleunit.action.contract_unit.PaidInManagerAction" method="excelPaidUpload" />
+
+		<!-- 应收管理 -->
+		<action name="receiveInManager" class="com.ihk.saleunit.action.contract_unit.ReceiveInManagerAction" method="receiveInManager" >
+			<result name="success" >/saleunit_new/manager/receive_in_manager.jsp</result>
+		</action>
+		<!-- 应收管理 导出 -->
+		<action name="excelReceive" class="com.ihk.saleunit.action.contract_unit.ReceiveInManagerAction" method="excelReceive" >
+			 <!-- 设置文件名参数，由页面上传入 -->
+             <param name="fileName">receive_in.xls</param>
+             <result name="success" type="stream">
+	             <!-- 下载文件类型定义 -->
+	             <param name="contentType">application/vnd.ms-excel</param>
+	             <!-- 下载文件处理方法 -->
+	             <param name="contentDisposition">
+	                attachment;filename="${downloadChineseFileName}"
+	             </param>
+	             <!-- 下载文件输出流定义 -->
+	             <param name="inputName">downloadFile</param>
+             </result>
+		</action>
+		<!-- 应收管理 编辑框 -->
+		<action name="editReceiveIn" class="com.ihk.saleunit.action.contract_unit.EditReceiveInAction" method="editReceiveIn" >
+			<result name="success" >/saleunit_new/manager/edit_receive_in.jsp</result>
+		</action>
+		<!-- 应收管理 修改 -->
+		<action name="updateReceiveIn" class="com.ihk.saleunit.action.contract_unit.EditReceiveInAction" method="updateReceiveIn" />
+		<!-- 应收管理 删除 -->
+		<action name="deleteReceiveIn" class="com.ihk.saleunit.action.contract_unit.EditReceiveInAction" method="deleteReceiveIn" />
+		<!-- 应收管理 查找 -->
+		<action name="searchReceiveIn" class="com.ihk.saleunit.action.contract_unit.ReceiveInManagerAction" method="searchReceiveIn" >
+			<result type="json">
+                <param name="root">result</param>
+            </result>
+		</action>
+		<!-- 应收管理 导入 -->
+		<action name="excelReceiveUpload" class="com.ihk.saleunit.action.contract_unit.ReceiveInManagerAction" method="excelReceiveUpload" />
+	</package>
+
+    <!-- 对数表管理 -->
+    <package name="saleunit_checkfee" extends="struts-base,json-default" namespace="/saleunit_new/checkfee">
+        <!-- 对数表管理 新建 -->
+        <action name="checkfee_list"
+                class="com.ihk.saleunit.action.check_fee.CheckFeeManagerAction" method="checkfee_list">
+            <result name="success">/saleunit_new/checkfee/checkfee_list_first.jsp</result>
+        </action>
+
+        <!-- 对数表管理 修改、确认 -->
+        <action name="checkfee_mod"
+                class="com.ihk.saleunit.action.check_fee.CheckFeeManagerAction" method="checkfee_mod">
+            <result name="success">/saleunit_new/checkfee/checkfee_mod.jsp</result>
+        </action>
+
+        <!-- 对数表确认查询 -->
+        <action name="checkfee_confirm"
+                class="com.ihk.saleunit.action.check_fee.CheckFeeManagerAction" method="checkfee_confirm">
+            <result name="success">/saleunit_new/checkfee/checkfee_confirm.jsp</result>
+        </action>
+
+        <!-- 按筛选条件 查询-->
+        <action name="checkfee_unit"
+                class="com.ihk.saleunit.action.check_fee.CheckFeeManagerAction" method="checkfee_unit">
+            <result type="json">
+                <param name="root">unitList</param>
+            </result>
+        </action>
+        <!-- 修改对数表 -->
+        <action name="checkfeemod_unit"
+                class="com.ihk.saleunit.action.check_fee.CheckFeeManagerAction" method="checkfeemod_unit">
+            <result type="json">
+                <param name="root">unitList</param>
+            </result>
+        </action>
+        <!-- 部分回款筛选 -->
+        <action name="checkfee_unit_receipt"
+                class="com.ihk.saleunit.action.check_fee.CheckFeeManagerAction" method="checkfee_unit_receipt">
+            <result type="json">
+                <param name="root">unitList</param>
+            </result>
+        </action>
+
+        <!-- 对数日期列表 -->
+        <action name="getCheckFeeDateList"
+                class="com.ihk.saleunit.action.check_fee.CheckFeeManagerAction" method="getCheckFeeDateList">
+            <result type="json">
+                <param name="root">checkFeeDateList</param>
+            </result>
+        </action>
+        
+        <!-- 获取修改预对数表下的对数日期easyui combotree -->
+        <action name="getCheckFeeDateListForCombotree" class="com.ihk.saleunit.action.check_fee.CheckFeeManagerAction" method="getCheckFeeDateListForCombotree"/>
+
+        <!-- 查看对数表 -->
+        <action name="checkfee_view_init"
+                class="com.ihk.saleunit.action.check_fee.CheckFeeViewAction" method="checkfee_view_init">
+            <result name="success">/saleunit_new/checkfee/checkfee_view.jsp</result>
+        </action>
+
+        <!-- 对数表查看列表返回json -->
+        <action name="checkfee_view"
+                class="com.ihk.saleunit.action.check_fee.CheckFeeViewAction" method="checkfee_view">
+            <result type="json">
+                <param name="root">unitList</param>
+            </result>
+        </action>
+
+		<!-- 增加对数 -->
+        <action name="add_checkfee" class="com.ihk.saleunit.action.check_fee.CheckFeeManagerAction" method="add_checkfee"/>
+        
+        <!-- 删除对数 -->
+        <action name="del_checkfee" class="com.ihk.saleunit.action.check_fee.CheckFeeManagerAction" method="del_checkfee"/>
+
+        <!-- 不对数 -->
+        <action name="donot_checkfee" class="com.ihk.saleunit.action.check_fee.CheckFeeManagerAction" method="donot_checkfee"/>
+
+        <!-- 恢复对数 -->
+        <action name="resume_checkfee" class="com.ihk.saleunit.action.check_fee.CheckFeeManagerAction" method="resume_checkfee"/>
+
+        <!-- 确认与开发商已对数 -->
+        <action name="final_checkfee" class="com.ihk.saleunit.action.check_fee.CheckFeeManagerAction" method="final_checkfee"/>
+        
+        <!-- 导出对数 新建预对数表-->
+        <action name="exportExcel" class="com.ihk.saleunit.action.check_fee.CheckFeeViewAction" method="exportExcel"/>
+        
+        <!-- 导出对数 修改预对数表-->
+        <action name="exportExcel_Mod" class="com.ihk.saleunit.action.check_fee.CheckFeeViewAction" method="exportExcel_Mod"/>
+
+        <!-- 根据单元id获取一条对数数据 -->
+        <action name="getCheckFeeRowDataForAddByUnitId" class="com.ihk.saleunit.action.check_fee.CheckFeeViewAction" method="getCheckFeeRowDataForAddByUnitId"/>
+        
+        <!-- 根据项目id及对数日期判断为全额或部分回款 -->
+        <action name="getCheckFeeRefundType" class="com.ihk.saleunit.action.check_fee.CheckFeeManagerAction" method="getCheckFeeRefundType"/>
+
+    </package>
+
+    <!-- 对佣管理 -->
+    <package name="saleunit_checkcommission" extends="struts-base,json-default" namespace="/saleunit_new/checkcommission">
+        <!-- 对数表管理 新建 -->
+        <action name="checkcommission_list"
+                class="com.ihk.saleunit.action.check_commission.CheckCommissionManagerAction" method="checkcommission_list">
+            <result name="success">/saleunit_new/checkcommission/checkcommission_first.jsp</result>
+        </action>
+        <!-- 新增单元 -->
+        <action name="checkcommission_addUnit"
+                class="com.ihk.saleunit.action.check_commission.CheckCommissionManagerAction" method="checkcommission_addUnit">
+            <result name="success">/saleunit_new/checkcommission/checkcommission_add.jsp</result>
+        </action>
+
+        <!-- 对佣表确认查询 -->
+        <action name="checkcommission_confirm"
+                class="com.ihk.saleunit.action.check_commission.CheckCommissionManagerAction" method="checkcommission_confirm">
+            <result name="success">/saleunit_new/checkcommission/checkcommission_confirm.jsp</result>
+        </action>
+
+        <!-- 按筛选条件 查询-->
+        <action name="checkfeelist_confirm"
+                class="com.ihk.saleunit.action.check_commission.CheckCommissionManagerAction" method="checkfeelist_confirm">
+            <result type="json">
+                <param name="root">unitList</param>
+            </result>
+        </action>
+
+        <!-- 增加对佣 -->
+        <action name="add_checkcommission" class="com.ihk.saleunit.action.check_commission.CheckCommissionManagerAction" method="add_checkcommission"/>
+
+        <!-- 修改对佣表-保存佣金点 -->
+        <action name="savecommission" class="com.ihk.saleunit.action.check_commission.CheckCommissionManagerAction" method="savecommission"/>
+
+        <!-- 查看对佣表 -->
+        <action name="checkcommission_view_init"
+                class="com.ihk.saleunit.action.check_commission.CheckCommissionViewAction" method="checkcommission_view_init">
+            <result name="success">/saleunit_new/checkcommission/checkcommission_view.jsp</result>
+        </action>
+
+        <!-- 对佣表查看列表返回json -->
+        <action name="checkcommission_view"
+                class="com.ihk.saleunit.action.check_commission.CheckCommissionViewAction" method="checkcommission_view">
+            <result type="json">
+                <param name="root">unitList</param>
+            </result>
+        </action>
+        <!-- 修改对佣表 查询 -->
+        <action name="checkmod_view"
+                class="com.ihk.saleunit.action.check_commission.CheckCommissionViewAction" method="checkmod_view">
+            <result type="json">
+                <param name="root">unitList</param>
+            </result>
+        </action>
+
+        <!-- 对佣表管理 修改、确认 -->
+        <action name="checkcommission_mod"
+                class="com.ihk.saleunit.action.check_commission.CheckCommissionViewAction" method="checkcommission_mod">
+            <result name="success">/saleunit_new/checkcommission/checkcommission_mod.jsp</result>
+        </action>
+
+        <!-- 导出对佣 新建预对佣表-->
+        <action name="exportExcel" class="com.ihk.saleunit.action.check_commission.CheckCommissionViewAction" method="exportExcel"/>
+
+        <!-- 导出对数 修改预对佣表-->
+        <action name="exportExcel_Mod" class="com.ihk.saleunit.action.check_commission.CheckCommissionViewAction" method="exportExcel_Mod"/>
+
+        <!-- 删除对数 -->
+        <action name="del_checkcommission" class="com.ihk.saleunit.action.check_commission.CheckCommissionManagerAction" method="del_checkcommission"/>
+
+        <!-- 确认与开发商已对数 -->
+        <action name="final_checkcommission" class="com.ihk.saleunit.action.check_commission.CheckCommissionManagerAction" method="final_checkcommission"/>
+
+        <!-- 获取修改预对数表下的对数日期easyui combotree -->
+        <action name="getDateListForCombotree" class="com.ihk.saleunit.action.check_commission.CheckCommissionManagerAction" method="getDateListForCombotree"/>
+
+        <!-- 根据项目id及对数日期判断为全额或部分回款 -->
+        <action name="getCheckCommissionRefundType" class="com.ihk.saleunit.action.check_commission.CheckCommissionManagerAction" method="getCheckCommissionRefundType"/>
+
+        <!-- 恢复对数 -->
+        <action name="resume_checkcommission" class="com.ihk.saleunit.action.check_commission.CheckCommissionManagerAction" method="resume_checkcommission"/>
+
+    </package>
+
+
+    <!-- 对佣管理(一二手联动) -->
+    <package name="saleunit_checkcommission_sec" extends="struts-base,json-default" namespace="/saleunit_new/checkcommission_sec">
+        <!-- 对数表管理 新建 -->
+        <action name="checkcommission_list"
+                class="com.ihk.saleunit.action.check_commission_sec.CheckCommissionManagerAction" method="checkcommission_list">
+            <result name="success">/saleunit_new/checkcommission_sec/checkcommission_first.jsp</result>
+        </action>
+        <!-- 新增单元 -->
+        <action name="checkcommission_addUnit"
+                class="com.ihk.saleunit.action.check_commission_sec.CheckCommissionManagerAction" method="checkcommission_addUnit">
+            <result name="success">/saleunit_new/checkcommission_sec/checkcommission_add.jsp</result>
+        </action>
+
+        <!-- 对佣表确认查询 -->
+        <action name="checkcommission_confirm"
+                class="com.ihk.saleunit.action.check_commission_sec.CheckCommissionManagerAction" method="checkcommission_confirm">
+            <result name="success">/saleunit_new/checkcommission_sec/checkcommission_confirm.jsp</result>
+        </action>
+
+        <!-- 按筛选条件 查询-->
+        <action name="checkfeelist_confirm"
+                class="com.ihk.saleunit.action.check_commission_sec.CheckCommissionManagerAction" method="checkfeelist_confirm">
+            <result type="json">
+                <param name="root">unitList</param>
+            </result>
+        </action>
+
+        <!-- 增加对佣 -->
+        <action name="add_checkcommission" class="com.ihk.saleunit.action.check_commission_sec.CheckCommissionManagerAction" method="add_checkcommission"/>
+
+        <!-- 修改对佣表-保存佣金点 -->
+        <action name="savecommission" class="com.ihk.saleunit.action.check_commission_sec.CheckCommissionManagerAction" method="savecommission"/>
+
+        <!-- 查看对佣表 -->
+        <action name="checkcommission_view_init"
+                class="com.ihk.saleunit.action.check_commission_sec.CheckCommissionViewAction" method="checkcommission_view_init">
+            <result name="success">/saleunit_new/checkcommission_sec/checkcommission_view.jsp</result>
+        </action>
+
+        <!-- 对佣表查看列表返回json -->
+        <action name="checkcommission_view"
+                class="com.ihk.saleunit.action.check_commission_sec.CheckCommissionViewAction" method="checkcommission_view">
+            <result type="json">
+                <param name="root">unitList</param>
+            </result>
+        </action>
+        <!-- 修改对佣表 查询 -->
+        <action name="checkmod_view"
+                class="com.ihk.saleunit.action.check_commission_sec.CheckCommissionViewAction" method="checkmod_view">
+            <result type="json">
+                <param name="root">unitList</param>
+            </result>
+        </action>
+
+        <!-- 对佣表管理 修改、确认 -->
+        <action name="checkcommission_mod"
+                class="com.ihk.saleunit.action.check_commission_sec.CheckCommissionViewAction" method="checkcommission_mod">
+            <result name="success">/saleunit_new/checkcommission_sec/checkcommission_mod.jsp</result>
+        </action>
+
+        <!-- 导出对佣 新建预对佣表-->
+        <action name="exportExcel" class="com.ihk.saleunit.action.check_commission_sec.CheckCommissionViewAction" method="exportExcel"/>
+
+        <!-- 导出对数 修改预对佣表-->
+        <action name="exportExcel_Mod" class="com.ihk.saleunit.action.check_commission_sec.CheckCommissionViewAction" method="exportExcel_Mod"/>
+
+        <!-- 删除对数 -->
+        <action name="del_checkcommission" class="com.ihk.saleunit.action.check_commission_sec.CheckCommissionManagerAction" method="del_checkcommission"/>
+
+        <!-- 确认与开发商已对数 -->
+        <action name="final_checkcommission" class="com.ihk.saleunit.action.check_commission_sec.CheckCommissionManagerAction" method="final_checkcommission"/>
+
+        <!-- 获取修改预对数表下的对数日期easyui combotree -->
+        <action name="getDateListForCombotree" class="com.ihk.saleunit.action.check_commission_sec.CheckCommissionManagerAction" method="getDateListForCombotree"/>
+
+        <!-- 根据项目id及对数日期判断为全额或部分回款 -->
+        <action name="getCheckCommissionRefundType" class="com.ihk.saleunit.action.check_commission_sec.CheckCommissionManagerAction" method="getCheckCommissionRefundType"/>
+
+        <!-- 恢复对数 -->
+        <action name="resume_checkcommission" class="com.ihk.saleunit.action.check_commission_sec.CheckCommissionManagerAction" method="resume_checkcommission"/>
+
+    </package>
+
+    <!-- 结佣管理 -->
+    <package name="saleunit_resultcommission" extends="struts-base" namespace="/saleunit_new/resultcommission">
+        <!-- 对数表管理 新建 -->
+        <action name="resultcommission_list"
+                class="com.ihk.saleunit.action.result_commission.ResultCommissionManagerAction" method="resultcommission_list">
+            <result name="success">/saleunit_new/resultcommission/resultcommission_first.jsp</result>
+        </action>
+
+        <!-- 保存实收金额 -->
+        <action name="savePayment" class="com.ihk.saleunit.action.result_commission.ResultCommissionManagerAction" method="savePayment"/>
+
+        <!-- 导出对数 修改预对佣表-->
+        <action name="exportResultCommission" class="com.ihk.saleunit.action.result_commission.ResultCommissionManagerAction" method="exportResultCommission"/>
+
+    </package>
+
+    <!-- 结佣管理(一二手联动) -->
+    <package name="saleunit_resultcommission_sec" extends="struts-base" namespace="/saleunit_new/resultcommission_sec">
+        <!-- 对数表管理 新建 -->
+        <action name="resultcommission_list"
+                class="com.ihk.saleunit.action.result_commission_sec.ResultCommissionManagerAction" method="resultcommission_list">
+            <result name="success">/saleunit_new/resultcommission_sec/resultcommission_first.jsp</result>
+        </action>
+
+        <!-- 保存实收金额 -->
+        <action name="savePayment" class="com.ihk.saleunit.action.result_commission_sec.ResultCommissionManagerAction" method="savePayment"/>
+
+        <!-- 导出对数 修改预对佣表-->
+        <action name="exportResultCommission" class="com.ihk.saleunit.action.result_commission_sec.ResultCommissionManagerAction" method="exportResultCommission"/>
+
+    </package>
+
+</struts>
+
+

@@ -1,0 +1,165 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.ihk.customer.collection.IVipCustomerMapper">
+
+	<resultMap type="VipCustomer" id="vipCustomerResultMap">
+		<id property="id" column="id" />        
+		<result property="customerNo" column="customer_no" />
+		<result property="customerName" column="customer_name" />
+		<result property="source" column="source" />
+		<result property="idcardNo" column="idcard_no" />
+		<result property="tel" column="tel" />
+		<result property="phone" column="phone" />
+		<result property="contactAddr" column="contact_addr" />
+		<result property="resideArea" column="reside_area" />
+		<result property="workArea" column="work_area" />
+		<result property="natives" column="natives" />
+		<result property="createTime" column="create_time" />
+		<result property="followDate" column="follow_date" />
+		<result property="companyId" column="company_id" />
+	</resultMap>
+
+	<insert id="addVipCustomer" parameterType="VipCustomer">
+		 <selectKey resultType="java.lang.Integer" keyProperty="id" order="AFTER" >
+            SELECT @@IDENTITY
+        </selectKey>		
+		insert into vip_customer(
+		customer_no,
+		customer_name,
+		source,
+		idcard_no,
+		tel,
+		phone,
+		contact_addr,
+		reside_area,
+		work_area,
+        ad_area,
+		natives,
+		create_time,
+		follow_date,
+		company_id
+		)
+			VALUES(
+		#{customerNo},
+		#{customerName},
+		#{source},
+		#{idcardNo},
+		#{tel},
+		#{phone},
+		#{contactAddr},
+		#{resideArea},
+		#{workArea},
+		#{ad_area},
+		#{natives},
+		#{createTime},
+		#{followDate},
+		#{companyId}
+			)
+		
+	</insert>
+	<delete id="deleteVipCustomer" parameterType="com.ihk.utils.base.PojoDeleteCond">
+	update vip_customer set is_deleted='1', mod_id=#{modId}, mod_time=#{modTime} where id=#{id};
+	</delete>
+	<update id="updateVipCustomer" parameterType="int">
+	update vip_customer set 
+		customer_no=#{customerNo},
+		customer_name=#{customerName},
+		source=#{source},
+		idcard_no=#{idcardNo},
+		tel=#{tel},
+		phone=#{phone},
+		contact_addr=#{contactAddr},
+		reside_area=#{resideArea},
+		work_area=#{workArea},
+		natives=#{natives},
+		create_time=#{createTime},
+		follow_date=#{followDate}
+	 where id=#{id}
+	</update>
+	<select id="findVipCustomerById" resultMap="vipCustomerResultMap">
+	select * from vip_customer where id=#{id}
+	</select>
+    
+	<sql id="findWhereCond"> 
+		<where>
+            company_id=#{companyId}
+            <if test="contactAddr !=null and contactAddr != ''">
+              and contact_addr like concat(concat('%', #{contactAddr, jdbcType=VARCHAR}), '%')
+            </if> 
+            <if test="customerName !=null and customerName !=''">
+            	and customer_name like concat(concat('%', #{customerName, jdbcType=VARCHAR}), '%')
+            </if> 
+            <if test="customerNo !=null and customerNo !=''">
+            	and customer_no = #{customerNo}
+            </if>
+            <if test="workArea !=null and workArea !=''">
+            	and work_area like concat(concat('%', #{workArea, jdbcType=VARCHAR}), '%')
+            </if>
+            <if test="phone !=null and phone!=''">
+            	and phone like concat(concat('%', #{phone, jdbcType=VARCHAR}), '%')
+            </if>   
+            <if test="source!=null and source!=''">
+            	and source  like concat(concat('%', #{source, jdbcType=VARCHAR}), '%')
+            </if>
+            <if test="date1 !=null and date1 !=''">
+            	and create_time &gt;= #{date1}
+            </if>
+            <if test="date2 !=null and date2 !=''">
+            	and create_time &lt; date_add(#{date2},interval 1 day)
+            </if>
+            <if test="follow1 !=null and follow1 !=''">
+            	and follow_date &gt;= #{follow1}
+            </if>
+            <if test="follow2 !=null and follow2 !=''">
+            	and follow_date &lt; date_add(#{follow2},interval 1 day)
+            </if>
+            <if test="notFollowDay !=null and notFollowDay !=''">
+            	and follow_date &lt;= date_sub(now(),interval #{notFollowDay} day)
+            </if>
+            <if test="idcardNo !=null and idcardNo !=''">
+            	and idcard_no = #{idcardNo}
+            </if>
+            <if test="natives !=null and natives !=''">
+            	and natives like  CONCAT('%','${natives}','%')
+            </if>
+            <if test="paymethod!=null and paymethod!=''" >
+                and id in (select ref_id from vip_cust_item where paymethod like concat(concat('%', #{paymethod, jdbcType=VARCHAR}), '%'))
+            </if>
+            <if test="adArea!=null and adArea!=''" >
+            	 and id in (select ref_id from vip_cust_item where ad_area like concat(concat('%', #{adArea, jdbcType=VARCHAR}), '%'))
+            </if>
+            <if test="businesscircle!=null and businesscircle!=''" >
+            	 and id in (select ref_id from vip_cust_item where businesscircle like concat(concat('%', #{businesscircle, jdbcType=VARCHAR}), '%'))
+            </if>
+		</where>
+	</sql>
+	
+	<select id="findVipCustomerCount" resultType="int" parameterType="com.ihk.customer.collection.pojo.VipCustomerCond">
+		SELECT count(0) from vip_customer  
+        <include refid="findWhereCond"/>     
+    </select>
+        
+	<select id="findVipCustomer" resultMap="vipCustomerResultMap" parameterType="com.ihk.customer.collection.pojo.VipCustomerCond">
+		SELECT * from  vip_customer 
+        <include refid="findWhereCond"/> 
+		<if test="topNum > 0">
+			limit #{topNum};
+		</if>
+    </select>
+    
+	<select id="findVipCustomerPage" resultMap="vipCustomerResultMap" parameterType="com.ihk.customer.collection.pojo.VipCustomerCond">
+		SELECT * from  vip_customer 
+        <include refid="findWhereCond"/> 
+    
+		<if test="startLine >= 0">
+
+        <if test="sort!=null and sort!=''" >
+            order by ${sort} ${order}
+        </if>
+
+		<if test="pageSize > 0">
+			limit #{startLine},#{pageSize};
+		</if>
+		</if>
+	</select>
+</mapper>

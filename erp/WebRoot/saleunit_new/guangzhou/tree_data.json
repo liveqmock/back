@@ -1,0 +1,48 @@
+[
+  {
+    "text": "中海金沙湾",
+    "state": "closed",
+    "children": [
+      {
+        "text": "楼栋分区1",
+        "state": "closed",
+        "children": [
+          {
+            "id": "1",
+            "text": "广州",
+            "attributes": {
+              "type": "endNode"
+            }
+          },
+          {
+            "id": "2",
+            "text": "C#",
+            "attributes": {
+              "type": "endNode"
+            }
+          }
+        ]
+      },
+      {
+        "text": "楼栋分区2",
+        "state": "closed",
+        "children": [
+          {
+            "id": "22",
+            "text": "广州",
+            "attributes": {
+              "type": "endNode"
+            }
+          },
+          {
+            "id": "21",
+            "text": "pps",
+            "attributes": {
+              "type": "endNode"
+            }
+          }
+        ]
+      }
+    ]
+  }
+]

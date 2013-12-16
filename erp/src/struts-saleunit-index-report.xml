@@ -1,0 +1,85 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE struts PUBLIC
+    "-//Apache Software Foundation//DTD Struts Configuration 2.0//EN"
+    "http://struts.apache.org/dtds/struts-2.0.dtd">
+<struts>
+  
+	<package name="saleunit_index_report" extends="struts-base" namespace="/saleunit/index/report">
+	  <!-- 主页布局页面 -->
+		<action name="layout"  class="com.ihk.indexReport.action.IndexReportLayoutAction" method="layout">
+			<result name="multiCompany">/ui/index.jsp</result>
+			<!--<result name="layout">/ui/index2.jsp</result>
+			<result name="layout">/ui/index3.jsp</result>
+			<result name="layout">/ui/index4.jsp</result>
+		--></action>
+		
+	    <!-- 公告  -->
+		<action name="getReport11" class="com.ihk.indexReport.action.Report11Action" method="getReport">
+			<result name="suc">/saleunit_new/index_report/report11.jsp</result>
+		</action>
+
+        <!-- 按公司货量图 -->
+		<action name="getReport12" class="com.ihk.indexReport.action.Report12Action" method="getReport">
+			<result name="suc">/saleunit_new/index_report/report12.jsp</result>
+        </action>
+        <!-- 按项目货量图 -->
+        <action name="getReport22" class="com.ihk.indexReport.action.Report22Action" method="getReport">
+            <result name="suc">/saleunit_new/index_report/report12.jsp</result>
+        </action>
+
+        <!-- 按公司销量图 -->
+		<action name="getReport13" class="com.ihk.indexReport.action.Report13Action" method="getReport">
+			<result name="suc">/saleunit_new/index_report/report13.jsp</result>
+		</action>
+        <!-- 按项目销量图 -->
+        <action name="getReport23" class="com.ihk.indexReport.action.Report23Action" method="getReport">
+            <result name="suc">/saleunit_new/index_report/report13.jsp</result>
+        </action>
+
+        <!-- 应收佣金图 -->
+        <action name="getReport14" class="com.ihk.indexReport.action.Report14Action" method="getReport">
+            <result name="suc">/saleunit_new/index_report/report14.jsp</result>
+        </action>
+
+        <!-- 按公司售前客户数量图 -->
+        <action name="getReport15" class="com.ihk.indexReport.action.Report15Action" method="getReport">
+            <result name="suc">/saleunit_new/index_report/report15.jsp</result>
+        </action>
+        <!-- 按项目售前客户数量图 -->
+        <action name="getReport25" class="com.ihk.indexReport.action.Report25Action" method="getReport">
+            <result name="suc">/saleunit_new/index_report/report15.jsp</result>
+        </action>
+
+        <!-- 数据总表 -->
+        <action name="getReport18" class="com.ihk.indexReport.action.Report18Action" method="getReport">
+            <result name="suc">/saleunit_new/index_report/report18.jsp</result>
+        </action>
+
+
+        <!-- 销售人员业绩排行榜 -->
+        <action name="getReport33" class="com.ihk.indexReport.action.Report33Action" method="getReport">
+            <result name="suc">/saleunit_new/index_report/report33.jsp</result>
+        </action>
+
+        <!-- 单项目管理员售前客户数 -->
+        <action name="getReport35" class="com.ihk.indexReport.action.Report35Action" method="getReport">
+            <result name="suc">/saleunit_new/index_report/report15.jsp</result>
+        </action>
+
+        <!-- 单项目售前客户近期变化趋势 -->
+        <action name="getReport36" class="com.ihk.indexReport.action.Report36Action" method="getReport">
+            <result name="suc">/saleunit_new/index_report/report36.jsp</result>
+        </action>
+
+        <!-- 销售人员售前客户近期变化趋势 -->
+        <action name="getReport46" class="com.ihk.indexReport.action.Report46Action" method="getReport">
+            <result name="suc">/saleunit_new/index_report/report36.jsp</result>
+        </action>
+
+
+    </package>
+	
+</struts>
+
+
+

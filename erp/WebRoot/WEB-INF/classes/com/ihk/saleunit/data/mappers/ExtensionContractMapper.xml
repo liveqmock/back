@@ -1,0 +1,122 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.ihk.saleunit.data.IExtensionContractMapper">
+
+	<resultMap type="ExtensionContract" id="extensionContractResultMap">
+		<id property="id" column="id" />        
+		<result property="uid" column="uid" />
+		<result property="cid" column="cid" />
+		<result property="oldSignDate" column="old_sign_date"/>
+		<result property="applyTime" column="apply_time"/>
+		<result property="extensionDay" column="extension_day" />
+		<result property="extensionFirst" column="extension_first" />
+		<result property="extensionReason" column="extension_reason" />
+		<result property="approvedMan" column="approved_man" />
+		<result property="approvedDay" column="approved_day" />
+		<result property="isDeleted" column="is_deleted" />
+		<result property="createdId" column="created_id" />
+		<result property="createdTime" column="created_time" />
+		<result property="modId" column="mod_id" />
+		<result property="modTime" column="mod_time" />
+	</resultMap>
+
+	<insert id="addExtensionContract" parameterType="ExtensionContract">
+		 <selectKey resultType="java.lang.Integer" keyProperty="id" order="AFTER" >
+            SELECT @@IDENTITY
+        </selectKey>		
+		insert into extension_contract(
+		uid,
+		cid,
+		old_sign_date,
+		apply_time,
+		extension_day,
+		extension_first,
+		extension_reason,
+		approved_man,
+		approved_day,
+		is_deleted,
+		created_id,
+		created_time,
+		mod_id,
+		mod_time
+		)
+			VALUES(
+		#{uid},
+		#{cid},
+		#{oldSignDate},
+		#{applyTime},
+		#{extensionDay},
+		#{extensionFirst},
+		#{extensionReason},
+		#{approvedMan},
+		#{approvedDay},
+		#{isDeleted},
+		#{createdId},
+		#{createdTime},
+		#{modId},
+		#{modTime}
+			)
+		
+	</insert>
+	<delete id="deleteExtensionContract" parameterType="int">
+	update extension_contract set is_deleted='1' where id=#{id};
+	</delete>
+	<update id="updateExtensionContract" parameterType="int">
+	update extension_contract set 
+		uid=#{uid},
+		cid=#{cid},
+		old_sign_date=#{oldSignDate},
+		apply_time=#{applyTime},
+		extension_day=#{extensionDay},
+		extension_first=#{extensionFirst},
+		extension_reason=#{extensionReason},
+		approved_man=#{approvedMan},
+		approved_day=#{approvedDay},
+		mod_id=#{modId},
+		mod_time=#{modTime}
+	 where id=#{id}
+	</update>
+	<select id="findExtensionContractById" resultMap="extensionContractResultMap">
+	select * from extension_contract where id=#{id}
+	</select>
+    
+	<sql id="findWhereCond"> 
+		<where>
+		
+        	and is_deleted = '0'
+		</where>
+	</sql>
+	
+	<select id="findExtensionContractCount" resultType="int" parameterType="com.ihk.saleunit.data.pojo.ExtensionContractCond">
+		SELECT count(0) from extension_contract  
+        <include refid="findWhereCond"/>     
+    </select>
+        
+	<select id="findExtensionContract" resultMap="extensionContractResultMap" parameterType="com.ihk.saleunit.data.pojo.ExtensionContractCond">
+		SELECT * from  extension_contract 
+        <include refid="findWhereCond"/> 
+		<if test="topNum > 0">
+			limit #{topNum};
+		</if>
+    </select>
+    
+	<select id="findExtensionContractPage" resultMap="extensionContractResultMap" parameterType="com.ihk.saleunit.data.pojo.ExtensionContractCond">
+		SELECT * from  extension_contract 
+        <include refid="findWhereCond"/> 
+    
+		<if test="startLine >= 0">
+		<if test="pageSize > 0">
+			limit #{startLine},#{pageSize};
+		</if>
+		</if>
+	</select>
+	
+	<select id="findExtensionContractByUnitId" resultMap="extensionContractResultMap">
+		select * from extension_contract where uid = #{unitId} and is_deleted = '0'
+	</select>
+	
+	<delete id="deleteExtensionContractByUnitId" parameterType="int">
+	update extension_contract set is_deleted='1' where uid=#{unitId};
+	</delete>
+	
+</mapper>

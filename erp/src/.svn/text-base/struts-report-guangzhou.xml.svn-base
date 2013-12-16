@@ -1,0 +1,78 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE struts PUBLIC
+    "-//Apache Software Foundation//DTD Struts Configuration 2.0//EN"
+    "http://struts.apache.org/dtds/struts-2.0.dtd">
+<struts>
+
+	<package name="report_guangzhou" extends="struts-default" namespace="/report/guangzhou">
+	
+		<action name="appoint" class="com.ihk.report.action.GuangZhouAppointAction" method="appoint">
+			<result name="appoint">/report/guangzhou/appoint.jsp</result>
+		</action>
+		
+		<action name="appointProperty" class="com.ihk.report.action.GuangZhouAppointPropertyAction" method="appointProperty">
+			<result name="appointProperty">/report/guangzhou/appoint_property.jsp</result>
+		</action>
+		
+		<action name="confirm" class="com.ihk.report.action.GuangZhouConfirmAction" method="confirm">
+			<result name="confirm" >/report/guangzhou/confirm.jsp</result>
+		</action>
+		
+		<action name="confirmProperty" class="com.ihk.report.action.GuangZhouConfirmPropertyAction" method="confirmProperty">
+			<result name="confirmProperty" >/report/guangzhou/confirm_property.jsp</result>
+		</action>
+		
+		<action name="contract" class="com.ihk.report.action.GuangZhouContractAction" method="contract">
+			<result name="contract">/report/guangzhou/contract.jsp</result>
+		</action>
+		
+		<action name="contractProperty" class="com.ihk.report.action.GuangZhouContractPropertyAction" method="contractProperty">
+			<result name="contractProperty">/report/guangzhou/contract_property.jsp</result>
+		</action>
+		
+		<!-- other -->
+		
+		<action name="companySaleWeek" class="com.ihk.report.action.GuangZhouCompanySaleWeekAction" method="companySaleWeek">
+			<result name="companySaleWeek">/report/guangzhou/company_sale_week.jsp</result>
+		</action>
+		
+		<action name="companySaleMonth" class="com.ihk.report.action.GuangZhouCompanySaleMonthAction" method="companySaleMonth">
+			<result name="companySaleMonth">/report/guangzhou/company_sale_month.jsp</result>
+		</action>
+		
+		<action name="companySaleYear" class="com.ihk.report.action.GuangZhouCompanySaleYearAction" method="companySaleYear">
+			<result name="companySaleYear">/report/guangzhou/company_sale_year.jsp</result>
+		</action>
+		
+		<action name="companySaleSum" class="com.ihk.report.action.GuangZhouCompanySaleSumAction" method="companySaleSum">
+			<result name="companySaleSum">/report/guangzhou/company_sale_sum.jsp</result>
+		</action>
+		
+		<action name="propertySaleWeek" class="com.ihk.report.action.GuangZhouPropertySaleWeekAction" method="propertySaleWeek">
+			<result name="propertySaleWeek">/report/guangzhou/property_sale_week.jsp</result>
+		</action>
+		
+		<action name="propertySaleMonth" class="com.ihk.report.action.GuangZhouPropertySaleMonthAction" method="propertySaleMonth">
+			<result name="propertySaleMonth">/report/guangzhou/property_sale_month.jsp</result>
+		</action>
+		
+		<action name="propertySaleYear" class="com.ihk.report.action.GuangZhouPropertySaleYearAction" method="propertySaleYear">
+			<result name="propertySaleYear">/report/guangzhou/property_sale_year.jsp</result>
+		</action>
+		
+		<action name="propertySaleSum" class="com.ihk.report.action.GuangZhouPropertySaleSumAction" method="propertySaleSum">
+			<result name="propertySaleSum">/report/guangzhou/property_sale_sum.jsp</result>
+		</action>
+		
+		
+		<action name="propertyNum" class="com.ihk.report.action.GuangZhouPropertyNumAction" method="propertyNum">
+			<result name="propertyNum">/report/guangzhou/property_num.jsp</result>
+		</action>
+		
+		
+	</package>
+	
+</struts>
+
+
+

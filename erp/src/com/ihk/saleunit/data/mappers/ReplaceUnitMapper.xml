@@ -1,0 +1,148 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.ihk.saleunit.data.IReplaceUnitMapper">
+
+	<resultMap type="ReplaceUnit" id="replaceUnitResultMap">
+		<id property="id" column="id" />        
+		<result property="companyProjectId1" column="company_project_id1" />
+		<result property="propertyProjectId1" column="property_project_id1" />
+		<result property="areaId1" column="area_id1" />
+		<result property="buildId1" column="build_id1" />
+		<result property="unitId1" column="unit_id1" />
+		<result property="confirmId1" column="confirm_id1" />
+		<result property="companyProjectId2" column="company_project_id2" />
+		<result property="propertyProjectId2" column="property_project_id2" />
+		<result property="areaId2" column="area_id2" />
+		<result property="buildId2" column="build_id2" />
+		<result property="unitId2" column="unit_id2" />
+		<result property="confirmId2" column="confirm_id2" />
+		<result property="replaceDate" column="replace_date" />
+		<result property="approverMan" column="approver_man" />
+		<result property="inputMan" column="input_man" />
+		<result property="remark" column="remark" />
+		<result property="isDeleted" column="is_deleted" />
+		<result property="createdId" column="created_id" />
+		<result property="createdTime" column="created_time" />
+		<result property="modId" column="mod_id" />
+		<result property="modTime" column="mod_time" />
+	</resultMap>
+
+	<insert id="addReplaceUnit" parameterType="ReplaceUnit">
+		 <selectKey resultType="java.lang.Integer" keyProperty="id" order="AFTER" >
+            SELECT @@IDENTITY
+        </selectKey>		
+		insert into replace_unit(
+		company_project_id1,
+		property_project_id1,
+		area_id1,
+		build_id1,
+		unit_id1,
+		confirm_id1,
+		company_project_id2,
+		property_project_id2,
+		area_id2,
+		build_id2,
+		unit_id2,
+		confirm_id2,
+		replace_date,
+		approver_man,
+		input_man,
+		remark,
+		is_deleted,
+		created_id,
+		created_time,
+		mod_id,
+		mod_time
+		)
+			VALUES(
+		#{companyProjectId1},
+		#{propertyProjectId1},
+		#{areaId1},
+		#{buildId1},
+		#{unitId1},
+		#{confirmId1},
+		#{companyProjectId2},
+		#{propertyProjectId2},
+		#{areaId2},
+		#{buildId2},
+		#{unitId2},
+		#{confirmId2},
+		#{replaceDate},
+		#{approverMan},
+		#{inputMan},
+		#{remark},
+		#{isDeleted},
+		#{createdId},
+		#{createdTime},
+		#{modId},
+		#{modTime}
+			)
+		
+	</insert>
+	<delete id="deleteReplaceUnit" parameterType="com.ihk.utils.base.PojoDeleteCond">
+	update replace_unit set is_deleted='1', mod_id=#{modId}, mod_time=#{modTime} where id=#{id};
+	</delete>
+	<update id="updateReplaceUnit" parameterType="int">
+	update replace_unit set 
+		company_project_id1=#{companyProjectId1},
+		property_project_id1=#{propertyProjectId1},
+		area_id1=#{areaId1},
+		build_id1=#{buildId1},
+		unit_id1=#{unitId1},
+		confirm_id1=#{confirmId1},
+		company_project_id2=#{companyProjectId2},
+		property_project_id2=#{propertyProjectId2},
+		area_id2=#{areaId2},
+		build_id2=#{buildId2},
+		unit_id2=#{unitId2},
+		confirm_id2=#{confirmId2},
+		replace_date=#{replaceDate},
+		approver_man=#{approverMan},
+		input_man=#{inputMan},
+		remark=#{remark},
+		mod_id=#{modId},
+		mod_time=#{modTime}
+	 where id=#{id}
+	</update>
+	<select id="findReplaceUnitById" resultMap="replaceUnitResultMap">
+	select * from replace_unit where id=#{id}
+	</select>
+	
+	<select id="findReplaceUnitByUnitId" resultMap="replaceUnitResultMap">
+	select * from replace_unit where unit_id1=#{unitId} and is_deleted = '0'
+	</select>
+    
+	<sql id="findWhereCond"> 
+		<where>
+        <!--
+			<if test="date1 != null and date1 != ''">
+            </if>    
+            and is_deleted = '0'
+            -->
+		</where>
+	</sql>
+	
+	<select id="findReplaceUnitCount" resultType="int" parameterType="com.ihk.saleunit.data.pojo.ReplaceUnitCond">
+		SELECT count(0) from replace_unit  
+        <include refid="findWhereCond"/>     
+    </select>
+        
+	<select id="findReplaceUnit" resultMap="replaceUnitResultMap" parameterType="com.ihk.saleunit.data.pojo.ReplaceUnitCond">
+		SELECT * from  replace_unit 
+        <include refid="findWhereCond"/> 
+		<if test="topNum > 0">
+			limit #{topNum};
+		</if>
+    </select>
+    
+	<select id="findReplaceUnitPage" resultMap="replaceUnitResultMap" parameterType="com.ihk.saleunit.data.pojo.ReplaceUnitCond">
+		SELECT * from  replace_unit 
+        <include refid="findWhereCond"/> 
+    
+		<if test="startLine >= 0">
+		<if test="pageSize > 0">
+			limit #{startLine},#{pageSize};
+		</if>
+		</if>
+	</select>
+</mapper>

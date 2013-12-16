@@ -1,0 +1,125 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.ihk.saleunit.data.ICustomerRenameMapper">
+
+	<resultMap type="CustomerRename" id="customerRenameResultMap">
+		<id property="id" column="id" />        
+		<result property="prevCustomerId" column="prev_customer_id" />
+		<result property="nextCustomerId" column="next_customer_id" />
+		<result property="approverMan" column="approver_man" />
+		<result property="inputMan" column="input_man" />
+		<result property="renameTime" column="rename_time" />
+		<result property="remark" column="remark" />
+		<result property="isDeleted" column="is_deleted" />
+		<result property="createdId" column="created_id" />
+		<result property="createdTime" column="created_time" />
+		<result property="modId" column="mod_id" />
+		<result property="modTime" column="mod_time" />
+	</resultMap>
+
+	<insert id="addCustomerRename" parameterType="CustomerRename">
+		 <selectKey resultType="java.lang.Integer" keyProperty="id" order="AFTER" >
+            SELECT @@IDENTITY
+        </selectKey>		
+		insert into customer_rename(
+		prev_customer_id,
+		next_customer_id,
+		approver_man,
+		input_man,
+		rename_time,
+		remark,
+		is_deleted,
+		created_id,
+		created_time,
+		mod_id,
+		mod_time
+		)
+			VALUES(
+		#{prevCustomerId},
+		#{nextCustomerId},
+		#{approverMan},
+		#{inputMan},
+		#{renameTime},
+		#{remark},
+		#{isDeleted},
+		#{createdId},
+		#{createdTime},
+		#{modId},
+		#{modTime}
+			)
+		
+	</insert>
+	<delete id="deleteCustomerRename" parameterType="com.ihk.utils.base.PojoDeleteCond">
+	update customer_rename set is_deleted='1', mod_id=#{modId}, mod_time=#{modTime} where id=#{id};
+	</delete>
+	<update id="updateCustomerRename" parameterType="int">
+	update customer_rename set 
+		prev_customer_id=#{prevCustomerId},
+		next_customer_id=#{nextCustomerId},
+		approver_man=#{approverMan},
+		input_man=#{inputMan},
+		rename_time=#{renameTime},
+		remark=#{remark},
+		mod_id=#{modId},
+		mod_time=#{modTime}
+	 where id=#{id}
+	</update>
+	<select id="findCustomerRenameById" resultMap="customerRenameResultMap">
+	select * from customer_rename where id=#{id}
+	</select>
+    
+	<sql id="findWhereCond"> 
+		<where>
+            and is_deleted = '0'
+		</where>
+	</sql>
+	
+	<select id="findCustomerRenameCount" resultType="int" parameterType="com.ihk.saleunit.data.pojo.CustomerRenameCond">
+		SELECT count(0) from customer_rename  
+        <include refid="findWhereCond"/>     
+    </select>
+        
+	<select id="findCustomerRename" resultMap="customerRenameResultMap" parameterType="com.ihk.saleunit.data.pojo.CustomerRenameCond">
+		SELECT * from  customer_rename 
+        <include refid="findWhereCond"/> 
+		<if test="topNum > 0">
+			limit #{topNum};
+		</if>
+    </select>
+    
+	<select id="findCustomerRenamePage" resultMap="customerRenameResultMap" parameterType="com.ihk.saleunit.data.pojo.CustomerRenameCond">
+		SELECT * from  customer_rename 
+        <include refid="findWhereCond"/> 
+    
+		<if test="startLine >= 0">
+		<if test="pageSize > 0">
+			limit #{startLine},#{pageSize};
+		</if>
+		</if>
+	</select>
+    
+    <!-- ajax分页使用 -->	
+   <sql id="findCustomerRenameForAjaxComm">
+		<where>		
+            and is_deleted = '0'
+		</where>
+		
+	</sql>
+    
+    <select id="findCustomerRenameForAjax" resultMap="customerRenameResultMap" parameterType="com.ihk.saleunit.data.pojo.CustomerRenameCond">
+		SELECT * from  customer_rename 
+        <include refid="findCustomerRenameForAjaxComm"/> 
+    
+		<if test="startLine >= 0">
+		<if test="pageSize > 0">
+			limit #{startLine},#{pageSize};
+		</if>
+		</if>
+	</select>
+    
+    <select id="findCustomerRenameCountForAjax" resultType="int" parameterType="com.ihk.saleunit.data.pojo.CustomerRenameCond">
+		SELECT count(1) from customer_rename  
+        <include refid="findCustomerRenameForAjaxComm"/>     
+    </select>
+    
+</mapper>

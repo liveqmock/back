@@ -1,0 +1,160 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.ihk.saleunit.data.IConfirmBookMapper">
+
+	<resultMap type="ConfirmBook" id="confirmBookResultMap">
+		<id property="id" column="id" />        
+		<result property="customerId" column="customer_id" />
+		<result property="salesId" column="sales_id" />
+		<result property="phone" column="phone" />
+		<result property="unitId" column="unit_id" />
+		<result property="payWayId" column="pay_way_id" />
+		<result property="discountPercent" column="discount_percent" />
+		<result property="discountDesc" column="discount_desc" />
+		<result property="sumMoney" column="sum_money" />
+		<result property="renovateDesc" column="renovate_desc" />
+		<result property="bookMoney" column="book_money" />
+		<result property="endDate" column="end_date" />
+		<result property="confirmId" column="confirm_id" />
+		<result property="isDeleted" column="is_deleted" />
+		<result property="createdId" column="created_id" />
+		<result property="createdTime" column="created_time" />
+		<result property="modId" column="mod_id" />
+		<result property="modTime" column="mod_time" />
+	</resultMap>
+
+	<insert id="addConfirmBook" parameterType="ConfirmBook">
+		 <selectKey resultType="java.lang.Integer" keyProperty="id" order="AFTER" >
+            SELECT @@IDENTITY
+        </selectKey>		
+		insert into confirm_book(
+		customer_id,
+		sales_id,
+		phone,
+		unit_id,
+		pay_way_id,
+		discount_percent,
+		discount_desc,
+		sum_money,
+		renovate_desc,
+		book_money,
+		end_date,
+		confirm_id,
+		is_deleted,
+		created_id,
+		created_time,
+		mod_id,
+		mod_time
+		)
+			VALUES(
+		#{customerId},
+		#{salesId},
+		#{phone},
+		#{unitId},
+		#{payWayId},
+		#{discountPercent},
+		#{discountDesc},
+		#{sumMoney},
+		#{renovateDesc},
+		#{bookMoney},
+		#{endDate},
+		#{confirmId},
+		#{isDeleted},
+		#{createdId},
+		#{createdTime},
+		#{modId},
+		#{modTime}
+			)
+		
+	</insert>
+	<delete id="deleteConfirmBook" parameterType="com.ihk.utils.base.PojoDeleteCond">
+	update confirm_book set is_deleted='1', mod_id=#{modId}, mod_time=#{modTime} where id=#{id};
+	</delete>
+	<update id="updateConfirmBook" parameterType="int">
+	update confirm_book set 
+		customer_id=#{customerId},
+		sales_id=#{salesId},
+		phone=#{phone},
+		unit_id=#{unitId},
+		pay_way_id=#{payWayId},
+		discount_percent=#{discountPercent},
+		discount_desc=#{discountDesc},
+		sum_money=#{sumMoney},
+		renovate_desc=#{renovateDesc},
+		book_money=#{bookMoney},
+		end_date=#{endDate},
+		confirm_id=#{confirmId},
+		mod_id=#{modId},
+		mod_time=#{modTime}
+	 where id=#{id}
+	</update>
+	<select id="findConfirmBookById" resultMap="confirmBookResultMap">
+	select * from confirm_book where id=#{id}
+	</select>
+    
+	<sql id="findWhereCond"> 
+		<where>
+            and is_deleted = '0'
+		</where>
+	</sql>
+	
+	<select id="findConfirmBookCount" resultType="int" parameterType="com.ihk.saleunit.data.pojo.ConfirmBookCond">
+		SELECT count(0) from confirm_book  
+        <include refid="findWhereCond"/>     
+    </select>
+        
+	<select id="findConfirmBook" resultMap="confirmBookResultMap" parameterType="com.ihk.saleunit.data.pojo.ConfirmBookCond">
+		SELECT * from  confirm_book 
+        <include refid="findWhereCond"/> 
+		<if test="topNum > 0">
+			limit #{topNum};
+		</if>
+    </select>
+    
+	<select id="findConfirmBookPage" resultMap="confirmBookResultMap" parameterType="com.ihk.saleunit.data.pojo.ConfirmBookCond">
+		SELECT * from  confirm_book 
+        <include refid="findWhereCond"/> 
+    
+		<if test="startLine >= 0">
+		<if test="pageSize > 0">
+			limit #{startLine},#{pageSize};
+		</if>
+		</if>
+	</select>
+    
+    <!-- ajax分页使用 -->	
+   <sql id="findConfirmBookForAjaxComm">
+		<where>		
+            and is_deleted = '0'
+		</where>
+		
+	</sql>
+    
+    <select id="findConfirmBookForAjax" resultMap="confirmBookResultMap" parameterType="com.ihk.saleunit.data.pojo.ConfirmBookCond">
+		SELECT * from  confirm_book 
+        <include refid="findConfirmBookForAjaxComm"/> 
+    
+		<if test="startLine >= 0">
+		<if test="pageSize > 0">
+			limit #{startLine},#{pageSize};
+		</if>
+		</if>
+	</select>
+	
+	<select id="findConfirmBookByUnitIdIncludeIsDeleted" resultMap="confirmBookResultMap">
+		select * from confirm_book where unit_id = #{unitId}  order by mod_time desc limit 1
+	</select>
+    
+    <select id="findConfirmBookCountForAjax" resultType="int" parameterType="com.ihk.saleunit.data.pojo.ConfirmBookCond">
+		SELECT count(1) from confirm_book  
+        <include refid="findConfirmBookForAjaxComm"/>     
+    </select>
+    
+	<select id="findConfirmBookByUnitId" resultMap="confirmBookResultMap">
+		select * from confirm_book where unit_id = #{unitId} and is_deleted = '0' order by mod_time desc limit 1
+	</select>
+	
+	<delete id="updateConfirmBookBefore" parameterType="com.ihk.utils.base.PojoDeleteCond">
+		update confirm_book set is_deleted='0', mod_id=#{modId}, mod_time=#{modTime} where id=#{id};
+	</delete>
+</mapper>

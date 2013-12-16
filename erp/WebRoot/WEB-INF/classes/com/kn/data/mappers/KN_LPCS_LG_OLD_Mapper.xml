@@ -1,0 +1,42 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.kn.data.IKN_LPCS_LG_OLD_Mapper">
+	<resultMap type="KN_LPCS_LG_OLD" id="kN_LPCS_LG_OLD_ResultMap">
+		<id property="楼阁id" column="楼阁ID" />        
+		<result property="楼盘id" column="楼盘ID" />
+		<result property="楼阁名称" column="楼阁名称" />
+		<result property="功能" column="功能" />
+		<result property="实用面积" column="实用面积" />
+		<result property="建筑面积" column="建筑面积" />
+		<result property="销售面积" column="销售面积" />
+		<result property="建筑许可证号" column="建筑许可证号" />
+		<result property="预售许可证号" column="预售许可证号" />
+		<result property="竣工日期" column="竣工日期" />
+		<result property="封顶日期" column="封顶日期" />
+		<result property="装修标准" column="装修标准" />
+		<result property="备注" column="备注" />
+		<result property="审核" column="审核" />
+		<result property="目标均价" column="目标均价" />
+		<result property="lgPjcode" column="LG_PJCODE" />
+		<result property="lgId" column="LG_ID" />
+		<result property="lgStorey" column="LG_STOREY" />
+		<result property="lgFlrunit" column="LG_FLRUNIT" />
+		<result property="lgStairs" column="LG_STAIRS" />
+		<result property="lgFirst" column="LG_FIRST" />
+		<result property="位置" column="位置" />
+		<result property="dataLab" column="DATA_LAB" />
+		<result property="默认折扣1" column="默认折扣1" />
+		<result property="默认折扣2" column="默认折扣2" />
+		<result property="默认折扣3" column="默认折扣3" />
+		<result property="默认折扣4" column="默认折扣4" />
+		<result property="开发期数" column="开发期数" />
+		<result property="类型" column="类型" />
+	</resultMap> 
+
+
+	<select id="findKN_LPCS_LG_OLD" resultMap="kN_LPCS_LG_OLD_ResultMap" parameterType="com.kn.data.pojo.KN_LPCS_LG_OLD_Cond">
+		SELECT * from  climb.楼盘初始_楼阁_OLD  
+		<where>
+		</where>	
+    </select>
+</mapper>

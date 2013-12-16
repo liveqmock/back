@@ -1,0 +1,111 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.ihk.saleunit.log.ILogMapper">
+
+	<resultMap type="Log" id="logResultMap">
+		<id property="id" column="id" />        
+		<result property="propertyId" column="property_id"/>
+		<result property="areaId" column="area_id" />
+		<result property="buildId" column="build_id" />
+		<result property="unitId" column="unit_id" />
+		<result property="isDeleted" column="is_deleted" />
+		<result property="createdId" column="created_id" />
+		<result property="createdTime" column="created_time" />
+		<result property="modId" column="mod_id" />
+		<result property="modTime" column="mod_time" />
+		<result property="type" column="type" />
+		<result property="modul" column="modul" />		
+		<result property="operationProcedure" column="operation_procedure" />		
+		<result property="computerInformationl" column="computer_informationl" />	
+	</resultMap>
+
+	<insert id="addLog" parameterType="Log">
+		 <selectKey resultType="java.lang.Integer" keyProperty="id" order="AFTER" >
+            SELECT @@IDENTITY
+        </selectKey>		
+		insert into log(
+		property_id,
+		area_id,
+		build_id,
+		unit_id,
+		type,
+		modul,
+		operation_procedure,
+		computer_informationl,
+		created_id,
+		created_time,
+		mod_id,
+		mod_time,
+		is_deleted
+		)
+			VALUES(
+		#{propertyId},
+		#{areaId},
+		#{buildId},	
+		#{unitId},
+		#{type},
+		#{modul},
+		#{operationProcedure},
+		#{computerInformationl},
+		#{createdId},
+		#{createdTime},
+		#{modId},
+		#{modTime},
+		#{isDeleted}
+			)
+		
+	</insert>
+	<delete id="deleteLog" parameterType="int">
+	update log set is_deleted='1' where id=#{id};
+	</delete>
+	<update id="updateLog" parameterType="Log">
+	update log set 
+		property_id=#{propertyId},
+		area_id=#{areaId},
+		build_id=#{buildId},
+		main_id=#{mainId},
+		unit_id=#{unitId},
+		is_deleted=#{isDeleted},
+		created_id=#{createdId},
+		created_time=#{createdTime},
+		mod_id=#{modId},
+		mod_time=#{modTime}
+	 where id=#{id}
+	</update>
+	
+	<select id="findLogByUnitId" parameterType="com.ihk.saleunit.log.pojo.LogCond" resultMap="logResultMap">
+		SELECT * from  log 
+    	where unit_id = #{unitId}	
+    	and modul=#{modul}
+	</select>
+	
+	<select id="findLogByCompanyProjectId" parameterType="com.ihk.saleunit.log.pojo.LogCond" resultMap="logResultMap">
+		 select * from log where property_id in (
+		 	select id from property_project where 
+		 		company_project_id =#{companyProjectId}) 
+		 and modul=#{modul} 
+		 <if test="type !=null and type != ''">
+		 	and type like '%' #{type} '%'
+		 </if>
+		 <if test="projectId != null and projectId !=0" >
+		 	and property_id = #{projectId}
+		 </if>
+		 <if test="areaId != null and areaId !=0" >
+		 	and area_id = #{areaId}
+		 </if>
+		 <if test="buildId != null and buildId !=0" >
+		 	and build_id = #{buildId}
+		 </if>
+		 <if test="unitId !=null and unitId != 0">
+		 	 and unit_id = #{unitId}
+		 </if>
+		 group by created_time
+		 
+	</select>
+	
+	<select id="findLogByCreatedTime" parameterType="com.ihk.saleunit.log.pojo.LogCond" resultMap="logResultMap">
+		select * from log 
+			where created_time =#{createdTime}
+	</select>
+	
+</mapper>

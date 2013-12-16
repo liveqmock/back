@@ -1,0 +1,217 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE struts PUBLIC
+        "-//Apache Software Foundation//DTD Struts Configuration 2.0//EN"
+        "http://struts.apache.org/dtds/struts-2.0.dtd">
+<struts>
+    <!-- 用户管理(2012/09/25) 用户新增,项目跳转,密码重置,权限设置 -->
+    <package name="user_manager" extends="struts-base" namespace="/user/manager">
+        <!-- 非easyui 分页的入口 -->
+        <action name="layout" class="com.ihk.user.manager.UserAccountManagerAction" method="index">
+            <result name="index">/userAccount/manager/search_userAccount.jsp</result>
+        </action>
+
+        <action name="easyuiLayout" class="com.ihk.user.manager.UserAccountManagerAction" method="easyuiLayout">
+            <result name="easyuiLayout">/userAccount/manager/easyuiLayout.jsp</result>
+        </action>
+        
+        <action name="ajaxSearch" class="com.ihk.user.manager.UserAccountManagerAction" method="ajaxSearch"/>
+        
+        <!-- 查询页面  查询能管理的用户列表 -->
+        <action name="index" class="com.ihk.user.manager.UserAccountManagerAction" method="index">
+            <result name="index">/userAccount/manager/search_userAccount.jsp</result>
+        </action>
+
+        <!-- 新建用户 -->
+        <action name="inputUser" class="com.ihk.user.manager.UserAccountInputAction" method="index">
+            <result name="index">/userAccount/manager/input_userAccount.jsp</result>
+        </action>
+        <!-- 新建用户的提交action -->
+        <action name="formUser" class="com.ihk.user.manager.UserAccountInputAction" method="form"/>
+
+        <!-- 批量新建用户 -->
+        <action name="batInputUser" class="com.ihk.user.manager.UserAccountBatAction" method="batInputUser">
+            <result name="success">/userAccount/manager/bat_inputUser.jsp</result>
+        </action>
+        <!-- 批量新建用户的提交action -->
+        <action name="submitBatUser" class="com.ihk.user.manager.UserAccountBatAction" method="submitBatUser"/>
+
+        <!-- 修改用户  包括添加权限 -->
+        <action name="updateUser" class="com.ihk.user.manager.UserAccountInputAction" method="updateUser">
+            <result name="updateUser">/userAccount/manager/update_userpriv.jsp</result>
+        </action>
+        <action name="updateUserForm" class="com.ihk.user.manager.UserAccountInputAction" method="updateUserForm"/>
+        <!-- 注销账户 -->
+        <action name="delUser" class="com.ihk.user.manager.UserAccountInputAction" method="delUser">
+            <result name="updateUser">/userAccount/manager/update_userpriv.jsp</result>
+        </action>
+        <!-- 恢复账户 -->
+        <action name="undoDelUser" class="com.ihk.user.manager.UserAccountInputAction" method="undoDelUser">
+            <result name="updateUser">/userAccount/manager/update_userpriv.jsp</result>
+        </action>
+        <action name="initPwd" class="com.ihk.user.manager.UserAccountInputAction" method="initPwd"/>
+        <!-- 修改用户界面使用  增加用户权限 -->
+        <action name="addUserRole" class="com.ihk.user.manager.UserAccountInputAction" method="addUserRold">
+            <result name="updateUser">/userAccount/manager/update_userpriv.jsp</result>
+        </action>
+        <!-- 批量删除用户账户 -->
+        <action name="delUsers" class="com.ihk.user.manager.UserAccountManagerAction" method="delUsers">
+        </action>
+        <!-- 修改用户界面使用  删除用户权限 -->
+        <action name="delUserRole" class="com.ihk.user.manager.UserAccountInputAction" method="delUserRole"/>
+        <!-- 删除多个角色 -->
+        <action name="delUserRoles" class="com.ihk.user.manager.UserAccountInputAction" method="delUserRoles"/>
+
+        <!-- 新建用户的角色权限 -->
+        <action name="inputUserRole" class="com.ihk.user.manager.UserRoleAction" method="inputUserRole">
+            <result name="success">/userAccount/manager/input_userRole.jsp</result>
+        </action>
+        <!-- 新建用户角色的提交action -->
+        <action name="submitUserRole" class="com.ihk.user.manager.UserRoleAction" method="submitUserRole"/>
+
+        <action name="addRoleFirst" class="com.ihk.user.manager.UserRoleAction" method="addRoleFirst">
+            <result name="success">/userAccount/manager/addRole.jsp</result>
+        </action>
+        <!-- 保存新增角色 -->
+        <action name="addRole" class="com.ihk.user.manager.UserRoleAction" method="addRole"/>
+        
+        <!-- 复制角色界面 -->
+        <action name="copyRoleForm" class="com.ihk.user.manager.UserRoleAction" method="copyRoleForm">
+       	 <result name="copyRole">/userAccount/manager/copyRole.jsp</result>
+       	</action>
+       	<!-- 替换角色 -->
+       	<action name="replaceRoleFrist" class="com.ihk.user.manager.UserRoleAction" method="replaceRoleFrist">
+       		<result>/userAccount/manager/replaceRole.jsp</result>
+       	</action>
+       	
+       	<action name="replaceRole" class="com.ihk.user.manager.UserRoleAction" method="replaceRole"></action>
+        <!-- 复制角色处理action -->
+        <action name="copyRole" class="com.ihk.user.manager.UserRoleAction" method ="copyRole"/>
+        <!-- 编辑角色 -->
+        <action name="editRole" class="com.ihk.user.manager.UserRoleAction" method="editRole">
+            <result name="update">/userAccount/manager/editRole.jsp</result>
+        </action>
+        <!-- 保存角色 -->
+        <action name="updateRole" class="com.ihk.user.manager.UserRoleAction" method="updateRole"/>
+
+        <!-- 编辑角色权限 -->
+        <action name="editRolePriv" class="com.ihk.user.manager.UserRoleAction" method="editRolePriv">
+            <result name="update">/userAccount/manager/editRolePriv.jsp</result>
+        </action>
+        <!-- 保存角色权限 -->
+        <action name="updateRolePriv" class="com.ihk.user.manager.UserRoleAction" method="updateRolePriv"/>
+
+        <!-- 角色权限的查询页面-->
+        <action name="searchRolepriv" class="com.ihk.user.manager.RoleprivAction" method="searchRolepriv">
+            <result name="success">/userAccount/manager/search_rolepriv.jsp</result>
+        </action>
+        <action name="searchRoleprivAjax" class="com.ihk.user.manager.RoleprivAction" method="searchRoleprivAjax"/>
+
+        <!-- 权限查询页面 -->
+        <action name="searchPriv" class="com.ihk.user.manager.PrivAction" method="searchPriv">
+            <result name="success">/userAccount/manager/search_priv.jsp</result>
+        </action >
+        <action name="searchPrivAjax" class="com.ihk.user.manager.PrivAction" method="searchPrivAjax"/>
+        <!-- 保存新增权限 -->
+        <action name="addPriv" class="com.ihk.user.manager.PrivAction" method="addPriv"/>
+        <!-- 编辑权限 -->
+        <action name="editPriv" class="com.ihk.user.manager.PrivAction" method="editPriv">
+            <result name="update">/userAccount/manager/editPriv.jsp</result>
+        </action>
+        <!-- 保存权限 -->
+        <action name="updatePriv" class="com.ihk.user.manager.PrivAction" method="updatePriv"/>
+        
+        <!-- 批量修改客户项目 -->  
+        <action name="toBatchModifyProject" class="com.ihk.user.manager.UserAccountBatAction" method="toBatchModifyProject">
+        	<result name="toBatchModifyProject">/userAccount/manager/batch_modify_project.jsp</result>
+        </action>
+        
+        <!-- 下载模板 -->
+        <action name="downloadTemplate" class="com.ihk.user.manager.UserAccountBatAction" method="downloadTemplate"/>
+        
+        <!-- 上传文件 -->
+        <action name="batchModifyProject" class="com.ihk.user.manager.UserAccountBatAction" method="batchModifyProject"/>
+        
+        <!-- 判断是否有异常数据 -->
+        <action name="ajaxExceptionData" class="com.ihk.user.manager.UserAccountBatAction" method="ajaxExceptionData"/>
+        
+        <!-- 异常数据datagrid -->
+        <action name="ajaxExceptionDataGrid" class="com.ihk.user.manager.UserAccountBatAction" method="ajaxExceptionDataGrid"/>
+        
+        <!-- 下载异常数据 -->
+        <action name="downloadExceptionData" class="com.ihk.user.manager.UserAccountBatAction" method="downloadExceptionData"/>
+
+		<!-- 根据查询条件查询需要改变的角色 -->
+		<action name="ajaxSearchRoleFrist" class="com.ihk.user.manager.UserRoleAction" method="ajaxSearchRoleFrist">
+			<result>/userAccount/manager/replaceRoleSerach.jsp</result>
+		</action>
+		<action name="ajaxSearchRole" class="com.ihk.user.manager.UserRoleAction" method="ajaxSearchRole"/>
+    </package>
+
+    <!-- 原用户管理  主要是专门给admin_gz用户使用的那个界面      更新之后将慢慢不在使用-->
+    <package name="guangzhou_userAccount" extends="struts-default" namespace="/guangzhou/userAccount">
+        <action name="input" class="com.ihk.sale.action.guangzhou.InputUserAccount" method="indexInput">
+            <result name="input">/customer/guangzhou/input_userAccount.jsp</result>
+        </action>
+        <action name="inputform" class="com.ihk.sale.action.guangzhou.InputUserAccount" method="inputUserAccount">
+            <result name="input">/customer/guangzhou/input_userAccount.jsp</result>
+        </action>
+        <!-- pwd -->
+        <action name="setpwd" class="com.ihk.sale.action.guangzhou.SetMyPwdAction" method="setPwd">
+            <result name="setpwd">/customer/guangzhou/set_userPwd.jsp</result>
+        </action>
+        <action name="setpwdform" class="com.ihk.sale.action.guangzhou.SetMyPwdAction" method="setPwdForm">
+            <result name="setpwd">/customer/guangzhou/set_userPwd.jsp</result>
+        </action>
+        <!-- 我的角色 -->
+        <action name="showMyRole" class="com.ihk.sale.action.guangzhou.ShowMyRoleAction" method="showMyRole">
+            <result name="suc">/customer/guangzhou/show_my_role.jsp</result>
+        </action>
+        <!-- update useraccount userrole -->
+        <action name="indexUpdate" class="com.ihk.sale.action.guangzhou.UpdateUserAccount" method="indexUpdate">
+            <result name="update">/customer/guangzhou/update_userpriv.jsp</result>
+        </action>
+        <action name="delUserRoles" class="com.ihk.sale.action.guangzhou.UpdateUserAccount" method="delUserRoles">
+            <result name="update">/customer/guangzhou/update_userpriv.jsp</result>
+        </action>
+        <action name="addUserRole" class="com.ihk.sale.action.guangzhou.UpdateUserAccount" method="addUserRole">
+            <result name="update">/customer/guangzhou/update_userpriv.jsp</result>
+        </action>
+        <action name="updatepwd" class="com.ihk.sale.action.guangzhou.UpdateUserAccount" method="updateUserPwd">
+            <result name="update">/customer/guangzhou/update_userpriv.jsp</result>
+        </action>
+        <action name="updateuser" class="com.ihk.sale.action.guangzhou.UpdateUserAccount" method="updateUser">
+            <result name="update">/customer/guangzhou/update_userpriv.jsp</result>
+        </action>
+        <action name="searchuserrole" class="com.ihk.sale.action.guangzhou.UpdateUserAccount" method="searchUserRole">
+            <result name="update">/customer/guangzhou/update_userpriv.jsp</result>
+        </action>
+
+        <action name="search" class="com.ihk.sale.action.guangzhou.SearchUserAccount" method="searchUserIndex">
+            <result name="search">/customer/guangzhou/search_userAccount.jsp</result>
+            <result name="index">/customer/guangzhou/search_userAccount.jsp</result>
+            <result name="index" type="chain">
+                <param name="namespace">/customer_guangzhou/index</param>
+                <param name="actionName">login</param>
+                <param name="method">login</param>
+            </result>
+        </action>
+        <action name="searchform" class="com.ihk.sale.action.guangzhou.SearchUserAccount" method="searchUserForm">
+            <result name="search">/customer/guangzhou/search_userAccount.jsp</result>
+        </action>
+        <action name="delete" class="com.ihk.sale.action.guangzhou.SearchUserAccount" method="delUserAccount">
+            <result name="search">/customer/guangzhou/search_userAccount.jsp</result>
+        </action>
+        <action name="addrole" class="com.ihk.sale.action.guangzhou.SearchUserAccount" method="addUserRole">
+            <result name="search">/customer/guangzhou/search_userAccount.jsp</result>
+        </action>
+        <action name="delrole" class="com.ihk.sale.action.guangzhou.SearchUserAccount" method="delUserRole">
+            <result name="search">/customer/guangzhou/search_userAccount.jsp</result>
+        </action>
+        <action name="copyrole" class="com.ihk.sale.action.guangzhou.SearchUserAccount" method="copyUserRole">
+            <result name="search">/customer/guangzhou/search_userAccount.jsp</result>
+        </action>
+    </package>
+</struts>
+
+
+

@@ -1,0 +1,101 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.ihk.saleunit.data.IUnitGiftMapper">
+
+	<resultMap type="UnitGift" id="unitGiftResultMap">
+		<id property="id" column="id" />        
+		<result property="unitId" column="unit_id" />
+		<result property="userId" column="user_id" />
+		<result property="mark" column="mark" />
+		<result property="price" column="price" />
+		<result property="customerId" column="customer_id" />
+		<result property="isDeleted" column="is_deleted" />
+		<result property="createdId" column="created_id" />
+		<result property="createdTime" column="created_time" />
+		<result property="modId" column="mod_id" />
+		<result property="modTime" column="mod_time" />
+	</resultMap>
+
+	<insert id="addUnitGift" parameterType="UnitGift">
+		 <selectKey resultType="java.lang.Integer" keyProperty="id" order="AFTER" >
+            SELECT @@IDENTITY
+        </selectKey>		
+		insert into unit_gift(
+		unit_id,
+		user_id,
+		mark,
+		price,
+		customer_id,
+		is_deleted,
+		created_id,
+		created_time,
+		mod_id,
+		mod_time
+		)
+			VALUES(
+		#{unitId},
+		#{userId},
+		#{mark},
+		#{price},
+		#{customerId},
+		#{isDeleted},
+		#{createdId},
+		#{createdTime},
+		#{modId},
+		#{modTime}
+			)
+		
+	</insert>
+	<delete id="deleteUnitGift" parameterType="int">
+	update unit_gift set is_deleted='1' where id=#{id};
+	</delete>
+	<update id="updateUnitGift" parameterType="int">
+	update unit_gift set 
+		unit_id=#{unitId},
+		user_id=#{userId},
+		mark=#{mark},
+		price=#{price},
+		customer_id=#{customerId},
+		mod_id=#{modId},
+		mod_time=#{modTime}
+	 where id=#{id}
+	</update>
+	<select id="findUnitGiftById" resultMap="unitGiftResultMap">
+	select * from unit_gift where id=#{id}
+	</select>
+    
+	<sql id="findWhereCond"> 
+		<where>
+       
+			<if test="unitId != null and unitId != '' and unitId !='0'">
+				 unit_id = #{unitId}
+            </if>    
+            and is_deleted = '0'
+            
+		</where>
+	</sql>
+	
+	<select id="findUnitGiftCount" resultType="int" parameterType="com.ihk.saleunit.data.pojo.UnitGiftCond">
+		SELECT count(0) from unit_gift  
+        <include refid="findWhereCond"/>     
+    </select>
+        
+	<select id="findUnitGift" resultMap="unitGiftResultMap" parameterType="com.ihk.saleunit.data.pojo.UnitGiftCond">
+		SELECT * from  unit_gift 
+        <include refid="findWhereCond"/> 
+		<if test="topNum > 0">
+			limit #{topNum};
+		</if>
+    </select>
+    
+	<select id="findUnitGiftPage" resultMap="unitGiftResultMap" parameterType="com.ihk.saleunit.data.pojo.UnitGiftCond">
+		SELECT * from  unit_gift 
+        <include refid="findWhereCond"/> 
+    
+		<if test="startLine >= 0">
+		<if test="pageSize > 0">
+			limit #{startLine},#{pageSize};
+		</if>
+		</if>
+	</select>
+</mapper>

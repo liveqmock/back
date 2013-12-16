@@ -1,0 +1,341 @@
+package com.ihk.junit;
+
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+
+import org.junit.BeforeClass;
+import org.junit.Test;
+import org.springframework.context.support.FileSystemXmlApplicationContext;
+
+import com.ihk.constanttype.ContConfirmType;
+import com.ihk.saleunit.data.pojo.Confirm;
+import com.ihk.saleunit.data.pojo.Contract;
+import com.ihk.saleunit.data.pojo.ContractCustomer;
+import com.ihk.saleunit.data.pojo.Question;
+import com.ihk.saleunit.data.pojo.QuestionTopic;
+import com.ihk.saleunit.data.pojo.QuestionTopicCond;
+import com.ihk.saleunit.data.pojo.SaleDefaultQuestion;
+import com.ihk.saleunit.data.pojo.SaleDefaultQuestionCond;
+import com.ihk.saleunit.data.services.IConfirmServices;
+import com.ihk.saleunit.data.services.IContractCustomerServices;
+import com.ihk.saleunit.data.services.IContractServices;
+import com.ihk.saleunit.data.services.IQuestionServices;
+import com.ihk.saleunit.data.services.IQuestionTopicServices;
+import com.ihk.saleunit.data.services.ISaleDefaultQuestionServices;
+import com.ihk.setting.data.pojo.ProjectCode;
+import com.ihk.setting.data.services.IProjectCodeServices;
+import com.ihk.utils.MyTransationTemplate;
+
+/**
+ * 有关成交客户的
+ * @author dtc
+ * 2013-5-23,下午08:19:23
+ */
+public class ModifyContractCustomer {
+	
+	private static FileSystemXmlApplicationContext factory;
+	
+	private static IContractCustomerServices contractCustomerServices;
+	private static IContractServices contractServices;
+	private static IConfirmServices confirmServices;
+	private static ISaleDefaultQuestionServices saleDefaultQuestionServices;
+	private static IQuestionServices questionServices;
+	private static IQuestionTopicServices questionTopicServices;
+	private static IProjectCodeServices projectCodeServices;
+	
+	
+	@BeforeClass
+	public static void init(){
+		
+		factory = new FileSystemXmlApplicationContext("src/Junit-applicationContext.xml");
+		
+		contractCustomerServices = (IContractCustomerServices) factory.getBean("contractCustomerServices");
+		
+		contractServices = (IContractServices) factory.getBean("contractServices");
+		
+		confirmServices = (IConfirmServices) factory.getBean("confirmServices");
+		
+		saleDefaultQuestionServices=(ISaleDefaultQuestionServices)factory.getBean("saleDefaultQuestionServices");
+		
+		questionTopicServices = (IQuestionTopicServices)factory.getBean("questionTopicServices");
+		
+		questionServices = (IQuestionServices)factory.getBean("questionServices");
+		
+		projectCodeServices = (IProjectCodeServices)factory.getBean("projectCodeServices");
+	}
+	
+	/**
+	 * 1. contract_customer 状态为合同
+	 * 
+	 * 先查出所有的合同客户,然后获取到对应的main_id
+	 * @throws Exception 
+	 * 
+	 * 
+	 */
+	
+	public void onlyContractForContractCustomer() throws Exception {
+		
+		new MyTransationTemplate() {
+			
+			@Override
+			protected void doExecuteCallback() throws Exception {
+
+			 	List<ContractCustomer> list = contractCustomerServices.findContractCustomer2();
+			 	
+			 	Contract contract = null;
+			 	
+			 	for(ContractCustomer con : list){
+			 		
+			 		int customerId = con.getId();
+			 		if(customerId <= 0)
+			 			continue;
+			 		
+			 		contract = contractServices.findContractByCustomerId(customerId);
+			 		if(contract == null)
+			 			continue;
+			 		if(con.getProjectId()!=100){
+			 			continue;
+			 		}
+			 		contractCustomerServices.updateContractCustomerMainId(customerId, contract.getId());
+			 		
+			 	}
+				
+			}
+		}.execute();
+	}
+	
+	/**
+	 * 2. 单元状态为合同,对应的客户为成交,
+	 * @throws Exception 
+	 * 
+	 */
+	
+	public void unitContractCustomerConfirm() throws Exception{
+		
+		new MyTransationTemplate() {
+			
+			@Override
+			protected void doExecuteCallback() throws Exception {
+				
+				//旧的contract_customer id及contract id as main_id
+				List<Map<String, Integer>> list = contractCustomerServices.findUnitContractCustomerConfirm();
+				
+				List<Map<String, Integer>> updateList = contractCustomerServices.findUnitContractCustomerConfirmForUpdate();
+				//update 
+				for(Map<String, Integer> map : updateList){
+			 		
+			 		int customerId = map.get("customerId");
+			 		int mainId = map.get("mainId");
+			 		
+			 		if(customerId <= 0 || mainId <= 0)
+			 			continue;
+			 		
+			 		contractCustomerServices.updateContractCustomerMainId(customerId, mainId);
+			 	}
+				
+				List<Map<String, Integer>> insertList = new ArrayList<Map<String, Integer>>();
+				Map<String, Integer> insertMap = null;
+				
+				//select
+				for(Map<String, Integer> map : list){
+			 		
+			 		int customerId = map.get("customerId"); //旧的
+			 		int mainId = map.get("mainId"); //contract
+			 		
+			 		if(customerId <= 0 || mainId <= 0)
+			 			continue;
+			 		
+			 		ContractCustomer oldCustomer = contractCustomerServices.findContractCustomerById(customerId);
+			 		if(oldCustomer == null)
+			 			continue;
+			 		
+			 		
+			 		oldCustomer.setConfirmType(ContConfirmType.CONTRACT);
+			 		oldCustomer.setMainId(mainId);
+			 		if(oldCustomer.getProjectId()!=100){
+			 			continue;
+			 		}
+			 		contractCustomerServices.addContractCustomer(oldCustomer);
+			 		
+			 		int newCustomerId = oldCustomer.getId();
+			 		
+			 		insertMap = new HashMap<String, Integer>();
+			 		
+			 		insertMap.put("customerId", newCustomerId);
+			 		insertMap.put("mainId", mainId);
+			 		
+			 		insertList.add(insertMap);
+			 		
+			 	}
+				
+				//insert
+				for(Map<String, Integer> map : insertList){
+			 		
+			 		int customerId = map.get("customerId");
+			 		int mainId = map.get("mainId");
+			 		
+			 		if(customerId <= 0 || mainId <= 0)
+			 			continue;
+			 		
+			 		contractCustomerServices.updateContractCustomerMainId(customerId, mainId);
+			 	}
+
+				
+			}
+		}.execute();
+		
+		
+	}
+	
+	/**
+	 * 3. 只有成交状态
+	 * @throws Exception 
+	 */
+	
+	public void onlyConfirmForContractCustomer() throws Exception{
+		
+		new MyTransationTemplate() {
+			
+			@Override
+			protected void doExecuteCallback() throws Exception {
+				
+				List<Map<String, Integer>> list = contractCustomerServices.findConfirmCustomer();
+				
+			 	for(Map<String, Integer> map : list){
+			 		
+			 		int customerId = map.get("id");
+			 		int mainId = map.get("mainId");
+			 		int projectId=map.get("projectId");
+			 		
+			 		if(customerId <= 0 || mainId <= 0)
+			 			continue;
+			 		if(projectId!=100){
+			 			continue;
+			 		}
+			 		contractCustomerServices.updateContractCustomerMainId(customerId, mainId);
+			 		
+			 	}
+				
+			}
+		}.execute();
+		
+	}
+	
+	//执行完之后要把is_valid设为0,以及修改对应的mobile_phone,phone
+	                 
+	/**
+	 * 4. 更新合同的销售人员id，从认购表拿过来
+	 * @throws Exception 
+	 */
+
+	public void updateSalesIdConfirmForContract() throws Exception{
+		
+		new MyTransationTemplate() {
+			
+			@Override
+			protected void doExecuteCallback() throws Exception {
+				
+				List<Confirm> confirmList = confirmServices.findConfirmByProjectId(100);
+			 	for(Confirm cl : confirmList){
+			 		String salesId = cl.getSalesId();
+			 		int unitId=cl.getUnitId();
+			 		Contract contract=contractServices.findContractByUnitId(unitId);
+			 		if(contract==null){
+			 			continue;
+			 		}
+			 		if(!"".equals(contractServices.findContractByUnitId(unitId).getSalesId())){
+			 			continue;
+			 		}
+			 		contract.setSalesId(salesId);
+			 		contractServices.updateContract(contract);
+			 	}
+				
+			}
+		}.execute();
+		
+	}
+	
+	
+	
+	/**
+	 * 5. 更新售后问卷的customer_id
+	 * @throws Exception 
+	 */
+	@Test
+	public void updateCustomerIdForSaleDefaultQuestion() throws Exception{
+		
+		new MyTransationTemplate() {
+			
+			@Override
+			protected void doExecuteCallback() throws Exception {
+				SaleDefaultQuestionCond cond=new SaleDefaultQuestionCond();
+				List<SaleDefaultQuestion> saleDefaultQuestionList=saleDefaultQuestionServices.findSaleDefaultQuestion(cond);
+				for(SaleDefaultQuestion sfq:saleDefaultQuestionList){
+					Confirm confirm=confirmServices.findConfirmByUnitId(sfq.getUnitId());
+					if(confirm==null) 
+						continue;
+					List<ContractCustomer> contractCustomerList=contractCustomerServices.findContractCustomerByMainIdAndConfirmType(confirm.getId(), ContConfirmType.CONFIRM);
+					for(ContractCustomer cc:contractCustomerList){
+						sfq.setCustomerId(cc.getId());
+						saleDefaultQuestionServices.updateSaleDefaultQuestion(sfq);
+					}
+				}	
+			}
+		}.execute();
+		
+	}
+	
+	
+	public void modifyQuestionTitle() throws Exception{
+		new MyTransationTemplate() {
+
+			@Override
+			protected void doExecuteCallback() throws Exception {
+				
+				
+			}
+			
+
+		}.execute();
+	}
+	
+	/**
+	 * 更新project_code表，对每个题目选项增加对应的project_code的值
+	 * @throws Exception
+	 */
+	@Test
+	public void addProjectCode() throws Exception{
+		new MyTransationTemplate() {
+			@Override
+			protected void doExecuteCallback() throws Exception {
+				List<QuestionTopic> qtList=questionTopicServices.findQuestionTopic(new QuestionTopicCond());
+				for(QuestionTopic qt:qtList){
+					int topicId = qt.getId();
+					Question question = questionServices.findQuestionById(questionTopicServices.findQuestionTopicById(topicId).getQuestionId());
+					int projectId;
+					if(question==null||question.getCompanyProjectId()==0){
+						continue;
+					}else{
+						projectId=question.getCompanyProjectId();
+					}
+					String topicContent = qt.getTopicContent();
+					String[] arr = topicContent.split("\\r\\n");
+					for(int i=0;i<arr.length;i++){
+						ProjectCode projectCode=new ProjectCode();
+						projectCode.setProjectId(projectId);
+						projectCode.setTypeName(topicId+"");
+						projectCode.setCodeVal(i+1+"");
+						projectCode.setCodeDesc(arr[i]);
+						projectCode.setCodeOrder(i+1);
+						projectCode.setIsDeleted("0");
+						projectCodeServices.saveProjectCode(projectCode);
+					}
+				}
+			}
+		}.execute();
+	}
+	
+
+}

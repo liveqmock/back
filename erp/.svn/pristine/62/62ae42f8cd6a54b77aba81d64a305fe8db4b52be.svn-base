@@ -1,0 +1,106 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.ihk.user.data.IPrivFuncMapper">
+
+	<resultMap type="java.util.Map" id="privFuncNameResultMap">
+		<id property="id" column="id" />        
+		<result property="privCodeName" column="priv_Name" />
+		<result property="treeCodeName" column="tree_Name" />
+		<result property="privCode" column="priv_code" />
+		<result property="treeCode" column="tree_code" />
+	</resultMap>
+	
+	<select id="findAll" resultMap="privFuncNameResultMap">
+	select b.id as id,b.priv_code as priv_code,b.tree_code as tree_code,a.priv_name as priv_Name,c.tree_name as tree_Name
+	from priv a ,priv_func b ,func_tree c
+	where a.priv_code = b.priv_code and  b.tree_code=c.tree_code
+	</select>
+	
+	<resultMap type="PrivFunc" id="privFuncResultMap">
+		<id property="id" column="id" />        
+		<result property="privCode" column="priv_code" />
+		<result property="treeCode" column="tree_code" />
+	</resultMap>
+	
+	
+	<select id="findListByName" resultMap="privFuncNameResultMap" parameterType="com.ihk.user.data.pojo.Priv">
+	select b.id as id,b.priv_code as priv_code,b.tree_code as tree_code,a.priv_name as priv_Name,c.tree_name as tree_Name
+	from priv a ,priv_func b ,func_tree c
+	
+		<where>
+		and a.priv_code = b.priv_code and  b.tree_code=c.tree_code
+		<if test="privCode != null and privCode != ''">
+				and a.priv_code like concat(concat('%', #{privCode, jdbcType=VARCHAR}), '%')
+		</if>
+		
+		</where>
+	</select>
+	
+	<insert id="addPrivFunc" parameterType="PrivFunc">
+		 <selectKey resultType="java.lang.Integer" keyProperty="id" order="AFTER" >
+            SELECT @@IDENTITY
+        </selectKey>		
+		insert into priv_func(
+		priv_code,
+		tree_code
+		)
+			VALUES(
+		#{privCode},
+		#{treeCode}
+			)
+		
+	</insert>
+	<delete id="deletePrivFunc" parameterType="int">
+	delete from priv_func where id=#{id};
+	</delete>
+	<update id="updatePrivFunc" parameterType="int">
+	update priv_func set 
+		priv_code=#{privCode},
+		tree_code=#{treeCode}
+	 where id=#{id}
+	</update>
+	<select id="findPrivFuncById" resultMap="privFuncResultMap">
+	select * from priv_func where id=#{id}
+	</select>
+	
+	<select id="findPrivFuncCount" resultType="int" parameterType="com.ihk.user.data.pojo.PrivFuncCond">
+		SELECT count(0) from priv_func  
+    	<where>	
+    <if test="privCodes!=null and privCodes.size() > 0">  
+            and priv_code in
+            <foreach  
+                collection="privCodes"  
+                item="privCode"  
+                open="("  
+                separator=","  
+                close=")">  
+                #{privCode}  
+            </foreach>  
+        </if> 
+        </where> 
+    
+    </select>
+    
+	<select id="findPrivFuncPage" resultMap="privFuncResultMap" parameterType="com.ihk.user.data.pojo.PrivFuncCond">
+		SELECT * from  priv_func 
+    	<where>	
+    <if test="privCodes!=null and privCodes.size() > 0">  
+            and priv_code in
+            <foreach  
+                collection="privCodes"  
+                item="privCode"  
+                open="("  
+                separator=","  
+                close=")">  
+                #{privCode}  
+            </foreach>  
+        </if> 
+        </where> 
+    
+		<if test="startLine >= 0">
+		<if test="pageSize > 0">
+			limit #{startLine},#{pageSize};
+		</if>
+		</if>
+	</select>
+</mapper>

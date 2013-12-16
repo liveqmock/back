@@ -1,0 +1,501 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.ihk.property.data.ICheckfeeMapper">
+
+	<resultMap type="Checkfee" id="checkfeeResultMap">
+		<id property="id" column="id" />        
+		<result property="unitId" column="unit_id" />
+		<result property="checkfeeDate" column="checkfee_date" />
+		<result property="checkfeeType" column="checkfee_type" />
+		<result property="checkcommissionType" column="checkcommission_type" />
+		<result property="repayMoney" column="repay_money" />
+		<result property="repayAmount" column="repay_amount" />
+		<result property="remark" column="remark" />
+		<result property="isDeleted" column="is_deleted" />
+		<result property="createdId" column="created_id" />
+		<result property="createdTime" column="created_time" />
+		<result property="modId" column="mod_id" />
+		<result property="modTime" column="mod_time" />
+	</resultMap>
+
+	<insert id="addCheckfee" parameterType="Checkfee">
+		 <selectKey resultType="java.lang.Integer" keyProperty="id" order="AFTER" >
+            SELECT @@IDENTITY
+        </selectKey>		
+		insert into checkfee(
+		unit_id,
+		checkfee_date,
+		checkfee_type,
+		checkcommission_type,
+		repay_money,
+		repay_amount,
+		remark,
+		is_deleted,
+		created_id,
+		created_time,
+		mod_id,
+		mod_time
+		)
+			VALUES(
+		#{unitId},
+		#{checkfeeDate},
+		#{checkfeeType},
+		#{checkcommissionType},
+		#{repayMoney},
+		#{repayAmount},
+		#{remark},
+		#{isDeleted},
+		#{createdId},
+		#{createdTime},
+		#{modId},
+		#{modTime}
+			)
+		
+	</insert>
+	<delete id="deleteCheckfee" parameterType="com.ihk.utils.base.PojoDeleteCond">
+	update checkfee set is_deleted='1', mod_id=#{modId}, mod_time=#{modTime} where id=#{id};
+	</delete>
+	
+	<delete id="deleteCheckfeeByUnitId" parameterType="com.ihk.saleunit.action.check_fee.pojo.CheckFeeCond">
+	delete from checkfee  where unit_id=#{unitId} and checkfee_date=#{checkfeeDate};
+	</delete>
+
+	<update id="updateCheckfeeByUnitId" parameterType="com.ihk.saleunit.action.check_fee.pojo.CheckFeeCond">
+	update checkfee set
+		checkfee_type=#{checkfeeType},
+		mod_id=#{modId},
+		mod_time=#{modTime}
+		
+	 where unit_id=#{unitId} and checkfee_date=#{checkfeeDate}
+	</update>
+
+    <update id="updateCheckfeeByRepay" parameterType="com.ihk.saleunit.action.check_fee.pojo.CheckFeeCond">
+	update checkfee set
+		repay_money=repay_money + #{repayMoney},
+		mod_id=#{modId},
+		mod_time=#{modTime}
+	 where id=#{id}
+	</update>
+
+   <update id="updateCheckfee" parameterType="int">
+	update checkfee set
+       mod_id=#{modId},
+       mod_time=#{modTime}
+       <if test="unitId != null and unitId !=''">
+           ,unit_id=#{unitId}
+       </if>
+       <if test="checkfeeDate != null and checkfeeDate !=''">
+           ,checkfee_date=#{checkfeeDate}
+       </if>
+       <if test="checkfeeType != null and checkfeeType !=''">
+           ,checkfee_type=#{checkfeeType}
+       </if>
+       <if test="checkcommissionType != null">
+           ,checkcommission_type=#{checkcommissionType}
+       </if>
+       <if test="repayMoney != null and repayMoney !=''">
+           ,repay_money=#{repayMoney}
+       </if>
+       <if test="repayAmount != null and repayAmount !=''">
+           ,repay_amount=#{repayAmount}
+       </if>
+       <if test="remark != null and remark !=''">
+           ,remark=#{remark}
+       </if>
+		<if test="isSecCheck !=null">
+			,is_sec_check=#{isSecCheck}
+		</if>
+
+	 where id=#{id}
+	</update>
+
+	<select id="findCheckfeeById" resultMap="checkfeeResultMap">
+	select * from checkfee where id=#{id}
+	</select>
+
+    <select id="findCheckfeeByUnitId" resultMap="checkfeeResultMap">
+	select * from checkfee where unit_id=#{unitId}
+	</select>
+
+    <sql id="findWhereCond">
+		<where>
+            and is_deleted = '0'
+
+            <if test="unitId != null and unitId != ''">
+                and unit_id = #{unitId}
+            </if>
+
+            <if test="checkfeeDate != null and checkfeeDate != ''">
+                and checkfee_date = #{checkfeeDate}
+            </if>
+		</where>
+	</sql>
+	
+	<select id="findCheckfeeCount" resultType="int" parameterType="com.ihk.saleunit.action.check_fee.pojo.CheckFeeCond">
+		SELECT count(0) from checkfee  
+        <include refid="findWhereCond"/>     
+    </select>
+        
+	<select id="findCheckfee" resultMap="checkfeeResultMap" parameterType="com.ihk.saleunit.action.check_fee.pojo.CheckFeeCond">
+		SELECT * from  checkfee 
+        <include refid="findWhereCond"/> 
+		<if test="topNum > 0">
+			limit #{topNum};
+		</if>
+    </select>
+    
+	<select id="findCheckfeePage" resultMap="checkfeeResultMap" parameterType="com.ihk.saleunit.action.check_fee.pojo.CheckFeeCond">
+		SELECT * from  checkfee 
+        <include refid="findWhereCond"/> 
+    
+		<if test="startLine >= 0">
+		<if test="pageSize > 0">
+			limit #{startLine},#{pageSize};
+		</if>
+		</if>
+	</select>
+    
+    <!-- ajax分页使用 -->	
+   <sql id="findCheckfeeForAjaxComm">
+		<where>		
+            and is_deleted = '0'
+		</where>
+		
+	</sql>
+    
+    <select id="findCheckfeeForAjax" resultMap="checkfeeResultMap" parameterType="com.ihk.saleunit.action.check_fee.pojo.CheckFeeCond">
+		SELECT * from  checkfee 
+        <include refid="findCheckfeeForAjaxComm"/> 
+    
+		<if test="startLine >= 0">
+		<if test="pageSize > 0">
+			limit #{startLine},#{pageSize};
+		</if>
+		</if>
+	</select>
+    
+    <select id="findCheckfeeCountForAjax" resultType="int" parameterType="com.ihk.saleunit.action.check_fee.pojo.CheckFeeCond">
+		SELECT count(1) from checkfee  
+        <include refid="findCheckfeeForAjaxComm"/>     
+    </select>
+
+	<select id="findLastCheckfeeDateByBillId" resultMap="checkfeeResultMap">
+		
+		select c.* from checkfee c, unit_pay_bill b, sale_unit_receipt r
+			where r.bill_id = b.id and r.checkfee_id = c.id	and b.id = #{billId}
+			and r.checkfee_id > 0
+			and c.is_deleted = 0
+			and r.is_deleted = 0
+			order by checkfee_date desc
+			limit 1
+	
+	</select>
+	
+	<select id="findCheckfeeListByUnitIdList" resultType="map" parameterType="map">
+    	select * from checkfee where unit_id in
+    			<foreach collection="idList" item="ids" index="index" open="(" separator="," close=")" >
+				#{ids}
+				</foreach>
+				and is_deleted = '0'
+    </select>
+    
+    
+    <select id="findCheckfeeListByCond" resultType="map" parameterType="map">
+SELECT
+	t4.*,
+  	GROUP_CONCAT(commission) AS commission1,
+  	GROUP_CONCAT(commission_amount) AS commission_amount1,
+  	GROUP_CONCAT(sec_commission) AS sec_commission1,
+  	GROUP_CONCAT(sec_commission_amount) AS sec_commission_amount1
+FROM
+	(
+		SELECT
+			*,
+		IF (
+			@property_unit_id = t3.unit_id,
+			@rowNo := @rowNo + 1,
+			@rowNo := 1
+		) AS rowId,
+		@property_unit_id := t3.unit_id
+	FROM
+		(
+			SELECT
+				t.*
+			FROM
+				(
+					SELECT
+						NULL AS payment_amount,
+						NULL AS commission_time,
+						NULL AS commission,
+						NULL AS commission_amount,
+						t1.unit_id,
+						t1.sale_state,
+						t1.sum_money,
+						t1.build_price,
+						t1.confirm_id,
+						t1.contract_id,
+						t1.work_date,
+						t1.build_area,
+						t1.build_name,
+						t1.property_unit_no,
+						t1.property_project_id,
+						t1.property_build_id,
+						t1.property_area_id,
+						t1.is_second_linkage,
+						t1.is_relation,
+						t1.confirm_sum_money AS confirm_sum_money,
+						t1.contract_sum_money AS contract_sum_money,
+						NULL AS sec_commission,
+						NULL AS sec_commission_amount,
+						t1.property_name as property_name,
+						t1.company_name AS company_name
+					FROM
+						(
+							SELECT
+								1 AS type,
+								c.*, va.*, t.is_second_linkage AS is_second_linkage,
+								t.is_relation AS is_relation,
+								t.work_date AS work_date,
+								t.sum_money AS sum_money,
+								t.build_price AS build_price,
+								vc.confirm_id AS confirm_id,
+								vc.contract_id AS contract_id,
+								vc.confirm_sum_money AS confirm_sum_money,
+								vc.contract_sum_money AS contract_sum_money
+							FROM
+								checkfee c
+							LEFT JOIN v_all_unit_chengjiao va ON c.unit_id = va.property_unit_id
+							LEFT JOIN contract t ON c.unit_id = t.unit_id
+							LEFT JOIN confirm m ON c.unit_id = m.unit_id
+							LEFT JOIN v_confirm_contract vc ON c.unit_id = vc.unit_id
+							WHERE
+								c.is_deleted = '0'
+							AND t.is_deleted = '0'
+							AND m.is_deleted = '0'
+							AND c.checkfee_type = '2'
+							UNION
+								SELECT
+									2 AS type,
+									c.*, va.*, m.is_second_linkage AS is_second_linkage,
+									m.is_relation AS is_relation,
+									m.work_date AS work_date,
+									m.sum_money AS sum_money,
+									m.build_price AS build_price,
+									vc.confirm_id AS confirm_id,
+									vc.contract_id AS contract_id,
+									vc.confirm_sum_money AS confirm_sum_money,
+									vc.contract_sum_money AS contract_sum_money
+								FROM
+									checkfee c
+								LEFT JOIN v_all_unit_chengjiao va ON c.unit_id = va.property_unit_id
+								LEFT JOIN confirm m ON c.unit_id = m.unit_id
+								LEFT JOIN v_confirm_contract vc ON c.unit_id = vc.unit_id
+								WHERE
+									c.is_deleted = '0'
+								AND m.is_deleted = '0'
+								AND c.checkfee_type = '2'
+								AND m.unit_id NOT IN (
+									SELECT
+										unit_id
+									FROM
+										contract
+									WHERE
+										is_deleted = '0'
+								)
+						) AS t1
+					UNION
+						SELECT
+							t2.payment_amount,
+							t2.commission_time,
+							t2.commission,
+							t2.commission_amount,
+							t2.unit_id,
+							t2.sale_state,
+							t2.sum_money,
+							t2.build_price,
+							t2.confirm_id,
+							t2.contract_id,
+							t2.work_date,
+							t2.build_area,
+							t2.build_name,
+							t2.property_unit_no,
+							t2.property_project_id,
+							t2.property_build_id,
+							t2.property_area_id,
+							t2.is_second_linkage,
+							t2.is_relation,
+							t2.confirm_sum_money AS confirm_sum_money,
+							t2.contract_sum_money AS contract_sum_money,
+							NULL AS sec_commission,
+							NULL AS sec_commission_amount,
+							t2.property_name as property_name,
+							t2.company_name AS company_name
+						FROM
+							(
+								SELECT
+									3 AS type,
+									c.*, va.*, m.is_second_linkage AS is_second_linkage,
+									m.is_relation AS is_relation,
+									m.work_date AS work_date,
+									m.sum_money AS sum_money,
+									m.build_price AS build_price,
+									vc.confirm_id AS confirm_id,
+									vc.contract_id AS contract_id,
+									vc.confirm_sum_money AS confirm_sum_money,
+									vc.contract_sum_money AS contract_sum_money
+								FROM
+									checkcommission c
+								LEFT JOIN v_all_unit_chengjiao va ON c.unit_id = va.property_unit_id
+								LEFT JOIN confirm m ON c.unit_id = m.unit_id
+								LEFT JOIN v_confirm_contract vc ON c.unit_id = vc.unit_id
+								WHERE
+									c.is_deleted = '0'
+								AND m.is_deleted = '0'
+								AND c.checkcommission_type = '2'
+								AND m.unit_id NOT IN (
+									SELECT
+										unit_id
+									FROM
+										contract
+									WHERE
+										is_deleted = '0'
+								)
+								UNION
+									SELECT
+										4 AS type,
+										c.*, va.*, t.is_second_linkage AS is_second_linkage,
+										t.is_relation AS is_relation,
+										t.work_date AS work_date,
+										t.sum_money AS sum_money,
+										t.build_price AS build_price,
+										vc.confirm_id AS confirm_id,
+										vc.contract_id AS contract_id,
+										vc.confirm_sum_money AS confirm_sum_money,
+										vc.contract_sum_money AS contract_sum_money
+									FROM
+										checkcommission c
+									LEFT JOIN v_all_unit_chengjiao va ON c.unit_id = va.property_unit_id
+									LEFT JOIN contract t ON c.unit_id = t.unit_id
+									LEFT JOIN confirm m ON c.unit_id = m.unit_id
+									LEFT JOIN v_confirm_contract vc ON c.unit_id = vc.unit_id
+									WHERE
+										c.is_deleted = '0'
+									AND t.is_deleted = '0'
+									AND m.is_deleted = '0'
+									AND c.checkcommission_type = '2'
+							) AS t2
+						UNION
+							SELECT
+								t3.payment_amount,
+								t3.checkcommission_date,
+								t3.commission AS commission,
+								t3.commission_amount AS commission_amount,
+								t3.unit_id,
+								t3.sale_state,
+								t3.sum_money,
+								t3.build_price,
+								t3.confirm_id,
+								t3.contract_id,
+								t3.work_date,
+								t3.build_area,
+								t3.build_name,
+								t3.property_unit_no,
+								t3.property_project_id,
+								t3.property_build_id,
+								t3.property_area_id,
+								t3.is_second_linkage,
+								t3.is_relation,
+								t3.confirm_sum_money AS confirm_sum_money,
+								t3.contract_sum_money AS contract_sum_money,
+								t3.sec_commission AS sec_commission,
+								t3.sec_commission_amount AS sec_commission_amount,
+								t3.property_name as property_name,
+								t3.company_name AS company_name
+							FROM
+								(
+									SELECT
+										5 AS type,
+										c.*, va.*, t.is_second_linkage AS is_second_linkage,
+										t.is_relation AS is_relation,
+										t.work_date AS work_date,
+										t.sum_money AS sum_money,
+										t.build_price AS build_price,
+										vc.confirm_id AS confirm_id,
+										vc.contract_id AS contract_id,
+										vc.confirm_sum_money AS confirm_sum_money,
+										vc.contract_sum_money AS contract_sum_money
+									FROM
+										checkcommission_sec c
+									LEFT JOIN v_all_unit_chengjiao va ON c.unit_id = va.property_unit_id
+									LEFT JOIN contract t ON c.unit_id = t.unit_id
+									LEFT JOIN confirm m ON c.unit_id = m.unit_id
+									LEFT JOIN v_confirm_contract vc ON c.unit_id = vc.unit_id
+									WHERE
+										c.is_deleted = '0'
+									AND t.is_deleted = '0'
+									AND m.is_deleted = '0'
+									AND c.checkcommission_type = '2'
+									UNION
+										SELECT
+											6 AS type,
+											c.*, va.*, m.is_second_linkage AS is_second_linkage,
+											m.is_relation AS is_relation,
+											m.work_date AS work_date,
+											m.sum_money AS sum_money,
+											m.build_price AS build_price,
+											vc.confirm_id AS confirm_id,
+											vc.contract_id AS contract_id,
+											vc.confirm_sum_money AS confirm_sum_money,
+											vc.contract_sum_money AS contract_sum_money
+										FROM
+											checkcommission_sec c
+										LEFT JOIN v_all_unit_chengjiao va ON c.unit_id = va.property_unit_id
+										LEFT JOIN confirm m ON c.unit_id = m.unit_id
+										LEFT JOIN v_confirm_contract vc ON c.unit_id = vc.unit_id
+										WHERE
+											c.is_deleted = '0'
+										AND m.is_deleted = '0'
+										AND c.checkcommission_type = '2'
+										AND m.unit_id NOT IN (
+											SELECT
+												unit_id
+											FROM
+												contract
+											WHERE
+												is_deleted = '0'
+										)
+								) AS t3
+				) AS t
+			ORDER BY
+				t.unit_id,
+				t.commission DESC,
+				t.sec_commission DESC
+		) t3
+	) t4
+WHERE
+	unit_id != 0
+				<if test="unitId != null and unitId != ''">
+					and property_unit_id = #{unitId} 
+				</if>
+				<if test="companyId != null and companyId != ''">
+					and company_id = #{companyId} 
+				</if>
+				<if test="companyProjectIds != null and companyProjectIds != ''">
+					and company_project_id in
+					<foreach collection="companyProjectIds" item="companyProjectId" index="index" open="(" separator="," close=")" >
+						#{companyProjectId}
+					</foreach>
+				</if>
+				<if test="propertyProjectId != null and propertyProjectId != ''">
+					and property_project_id = #{propertyProjectId} 
+				</if>
+				<if test="propertyBuildId != null and propertyBuildId != ''">
+					and property_build_id = #{propertyBuildId} 
+				</if>
+				<if test="propertyAreaId != null and propertyAreaId != ''">
+					and property_area_id = #{propertyAreaId} 
+				</if>
+GROUP BY
+	unit_id				
+    </select>
+</mapper>

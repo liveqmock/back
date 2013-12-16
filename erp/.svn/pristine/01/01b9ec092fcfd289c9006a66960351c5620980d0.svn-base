@@ -1,0 +1,629 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.ihk.sale.data.ISaleMonitorMapper">
+
+	<resultMap type="java.util.Map" id="saleMonitorProjectResultMap">
+		<result property="projectName" column="project_name" />
+		<result property="completeMoney" column="complete_money" />
+		
+	</resultMap>
+	
+	<resultMap type="java.util.Map" id="saleMonitorShowResultMap">
+				
+		<result property="sumNum" column="sum_num" javaType="java.lang.Integer"/>
+		<result property="sumArea" column="sum_area" javaType="java.math.BigDecimal"/>
+		<result property="sumMoney" column="sum_money" javaType="java.math.BigDecimal"/>
+		<result property="intentionNum" column="intention_num" javaType="java.lang.Integer"/>
+		
+	</resultMap>
+	
+	<resultMap type="java.util.Map" id="saleMonitorInCountResultMap">
+				
+		<result property="projectId" column="project_id" javaType="java.lang.Integer"/>
+		<result property="companyId" column="company_id" javaType="java.lang.Integer"/>
+		<result property="cou" column="cou" javaType="java.lang.Integer"/>
+		
+	</resultMap>
+	
+	<select id="findProject" resultMap="saleMonitorProjectResultMap">
+		select c.project_name ,s.complete_money 
+		from sale_monitor s,company_project c 
+		where s.project_id = c.id 
+		
+	</select>
+	
+	<resultMap type="SaleMonitor" id="saleMonitorResultMap"><id property="id" column="id" />        
+		<result property="monitorDate" column="monitor_date" />
+		<result property="projectId" column="project_id" />
+		<result property="companyId" column="company_id" />
+		<result property="phoneNum" column="phone_num" />
+		<result property="visitorNum" column="visitor_num" />
+		<result property="houseNum" column="house_num" />
+		<result property="houseArea" column="house_area" />
+		<result property="houseMoney" column="house_money" />
+		<result property="shopNum" column="shop_num" />
+		<result property="shopArea" column="shop_area" />
+		<result property="shopMoney" column="shop_money" />
+		<result property="parkNum" column="park_num" />
+		<result property="parkArea" column="park_area" />
+		<result property="parkMoney" column="park_money" />
+		<result property="sumNum" column="sum_num" />
+		<result property="sumArea" column="sum_area" />
+		<result property="sumMoney" column="sum_money" />
+		<result property="contractHouseNum" column="contract_house_num" />
+		<result property="contractHouseArea" column="contract_house_area" />
+		<result property="contractHouseMoney" column="contract_house_money" />
+		<result property="contractShopNum" column="contract_shop_num" />
+		<result property="contractShopArea" column="contract_shop_area" />
+		<result property="contractShopMoney" column="contract_shop_money" />
+		<result property="contractParkNum" column="contract_park_num" />
+		<result property="contractParkArea" column="contract_park_area" />
+		<result property="contractParkMoney" column="contract_park_money" />
+		<result property="contractSumNum" column="contract_sum_num" />
+		<result property="contractSumArea" column="contract_sum_area" />
+		<result property="contractSumMoney" column="contract_sum_money" />
+		<result property="undoHouseNum" column="undo_house_num" />
+		<result property="undoHouseArea" column="undo_house_area" />
+		<result property="undoHouseMoney" column="undo_house_money" />
+		<result property="undoShopNum" column="undo_shop_num" />
+		<result property="undoShopArea" column="undo_shop_area" />
+		<result property="undoShopMoney" column="undo_shop_money" />
+		<result property="undoParkNum" column="undo_park_num" />
+		<result property="undoParkArea" column="undo_park_area" />
+		<result property="undoParkMoney" column="undo_park_money" />
+		<result property="undoSumNum" column="undo_sum_num" />
+		<result property="undoSumArea" column="undo_sum_area" />
+		<result property="undoSumMoney" column="undo_sum_money" />
+		<result property="tempNum" column="temp_num" />
+		<result property="rescissionNum" column="rescission_num" />
+		<result property="completeArea" column="complete_area" />
+		<result property="completeMoney" column="complete_money" />
+		<result property="intentionNum" column="intention_num" />
+		<result property="isDeleted" column="is_deleted" />
+		<result property="createdId" column="created_id" />
+		<result property="createdTime" column="created_time" />
+		<result property="modId" column="mod_id" />
+		<result property="modTime" column="mod_time" />
+	</resultMap>
+	
+	
+	<insert id="addSaleMonitor" parameterType="SaleMonitor">
+		 <selectKey resultType="java.lang.Integer" keyProperty="id" order="AFTER" >
+            SELECT @@IDENTITY
+        </selectKey>		
+		insert into sale_monitor(
+		monitor_date,
+		project_id,
+		company_id,
+		phone_num,
+		visitor_num,
+		house_num,
+		house_area,
+		house_money,
+		shop_num,
+		shop_area,
+		shop_money,
+		park_num,
+		park_area,
+		park_money,
+		sum_num,
+		sum_area,
+		sum_money,
+		contract_house_num,
+		contract_house_area,
+		contract_house_money,
+		contract_shop_num,
+		contract_shop_area,
+		contract_shop_money,
+		contract_park_num,
+		contract_park_area,
+		contract_park_money,
+		contract_sum_num,
+		contract_sum_area,
+		contract_sum_money,
+		undo_house_num,
+		undo_house_area,
+		undo_house_money,
+		undo_shop_num,
+		undo_shop_area,
+		undo_shop_money,
+		undo_park_num,
+		undo_park_area,
+		undo_park_money,
+		undo_sum_num,
+		undo_sum_area,
+		undo_sum_money,
+		temp_num,
+		rescission_num,
+		complete_area,
+		complete_money,
+		intention_num,
+		is_deleted,
+		created_id,
+		created_time,
+		mod_id,
+		mod_time
+		)
+			VALUES(
+		#{monitorDate},
+		#{projectId},
+		#{companyId},
+		#{phoneNum},
+		#{visitorNum},
+		#{houseNum},
+		#{houseArea},
+		#{houseMoney},
+		#{shopNum},
+		#{shopArea},
+		#{shopMoney},
+		#{parkNum},
+		#{parkArea},
+		#{parkMoney},
+		#{sumNum},
+		#{sumArea},
+		#{sumMoney},
+		#{contractHouseNum},
+		#{contractHouseArea},
+		#{contractHouseMoney},
+		#{contractShopNum},
+		#{contractShopArea},
+		#{contractShopMoney},
+		#{contractParkNum},
+		#{contractParkArea},
+		#{contractParkMoney},
+		#{contractSumNum},
+		#{contractSumArea},
+		#{contractSumMoney},
+		#{undoHouseNum},
+		#{undoHouseArea},
+		#{undoHouseMoney},
+		#{undoShopNum},
+		#{undoShopArea},
+		#{undoShopMoney},
+		#{undoParkNum},
+		#{undoParkArea},
+		#{undoParkMoney},
+		#{undoSumNum},
+		#{undoSumArea},
+		#{undoSumMoney},
+		#{tempNum},
+		#{rescissionNum},
+		#{completeArea},
+		#{completeMoney},
+		#{intentionNum},
+		#{isDeleted},
+		#{createdId},
+		#{createdTime},
+		#{modId},
+		#{modTime}
+			)
+		
+	</insert>
+	<delete id="deleteSaleMonitor" parameterType="int">
+		update sale_monitor set is_deleted ='1' where id=#{id};
+	</delete>
+	<update id="updateSaleMonitor" parameterType="int">
+	update sale_monitor set 
+		monitor_date=#{monitorDate},
+		project_id=#{projectId},
+		company_id=#{companyId},
+		phone_num=#{phoneNum},
+		visitor_num=#{visitorNum},
+		house_num=#{houseNum},
+		house_area=#{houseArea},
+		house_money=#{houseMoney},
+		shop_num=#{shopNum},
+		shop_area=#{shopArea},
+		shop_money=#{shopMoney},
+		park_num=#{parkNum},
+		park_area=#{parkArea},
+		park_money=#{parkMoney},
+		sum_num=#{sumNum},
+		sum_area=#{sumArea},
+		sum_money=#{sumMoney},
+		contract_house_num=#{contractHouseNum},
+		contract_house_area=#{contractHouseArea},
+		contract_house_money=#{contractHouseMoney},
+		contract_shop_num=#{contractShopNum},
+		contract_shop_area=#{contractShopArea},
+		contract_shop_money=#{contractShopMoney},
+		contract_park_num=#{contractParkNum},
+		contract_park_area=#{contractParkArea},
+		contract_park_money=#{contractParkMoney},
+		contract_sum_num=#{contractSumNum},
+		contract_sum_area=#{contractSumArea},
+		contract_sum_money=#{contractSumMoney},
+		undo_house_num=#{undoHouseNum},
+		undo_house_area=#{undoHouseArea},
+		undo_house_money=#{undoHouseMoney},
+		undo_shop_num=#{undoShopNum},
+		undo_shop_area=#{undoShopArea},
+		undo_shop_money=#{undoShopMoney},
+		undo_park_num=#{undoParkNum},
+		undo_park_area=#{undoParkArea},
+		undo_park_money=#{undoParkMoney},
+		undo_sum_num=#{undoSumNum},
+		undo_sum_area=#{undoSumArea},
+		undo_sum_money=#{undoSumMoney},
+		temp_num=#{tempNum},
+		rescission_num=#{rescissionNum},
+		complete_area=#{completeArea},
+		complete_money=#{completeMoney},
+		intention_num=#{intentionNum},
+		is_deleted=#{isDeleted},
+		created_id=#{createdId},
+		created_time=#{createdTime},
+		mod_id=#{modId},
+		mod_time=#{modTime}
+	 where id=#{id}
+	</update>
+	<select id="findSaleMonitorById" resultMap="saleMonitorResultMap">
+		select * from
+		sale_monitor where id=#{id}
+	</select>
+	
+	<sql id="sumForProjectDate">
+		monitor_date,		
+		project_id,
+		sum(phone_num) as phone_num,
+		sum(visitor_num) as visitor_num,
+		sum(house_num) as house_num,
+		sum(house_area) as house_area,
+		sum(house_money) as house_money,
+		sum(shop_num) as shop_num,
+		sum(shop_area) as shop_area,
+		sum(shop_money) as shop_money,
+		sum(park_num) as park_num,
+		sum(park_area) as park_area,
+		sum(park_money) as park_money,
+		sum(sum_num) as sum_num,
+		sum(sum_area) as sum_area,
+		sum(sum_money) as sum_money,
+		sum(contract_house_num) as contract_house_num,
+		sum(contract_house_area) as contract_house_area,
+		sum(contract_house_money) as contract_house_money,
+		sum(contract_shop_num) as contract_shop_num,
+		sum(contract_shop_area) as contract_shop_area,
+		sum(contract_shop_money) as contract_shop_money,
+		sum(contract_park_num) as contract_park_num,
+		sum(contract_park_area) as contract_park_area,
+		sum(contract_park_money) as contract_park_money,
+		sum(contract_sum_num) as contract_sum_num,
+		sum(contract_sum_area) as contract_sum_area,
+		sum(contract_sum_money) as contract_sum_money,
+		sum(undo_house_num) as undo_house_num,
+		sum(undo_house_area) as undo_house_area,
+		sum(undo_house_money) as undo_house_money,
+		sum(undo_shop_num) as undo_shop_num,
+		sum(undo_shop_area) as undo_shop_area,
+		sum(undo_shop_money) as undo_shop_money,
+		sum(undo_park_num) as undo_park_num,
+		sum(undo_park_area) as undo_park_area,
+		sum(undo_park_money) as undo_park_money,
+		sum(undo_sum_num) as undo_sum_num,
+		sum(undo_sum_area) as undo_sum_area,
+		sum(undo_sum_money) as undo_sum_money,
+		sum(temp_num) as temp_num,
+		sum(rescission_num) as rescission_num,
+		sum(complete_area) as complete_area,
+		sum(complete_money) as complete_money,
+		sum(intention_num) as intention_num
+	</sql>
+	
+	<sql id="sumForCompanyDate">
+		monitor_date,		
+		company_id,
+		sum(phone_num) as phone_num,
+		sum(visitor_num) as visitor_num,
+		sum(house_num) as house_num,
+		sum(house_area) as house_area,
+		sum(house_money) as house_money,
+		sum(shop_num) as shop_num,
+		sum(shop_area) as shop_area,
+		sum(shop_money) as shop_money,
+		sum(park_num) as park_num,
+		sum(park_area) as park_area,
+		sum(park_money) as park_money,
+		sum(sum_num) as sum_num,
+		sum(sum_area) as sum_area,
+		sum(sum_money) as sum_money,
+		sum(contract_house_num) as contract_house_num,
+		sum(contract_house_area) as contract_house_area,
+		sum(contract_house_money) as contract_house_money,
+		sum(contract_shop_num) as contract_shop_num,
+		sum(contract_shop_area) as contract_shop_area,
+		sum(contract_shop_money) as contract_shop_money,
+		sum(contract_park_num) as contract_park_num,
+		sum(contract_park_area) as contract_park_area,
+		sum(contract_park_money) as contract_park_money,
+		sum(contract_sum_num) as contract_sum_num,
+		sum(contract_sum_area) as contract_sum_area,
+		sum(contract_sum_money) as contract_sum_money,
+		sum(undo_house_num) as undo_house_num,
+		sum(undo_house_area) as undo_house_area,
+		sum(undo_house_money) as undo_house_money,
+		sum(undo_shop_num) as undo_shop_num,
+		sum(undo_shop_area) as undo_shop_area,
+		sum(undo_shop_money) as undo_shop_money,
+		sum(undo_park_num) as undo_park_num,
+		sum(undo_park_area) as undo_park_area,
+		sum(undo_park_money) as undo_park_money,
+		sum(undo_sum_num) as undo_sum_num,
+		sum(undo_sum_area) as undo_sum_area,
+		sum(undo_sum_money) as undo_sum_money,
+		sum(temp_num) as temp_num,
+		sum(rescission_num) as rescission_num,
+		sum(complete_area) as complete_area,
+		sum(complete_money) as complete_money,
+		sum(intention_num) as intention_num
+	</sql>
+	
+	<sql id="sumForCountryDate">
+		monitor_date,	
+		sum(phone_num) as phone_num,
+		sum(visitor_num) as visitor_num,
+		sum(house_num) as house_num,
+		sum(house_area) as house_area,
+		sum(house_money) as house_money,
+		sum(shop_num) as shop_num,
+		sum(shop_area) as shop_area,
+		sum(shop_money) as shop_money,
+		sum(park_num) as park_num,
+		sum(park_area) as park_area,
+		sum(park_money) as park_money,
+		sum(sum_num) as sum_num,
+		sum(sum_area) as sum_area,
+		sum(sum_money) as sum_money,		
+		sum(contract_house_num) as contract_house_num,
+		sum(contract_house_area) as contract_house_area,
+		sum(contract_house_money) as contract_house_money,
+		sum(contract_shop_num) as contract_shop_num,
+		sum(contract_shop_area) as contract_shop_area,
+		sum(contract_shop_money) as contract_shop_money,
+		sum(contract_park_num) as contract_park_num,
+		sum(contract_park_area) as contract_park_area,
+		sum(contract_park_money) as contract_park_money,
+		sum(contract_sum_num) as contract_sum_num,
+		sum(contract_sum_area) as contract_sum_area,
+		sum(contract_sum_money) as contract_sum_money,
+		sum(undo_house_num) as undo_house_num,
+		sum(undo_house_area) as undo_house_area,
+		sum(undo_house_money) as undo_house_money,
+		sum(undo_shop_num) as undo_shop_num,
+		sum(undo_shop_area) as undo_shop_area,
+		sum(undo_shop_money) as undo_shop_money,
+		sum(undo_park_num) as undo_park_num,
+		sum(undo_park_area) as undo_park_area,
+		sum(undo_park_money) as undo_park_money,
+		sum(undo_sum_num) as undo_sum_num,
+		sum(undo_sum_area) as undo_sum_area,
+		sum(undo_sum_money) as undo_sum_money,
+		sum(temp_num) as temp_num,
+		sum(rescission_num) as rescission_num,
+		sum(complete_area) as complete_area,
+		sum(complete_money) as complete_money,
+		sum(intention_num) as intention_num
+	</sql>
+
+	<sql id="findWhereCond"> 
+		<where>
+			<if test="date1 != null and date1 != ''">
+				and monitor_date &gt;= #{date1}
+			</if>
+			<if test="date2 != null and date2 != ''">
+				and monitor_date &lt; date_add(#{date2},interval 1 day)
+			</if>
+			<if test="monitorDate != null and monitorDate != ''">
+				and monitor_date = #{monitorDate}
+			</if>
+			<if test="projectIds !=null and projectIds.size() > 0">  
+	            and project_id in
+	            <foreach  
+	                collection="projectIds"  
+	                item="proId"  
+	                open="("  
+	                separator=","  
+	                close=")">  
+	                #{proId}  
+	            </foreach>  
+	        </if> 
+	        
+			<if test="permissionProjectIds !=null and permissionProjectIds.size() > 0">  
+	            and project_id in
+	            <foreach  
+	                collection="permissionProjectIds"  
+	                item="perProId"  
+	                open="("  
+	                separator=","  
+	                close=")">  
+	                #{perProId}  
+	            </foreach>  
+	        </if> 
+	        
+			<if test="projectId != null and projectId != '' and projectId != 0 and projectId != '0'">
+				and project_id=#{projectId}
+			</if>
+			<if test="companyId != null and companyId != '' and companyId != 0 and companyId != '0'">
+				and company_id=#{companyId}
+			</if>
+			
+			and is_deleted = '0'
+		</where>
+	</sql>
+		
+	<select id="findSaleMonitorCount" resultType="int"
+		parameterType="com.ihk.sale.data.pojo.SaleMonitorCond">
+		SELECT count(0) from sale_monitor
+     <include refid="findWhereCond"/>  
+
+	</select>
+
+	<select id="findSaleMonitorPage" resultMap="saleMonitorResultMap"
+		parameterType="com.ihk.sale.data.pojo.SaleMonitorCond">
+		SELECT * from sale_monitor
+     <include refid="findWhereCond"/>  
+		
+		<if test="orderByFiled == null or orderByFiled == ''">
+			order by monitor_date desc
+		</if>
+		<if test="orderByFiled=='11'">
+			order by monitor_date desc 
+		</if>
+		<if test="orderByFiled=='12'">
+			order by monitor_date 
+		</if>
+
+		<if test="startLine >= 0">
+			<if test="pageSize > 0">
+				limit #{startLine},#{pageSize};
+			</if>
+		</if>
+	</select>
+	
+	<select id="findSaleMonitorForSearchTime" resultMap="saleMonitorResultMap"
+		parameterType="com.ihk.sale.data.pojo.SaleMonitorCond">
+		
+		select sum(phone_num) as phone_num, sum(visitor_num) as visitor_num, sum(sum_num) as sum_num,
+			sum(sum_area) as sum_area, sum(sum_money) as sum_money, sum(intention_num) as intention_num	  
+			from sale_monitor 
+		 <include refid="findWhereCond"/> 
+		 
+	</select>
+	
+	<select id="findMonitorDateIsExistsByProject" resultMap="saleMonitorResultMap"
+		parameterType="com.ihk.sale.data.pojo.SaleMonitorCond">
+		select * from sale_monitor where monitor_date = #{monitorDate} and project_id = #{projectId} and is_deleted = '0' 
+	</select>
+	
+	<select id="findSaleMonitor" resultMap="saleMonitorResultMap"
+		parameterType="com.ihk.sale.data.pojo.SaleMonitorCond">
+		select * from sale_monitor 
+		<include refid="findWhereCond"/> 
+		
+	</select>
+	
+	<select id="findAll" resultMap="saleMonitorResultMap">
+	
+		select * from sale_monitor 
+		<where>
+			<if test="date1 != null and date1 != ''">
+				and monitor_date &gt;= #{date1}
+			</if>
+		</where>
+	</select>
+	
+	<!-- 累计统计 -->
+	<select id="findSaleMonitorList" resultMap="saleMonitorResultMap"
+		parameterType="com.ihk.sale.data.pojo.SaleMonitorCond">
+		
+		select project_id as project_id, company_id as company_id, sum(phone_num) as phone_num, sum(visitor_num) as visitor_num, sum(sum_num) as sum_num,
+			sum(sum_area) as sum_area, sum(sum_money) as sum_money, sum(undo_sum_num) as undo_sum_num ,
+			sum(undo_sum_area) as undo_sum_area ,sum(undo_sum_money) as undo_sum_money ,sum(intention_num) as intention_num
+			from sale_monitor 
+			
+		<where>
+			<if test="projectIds !=null and projectIds.size() > 0">  
+	            and project_id in
+	            <foreach  
+	                collection="projectIds"  
+	                item="proId"  
+	                open="("  
+	                separator=","  
+	                close=")">  
+	                #{proId}  
+	            </foreach>  
+	        </if> 
+	        
+	        <if test="date1 != null and date1 != ''">
+				and monitor_date &gt;= #{date1}
+			</if>
+			<if test="date2 != null and date2 != ''">
+				and monitor_date &lt; date_add(#{date2},interval 1 day)
+			</if>
+	        
+	        and is_deleted = '0' group by project_id  order by company_id,project_id
+		</where>
+		 
+	</select>
+	
+	<select id="findSaleMonitorGroupbyProjectDate" resultMap="saleMonitorResultMap"
+		parameterType="com.ihk.sale.data.pojo.SaleMonitorCond">
+		select <include refid="sumForProjectDate"/>  from sale_monitor 
+		<include refid="findWhereCond"/> 
+		
+		group by project_id,monitor_date
+		
+	</select>
+	
+	<select id="findSaleMonitorGroupbyCompanyDate" resultMap="saleMonitorResultMap"
+		parameterType="com.ihk.sale.data.pojo.SaleMonitorCond">
+		select <include refid="sumForCompanyDate"/>  from sale_monitor 
+		<include refid="findWhereCond"/> 
+		
+		group by company_id,monitor_date
+		
+	</select>
+	<select id="findSaleMonitorFromLogbeforeForQuartz" resultMap="saleMonitorResultMap" parameterType="com.ihk.sale.data.pojo.SaleMonitorLogbeforeCond">
+		select sm.* from sale_monitor sm inner join 
+		(
+			select distinct data_id from sale_monitor_logbefore 
+			where substring(mod_time,1,10) = #{monitorDate}
+		) tmp
+		on sm.id = tmp.data_id
+	</select>
+	
+	<select id="findSaleMonitorForQuartzUpdate" resultMap="saleMonitorResultMap" parameterType="com.ihk.sale.data.pojo.SaleMonitorCond">
+		select * from sale_monitor where monitor_date = #{monitorDate} and project_id = #{projectId} and is_deleted = '0' 
+	</select>
+	
+	
+	<select id="findSaleMonitorGroupbyCountryDate" resultMap="saleMonitorResultMap"
+		parameterType="com.ihk.sale.data.pojo.SaleMonitorCond">
+		select <include refid="sumForCountryDate"/>  from sale_monitor 
+		<include refid="findWhereCond"/> 
+		
+		group by monitor_date
+		
+	</select>
+	
+	<select id="findOtherDataForSearchTime" resultMap="saleMonitorShowResultMap" parameterType="com.ihk.sale.data.pojo.SaleMonitorCond">
+		
+		select sum(sum_num) as sum_num, sum(sum_area) as sum_area, sum(sum_money) as sum_money, sum(intention_num) as intention_num 
+		from sale_monitor 
+		where monitor_date &gt;= #{date1} and monitor_date &lt; date_add(#{date2},interval 1 day)
+		and project_id = #{projectId} and is_deleted = '0' 
+ 
+	</select>
+	
+	<select id="findSaleMonitorInCount" resultMap="saleMonitorInCountResultMap" parameterType="com.ihk.sale.data.pojo.SaleMonitorCond">
+		select project_id ,company_id ,count(1) as cou from sale_monitor 
+		
+		<where>
+			<if test="projectIds !=null and projectIds.size() > 0">  
+	            and project_id in
+	            <foreach  
+	                collection="projectIds"  
+	                item="proId"  
+	                open="("  
+	                separator=","  
+	                close=")">  
+	                #{proId}  
+	            </foreach>  
+	        </if> 
+	        
+	        <if test="date1 != null and date1 != ''">
+				and monitor_date &gt;= #{date1}
+			</if>
+			<if test="date2 != null and date2 != ''">
+				and monitor_date &lt; date_add(#{date2},interval 1 day)
+			</if>
+	        
+	        and is_deleted = '0' group by project_id  order by cou, project_id
+		</where>
+	</select>
+	
+	<select id="findSaleMonitorByMonitorDate" resultMap="saleMonitorResultMap">
+		select * from sale_monitor where monitor_date = #{monitorDate};		
+	</select>
+	
+</mapper>

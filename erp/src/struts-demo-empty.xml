@@ -1,0 +1,39 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE struts PUBLIC
+    "-//Apache Software Foundation//DTD Struts Configuration 2.0//EN"
+    "http://struts.apache.org/dtds/struts-2.0.dtd">
+<struts>
+	<package name="demo_empty" extends="struts-default" namespace="/demo/empty">	
+		<action name="searchList" class="com.ihk.demo.action.SearchListAction" method="searchList">
+			<result name="searchList">/demo/empty/searchList.jsp</result>
+		</action>	
+		<action name="searchOrderBy" class="com.ihk.demo.action.SearchListAction" method="searchOrderBy">
+			<result name="searchOrderBy" >/demo/empty/searchList.jsp</result>
+		</action>	
+			
+		<action name="forInput" class="com.ihk.demo.action.InputAction" method="forInput">
+			<result name="forInput" >/demo/empty/input.jsp</result>
+		</action>			
+		<action name="inputDemo" class="com.ihk.demo.action.InputAction" method="inputDemo">
+			<interceptor-ref name="defaultStack"/>
+			<interceptor-ref name="token"/>
+			<result name="invalid.token" type="redirectAction">
+				forInput?deleteSession=token
+			</result>
+			<result name="inputDemo" type="redirectAction">
+				forInput?deleteSession=false
+			</result>
+		</action>
+				
+		<action name="getById" class="com.ihk.demo.action.UpdateAction" method="getById">
+			<result name="getById" >/demo/empty/update.jsp</result>
+		</action>
+		<action name="updateDemo" class="com.ihk.demo.action.UpdateAction" method="updateDemo">
+			<result name="updateDemo" >/demo/empty/update.jsp</result>
+		</action>
+	</package>
+	
+</struts>
+
+
+

@@ -1,0 +1,101 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE struts PUBLIC
+    "-//Apache Software Foundation//DTD Struts Configuration 2.0//EN"
+    "http://struts.apache.org/dtds/struts-2.0.dtd">
+<struts>
+
+	<package name="saleunit_chip_manager_guangzhou" extends="struts-base" namespace="/saleunit_chip_manager/guangzhou">
+	
+		<!-- 主页面 -->
+		<action name="layout" class="com.ihk.saleunit.action.new_.GuangZhouAppointNewLeftAction" method="layout">
+			<!-- 旧的页面 2013.10.11之前的 -->
+			<!-- 
+			<result name="layout">/saleunit_chip/guangzhou/layout.jsp</result>
+			 -->
+			<result name="layout">/saleunit_chip/guangzhou/layout_2013.10.11.jsp</result>
+		</action>
+		<!-- 根据单元id和第几认筹获取单元全名 -->
+		<action name="getUnitAllNameByUnitIdAndChipNo" class="com.ihk.saleunit.action.chip.ChipLayoutAction" method="getUnitAllNameByUnitIdAndChipNo"/>
+		<!-- 查找认筹客户列表 -->
+		<action name="searchCustomersForChip" class="com.ihk.saleunit.action.chip.ChipLayoutAction" method="searchCustomersForChip"/>
+		<!-- 根据号码查找认筹客户 -->
+		<action name="searchCustomersFromPhoneForChip" class="com.ihk.saleunit.action.chip.ChipLayoutAction" method="searchCustomersFromPhoneForChip"/>
+		<!-- 查找认筹用户 -->
+		<action name="searchUsersForChip" class="com.ihk.saleunit.action.chip.ChipLayoutAction" method="searchUsersForChip"/>
+		
+		<action name="saveChipCustomer" class="com.ihk.saleunit.action.chip.ChipLayoutAction" method="saveChipCustomer"/>
+		<action name="ajaxChipCustomerFromCustomerIdForSearch" class="com.ihk.saleunit.action.chip.ChipLayoutAction" method="ajaxChipCustomerFromCustomerIdForSearch"/>
+		
+		<!-- 根据认筹id获取对应的客户的相关信息 -->
+		<action name="ajaxChipCustomerFromChipIdForAddTempConfirm" class="com.ihk.saleunit.action.chip.ChipLayoutAction" method="ajaxChipCustomerFromChipIdForAddTempConfirm"/>
+		
+		<!-- 默认加载请求 -->
+		<action name="getDefaultLoadForSearch" class="com.ihk.saleunit.action.chip.SearchChipAction" method="getDefaultLoadForSearch"/>
+		
+		<!-- 获取筹单类型 -->
+		<action name="getChipTypeForAddChip" class="com.ihk.saleunit.action.chip.SearchChipAction" method="getChipTypeForAddChip"/>
+		
+		<!-- 保存认筹 -->
+		<action name="saveChip" class="com.ihk.saleunit.action.chip.ChipLayoutAction" method="saveChip"/>
+		
+		<!-- 修改认筹 -->
+		<action name="updateChip" class="com.ihk.saleunit.action.chip.SearchChipAction" method="updateChip"/>
+		
+		<!-- 新建认筹中的选择单元 -->
+		<action name="changeUnitForAddChip" class="com.ihk.saleunit.action.chip.ChipLayoutAction" method="changeUnitForAddChip">
+			<result name="getUnit">/saleunit_chip/guangzhou/unit_tochange_for_save_chip.jsp</result>
+			<result name="getAreaUnit">/saleunit_chip/guangzhou/unit_tochange_for_save_chip.jsp</result>
+			<result name="getProjectUnit">/saleunit_chip/guangzhou/unit_tochange_for_save_chip.jsp</result>
+			<result name="getGroup">/saleunit_chip/guangzhou/unit_tochange_for_save_chip.jsp</result>
+		</action>
+		
+		<!-- 关闭弹出框的刷新 -->
+		<action name="closeDialogRefresh" class="com.ihk.saleunit.action.chip.ChipLayoutAction" method="closeDialogRefresh">
+			<result name="getUnit">/saleunit_chip/guangzhou/unit.jsp</result>
+			<result name="getAreaUnit">/saleunit_chip/guangzhou/unit.jsp</result>
+			<result name="getGroup">/saleunit_chip/guangzhou/unit.jsp</result>
+		</action>
+		
+		<!-- 左边导航树 -->
+		<action name="getUnit" class="com.ihk.saleunit.action.chip.ChipLayoutAction" method="getUnit">
+			<result name="getUnit">/saleunit_chip/guangzhou/unit.jsp</result>
+		</action>
+		
+		<action name="getAreaUnit" class="com.ihk.saleunit.action.chip.ChipLayoutAction" method="getAreaUnit">
+			<result name="getAreaUnit">/saleunit_chip/guangzhou/unit.jsp</result>
+		</action>
+		
+		<action name="getGroup" class="com.ihk.saleunit.action.chip.ChipLayoutAction" method="getGroup">
+			<result name="getGroup">/saleunit_chip/guangzhou/unit.jsp</result>
+		</action>
+						
+		<!-- 查询认筹 -->
+		<action name="searchChip" class="com.ihk.saleunit.action.chip.SearchChipAction" method="searchChip">
+			<result name="success">/saleunit_chip/guangzhou/search_chip.jsp</result>
+		</action>
+				
+		<!-- 取得认筹 -->
+		<action name="ajaxGetChipById" class="com.ihk.saleunit.action.chip.SearchChipAction" method="ajaxGetChipById"/>
+		
+		<!-- 作废 -->
+		<action name="voidChip" class="com.ihk.saleunit.action.chip.VoidChipAction" method="voidChip"/>
+		
+		<!-- 跳到新增认筹界面iframe -->
+		<action name="toCreateChipDialog" class="com.ihk.saleunit.action.chip.EasyuiChipAction" method="toCreateChipDialog">
+			<result name="toCreateChipDialog">/saleunit_chip/guangzhou/chip_create_iframe.jsp</result>
+		</action>
+		
+		<!-- 跳到修改认筹界面iframe -->
+		<action name="toModifyChipDialog" class="com.ihk.saleunit.action.chip.EasyuiChipAction" method="toModifyChipDialog">
+			<result name="toModifyChipDialog">/saleunit_chip/guangzhou/chip_edit_div.jsp</result>
+		</action>
+		
+		<!-- 新增认筹 -->
+		<action name="addChip" class="com.ihk.saleunit.action.chip.EasyuiChipAction" method="addChip"/>
+		
+		<!-- 修改认筹 -->
+		<action name="modifyChip" class="com.ihk.saleunit.action.chip.EasyuiChipAction" method="modifyChip"/>
+	
+	</package>
+	
+</struts>

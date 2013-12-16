@@ -1,0 +1,90 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.ihk.user.data.ICompanyGroupMapper">
+
+	<resultMap type="CompanyGroup" id="companyGroupResultMap">
+		<id property="id" column="id" />        
+		<result property="parentId" column="parent_id" />
+		<result property="companyId" column="company_id" />
+		<result property="orderIndex" column="order_index" />
+		<result property="isDeleted" column="is_deleted" />
+		<result property="createdId" column="created_id" />
+		<result property="createdTime" column="created_time" />
+		<result property="modId" column="mod_id" />
+		<result property="modTime" column="mod_time" />
+	</resultMap>
+
+	<insert id="addCompanyGroup" parameterType="CompanyGroup">
+		 <selectKey resultType="java.lang.Integer" keyProperty="id" order="AFTER" >
+            SELECT @@IDENTITY
+        </selectKey>		
+		insert into company_group(
+		parent_id,
+		company_id,
+		order_index,
+		is_deleted,
+		created_id,
+		created_time,
+		mod_id,
+		mod_time
+		)
+			VALUES(
+		#{parentId},
+		#{companyId},
+		#{orderIndex},
+		#{isDeleted},
+		#{createdId},
+		#{createdTime},
+		#{modId},
+		#{modTime}
+			)
+		
+	</insert>
+	<delete id="deleteCompanyGroup" parameterType="int">
+	update company_group set is_deleted='1' where id=#{id};
+	</delete>
+	<update id="updateCompanyGroup" parameterType="int">
+	update company_group set 
+		parent_id=#{parentId},
+		company_id=#{companyId},
+		order_index=#{orderIndex},
+		is_deleted=#{isDeleted},
+		created_id=#{createdId},
+		created_time=#{createdTime},
+		mod_id=#{modId},
+		mod_time=#{modTime}
+	 where id=#{id}
+	</update>
+	<select id="findCompanyGroupById" resultMap="companyGroupResultMap">
+	select * from company_group where id=#{id}
+	</select>
+	
+	<select id="findCompanyGroupCount" resultType="int" parameterType="com.ihk.user.data.pojo.CompanyGroupCond">
+		SELECT count(0) from company_group  
+<!--
+    	<where>			
+	    <if test="studentName!=null and studentName!='' ">  
+	        STUDENT_NAME LIKE CONCAT(CONCAT('%', #{studentName}),'%')   
+	    </if>  
+    </where>
+    -->
+    
+    </select>
+    
+	<select id="findCompanyGroupPage" resultMap="companyGroupResultMap" parameterType="com.ihk.user.data.pojo.CompanyGroupCond">
+		SELECT * from  company_group 
+        <!--
+    	<where>			
+	    <if test="studentName!=null and studentName!='' ">  
+	        STUDENT_NAME LIKE CONCAT(CONCAT('%', #{studentName}),'%')   
+	    </if>  
+    </where>
+    -->
+    
+		<if test="startLine >= 0">
+		<if test="pageSize > 0">
+			limit #{startLine},#{pageSize};
+		</if>
+		</if>
+	</select>
+</mapper>

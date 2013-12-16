@@ -1,0 +1,26 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE struts PUBLIC
+    "-//Apache Software Foundation//DTD Struts Configuration 2.0//EN"
+    "http://struts.apache.org/dtds/struts-2.0.dtd">
+<struts>
+	<!-- 汇景新城crm   现在已经没有使用 -->
+	<package name="user_huijing" extends="struts-default">
+		<action name="user_huijing!*" class="com.ihk.user.action.UserAccountAction">
+			<result name="error">/userAccount/huijing/error.jsp</result>
+			<result name="loginUserAccount" type="redirectAction">${actionFront}!searchCustomer.action</result>
+			<result name="newUserAccount">/userAccount/huijing/success.jsp</result>
+			<result name="findUserAccountPage">/userAccount/huijing/index.jsp</result>
+			<result name="indexUserAccount">/userAccount/huijing/index.jsp</result>
+			<result name="addUserAccountJsp">/userAccount/huijing/input.jsp</result>
+			<result name="addUserAccount">/userAccount/huijing/success.jsp</result>
+			<result name="updateUserAccountJsp_user">/userAccount/huijing/update_user.jsp</result>		
+			<result name="updateUserAccountJsp_manager">/userAccount/huijing/update_manager.jsp</result>
+			<result name="updateByManagerJsp">/userAccount/huijing/update_manager.jsp</result>		
+			<result name="updatePwdByManager">/userAccount/huijing/success.jsp</result>		
+			<result name="updatePwd">/userAccount/huijing/success.jsp</result>		
+
+		</action>
+		
+	</package>
+
+</struts>

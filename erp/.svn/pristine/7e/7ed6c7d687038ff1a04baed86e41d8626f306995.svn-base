@@ -1,0 +1,133 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.ihk.saleunit.data.IUnitDiscountMapper">
+
+	<resultMap type="UnitDiscount" id="unitDiscountResultMap">
+		<id property="id" column="id" />        
+		<result property="discountName" column="discount_name" />
+		<result property="buildId" column="build_id" />
+		<result property="unitId" column="unit_id" />
+		<result property="confirmType" column="confirm_type" />
+		<result property="mainId" column="main_id" />
+		<result property="computeWay" column="compute_way" />
+		<result property="addUnitPrice" column="add_unit_price" />
+		<result property="addSumPrice" column="add_sum_price" />
+		<result property="reduceSumPrice" column="reduce_sum_price" />
+		<result property="discountDesc" column="discount_desc" />
+		<result property="discountMan" column="discount_man" />
+		<result property="isDeleted" column="is_deleted" />
+		<result property="createdId" column="created_id" />
+		<result property="createdTime" column="created_time" />
+		<result property="modId" column="mod_id" />
+		<result property="modTime" column="mod_time" />
+	</resultMap>
+
+	<insert id="addUnitDiscount" parameterType="UnitDiscount">
+		 <selectKey resultType="java.lang.Integer" keyProperty="id" order="AFTER" >
+            SELECT @@IDENTITY
+        </selectKey>		
+		insert into unit_discount(
+		discount_name,
+		build_id,
+		unit_id,
+		confirm_type,
+		main_id,
+		compute_way,
+		add_unit_price,
+		add_sum_price,
+		reduce_sum_price,
+		discount_desc,
+		discount_man,
+		is_deleted,
+		created_id,
+		created_time,
+		mod_id,
+		mod_time
+		)
+			VALUES(
+		#{discountName},
+		#{buildId},
+		#{unitId},
+		#{confirmType},
+		#{mainId},
+		#{computeWay},
+		#{addUnitPrice},
+		#{addSumPrice},
+		#{reduceSumPrice},
+		#{discountDesc},
+		#{discountMan},
+		#{isDeleted},
+		#{createdId},
+		#{createdTime},
+		#{modId},
+		#{modTime}
+			)
+		
+	</insert>
+	<delete id="deleteUnitDiscount" parameterType="int">
+	update unit_discount set is_deleted='1' where id=#{id};
+	</delete>
+	<update id="updateUnitDiscount" parameterType="int">
+	update unit_discount set 
+		discount_name=#{discountName},
+		build_id=#{buildId},
+		unit_id=#{unitId},
+		confirm_type=#{confirmType},
+		main_id=#{mainId},
+		compute_way=#{computeWay},
+		add_unit_price=#{addUnitPrice},
+		add_sum_price=#{addSumPrice},
+		reduce_sum_price=#{reduceSumPrice},
+		discount_desc=#{discountDesc},
+		discount_man=#{discountMan},
+		mod_id=#{modId},
+		mod_time=#{modTime}
+	 where id=#{id}
+	</update>
+	<select id="findUnitDiscountById" resultMap="unitDiscountResultMap">
+	select * from unit_discount where id=#{id}
+	</select>
+    
+	<sql id="findWhereCond"> 
+		<where>
+        <!--
+			<if test="date1 != null and date1 != ''">
+            </if>    
+            and is_deleted = '0'
+            -->
+		</where>
+	</sql>
+	
+	<select id="findUnitDiscountCount" resultType="int" parameterType="com.ihk.saleunit.data.pojo.UnitDiscountCond">
+		SELECT count(0) from unit_discount  
+        <include refid="findWhereCond"/>     
+    </select>
+        
+	<select id="findUnitDiscount" resultMap="unitDiscountResultMap" parameterType="com.ihk.saleunit.data.pojo.UnitDiscountCond">
+		SELECT * from  unit_discount 
+        <include refid="findWhereCond"/> 
+		<if test="topNum > 0">
+			limit #{topNum};
+		</if>
+    </select>
+    
+	<select id="findUnitDiscountPage" resultMap="unitDiscountResultMap" parameterType="com.ihk.saleunit.data.pojo.UnitDiscountCond">
+		SELECT * from  unit_discount 
+        <include refid="findWhereCond"/> 
+    
+		<if test="startLine >= 0">
+		<if test="pageSize > 0">
+			limit #{startLine},#{pageSize};
+		</if>
+		</if>
+	</select>
+	
+	<update id="updateUnitDiscountMainId" parameterType="map">
+		update unit_discount set confirm_type = #{type}, main_id = #{mainId} where id = #{unitDiscountId}
+	</update>
+	
+	<select id="findUnitDiscountByTypeAndMainId" resultMap="unitDiscountResultMap" parameterType="map">
+		select * from unit_discount where confirm_type = #{type} and main_id = #{mainId} and is_deleted = '0' order by mod_time desc limit 1
+	</select>
+	
+</mapper>

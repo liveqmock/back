@@ -1,0 +1,3307 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.ihk.customer.data.ICustomerMapper">
+
+	<resultMap type="Customer" id="customerResultMap">
+		<id property="id" column="id" />        
+		<result property="customerNo" column="customer_no" />
+		<result property="customerName" column="customer_name" />
+		<result property="companyId" column="company_id" />
+		<result property="projectId" column="project_id" />
+		<result property="teamId" column="team_id" />
+		<result property="userId" column="user_id" />
+		<result property="managerId" column="manager_id" />
+		<result property="customerSource" column="customer_source" />
+		<result property="intentEstate" column="intent_estate" />
+		<result property="customerState" column="customer_state" />
+		<result property="phone" column="phone" />
+		<result property="phoneFrom" column="phone_from"/>
+		<result property="homePhone" column="home_phone" />
+		<result property="officePhone" column="office_phone" />
+		<result property="gender" column="gender" />
+		<result property="email" column="email" />
+		<result property="peerNumber" column="peer_number" />
+		<result property="isFirst" column="is_first" />
+		<result property="firstDate" column="first_date" />
+		<result property="firstHour" column="first_hour" />
+		<result property="visitCount" column="visit_count" />
+		<result property="isRelation" column="is_relation" />
+		<result property="relationDesc" column="relation_desc" />
+		<result property="isOwner" column="is_owner" />
+		<result property="nationality" column="nationality" />
+		<result property="background" column="background" />
+		<result property="requestArea" column="request_area" />
+		<result property="priceAmount" column="price_amount" />
+		<result property="areaNum" column="area_num" />
+		<result property="priceNum" column="price_num" />
+		<result property="buyReson" column="buy_reson" />
+		<result property="notBuyReson" column="not_buy_reson" />
+		<result property="intentionPart" column="intention_part" />
+		<result property="rating" column="rating" />
+		<result property="ratingRemark" column="rating_remark" />
+		<result property="payType" column="pay_type" />
+		<result property="familyType" column="family_type" />
+		<result property="familyIncome" column="family_income" />
+		<result property="remark1" column="remark1" />
+		<result property="remark2" column="remark2" />
+		<result property="remark3" column="remark3" />
+		<result property="remark4" column="remark4" />
+		<result property="marriage" column="marriage" />
+		<result property="age" column="age" />
+		<result property="birthday" column="birthday" />
+		<result property="idcardType" column="idcard_type" />
+		<result property="idcardNo" column="idcard_no" />
+		<result property="faceLook" column="face_look" />
+		<result property="workUnit" column="work_unit" />
+		<result property="jobPosition" column="job_position" />
+		<result property="wage" column="wage" />
+		<result property="jobType" column="job_type" />
+		<result property="jobIndustry" column="job_industry" />
+		<result property="jobDesc" column="job_desc" />
+		<result property="homeProvince" column="home_province" />
+		<result property="homeCity" column="home_city" />
+		<result property="homeRegion" column="home_region" />
+		<result property="homeBlock" column="home_block" />
+		<result property="homeContent" column="home_content" />
+		<result property="workProvince" column="work_province" />
+		<result property="workCity" column="work_city" />
+		<result property="workRegion" column="work_region" />
+		<result property="workBlock" column="work_block" />
+		<result property="workContent" column="work_content" />
+		<result property="customerRegion" column="customer_region" />
+		<result property="visitDate" column="visit_date" />
+		<result property="address" column="address" />
+		<result property="postcode" column="postcode" />
+		<result property="family" column="family" />
+		<result property="interest" column="interest" />
+		<result property="trafficTool" column="traffic_tool" />
+		<result property="trafficDesc" column="traffic_desc" />
+		<result property="knownFrom" column="known_from" />
+		<result property="buyAim" column="buy_aim" />
+		<result property="buyUse" column="buy_use" />
+		<result property="productClaim" column="product_claim" />
+		<result property="unitPrice" column="unit_price" />
+		<result property="houseType" column="house_type" />
+		<result property="roomType" column="room_type" />
+		<result property="floor" column="floor" />
+		<result property="parking" column="parking" />
+		<result property="buyFactor" column="buy_factor" />
+		<result property="intentLease" column="intent_lease" />
+		<result property="payBy" column="pay_by" />
+		<result property="rejectFactor" column="reject_factor" />
+		<result property="intentUnit1" column="intent_unit1" />
+		<result property="intentUnit2" column="intent_unit2" />
+		<result property="intentBuynum" column="intent_buynum" />
+		<result property="intentionDesc" column="intention_desc" />
+		<result property="buyCount" column="buy_count" />
+		<result property="subject1" column="subject1" />
+		<result property="content1" column="content1" />
+		<result property="subject2" column="subject2" />
+		<result property="content2" column="content2" />
+		<result property="subject3" column="subject3" />
+		<result property="content3" column="content3" />
+		<result property="subject4" column="subject4" />
+		<result property="content4" column="content4" />
+		<result property="followTime" column="follow_time"/>
+		<result property="isDeleted" column="is_deleted" />
+		<result property="createdId" column="created_id" />
+		<result property="createdTime" column="created_time" />
+		<result property="modId" column="mod_id" />
+		<result property="modTime" column="mod_time" />
+	</resultMap>
+	
+	<resultMap type="java.util.Map" id="customerAndQuestionResultMap">
+		<result property="customerId" column="customer_id" />
+		<result property="answerId" column="answer_id" />
+		<result property="answerContent" column="anwser_content" />
+	</resultMap>
+
+	<insert id="saveCustomer" parameterType="Customer">
+		 <selectKey resultType="java.lang.Integer" keyProperty="id" order="AFTER" >
+            SELECT @@IDENTITY
+        </selectKey>		
+		insert into customer(
+		customer_no,
+		customer_name,
+		company_id,
+		project_id,
+		team_id,
+		user_id,
+		manager_id,
+		customer_source,
+		intent_estate,
+		customer_state,
+		phone,
+		phone_from,
+		home_phone,
+		office_phone,
+		gender,
+		email,
+		peer_number,
+		is_first,
+		first_date,
+		first_hour,
+		visit_count,
+		is_relation,
+		relation_desc,
+		is_owner,
+		nationality,
+		background,
+		request_area,
+		price_amount,
+		area_num,
+		price_num,
+		buy_reson,
+		not_buy_reson,
+		intention_part,
+		rating,
+		rating_remark,
+		pay_type,
+		family_type,
+		family_income,
+		remark1,
+		remark2,
+		remark3,
+		remark4,
+		marriage,
+		age,
+		birthday,
+		idcard_type,
+		idcard_no,
+		face_look,
+		work_unit,
+		job_position,
+		wage,
+		job_type,
+		job_industry,
+		job_desc,
+		home_province,
+		home_city,
+		home_region,
+		home_block,
+		home_content,
+		work_province,
+		work_city,
+		work_region,
+		work_block,
+		work_content,
+		customer_region,
+		visit_date,
+		address,
+		postcode,
+		family,
+		interest,
+		traffic_tool,
+		traffic_desc,
+		known_from,
+		buy_aim,
+		buy_use,
+		product_claim,
+		unit_price,
+		house_type,
+		room_type,
+		floor,
+		parking,
+		buy_factor,
+		intent_lease,
+		pay_by,
+		reject_factor,
+		intent_unit1,
+		intent_unit2,
+		intent_buynum,
+		intention_desc,
+		buy_count,
+		subject1,
+		content1,
+		subject2,
+		content2,
+		subject3,
+		content3,
+		subject4,
+		content4,
+		follow_time,
+		is_deleted,
+		created_id,
+		created_time,
+		mod_id,
+		mod_time
+		)
+			VALUES(
+		#{customerNo},
+		#{customerName},
+		#{companyId},
+		#{projectId},
+		#{teamId},
+		#{userId},
+		#{managerId},
+		#{customerSource},
+		#{intentEstate},
+		#{customerState},
+		#{phone},
+		#{phoneFrom},
+		#{homePhone},
+		#{officePhone},
+		#{gender},
+		#{email},
+		#{peerNumber},
+		#{isFirst},
+		#{firstDate},
+		#{firstHour},
+		#{visitCount},
+		#{isRelation},
+		#{relationDesc},
+		#{isOwner},
+		#{nationality},
+		#{background},
+		#{requestArea},
+		#{priceAmount},
+		#{areaNum},
+		#{priceNum},
+		#{buyReson},
+		#{notBuyReson},
+		#{intentionPart},
+		#{rating},
+		#{ratingRemark},
+		#{payType},
+		#{familyType},
+		#{familyIncome},
+		#{remark1},
+		#{remark2},
+		#{remark3},
+		#{remark4},
+		#{marriage},
+		#{age},
+		#{birthday},
+		#{idcardType},
+		#{idcardNo},
+		#{faceLook},
+		#{workUnit},
+		#{jobPosition},
+		#{wage},
+		#{jobType},
+		#{jobIndustry},
+		#{jobDesc},
+		#{homeProvince},
+		#{homeCity},
+		#{homeRegion},
+		#{homeBlock},
+		#{homeContent},
+		#{workProvince},
+		#{workCity},
+		#{workRegion},
+		#{workBlock},
+		#{workContent},
+		#{customerRegion},
+		#{visitDate},
+		#{address},
+		#{postcode},
+		#{family},
+		#{interest},
+		#{trafficTool},
+		#{trafficDesc},
+		#{knownFrom},
+		#{buyAim},
+		#{buyUse},
+		#{productClaim},
+		#{unitPrice},
+		#{houseType},
+		#{roomType},
+		#{floor},
+		#{parking},
+		#{buyFactor},
+		#{intentLease},
+		#{payBy},
+		#{rejectFactor},
+		#{intentUnit1},
+		#{intentUnit2},
+		#{intentBuynum},
+		#{intentionDesc},
+		#{buyCount},
+		#{subject1},
+		#{content1},
+		#{subject2},
+		#{content2},
+		#{subject3},
+		#{content3},
+		#{subject4},
+		#{content4},
+		#{followTime},
+		#{isDeleted},
+		#{createdId},
+		#{createdTime},
+		#{modId},
+		#{modTime}
+			)
+		
+	</insert>
+	
+	<update id="deleteCustomer" parameterType="com.ihk.utils.base.PojoDeleteCond">
+		<!-- 
+		update customer set is_deleted ='1' where id=#{id};
+		 -->
+		update customer set is_deleted = '1', mod_id=#{modId}, mod_time=#{modTime} where id = #{id};
+	</update>
+	
+	<update id="updateCustomer" parameterType="int">
+	update customer set 
+		customer_no=#{customerNo},
+		customer_name=#{customerName},
+		company_id=#{companyId},
+		project_id=#{projectId},
+		team_id=#{teamId},
+		user_id=#{userId},
+		manager_id=#{managerId},
+		customer_source=#{customerSource},
+		intent_estate=#{intentEstate},
+		customer_state=#{customerState},
+		phone=#{phone},
+		phone_from=#{phoneFrom},
+		home_phone=#{homePhone},
+		office_phone=#{officePhone},
+		gender=#{gender},
+		email=#{email},
+		peer_number=#{peerNumber},
+		is_first=#{isFirst},
+		first_date=#{firstDate},
+		first_hour=#{firstHour},
+		visit_count=#{visitCount},
+		is_relation=#{isRelation},
+		relation_desc=#{relationDesc},
+		is_owner=#{isOwner},
+		nationality=#{nationality},
+		background=#{background},
+		request_area=#{requestArea},
+		price_amount=#{priceAmount},
+		area_num=#{areaNum},
+		price_num=#{priceNum},
+		buy_reson=#{buyReson},
+		not_buy_reson=#{notBuyReson},
+		intention_part=#{intentionPart},
+		rating=#{rating},
+		rating_remark=#{ratingRemark},
+		pay_type=#{payType},
+		family_type=#{familyType},
+		family_income=#{familyIncome},
+		remark1=#{remark1},
+		remark2=#{remark2},
+		remark3=#{remark3},
+		remark4=#{remark4},
+		marriage=#{marriage},
+		age=#{age},
+		birthday=#{birthday},
+		idcard_type=#{idcardType},
+		idcard_no=#{idcardNo},
+		face_look=#{faceLook},
+		work_unit=#{workUnit},
+		job_position=#{jobPosition},
+		wage=#{wage},
+		job_type=#{jobType},
+		job_industry=#{jobIndustry},
+		job_desc=#{jobDesc},
+		home_province=#{homeProvince},
+		home_city=#{homeCity},
+		home_region=#{homeRegion},
+		home_block=#{homeBlock},
+		home_content=#{homeContent},
+		work_province=#{workProvince},
+		work_city=#{workCity},
+		work_region=#{workRegion},
+		work_block=#{workBlock},
+		work_content=#{workContent},
+		customer_region=#{customerRegion},
+		visit_date=#{visitDate},
+		address=#{address},
+		postcode=#{postcode},
+		family=#{family},
+		interest=#{interest},
+		traffic_tool=#{trafficTool},
+		traffic_desc=#{trafficDesc},
+		known_from=#{knownFrom},
+		buy_aim=#{buyAim},
+		buy_use=#{buyUse},
+		product_claim=#{productClaim},
+		unit_price=#{unitPrice},
+		house_type=#{houseType},
+		room_type=#{roomType},
+		floor=#{floor},
+		parking=#{parking},
+		buy_factor=#{buyFactor},
+		intent_lease=#{intentLease},
+		pay_by=#{payBy},
+		reject_factor=#{rejectFactor},
+		intent_unit1=#{intentUnit1},
+		intent_unit2=#{intentUnit2},
+		intent_buynum=#{intentBuynum},
+		intention_desc=#{intentionDesc},
+		buy_count=#{buyCount},
+		subject1=#{subject1},
+		content1=#{content1},
+		subject2=#{subject2},
+		content2=#{content2},
+		subject3=#{subject3},
+		content3=#{content3},
+		subject4=#{subject4},
+		content4=#{content4},
+		follow_time=#{followTime},
+		mod_id=#{modId},
+		mod_time=#{modTime},
+		is_deleted=#{isDeleted}
+	 where id=#{id}
+	</update>
+	
+	<update id="updateCustomerForPart" parameterType="int">
+	update customer set 
+		<if test="customerNo != null and customerNo != ''">
+		customer_no=#{customerNo},
+		</if>
+		<if test="customerName != null and customerName != ''">
+		customer_name=#{customerName},
+		</if>
+		<if test="companyId != null and companyId != ''">
+		company_id=#{companyId},
+		</if>
+		<if test="projectId != null and projectId != ''">
+		project_id=#{projectId},
+		</if>
+		<if test="teamId != null and teamId != ''">
+		team_id=#{teamId},
+		</if>
+		<if test="userId != null and userId != ''">
+		user_id=#{userId},
+		</if>
+		<if test="managerId != null and managerId != ''">
+		manager_id=#{managerId},
+		</if>
+		<if test="customerSource != null and customerSource != ''">
+		customer_source=#{customerSource},
+		</if>
+		<if test="intentEstate != null and intentEstate != ''">
+		intent_estate=#{intentEstate},
+		</if>
+		<if test="customerState != null and customerState != ''">
+		customer_state=#{customerState},
+		</if>
+		<if test="phone != null and phone != ''">
+		phone=#{phone},
+		</if>
+		<if test="phoneFrom != null and phoneFrom != ''">
+		phone_from=#{phoneFrom},
+		</if>
+		<if test="homePhone != null and homePhone != ''">
+		home_phone=#{homePhone},
+		</if>
+		<if test="officePhone != null and officePhone != ''">
+		office_phone=#{officePhone},
+		</if>
+		<if test="gender != null and gender != ''">
+		gender=#{gender},
+		</if>
+		<if test="email != null and email != ''">
+		email=#{email},
+		</if>
+		<if test="peerNumber != null and peerNumber != ''">
+		peer_number=#{peerNumber},
+		</if>
+		<if test="isFirst != null and isFirst != ''">
+		is_first=#{isFirst},
+		</if>
+		<if test="firstDate != null and firstDate != ''">
+		first_date=#{firstDate},
+		</if>
+		<if test="firstHour != null and firstHour != ''">
+		first_hour=#{firstHour},
+		</if>
+		<if test="visitCount != null and visitCount != ''">
+		visit_count=#{visitCount},
+		</if>
+		<if test="isRelation != null and isRelation != ''">
+		is_relation=#{isRelation},
+		</if>
+		<if test="relationDesc != null and relationDesc != ''">
+		relation_desc=#{relationDesc},
+		</if>
+		<if test="isOwner != null and isOwner != ''">
+		is_owner=#{isOwner},
+		</if>
+		<if test="nationality != null and nationality != ''">
+		nationality=#{nationality},
+		</if>
+		<if test="background != null and background != ''">
+		background=#{background},
+		</if>
+		<if test="requestArea != null and requestArea != ''">
+		request_area=#{requestArea},
+		</if>
+		<if test="priceAmount != null and priceAmount != ''">
+		price_amount=#{priceAmount},
+		</if>
+		<if test="areaNum != null and areaNum != ''">
+		area_num=#{areaNum},
+		</if>
+		<if test="priceNum != null and priceNum != ''">
+		price_num=#{priceNum},
+		</if>
+		<if test="buyReson != null and buyReson != ''">
+		buy_reson=#{buyReson},
+		</if>
+		<if test="notBuyReson != null and notBuyReson != ''">
+		not_buy_reson=#{notBuyReson},
+		</if>
+		<if test="intentionPart != null and intentionPart != ''">
+		intention_part=#{intentionPart},
+		</if>
+		<if test="rating != null and rating != ''">
+		rating=#{rating},
+		</if>
+		<if test="ratingRemark != null and ratingRemark != ''">
+		rating_remark=#{ratingRemark},
+		</if>
+		<if test="payType != null and payType != ''">
+		pay_type=#{payType},
+		</if>
+		<if test="familyType != null and familyType != ''">
+		family_type=#{familyType},
+		</if>
+		<if test="familyIncome != null and familyIncome != ''">
+		family_income=#{familyIncome},
+		</if>
+		<if test="remark1 != null and remark1 != ''">
+		remark1=#{remark1},
+		</if>
+		<if test="remark2 != null and remark2 != ''">
+		remark2=#{remark2},
+		</if>
+		<if test="remark3 != null and remark3 != ''">
+		remark3=#{remark3},
+		</if>
+		<if test="remark4 != null and remark4 != ''">
+		remark4=#{remark4},
+		</if>
+		<if test="marriage != null and marriage != ''">
+		marriage=#{marriage},
+		</if>
+		<if test="age != null and age != ''">
+		age=#{age},
+		</if>
+		<if test="birthday != null and birthday != ''">
+		birthday=#{birthday},
+		</if>
+		<if test="idcardType != null and idcardType != ''">
+		idcard_type=#{idcardType},
+		</if>
+		<if test="idcardNo != null and idcardNo != ''">
+		idcard_no=#{idcardNo},
+		</if>
+		<if test="faceLook != null and faceLook != ''">
+		face_look=#{faceLook},
+		</if>
+		<if test="workUnit != null and workUnit != ''">
+		work_unit=#{workUnit},
+		</if>
+		<if test="jobPosition != null and jobPosition != ''">
+		job_position=#{jobPosition},
+		</if>
+		<if test="wage != null and wage != ''">
+		wage=#{wage},
+		</if>
+		<if test="jobType != null and jobType != ''">
+		job_type=#{jobType},
+		</if>
+		<if test="jobIndustry != null and jobIndustry != ''">
+		job_industry=#{jobIndustry},
+		</if>
+		<if test="jobDesc != null and jobDesc != ''">
+		job_desc=#{jobDesc},
+		</if>
+		<if test="homeProvince != null and homeProvince != ''">
+		home_province=#{homeProvince},
+		</if>
+		<if test="homeCity != null and homeCity != ''">
+		home_city=#{homeCity},
+		</if>
+		<if test="homeRegion != null and homeRegion != ''">
+		home_region=#{homeRegion},
+		</if>
+		<if test="homeBlock != null and homeBlock != ''">
+		home_block=#{homeBlock},
+		</if>
+		<if test="homeContent != null and homeContent != ''">
+		home_content=#{homeContent},
+		</if>
+		<if test="workProvince != null and workProvince != ''">
+		work_province=#{workProvince},
+		</if>
+		<if test="workCity != null and workCity != ''">
+		work_city=#{workCity},
+		</if>
+		<if test="workRegion != null and workRegion != ''">
+		work_region=#{workRegion},
+		</if>
+		<if test="workBlock != null and workBlock != ''">
+		work_block=#{workBlock},
+		</if>
+		<if test="workContent != null and workContent != ''">
+		work_content=#{workContent},
+		</if>
+		<if test="customerRegion != null and customerRegion != ''">
+		customer_region=#{customerRegion},
+		</if>
+		<if test="visitDate != null and visitDate != ''">
+		visit_date=#{visitDate},
+		</if>
+		<if test="address != null and address != ''">
+		address=#{address},
+		</if>
+		<if test="postcode != null and postcode != ''">
+		postcode=#{postcode},
+		</if>
+		<if test="family != null and family != ''">
+		family=#{family},
+		</if>
+		<if test="interest != null and interest != ''">
+		interest=#{interest},
+		</if>
+		<if test="trafficTool != null and trafficTool != ''">
+		traffic_tool=#{trafficTool},
+		</if>
+		<if test="trafficDesc != null and trafficDesc != ''">
+		traffic_desc=#{trafficDesc},
+		</if>
+		<if test="knownFrom != null and knownFrom != ''">
+		known_from=#{knownFrom},
+		</if>
+		<if test="buyAim != null and buyAim != ''">
+		buy_aim=#{buyAim},
+		</if>
+		<if test="buyUse != null and buyUse != ''">
+		buy_use=#{buyUse},
+		</if>
+		<if test="productClaim != null and productClaim != ''">
+		product_claim=#{productClaim},
+		</if>
+		<if test="unitPrice != null and unitPrice != ''">
+		unit_price=#{unitPrice},
+		</if>
+		<if test="houseType != null and houseType != ''">
+		house_type=#{houseType},
+		</if>
+		<if test="roomType != null and roomType != ''">
+		room_type=#{roomType},
+		</if>
+		<if test="floor != null and floor != ''">
+		floor=#{floor},
+		</if>
+		<if test="parking != null and parking != ''">
+		parking=#{parking},
+		</if>
+		<if test="buyFactor != null and buyFactor != ''">
+		buy_factor=#{buyFactor},
+		</if>
+		<if test="intentLease != null and intentLease != ''">
+		intent_lease=#{intentLease},
+		</if>
+		<if test="payBy != null and payBy != ''">
+		pay_by=#{payBy},
+		</if>
+		<if test="rejectFactor != null and rejectFactor != ''">
+		reject_factor=#{rejectFactor},
+		</if>
+		<if test="intentUnit1 != null and intentUnit1 != ''">
+		intent_unit1=#{intentUnit1},
+		</if>
+		<if test="intentUnit2 != null and intentUnit2 != ''">
+		intent_unit2=#{intentUnit2},
+		</if>
+		<if test="intentBuynum != null and intentBuynum != ''">
+		intent_buynum=#{intentBuynum},
+		</if>
+		<if test="intentionDesc != null and intentionDesc != ''">
+		intention_desc=#{intentionDesc},
+		</if>
+		<if test="buyCount != null and buyCount != ''">
+		buy_count=#{buyCount},
+		</if>
+		<if test="subject1 != null and subject1 != ''">
+		subject1=#{subject1},
+		</if>
+		<if test="content1 != null and content1 != ''">
+		content1=#{content1},
+		</if>
+		<if test="subject2 != null and subject2 != ''">
+		subject2=#{subject2},
+		</if>
+		<if test="content2 != null and content2 != ''">
+		content2=#{content2},
+		</if>
+		<if test="subject3 != null and subject3 != ''">
+		subject3=#{subject3},
+		</if>
+		<if test="content3 != null and content3 != ''">
+		content3=#{content3},
+		</if>
+		<if test="subject4 != null and subject4 != ''">
+		subject4=#{subject4},
+		</if>
+		<if test="content4 != null and content4 != ''">
+		content4=#{content4},
+		</if>
+		<if test="followTime != null and followTime != ''">
+		follow_time=#{followTime},
+		</if>
+		<if test="modId != null and modId != ''">
+		mod_id=#{modId},
+		</if>
+		<if test="modTime != null and modTime != ''">
+		mod_time=#{modTime},
+		</if>
+		<if test="isDeleted != null and isDeleted != ''">
+		is_deleted=#{isDeleted}
+		</if>
+	 where id=#{id}
+	</update>
+	
+	<select id="findCustomerById" resultMap="customerResultMap">
+		select * from customer where id=#{id} 
+	</select>
+	
+	<resultMap type="java.util.Map" id="customerGroupMap">
+		<result property="categoryDate" column="category_date" />
+		<result property="category" column="category" />
+		<result property="num" column="num" />
+		<result property="projectId" column="project_id" />		
+	</resultMap>
+	<resultMap type="java.util.Map" id="customerGroupQuestionTopicMap">
+		<result property="categoryDate" column="category_date" />
+		<result property="customerId" column="customer_id" />
+		<result property="questionId" column="question_id" />
+		<result property="topicId" column="topic_id" />	
+		<result property="topicName" column="topic_name" />	
+		<result property="anwserContent" column="anwser_content" />
+		<result property="customerName" column="customer_name" />
+		<result property="phone" column="phone" />
+		<result property="homePhone" column="home_phone" />
+		<result property="id" column="id" />
+		<result property="descCreatedId" column="created_id" />
+		<result property="areaNum" column="area_num" />
+		<result property="priceNum" column="price_num" />
+		<result property="createdTime" column="created_time" />
+		<result property="descProjectId" column="project_id" />
+	</resultMap>
+	<resultMap type="java.util.Map" id="projectCustNum">
+		<result property="projectId" column="project_id" />
+		<result property="projectName" column="project_name" />
+		<result property="count" column="count" />
+	</resultMap>
+	<resultMap type="java.util.Map" id="userCustNum">
+		<result property="userId" column="user_id" />
+		<result property="realName" column="real_name" />
+		<result property="count" column="count" />
+	</resultMap>
+	<resultMap type="java.util.Map" id="isNullCount">
+		<result property="count" column="count" />
+	</resultMap>
+	<resultMap type="java.util.Map" id="fieldInputCount">
+		<result property="fieldName" column="field_name" />
+		<result property="inputCount" column="input_count" />
+	</resultMap>
+	
+	<resultMap type="java.util.Map" id="customerDoublePieMap">
+		<result property="col1" column="col1"/>
+		<result property="col2" column="col2"/>
+		<result property="count" column="count"/>
+	</resultMap>
+	
+	<select id="findAllCustomer" resultMap="customerResultMap">
+		select * from customer;
+	</select>
+	
+	<!-- 不包含项目的判断 -->
+	<sql id="findWhereCondCommMin">
+		
+		<if test="priceAmount != null and priceAmount != ''">
+			and price_amount = #{priceAmount}
+		</if>
+		<if test="requestArea != null and requestArea != ''">
+			and request_area = #{requestArea}
+		</if>
+		<if test="searchName != null and searchName != ''">
+			and customer_name like concat(concat('%', #{searchName, jdbcType=VARCHAR}), '%')
+		</if>
+		<if test="searchPhone != null and searchPhone != ''">
+			and (phone like concat('%',#{searchPhone},'%') or home_phone like concat('%',#{searchPhone},'%'))
+		</if>
+		<if test="eqPhone != null and eqPhone != ''">
+			and phone = #{eqPhone}
+		</if>
+		<if test="homeProvinceIds != null and homeProvinceIds != ''">
+			and home_province in 
+			<foreach  
+                collection="homeProvinceIds"  
+                item="pId"  
+                open="("  
+                separator=","  
+                close=")">  
+                #{pId}  
+            </foreach>
+		</if>
+		<if test="workProvinceIds != null and workProvinceIds != ''">
+			and work_province in 
+			<foreach  
+                collection="workProvinceIds"  
+                item="pId"  
+                open="("  
+                separator=","  
+                close=")">  
+                #{pId}  
+            </foreach>
+		</if>
+		<if test="homeCityIds != null and homeCityIds != ''">
+			and home_city in 
+			<foreach  
+                collection="homeCityIds"  
+                item="cId"  
+                open="("  
+                separator=","  
+                close=")">  
+                #{cId}  
+            </foreach>
+		</if>
+		<if test="workCityIds != null and workCityIds != ''">
+			and work_city in 
+			<foreach  
+                collection="workCityIds"  
+                item="cId"  
+                open="("  
+                separator=","  
+                close=")">  
+                #{cId}  
+            </foreach>
+		</if>
+		<if test="homeRegionIds != null and homeRegionIds != ''">
+			and home_region in 
+			<foreach  
+                collection="homeRegionIds"  
+                item="rId"  
+                open="("  
+                separator=","  
+                close=")">  
+                #{rId}  
+            </foreach> 
+		</if>
+		<if test="workRegionIds != null and workRegionIds != ''">
+			and work_region in 
+			<foreach  
+                collection="workRegionIds"  
+                item="rId"  
+                open="("  
+                separator=","  
+                close=")">  
+                #{rId}  
+            </foreach> 
+		</if>
+		<if test="homeContent != null and homeContent != ''">
+			and home_content like concat('%', #{homeContent},'%')
+		</if>
+		<if test="workContent != null and workContent != ''">
+			and work_content like concat('%', #{workContent},'%')
+		</if>
+		<if test="phoneFrom != null and phoneFrom != ''">
+			and phone_from like concat('%',#{phoneFrom},'%')
+		</if>
+		<if test="buyUse != null and buyUse != ''">
+			and buy_use = #{buyUse}
+		</if>
+		<if test="buyCount != null and buyCount != ''">
+			and buy_count = #{buyCount}
+		</if>
+		<if test="gender != null and gender != ''">
+			and gender = #{gender}
+		</if>
+		<if test="visitCount != null and visitCount != ''">
+			and visit_count = #{visitCount}
+		</if>
+		<if test="ageRange != null and ageRange != ''">
+			and age = #{ageRange}
+		</if>
+		<if test="familyType != null and familyType != ''">
+			and family_type = #{familyType}
+		</if>
+		<if test="familyIncome != null and familyIncome != ''">
+			and family_income = #{familyIncome}
+		</if>
+		<if test="jobType != null and jobType != ''">
+			and job_type = #{jobType}
+		</if>
+		<if test="jobIndustry != null and jobIndustry != ''">
+			and job_industry = #{jobIndustry}
+		</if>
+		<if test="buyAim != null and buyAim != ''">
+			and buy_aim = #{buyAim}
+		</if>
+		<if test="payType != null and payType != ''">
+			and pay_type = #{payType}
+		</if>
+		<if test="intentBuynum != null and intentBuynum != ''">
+			and intent_buynum = #{intentBuynum}
+		</if>
+		<if test="roomType != null and roomType != ''">
+			and room_type = #{roomType}
+		</if>
+		<if test="date1 != null and date1 != ''">
+			and customer.created_time &gt;= #{date1}
+		</if>
+		<if test="date2 != null and date2 != ''">
+			and customer.created_time &lt; date_add(#{date2},interval 1 day)
+		</if>
+		
+		<!-- 来访日期 -->
+		<if test="visitDate1 != null and visitDate1 != ''">
+			and visit_date &gt;= #{visitDate1}
+		</if>
+		<if test="visitDate2 != null and visitDate2 != ''">
+			and visit_date &lt; date_add(#{visitDate2},interval 1 day)
+		</if>
+		
+        <if test="state!=null  and state !='' and state != '0' and state !=0">
+        	and customer_state = #{state}   
+        </if>
+        
+        <!-- 广州项目 -->
+        <!-- price1 price2 area1 area2 notFollowDay customerSource houseType  -->
+        <if test="price1 != null and price1 != ''">
+			and price_num &gt;= #{price1}
+		</if>
+		<if test="price2 != null and price2 != ''">
+			and price_num &lt;= #{price2}
+		</if>
+		<if test="area1 != null and area1 != ''">
+			and area_num &gt;= #{area1}
+		</if>
+		<if test="area2 != null and area2 != ''">
+			and area_num &lt;= #{area2}
+		</if>
+		<if test="notFollowDay != null and notFollowDay != ''">
+			and follow_time &lt;= date_sub(now(),interval #{notFollowDay} day)
+		</if>
+		<if test="followTime1 != null and followTime1 != ''">
+			and follow_time &gt;= #{followTime1}
+		</if>
+		<if test="followTime2 != null and followTime2 != ''">
+			and follow_time &lt; date_add(#{followTime2},interval 1 day)
+		</if>
+        <if test="customerSource != null and customerSource != ''">
+			and customer_source = #{customerSource}
+		</if>
+		<if test="houseType != null and houseType != ''">
+			and house_type = #{houseType}
+		</if>
+		<!-- 所属销售 的模糊查询 -->
+		<if test="userIds !=null and userIds.size() > 0">  
+            and user_id in
+            <foreach  
+                collection="userIds"  
+                item="uId"  
+                open="("  
+                separator=","  
+                close=")">  
+                #{uId}  
+            </foreach>  
+        </if> 
+           
+        <!-- 下面字段为汇景项目使用   -->
+        <!--  keyword 关键字, userName 跟进人员,  homePhone 固定电话,  rating 客户评级, relationDesc 是否提及关系户,指关系内容  -->
+        <if test="homePhone != null and homePhone != ''">
+			and home_phone like concat(concat('%', #{homePhone, jdbcType=VARCHAR}), '%')
+		</if>
+		<if test="rating != null and rating != ''">
+			and rating = #{rating}  
+		</if>
+           <if test="relationDesc != null and relationDesc != ''">
+			and relation_desc like concat(concat('%', #{relationDesc, jdbcType=VARCHAR}), '%')
+		</if>
+		 <if test="keyword != null and keyword != ''">
+			and
+			( 
+			address like concat(concat('%', #{keyword, jdbcType=VARCHAR}), '%')
+			or
+			background like concat(concat('%', #{keyword, jdbcType=VARCHAR}), '%')
+			or
+			buy_reson like concat(concat('%', #{keyword, jdbcType=VARCHAR}), '%')
+			or
+			remark1 like concat(concat('%', #{keyword, jdbcType=VARCHAR}), '%')		
+			or
+			rating_remark like concat(concat('%', #{keyword, jdbcType=VARCHAR}), '%')		
+			)
+		</if>
+		
+        <if test="ids !=null and ids.size() > 0">  
+            and id in
+            <foreach  
+                collection="ids"  
+                item="priId"  
+                open="("  
+                separator=","  
+                close=")">  
+                #{priId}  
+            </foreach>  
+        </if>
+		
+	</sql>
+	
+	<sql id="findWhereCondComm">
+		
+		<include refid="findWhereCondCommMin"/> 
+        
+         <if test="projectId != null and projectId != ''">
+			and customer.project_id = #{projectId}  
+		</if>
+		
+		<if test="companyProjectIds !=null and companyProjectIds.size() > 0">  
+            and customer.project_id in
+            <foreach  
+                collection="companyProjectIds"  
+                item="proId"  
+                open="("  
+                separator=","  
+                close=")">  
+                #{proId}  
+            </foreach>  
+        </if>
+        
+        <if test="searchProjectIds!=null and searchProjectIds.size()>0 ">  
+           	and customer.project_id in 
+			<foreach  
+	            collection="searchProjectIds"  
+	            item="searchProjectId" 
+	            open="("  
+	            separator=","  
+	            close=")">  
+	            #{searchProjectId}  
+	        </foreach>
+        </if>   
+        
+        and customer.is_deleted = '0' 
+	</sql>
+	
+	<sql id="findWhereCondCommDeleted">
+		
+		<include refid="findWhereCondCommMin"/> 
+        
+         <if test="projectId != null and projectId != ''">
+			and customer.project_id = #{projectId}  
+		</if>
+		
+		<if test="companyProjectIds !=null and companyProjectIds.size() > 0">  
+            and customer.project_id in
+            <foreach  
+                collection="companyProjectIds"  
+                item="proId"  
+                open="("  
+                separator=","  
+                close=")">  
+                #{proId}  
+            </foreach>  
+        </if>
+        
+        <if test="searchProjectIds!=null and searchProjectIds.size()>0 ">  
+           	and customer.project_id in 
+			<foreach  
+	            collection="searchProjectIds"  
+	            item="searchProjectId" 
+	            open="("  
+	            separator=","  
+	            close=")">  
+	            #{searchProjectId}  
+	        </foreach>
+        </if>   
+        
+        and customer.is_deleted = '1' 
+	</sql>
+	
+	<sql id="findWhereCond"> 
+		<where>
+			
+	        <include refid="findWhereCondComm"/> 
+	        
+	        <!-- 利用userId来判断用户身份,不空代表为普通用户 -->
+			<if test="userId != null and userId != ''">
+				and user_id = #{userId, jdbcType=INTEGER}
+			</if>
+	        
+	         <if test="followIds !=null and followIds.size() > 0">  
+	            or( id in
+	            <foreach  
+	                collection="followIds"  
+	                item="followId"  
+	                open="("  
+	                separator=","  
+	                close=")">  
+	                #{followId}  
+	            </foreach>
+
+	            and customer.is_deleted = '0' 
+
+	            <include refid="findWhereCondComm"/> 
+	            )  
+	        </if> 
+	        
+			<!-- 
+            <if test="createdId != null and createdId != '' and createdId != '0' and projectId != null and projectId != ''">
+             -->
+            <if test="createdId != null and createdId != '' and createdId != '0'">
+            	or (
+            		created_id = #{createdId} and is_deleted = '0'
+            		<include refid="findWhereCondCommMin"/> 
+            		
+            		<!-- 利用userId来判断用户身份,不空代表为普通用户 -->
+					<if test="userId != null and userId != ''">
+						and user_id = #{userId, jdbcType=INTEGER}
+					</if>
+			        
+			         <if test="followIds !=null and followIds.size() > 0">  
+			            or( id in
+			            <foreach  
+			                collection="followIds"  
+			                item="followId"  
+			                open="("  
+			                separator=","  
+			                close=")">  
+			                #{followId}  
+			            </foreach>
+		
+			            and customer.is_deleted = '0' 
+		
+			            <include refid="findWhereCondComm"/> 
+			            )  
+			        </if> 
+		           )
+            </if>
+            
+
+		</where>
+	</sql>
+		
+	
+	<sql id="findWhereCondDeleted"> 
+		<where>
+			
+	        <include refid="findWhereCondCommDeleted"/> 
+	        
+	        <!-- 利用userId来判断用户身份,不空代表为普通用户 -->
+			<if test="userId != null and userId != ''">
+				and user_id = #{userId, jdbcType=INTEGER}
+			</if>
+	        
+	         <if test="followIds !=null and followIds.size() > 0">  
+	            or( id in
+	            <foreach  
+	                collection="followIds"  
+	                item="followId"  
+	                open="("  
+	                separator=","  
+	                close=")">  
+	                #{followId}  
+	            </foreach>
+
+	            and customer.is_deleted = '1' 
+
+	            <include refid="findWhereCondCommDeleted"/> 
+	            )  
+	        </if> 
+	        
+
+            <if test="createdId != null and createdId != '' and createdId != '0' and projectId != null and projectId != ''">
+            	or (
+            		created_id = #{createdId} and is_deleted = '1'
+            		<include refid="findWhereCondCommMin"/> 
+            	)
+            </if>
+            
+
+		</where>
+	</sql>
+	
+	
+	<sql id="findWhereCondReport"> 
+		<where>
+			
+	        <include refid="findWhereCondComm"/> 
+	        
+	        <!-- 利用userId来判断用户身份,不空代表为普通用户 -->
+			<if test="userId != null and userId != ''">
+				and user_id = #{userId, jdbcType=INTEGER}
+			</if>
+	        
+	         <if test="followIds !=null and followIds.size() > 0">  
+	            or( id in
+	            <foreach  
+	                collection="followIds"  
+	                item="followId"  
+	                open="("  
+	                separator=","  
+	                close=")">  
+	                #{followId}  
+	            </foreach>
+
+	            and customer.is_deleted = '0' 
+
+	            <include refid="findWhereCondComm"/> 
+	            )  
+	        </if> 
+	        
+		</where>
+	</sql>
+	
+	<sql id="findWhereCondFieldInput">
+		<where>
+	        <include refid="findWhereCondComm"/> 	        
+	        <!-- 利用userId来判断用户身份,不空代表为普通用户 -->
+			<if test="userId != null and userId != ''">
+				and user_id = #{userId, jdbcType=INTEGER}
+			</if>		                   
+		</where>
+	</sql>
+	
+	<select id="findCustomerCount" resultType="int"  parameterType="com.ihk.customer.data.pojo.CustomerCond">
+		SELECT count(0) from customer 
+		<if test="customerFocus != null and customerFocus != ''">
+			left join customer_focus on customer.id = customer_focus.customer_id
+		</if>
+		<if test="customerKnown != null and customerKnown != ''">
+			left join customer_known on customer.id = customer_known.customer_id
+		</if>
+     <include refid="findWhereCond"/>
+      <if test="searchProjectIds!=null and searchProjectIds!='' ">  
+           	and project_id in 
+			<foreach  
+	            collection="searchProjectIds"  
+	            item="searchProjectId" 
+	            open="("
+	            separator=","  
+	            close=")">  
+	            #{searchProjectId}  
+	        </foreach>
+        </if>
+        <if test="customerFocus != null and customerFocus != ''">
+			and customer_focus.focus_point = #{customerFocus}
+		</if>
+		<if test="customerKnown != null and customerKnown != ''">
+			and customer_known.known_from = #{customerKnown}
+		</if>
+    </select>
+    
+    <select id="findCustomerCountDeleted" resultType="int"  parameterType="com.ihk.customer.data.pojo.CustomerCond">
+		SELECT count(0) from customer 
+		<if test="customerFocus != null and customerFocus != ''">
+			left join customer_focus on customer.id = customer_focus.customer_id
+		</if>
+		<if test="customerKnown != null and customerKnown != ''">
+			left join customer_known on customer.id = customer_known.customer_id
+		</if>
+     <include refid="findWhereCondDeleted"/>
+      <if test="searchProjectIds!=null and searchProjectIds!='' ">  
+           	and project_id in 
+			<foreach  
+	            collection="searchProjectIds"  
+	            item="searchProjectId" 
+	            open="("
+	            separator=","  
+	            close=")">  
+	            #{searchProjectId}  
+	        </foreach>
+        </if>
+        <if test="customerFocus != null and customerFocus != ''">
+			and customer_focus.focus_point = #{customerFocus}
+		</if>
+		<if test="customerKnown != null and customerKnown != ''">
+			and customer_known.known_from = #{customerKnown}
+		</if>
+    </select>
+	
+	<select id="findCustomerSearch" resultMap="customerResultMap" parameterType="com.ihk.customer.data.pojo.CustomerCond">
+		select * from customer 
+		
+        
+        <include refid="findWhereCond"/>
+        
+		<if test="orderByFiled == null or orderByFiled == ''">
+			order by id desc
+		</if>
+		<if test="orderByFiled=='11'">
+			order by created_time desc 
+		</if>
+		<if test="orderByFiled=='12'">
+			order by created_time 
+		</if>
+		<if test="orderByFiled=='13'">
+			order by customer_name desc
+		</if>
+		<if test="orderByFiled=='14'">
+			order by customer_name 
+		</if>
+		<if test="orderByFiled=='15'">
+			order by price_amount desc
+		</if>
+		<if test="orderByFiled=='16'">
+			order by price_amount 
+		</if>	
+		<!-- 广州项目 -->
+		<if test="orderByFiled=='17'">
+			order by price_num desc
+		</if>
+		<if test="orderByFiled=='18'">
+			order by price_num 
+		</if>
+		<if test="orderByFiled=='19'">
+			order by area_num desc
+		</if>
+		<if test="orderByFiled=='20'">
+			order by area_num 
+		</if>	
+		<!-- 最后跟进日期 -->
+		<if test="orderByFiled=='21'">
+			order by mod_time desc
+		</if>
+		<if test="orderByFiled=='22'">
+			order by mod_time 
+		</if>
+		
+		<if test="startLine >= 0">
+			<if test="pageSize > 0"> 
+				limit #{startLine, jdbcType=INTEGER},#{pageSize, jdbcType=INTEGER};
+			</if>
+		</if>
+		
+	</select>
+	
+	<select id="findCustomerSearchDeleted" resultMap="customerResultMap" parameterType="com.ihk.customer.data.pojo.CustomerCond">
+		select * from customer 
+		
+        
+        <include refid="findWhereCondDeleted"/>
+        
+		<if test="orderByFiled == null or orderByFiled == ''">
+			order by id desc
+		</if>
+		<if test="orderByFiled=='11'">
+			order by created_time desc 
+		</if>
+		<if test="orderByFiled=='12'">
+			order by created_time 
+		</if>
+		<if test="orderByFiled=='13'">
+			order by customer_name desc
+		</if>
+		<if test="orderByFiled=='14'">
+			order by customer_name 
+		</if>
+		<if test="orderByFiled=='15'">
+			order by price_amount desc
+		</if>
+		<if test="orderByFiled=='16'">
+			order by price_amount 
+		</if>	
+		<!-- 广州项目 -->
+		<if test="orderByFiled=='17'">
+			order by price_num desc
+		</if>
+		<if test="orderByFiled=='18'">
+			order by price_num 
+		</if>
+		<if test="orderByFiled=='19'">
+			order by area_num desc
+		</if>
+		<if test="orderByFiled=='20'">
+			order by area_num 
+		</if>	
+		<!-- 最后跟进日期 -->
+		<if test="orderByFiled=='21'">
+			order by mod_time desc
+		</if>
+		<if test="orderByFiled=='22'">
+			order by mod_time 
+		</if>
+		
+		<if test="startLine >= 0">
+			<if test="pageSize > 0"> 
+				limit #{startLine, jdbcType=INTEGER},#{pageSize, jdbcType=INTEGER};
+			</if>
+		</if>
+		
+	</select>
+	
+	
+	
+	<select id="findPhoneIsExistsByProjectId" resultType="hashmap" parameterType="map">
+		<!-- 不用关联用户,且要过滤删除 -->
+		select real_name from user_account u 
+		inner join customer c on u.id = c.user_id 
+		where (c.phone = #{phone} or c.home_phone = #{phone}) 
+		and c.project_id = #{projectId} and c.is_deleted = '0'
+		and c.customer_source = '2' <!-- 来访才不能重复  -->
+		 
+	</select>
+	
+	<select id="findCustomerForDownload" resultMap="customerResultMap" parameterType="com.ihk.customer.data.pojo.CustomerCond">
+		select * from customer 
+     <include refid="findWhereCond"/>   
+	</select>
+	
+	<select id="findCustomerAndQuestionForDownload" resultMap="customerAndQuestionResultMap" parameterType="com.ihk.customer.data.pojo.CustomerCond">
+		select customer.id customer_id,question_anwser.id as answer_id,question_answer_detail.anwser_content 
+			from customer 
+			LEFT JOIN question_anwser
+	          ON customer.id = question_anwser.pre_customer_id
+			LEFT JOIN question_answer_detail
+	          ON question_anwser.id = question_answer_detail.anwser_id
+     <include refid="findWhereCond"/>   
+	       AND customer.is_deleted = '0'
+	       AND question_anwser.is_deleted = '0'
+	       AND question_answer_detail.is_deleted = '0'
+	</select>
+	
+	<select id="findCustomerForHengDa" resultMap="customerResultMap" parameterType="com.ihk.customer.data.pojo.CustomerCond">
+		select * from customer 
+		<where>
+			<if test="date1 != null and date1 != ''">
+				and created_time &gt;= #{date1}
+			</if>
+			<if test="date2 != null and date2 != ''">
+				and created_time &lt; date_add(#{date2},interval 1 day)
+			</if>
+			<if test="companyProjectIds !=null and companyProjectIds.size() > 0">  
+	            and project_id in
+	            <foreach  
+	                collection="companyProjectIds"  
+	                item="proId"  
+	                open="("  
+	                separator=","  
+	                close=")">  
+	                #{proId}  
+	            </foreach>  
+	        </if> 
+               
+            and is_deleted = '0' 
+		</where>
+		
+	</select>
+	
+	<select id="findPhoneIsExistsByUserId" resultMap="customerResultMap" parameterType="map">
+		select * from customer
+		<where> 
+			user_id = #{userId} and phone = #{phone}
+			<if test="projectId != null and projectId != ''">
+				and project_id = #{projectId}
+			</if>
+		</where>
+		
+	</select>
+	
+	<select id="findHomePhoneIsExistsByUserId" resultMap="customerResultMap" parameterType="map">
+		select * from customer
+		<where> 
+			user_id = #{userId} and home_phone = #{homePhone}
+			<if test="projectId != null and projectId != ''">
+				and project_id = #{projectId}
+			</if>
+		</where>
+	</select>
+	
+	<sql id="findCustomerGroup_Field"> 
+			<if test="groupField=='HOME_DISTRICT'">home_region</if>
+			<if test="groupField=='WORK_DISTRICT'">work_region</if>
+			<if test="groupField=='CUSTOMER_REGION'">customer_region</if>
+			<if test="groupField=='BUY_USE'">buy_use</if>
+			<if test="groupField=='BUY_COUNT'">buy_count</if>
+			<if test="groupField=='PRICE_AMOUNT'">price_amount</if>
+			<if test="groupField=='REQUEST_AREA'">request_area</if>
+			<if test="groupField=='HOUSE_TYPE'">house_type</if>
+			<if test="groupField=='VISIT_COUNT'">visit_count</if>
+			<if test="groupField=='CUSTOMER_SOURCE'">customer_source</if>
+			<if test="groupField=='GENDER'">gender</if>
+			<if test="groupField=='AGE_RANGE'">age</if>
+			<if test="groupField=='FAMILY_TYPE'">family_type</if>
+			<if test="groupField=='FAMILY_INCOME'">family_income</if>
+			<if test="groupField=='JOB_TYPE'">job_type</if>
+			<if test="groupField=='JOB_INDUSTRY'">job_industry</if>
+			<if test="groupField=='BUY_AIM'">buy_aim</if>
+			<if test="groupField=='PAY_TYPE'">pay_type</if>
+			<if test="groupField=='INTENT_BUYNUM'">intent_buynum</if>
+			<if test="groupField=='ROOM_TYPE'">room_type</if>
+			
+			<!--  <if test="groupField=='KNOWN_FROM'">known_from</if>
+			<if test="groupField=='CUSTOMER_FOCUS'">customer_focus</if>-->
+	</sql>
+	<select id="findCustomerGroup" resultMap="customerGroupMap" parameterType="com.ihk.customer.data.pojo.CustomerCond">
+		select DATE_FORMAT(visit_date,'%Y-%m-%d') category_date,
+		<if test="groupField=='KNOWN_FROM'">
+		 customer_known.known_from
+		</if>
+		<if test="groupField=='CUSTOMER_FOCUS'">
+		 customer_focus.focus_point
+		 </if>
+     	<include refid="findCustomerGroup_Field"/>   
+ 		as category,count(0) as num from customer
+ 		<if test="groupField=='KNOWN_FROM'">
+		 left join customer_known on customer.id = customer_known.customer_id
+		</if>
+		<if test="groupField=='CUSTOMER_FOCUS'">
+		 left join customer_focus on customer.id = customer_focus.customer_id
+		 </if>
+     	<include refid="findWhereCondReport"/>  
+		group by DATE_FORMAT(visit_date,'%Y-%m-%d'),
+		<if test="groupField=='KNOWN_FROM'">
+		 customer_known.known_from
+		</if>
+		<if test="groupField=='CUSTOMER_FOCUS'">
+		 customer_focus.focus_point
+		 </if>
+     	<include refid="findCustomerGroup_Field"/> 
+	</select>
+	
+	<select id="findCustomerGroupQuestionTopic" resultMap="customerGroupQuestionTopicMap" parameterType="com.ihk.customer.data.pojo.CustomerCond">
+		SELECT DATE_FORMAT(customer.visit_date, '%Y-%m-%d') category_date,
+        	   customer.id as customer_id,
+			       question.id as question_id,
+       		  question_topic.id as topic_id,
+       		  question_topic.topic_name as topic_name,
+       		   question_answer_detail.anwser_content
+ 		  FROM customer 
+          JOIN question
+         	  ON customer.project_id = question.company_project_id
+      		JOIN question_anwser
+         	  ON question_anwser.pre_customer_id = customer.id and question_anwser.question_id=question.id
+         	JOIN question_topic
+           	  ON question.id = question_topic.question_id
+          JOIN question_answer_detail
+          	  ON question_answer_detail.anwser_id = question_anwser.id and question_answer_detail.topic_id = question_topic.id
+              
+		<where>
+			
+	        <include refid="findWhereCondComm"/> 
+	        <!-- 利用userId来判断用户身份,不空代表为普通用户 -->
+			<if test="userId != null and userId != ''">
+				and user_id = #{userId, jdbcType=INTEGER}
+			</if>
+	        
+	         <if test="followIds !=null and followIds.size() > 0">  
+	            or( id in
+	            <foreach  
+	                collection="followIds"  
+	                item="followId"  
+	                open="("  
+	                separator=","  
+	                close=")">  
+	                #{followId}  
+	            </foreach>
+	            and customer.is_deleted = '0' 
+	            <include refid="findWhereCondComm"/> 
+	            )  
+	        </if> 
+	        
+            <!-- 
+            <if test="createdId != null and createdId != '' and createdId != '0'">
+            	or (created_id = #{createdId} and is_deleted = '0')
+            </if>
+             --> 
+		</where>
+		and question_answer_detail.topic_id = #{topicId}
+	</select>
+	
+	<select id="findCustomerGroupByCategory" resultMap="customerGroupMap" parameterType="com.ihk.customer.data.pojo.CustomerCond">
+		select 
+     <include refid="findCustomerGroup_Field"/>  
+     <if test="groupField=='KNOWN_FROM'">
+		 customer_known.known_from
+		</if>
+		<if test="groupField=='CUSTOMER_FOCUS'">
+		 customer_focus.focus_point
+		 </if>
+     	
+ 		as category,count(0) as num from customer
+ 		<if test="groupField=='KNOWN_FROM'">
+		 left join customer_known on customer.id = customer_known.customer_id
+		</if>
+		<if test="groupField=='CUSTOMER_FOCUS'">
+		 left join customer_focus on customer.id = customer_focus.customer_id
+		 </if> 
+     <include refid="findWhereCondReport"/>  
+ 		group by 
+     <include refid="findCustomerGroup_Field"/> 
+     <if test="groupField=='KNOWN_FROM'">
+		 customer_known.known_from
+		</if>
+		<if test="groupField=='CUSTOMER_FOCUS'">
+		 customer_focus.focus_point
+		 </if>
+	</select>
+	
+	
+	<select id="findCustomerGroupQuestionTopicByCategory" resultMap="customerGroupQuestionTopicMap" parameterType="com.ihk.customer.data.pojo.CustomerCond">
+		SELECT customer.id as customer_id,
+			   question.id as question_id,
+       		   question_topic.id as topic_id,
+       		   question_answer_detail.anwser_content
+ 		  FROM customer 
+      		JOIN question
+         	  ON customer.project_id = question.company_project_id
+         	JOIN question_topic
+           	  ON question.id = question_topic.question_id
+        	JOIN question_answer_detail
+           	  ON question_answer_detail.topic_id = question_topic.id
+		<where>
+			
+	        <include refid="findWhereCondComm"/> 
+	        <!-- 利用userId来判断用户身份,不空代表为普通用户 -->
+			<if test="userId != null and userId != ''">
+				and user_id = #{userId, jdbcType=INTEGER}
+			</if>
+	        
+	         <if test="followIds !=null and followIds.size() > 0">  
+	            or( id in
+	            <foreach  
+	                collection="followIds"  
+	                item="followId"  
+	                open="("  
+	                separator=","  
+	                close=")">  
+	                #{followId}  
+	            </foreach>
+	            and customer.is_deleted = '0' 
+	            <include refid="findWhereCondComm"/> 
+	            )  
+	        </if> 
+	        
+            <!-- 
+            <if test="createdId != null and createdId != '' and createdId != '0'">
+            	or (created_id = #{createdId} and is_deleted = '0')
+            </if>
+             --> 
+		</where>
+		and question_answer_detail.topic_id = #{topicId}
+	</select>
+	
+	<select id="findCustomerGroupNum" resultMap="customerGroupMap" parameterType="com.ihk.customer.data.pojo.CustomerCond">
+		select DATE_FORMAT(visit_date,'%Y-%m-%d') category_date ,count(0) as num,project_id from customer
+     <include refid="findWhereCondReport"/>  
+	group by DATE_FORMAT(visit_date,'%Y-%m-%d'),project_id
+	</select>
+	
+	
+	<select id="findCustomerForChartProjectCustomerNumAction" resultMap="projectCustNum" parameterType="com.ihk.customer.data.pojo.CustomerCond">
+			select a.project_id ,count(a.id) as count, b.project_name from customer as a ,company_project as b
+			where b.dev_code =  'customer_guangzhou' and a.is_deleted = '0' 
+			<if test="companyProjectIds!=null and companyProjectIds.size() > 0">  
+            and a.project_id in
+            <foreach  
+                collection="companyProjectIds"  
+                item="prId"  
+                open="("  
+                separator=","  
+                close=")">  
+                #{prId} 
+            </foreach>  
+            </if>
+			<if test="projectId != null and projectId != 0 and projectId != ''">
+			and a.project_id = #{projectId}
+			</if>
+			<if test="date1 != null and date1 != '' ">
+				and a.created_time &gt; #{date1}
+			</if>
+			<if test="date2 != null and date2 != '' ">
+				and a.created_time &lt; date_add(#{date2},interval 1 day)
+			</if>
+			  and a.project_id = b.id group by a.project_id order by count desc
+	</select>
+	
+	<select id="findCustomerForChartUserAccountCustomerNumAction" resultMap="userCustNum" parameterType="com.ihk.customer.data.pojo.CustomerCond">
+		select a.user_id,count(a.id) as count,b.real_name from customer as a,user_account as b
+		where a.user_id = b.id
+		<if test="projectId != null and projectId != 0 and projectId != ''  ">
+			and a.project_id = #{projectId}
+		</if>
+		<if test="date1 != null and date1 != '' ">
+			and a.created_time &gt; #{date1}
+		</if>
+		<if test="date2 != null and date2 != '' ">
+			and a.created_time &lt; date_add(#{date2},interval 1 day)
+		</if>
+		and a.is_deleted = '0'
+		group by a.user_id 
+		order by count desc
+	</select>
+	
+	<select id="findAllFiledInputCount" resultMap="fieldInputCount" parameterType="com.ihk.customer.data.pojo.CustomerCond">
+	SELECT 'customerNo' AS field_name ,COUNT(0) AS input_count FROM customer <include refid='findWhereCondFieldInput'/> and customer_no &lt;&gt;''  union all 
+	SELECT 'customerName' AS field_name ,COUNT(0) AS input_count FROM customer <include refid='findWhereCondFieldInput'/> and customer_name &lt;&gt;''  union all  
+	SELECT 'rating' AS field_name ,COUNT(0) AS input_count FROM customer <include refid='findWhereCondFieldInput'/> and rating &lt;&gt;''  union all
+	SELECT 'visitDate' AS field_name ,COUNT(0) AS input_count FROM customer <include refid='findWhereCondFieldInput'/> and visit_date &lt;&gt;''  union all
+	SELECT 'phone' AS field_name ,COUNT(0) AS input_count FROM customer <include refid='findWhereCondFieldInput'/> and phone &lt;&gt;''  union all 
+	SELECT 'homePhone' AS field_name ,COUNT(0) AS input_count FROM customer <include refid='findWhereCondFieldInput'/> and home_phone &lt;&gt;''  union all 
+	SELECT 'homeProvince' AS field_name ,COUNT(0) AS input_count FROM customer <include refid='findWhereCondFieldInput'/> and home_province &lt;&gt;''  union all 
+	SELECT 'homeCity' AS field_name ,COUNT(0) AS input_count FROM customer <include refid='findWhereCondFieldInput'/> and home_city &lt;&gt;''  union all 
+	SELECT 'homeRegion' AS field_name ,COUNT(0) AS input_count FROM customer <include refid='findWhereCondFieldInput'/> and home_region &lt;&gt;''  union all 
+	SELECT 'homeBlock' AS field_name ,COUNT(0) AS input_count FROM customer <include refid='findWhereCondFieldInput'/> and home_block &lt;&gt;''  union all 
+	SELECT 'workProvince' AS field_name ,COUNT(0) AS input_count FROM customer <include refid='findWhereCondFieldInput'/> and work_province &lt;&gt;''  union all 
+	SELECT 'workCity' AS field_name ,COUNT(0) AS input_count FROM customer <include refid='findWhereCondFieldInput'/> and work_city &lt;&gt;''  union all 
+	SELECT 'workRegion' AS field_name ,COUNT(0) AS input_count FROM customer <include refid='findWhereCondFieldInput'/> and work_region &lt;&gt;''  union all 
+	SELECT 'workBlock' AS field_name ,COUNT(0) AS input_count FROM customer <include refid='findWhereCondFieldInput'/> and work_block &lt;&gt;''  union all 
+	SELECT 'buyUse' AS field_name ,COUNT(0) AS input_count FROM customer <include refid='findWhereCondFieldInput'/> and buy_use &lt;&gt;''  union all 
+	SELECT 'buyCount' AS field_name ,COUNT(0) AS input_count FROM customer <include refid='findWhereCondFieldInput'/> and buy_count &lt;&gt;''  union all 
+	SELECT 'priceNum' AS field_name ,COUNT(0) AS input_count FROM customer <include refid='findWhereCondFieldInput'/> and price_num &lt;&gt;''  union all  
+	SELECT 'houseType' AS field_name ,COUNT(0) AS input_count FROM customer <include refid='findWhereCondFieldInput'/> and house_type &lt;&gt;''  union all
+	SELECT 'customerSource' AS field_name ,COUNT(0) AS input_count FROM customer <include refid='findWhereCondFieldInput'/> and customer_source &lt;&gt;''  union all 
+	SELECT 'areaNum' AS field_name ,COUNT(0) AS input_count FROM customer <include refid='findWhereCondFieldInput'/> and area_num &lt;&gt;''      	
+		
+	</select>
+	
+	<select id="findOptionFieldInputCount" resultMap="fieldInputCount" parameterType="com.ihk.customer.data.pojo.CustomerCond">
+	SELECT 'visitCount' AS field_name ,COUNT(0) AS input_count FROM customer <include refid='findWhereCondFieldInput'/> and visit_count &lt;&gt;''  union all
+	SELECT 'gender' AS field_name ,COUNT(0) AS input_count FROM customer <include refid='findWhereCondFieldInput'/> and gender &lt;&gt;''  union all 
+	SELECT 'nationality' AS field_name ,COUNT(0) AS input_count FROM customer <include refid='findWhereCondFieldInput'/> and nationality &lt;&gt;''  union all 
+	SELECT 'idcardNo' AS field_name ,COUNT(0) AS input_count FROM customer <include refid='findWhereCondFieldInput'/> and idcard_no &lt;&gt;''  union all 
+	SELECT 'trafficDesc' AS field_name ,COUNT(0) AS input_count FROM customer <include refid='findWhereCondFieldInput'/> and traffic_desc &lt;&gt;''  union all
+	SELECT 'age' AS field_name ,COUNT(0) AS input_count FROM customer <include refid='findWhereCondFieldInput'/> and age &lt;&gt;''  union all
+	SELECT 'address' AS field_name ,COUNT(0) AS input_count FROM customer <include refid='findWhereCondFieldInput'/> and address &lt;&gt;''  union all
+	SELECT 'familyType' AS field_name ,COUNT(0) AS input_count FROM customer <include refid='findWhereCondFieldInput'/> and family_type &lt;&gt;''  union all
+	SELECT 'familyIncome' AS field_name ,COUNT(0) AS input_count FROM customer <include refid='findWhereCondFieldInput'/> and family_income &lt;&gt;''  union all
+	SELECT 'jobType' AS field_name ,COUNT(0) AS input_count FROM customer <include refid='findWhereCondFieldInput'/> and job_type &lt;&gt;''  union all
+	SELECT 'jobIndustry' AS field_name ,COUNT(0) AS input_count FROM customer <include refid='findWhereCondFieldInput'/> and job_industry &lt;&gt;''  union all 
+	SELECT 'intentUnit1' AS field_name ,COUNT(0) AS input_count FROM customer <include refid='findWhereCondFieldInput'/> and intent_unit1 &lt;&gt;''  union all 
+	SELECT 'intentUnit2' AS field_name ,COUNT(0) AS input_count FROM customer <include refid='findWhereCondFieldInput'/> and intent_unit2 &lt;&gt;''  union all 
+	SELECT 'buyAim' AS field_name ,COUNT(0) AS input_count FROM customer <include refid='findWhereCondFieldInput'/> and buy_aim &lt;&gt;''  union all 
+	SELECT 'payType' AS field_name ,COUNT(0) AS input_count FROM customer <include refid='findWhereCondFieldInput'/> and pay_type &lt;&gt;''  union all
+	SELECT 'intentBuynum' AS field_name ,COUNT(0) AS input_count FROM customer <include refid='findWhereCondFieldInput'/> and intent_buynum &lt;&gt;''  union all
+	SELECT 'roomType' AS field_name ,COUNT(0) AS input_count FROM customer <include refid='findWhereCondFieldInput'/> and room_type &lt;&gt;''  union all
+	SELECT 'notBuyReson' AS field_name ,COUNT(0) AS input_count FROM customer <include refid='findWhereCondFieldInput'/> and not_buy_reson &lt;&gt;''  union all 
+	SELECT 'remark1' AS field_name ,COUNT(0) AS input_count FROM customer <include refid='findWhereCondFieldInput'/> and remark1 &lt;&gt;''    	
+		
+	</select>
+	
+	
+	<select id="findTmpNotice" resultType="map" parameterType="com.ihk.customer.data.pojo.CustomerCond">
+		select project_id, count(1) as cou, max(created_time) as created_time from customer where company_id = #{companyId}
+			and created_time &gt;= #{date1} and created_time &lt; date_add(#{date2},interval 1 day)
+			and is_deleted = '0'
+			<if test="companyProjectIds!=null and companyProjectIds.size() > 0">  
+            and project_id in
+            <foreach  
+                collection="companyProjectIds"  
+                item="projectId"  
+                open="("  
+                separator=","  
+                close=")">  
+                #{projectId} 
+            </foreach>  
+            </if>
+			group by project_id 
+			order by cou desc 
+			limit 10
+			
+	</select>
+	
+	<select id="findCustomerDoublePie" resultType="map" parameterType="com.ihk.customer.data.pojo.CustomerCond">
+		select <include refid="findCustomerGroup_Field1"/> as c1, <include refid="findCustomerGroup_Field2"/> as c2, 
+			count(1) as cou from customer
+		<where>
+			<if test="date1 != null and date1 != ''">
+				and created_time &gt;= #{date1}
+			</if>
+			<if test="date2 != null and date2 != ''">
+				and created_time &lt; date_add(#{date2},interval 1 day)
+			</if>
+			<if test="companyProjectIds!=null and companyProjectIds.size() > 0">  
+           		and project_id in
+	            <foreach  
+	                collection="companyProjectIds"  
+	                item="proId"  
+	                open="("  
+	                separator=","  
+	                close=")">  
+	                #{proId}  
+	            </foreach>  
+	            
+            </if>
+		</where>
+		and is_deleted = '0'
+		group by c1, c2
+		order by cou desc
+	</select>
+	
+	<sql id="findCustomerGroup_Field1"> 
+		<!-- 必填类型 -->
+		<if test="col1=='RATING'">rating</if>
+		<if test="col1=='HOME_DISTRICT'">home_region</if>
+		<if test="col1=='WORK_DISTRICT'">work_region</if>
+		
+		<if test="col1=='BUY_USE'">buy_use</if>
+		<if test="col1=='BUY_COUNT'">buy_count</if>
+		<if test="col1=='PRICE_AMOUNT'">price_amount</if>
+		
+		<if test="col1=='HOUSE_TYPE'">house_type</if>
+		<if test="col1=='CUSTOMER_SOURCE'">customer_source</if>
+		<if test="col1=='REQUEST_AREA'">request_area</if>
+		
+		<!-- 选填类型 -->
+		<if test="col1=='VISIT_COUNT'">visit_count</if>
+		<if test="col1=='GENDER'">gender</if>
+		<if test="col1=='AGE_RANGE'">age</if>
+		
+		<if test="col1=='FAMILY_TYPE'">family_type</if>
+		<if test="col1=='FAMILY_INCOME'">family_income</if>
+		<if test="col1=='JOB_TYPE'">job_type</if>
+		
+		<if test="col1=='JOB_INDUSTRY'">job_industry</if>
+		<if test="col1=='BUY_AIM'">buy_aim</if>
+		<if test="col1=='PAY_TYPE'">pay_type</if>
+		
+		<if test="col1=='INTENT_BUYNUM'">intent_buynum</if>
+		<if test="col1=='ROOM_TYPE'">room_type</if>
+		
+	</sql>
+	
+	<sql id="findCustomerGroup_Field2"> 
+		<!-- 必填类型 -->
+		<if test="col2=='RATING'">rating</if>
+		<if test="col2=='HOME_DISTRICT'">home_region</if>
+		<if test="col2=='WORK_DISTRICT'">work_region</if>
+		
+		<if test="col2=='BUY_USE'">buy_use</if>
+		<if test="col2=='BUY_COUNT'">buy_count</if>
+		<if test="col2=='PRICE_AMOUNT'">price_amount</if>
+		
+		<if test="col2=='HOUSE_TYPE'">house_type</if>
+		<if test="col2=='CUSTOMER_SOURCE'">customer_source</if>
+		<if test="col2=='REQUEST_AREA'">request_area</if>
+		
+		<!-- 选填类型 -->
+		<if test="col2=='VISIT_COUNT'">visit_count</if>
+		<if test="col2=='GENDER'">gender</if>
+		<if test="col2=='AGE_RANGE'">age</if>
+		
+		<if test="col2=='FAMILY_TYPE'">family_type</if>
+		<if test="col2=='FAMILY_INCOME'">family_income</if>
+		<if test="col2=='JOB_TYPE'">job_type</if>
+		
+		<if test="col2=='JOB_INDUSTRY'">job_industry</if>
+		<if test="col2=='BUY_AIM'">buy_aim</if>
+		<if test="col2=='PAY_TYPE'">pay_type</if>
+		
+		<if test="col2=='INTENT_BUYNUM'">intent_buynum</if>
+		<if test="col2=='ROOM_TYPE'">room_type</if>
+		
+	</sql>
+	
+	
+	<select id="tmpCount" resultType="int">
+		select count(1) from customer where length(phone) = 11 and phone_from is null and is_deleted = '0'
+	</select>
+	
+	<select id="tmpList" resultMap="customerResultMap" parameterType="com.ihk.customer.data.pojo.CustomerCond">
+		select * from customer where length(phone) = 11 and phone_from is null and is_deleted = '0' limit #{startLine, jdbcType=INTEGER},#{pageSize}
+	</select>
+	
+	<update id="updateCustomerPhoneFrom" parameterType="map">
+		update customer set phone_from = #{phoneFrom} where id = #{id}
+	</update>
+	
+	<select id="findCustomerListBySql" resultMap="customerResultMap">
+		select * from customer #{sql}
+	</select>
+	
+	<select id="findThisDayModCustomer" resultMap="customerResultMap">
+		select * from customer where created_time &lt;= now() and mod_time &gt; date_sub(now(),interval 1 day) and is_deleted = '0' 
+	</select>
+	
+	<select id="findCustomersForContract" resultMap="customerResultMap" parameterType="map">		
+		select * from customer where customer_name like CONCAT(CONCAT('%', #{name}),'%') and user_id = #{userId}
+		and is_deleted ='0' order by customer_name desc limit 10 
+	</select>
+	
+	<select id="findCustomersFromPhoneForContract" resultMap="customerResultMap" parameterType="map">		
+		select * from customer where phone like CONCAT(CONCAT('%', #{phone}),'%') and user_id = #{userId}
+		and is_deleted ='0' order by customer_name desc limit 10 
+	</select>
+	
+	<select id="findCustomerPhoneIsExistsByProjectId" resultMap="customerResultMap" parameterType="map">	
+		select * from customer where phone = #{phone} and project_id = #{projectId} and customer_source = '2'
+		<!--  
+		and is_deleted ='0'
+		 -->
+	</select>
+	
+	<select id="findCustomerHomePhoneIsExistsByProjectId" resultMap="customerResultMap" parameterType="map">	
+		select * from customer where home_phone = #{homePhone} or phone = #{homePhone} and project_id = #{projectId} 
+		<!--  
+		and is_deleted ='0'
+		 -->
+	</select>
+	
+	<select id="findCustomerPage" resultMap="customerResultMap" parameterType="com.ihk.customer.data.pojo.CustomerCond">
+		SELECT customer.*
+		<if test="groupField=='KNOWN_FROM'">
+		 ,customer_known.known_from
+		</if>
+		<if test="groupField=='CUSTOMER_FOCUS'">
+		 ,customer_focus.focus_point
+		 </if>
+		 from  customer 
+		<if test="groupField=='KNOWN_FROM'">
+		 left join customer_known on customer.id = customer_known.customer_id
+		</if>
+		<if test="groupField=='CUSTOMER_FOCUS'">
+		 left join customer_focus on customer.id = customer_focus.customer_id
+		 </if>
+        <include refid="findWhereCondReport"/> 
+    	<if test="groupField=='KNOWN_FROM'">
+		  and customer_known.known_from = #{customerKnown}
+		</if>
+		<if test="groupField=='CUSTOMER_FOCUS'">
+		  and customer_focus.focus_point = #{customerFocus}
+		</if>
+		<if test="startLine >= 0">
+		<if test="pageSize > 0">
+			limit #{startLine},#{pageSize};
+		</if>
+		</if>
+	</select>
+	
+	<select id="findCustomerPageReport" resultMap="customerGroupQuestionTopicMap" parameterType="com.ihk.customer.data.pojo.CustomerCond">
+		SELECT customer.id as customer_id,
+			   question.id as question_id,
+       		   question_topic.id as topic_id,
+       		   question_answer_detail.anwser_content,
+       		   customer.*
+ 		  FROM customer 
+          JOIN question
+         	  ON customer.project_id = question.company_project_id
+      		JOIN question_anwser
+         	  ON question_anwser.pre_customer_id = customer.id and question_anwser.question_id=question.id
+         	JOIN question_topic
+           	  ON question.id = question_topic.question_id
+          JOIN question_answer_detail
+          	  ON question_answer_detail.anwser_id = question_anwser.id and question_answer_detail.topic_id = question_topic.id
+        
+        <where>
+			
+	        <include refid="findWhereCondComm"/> 
+	        <!-- 利用userId来判断用户身份,不空代表为普通用户 -->
+			<if test="userId != null and userId != ''">
+				and user_id = #{userId, jdbcType=INTEGER}
+			</if>
+	        
+	         <if test="followIds !=null and followIds.size() > 0">  
+	            or( id in
+	            <foreach  
+	                collection="followIds"  
+	                item="followId"  
+	                open="("  
+	                separator=","  
+	                close=")">  
+	                #{followId}  
+	            </foreach>
+	            and customer.is_deleted = '0' 
+	            <include refid="findWhereCondComm"/> 
+	            )  
+	        </if> 
+	        
+            <!-- 
+            <if test="createdId != null and createdId != '' and createdId != '0'">
+            	or (created_id = #{createdId} and is_deleted = '0')
+            </if>
+             --> 
+		</where>
+		and question_answer_detail.topic_id = #{topicId}
+    
+		<if test="startLine >= 0">
+		<if test="pageSize > 0">
+			limit #{startLine},#{pageSize};
+		</if>
+		</if>
+	</select>
+	
+	<sql id="date1AndDate2">
+		<if test="date1!=null and date1!='' ">  
+           		and created_time &gt; #{date1}
+        </if>
+        <if test="date2!=null and date2!='' ">  
+           		and created_time &lt; date_add(#{date2},INTERVAL 1 DAY)
+        </if>
+	</sql> 
+	
+	<sql id="inprojectIds">
+		<if test="companyProjectIds!=null and companyProjectIds.size() > 0">  
+           		and project_id in
+	            <foreach  
+	                collection="companyProjectIds"  
+	                item="proId"  
+	                open="("  
+	                separator=","  
+	                close=")">  
+	                #{proId}  
+	            </foreach>  
+            </if>
+	</sql> 
+	
+	<select id="countByTimeGroupByProjectId" resultType="java.util.Map" parameterType="com.ihk.customer.data.pojo.CustomerCond">
+		select project_id,sum(time1)as time1,sum(time2) as time2,sum(time3) as time3 ,sum(time4) as time4 from 
+		(
+		select project_id,count(1) as time1 ,0 as time2 ,0 as time3 ,0 as time4 from customer where
+			 created_time &gt; date_sub(#{date1},INTERVAL  3 MONTH) and is_deleted = '0'
+			  <include refid="inprojectIds"/>   
+			 group by project_id
+		union all
+		select project_id,0 as time1,count(1) as time2 ,0 as time3,0 as time4 from customer where
+			 created_time &gt; date_sub(#{date1},INTERVAL 6 MONTH) and created_time &lt; date_sub(#{date1},INTERVAL 3 MONTH) and is_deleted = '0'
+			 <include refid="inprojectIds"/> 
+			 group by project_id
+		union all
+		select project_id,0 as time1,0 as time2 ,count(1) as time3,0 as time4 from customer where 
+			 created_time &gt; date_sub(#{date1},INTERVAL 12 MONTH) and created_time &lt; date_sub(#{date1},INTERVAL 6 MONTH) and is_deleted = '0'
+			 <include refid="inprojectIds"/> 
+			 group by project_id
+		union all
+		select project_id,0 as time1,0 as time2 ,0 as time3,count(1) as time4 from customer where 
+			 created_time &lt; date_sub(#{date1},INTERVAL 12 MONTH) and is_deleted = '0'
+			 <include refid="inprojectIds"/> 
+			 group by project_id		 
+		) a group by project_id order by project_id;
+	</select>
+	
+	
+	<select id="countByVisitCountGroupByProjectId" resultType="java.util.Map" parameterType="com.ihk.customer.data.pojo.CustomerCond">
+	select project_id,sum(con1) as con1,sum(con2) as con2,sum(con3) as con3 from
+	(
+	select project_id ,count(1) as con1,0 as con2,0 as con3 from customer where is_deleted = '0' and  visit_count =1
+	 <include refid="date1AndDate2"/>
+	 <include refid="inprojectIds"/>
+	group by project_id
+	UNION all 
+	select  project_id ,0 as con1,count(1) as con2,0 as con3 from customer where is_deleted = '0' and  visit_count = 2
+	 <include refid="date1AndDate2"/>
+	 <include refid="inprojectIds"/>
+	group by project_id
+	UNION all 
+	select project_id , 0 as con1,0 as con2,count(1) as con3 from customer where is_deleted = '0' and  visit_count > 2 
+	 <include refid="date1AndDate2"/>
+	 <include refid="inprojectIds"/>
+	group by project_id
+	) as a group by project_id
+	</select>
+	
+	
+	<select id="findCustomerSourceAndVisit" resultType="java.util.Map" parameterType="com.ihk.customer.data.pojo.CustomerCond">
+	
+		select count(1) as customerCount, project_id as projectId, project_name as projectName from customer cus, company_project pro
+	
+		<where>
+			<!-- 来访日期 -->
+			<if test="visitDate1 != null and visitDate1 != ''">
+				and visit_date &gt;= #{visitDate1}
+			</if>
+			<if test="visitDate2 != null and visitDate2 != ''">
+				and visit_date &lt; date_add(#{visitDate2},interval 1 day)
+			</if>
+			
+			<if test="projectId != null and projectId != ''">
+				and project_id = #{projectId}  
+			</if>
+			
+			<if test="companyProjectIds !=null and companyProjectIds.size() > 0">  
+	            and project_id in
+	            <foreach  
+	                collection="companyProjectIds"  
+	                item="proId"  
+	                open="("  
+	                separator=","  
+	                close=")">  
+	                #{proId}  
+	            </foreach>  
+	        </if>
+			
+			<if test="customerSource != null and customerSource != ''">
+				and customer_source = #{customerSource}
+			</if>
+			
+			 and cus.project_id = pro.id
+			 and cus.is_deleted = '0'
+			 and pro.is_deleted = '0'
+			 
+			 group by cus.project_id
+			 order by customerCount
+		 </where>
+		 
+	</select> 
+	
+	<select id="findCustomerCountGroupByVisitDate" resultType="java.util.Map" parameterType="com.ihk.customer.data.pojo.CustomerCond">
+	
+		SELECT distinct table1.visit_date,
+		       table1.sum_customer as coming_customer,
+		       table1.new_customer as new_customer,
+		       table1.old_customer as old_customer,
+		       table2.sum_customer as phone_customer,
+		       table1.confirm_amount,
+		       table1.sum_money,
+		       table1.confirm_area,
+		       table1.average_price
+		  FROM    (SELECT date(follow_time) AS visit_date,
+		                  count(*) AS sum_customer,
+		                  sum(
+		                     CASE
+		                        WHEN date(follow_time) = visit_date THEN 1
+		                        ELSE 0
+		                     END)
+		                     new_customer,
+		                  sum(
+		                     CASE
+		                        WHEN date(follow_time) != visit_date THEN 1
+		                        ELSE 0
+		                     END)
+		                     old_customer,
+		                  confirm_amount,
+		                  confirm.sum_money,
+		                  confirm_area,
+		                  confirm.sum_money / confirm_area AS average_price
+		             FROM    customer
+		                  LEFT JOIN
+		                     (SELECT confirm.work_date,
+		                             sum(confirm.sum_money) sum_money,
+		                             count(*) AS confirm_amount,
+		                             sum(sum_money / build_price) AS confirm_area
+		                        FROM confirm
+		                       WHERE     work_date &gt;= #{date1}
+		                             AND work_date &lt;= #{date2}
+		                      <if test="companyProjectIds !=null and companyProjectIds.size() > 0">  
+					            and confirm.company_project_id in
+					            <foreach  
+					                collection="companyProjectIds"  
+					                item="proId"  
+					                open="("  
+					                separator=","  
+					                close=")">  
+					                #{proId}  
+					            </foreach>  
+					        </if>
+		                      GROUP BY confirm.work_date) confirm
+		                  ON customer.visit_date = confirm.work_date
+		            WHERE     customer_source = '1'
+		                  AND (   (    visit_date &gt;= #{date1}
+		                           AND visit_date &lt;= #{date2})
+		                       OR (    follow_time &gt;= #{date1}
+		                           AND follow_time &lt;= #{date2}))
+		                  <if test="companyProjectIds !=null and companyProjectIds.size() > 0">  
+					            and customer.project_id in
+					            <foreach  
+					                collection="companyProjectIds"  
+					                item="proId"  
+					                open="("  
+					                separator=","  
+					                close=")">  
+					                #{proId}  
+					            </foreach>  
+					        </if>
+		           GROUP BY date(follow_time)
+		           UNION
+		           SELECT date(confirm.work_date) visit_date,
+		                  customer.sum_customer,
+		                  customer.new_customer as new_customer,
+		                  customer.old_customer,
+		                  count(*) AS confirm_amount,
+		                  sum(confirm.sum_money) AS sum_money,
+		                  sum(sum_money / build_price) AS confirm_area,
+		                  sum(confirm.sum_money) / sum(sum_money / build_price)
+		                     AS average_price
+		             FROM    confirm
+		                  LEFT JOIN
+		                     (SELECT date(follow_time) visit_date,
+		                             count(*) sum_customer,
+		                             sum(
+		                                CASE
+		                                   WHEN date(follow_time) =
+		                                           customer.visit_date
+		                                   THEN
+		                                      1
+		                                   ELSE
+		                                      0
+		                                END)
+		                                new_customer,
+		                             sum(
+		                                CASE
+		                                   WHEN date(follow_time) !=
+		                                           customer.visit_date
+		                                   THEN
+		                                      1
+		                                   ELSE
+		                                      0
+		                                END)
+		                                old_customer
+		                        FROM customer
+		                       WHERE     customer_source = '1'
+		                             AND (   (    visit_date &gt;= #{date1}
+		                                      AND visit_date &lt;= #{date2})
+		                                  OR (    follow_time &gt;= #{date1}
+		                                      AND follow_time &lt;= #{date2}))
+		                             <if test="companyProjectIds !=null and companyProjectIds.size() > 0">  
+							            and customer.project_id in
+							            <foreach  
+							                collection="companyProjectIds"  
+							                item="proId"  
+							                open="("  
+							                separator=","  
+							                close=")">  
+							                #{proId}  
+							            </foreach>  
+							        </if>
+		                      GROUP BY date(follow_time)) customer
+		                  ON customer.visit_date = confirm.work_date
+		            WHERE     work_date &gt;= #{date1}
+		                  AND work_date &lt;= #{date2}
+		                  <if test="companyProjectIds !=null and companyProjectIds.size() > 0">  
+							            and confirm.company_project_id in
+							            <foreach  
+							                collection="companyProjectIds"  
+							                item="proId"  
+							                open="("  
+							                separator=","  
+							                close=")">  
+							                #{proId}  
+							            </foreach>  
+							        </if>
+		           GROUP BY confirm.work_date
+		           ORDER BY visit_date,confirm_amount DESC) table1
+		       LEFT JOIN
+		          (SELECT date(follow_time) AS visit_date,
+		                  count(*) AS sum_customer,
+		                  sum(
+		                     CASE
+		                        WHEN date(follow_time) = visit_date THEN 1
+		                        ELSE 0
+		                     END)
+		                     new_customer,
+		                  sum(
+		                     CASE
+		                        WHEN date(follow_time) != visit_date THEN 1
+		                        ELSE 0
+		                     END)
+		                     old_customer,
+		                  confirm_amount,
+		                  confirm.sum_money,
+		                  confirm_area,
+		                  confirm.sum_money / confirm_area AS average_price
+		             FROM    customer
+		                  LEFT JOIN
+		                     (SELECT confirm.work_date,
+		                             sum(confirm.sum_money) sum_money,
+		                             count(*) AS confirm_amount,
+		                             sum(sum_money / build_price) AS confirm_area
+		                        FROM confirm
+		                       WHERE     work_date &gt;= #{date1}
+		                             AND work_date &lt;= #{date2}
+		                        <if test="companyProjectIds !=null and companyProjectIds.size() > 0">  
+					            and confirm.company_project_id in
+					            <foreach  
+					                collection="companyProjectIds"  
+					                item="proId"  
+					                open="("  
+					                separator=","  
+					                close=")">  
+					                #{proId}  
+					            </foreach>  
+					        </if>
+		                      GROUP BY confirm.work_date) confirm
+		                  ON customer.visit_date = confirm.work_date
+		            WHERE     customer_source = '2'
+		                  AND (   (    visit_date &gt;= #{date1}
+		                           AND visit_date &lt;= #{date2})
+		                       OR (    follow_time &gt;= #{date1}
+		                           AND follow_time &lt;= #{date2}))
+		                  <if test="companyProjectIds !=null and companyProjectIds.size() > 0">  
+					            and customer.project_id in
+					            <foreach  
+					                collection="companyProjectIds"  
+					                item="proId"  
+					                open="("  
+					                separator=","  
+					                close=")">  
+					                #{proId}  
+					            </foreach>  
+					        </if>
+		           GROUP BY date(follow_time)
+		           UNION
+		           SELECT date(confirm.work_date) visit_date,
+		                  customer.sum_customer,
+		                  customer.new_customer as new_customer,
+		                  customer.old_customer,
+		                  count(*) AS confirm_amount,
+		                  sum(confirm.sum_money) AS sum_money,
+		                  sum(sum_money / build_price) AS confirm_area,
+		                  sum(confirm.sum_money) / sum(sum_money / build_price)
+		                     AS average_price
+		             FROM    confirm
+		                  LEFT JOIN
+		                     (SELECT date(follow_time) visit_date,
+		                             count(*) sum_customer,
+		                             sum(
+		                                CASE
+		                                   WHEN date(follow_time) =
+		                                           customer.visit_date
+		                                   THEN
+		                                      1
+		                                   ELSE
+		                                      0
+		                                END)
+		                                new_customer,
+		                             sum(
+		                                CASE
+		                                   WHEN date(follow_time) !=
+		                                           customer.visit_date
+		                                   THEN
+		                                      1
+		                                   ELSE
+		                                      0
+		                                END)
+		                                old_customer
+		                        FROM customer
+		                       WHERE     customer_source = '2'
+		                             AND (   (    visit_date &gt;= #{date1}
+		                                      AND visit_date &lt;= #{date2})
+		                                  OR (    follow_time &gt;= #{date1}
+		                                      AND follow_time &lt;= #{date2}))
+		                             <if test="companyProjectIds !=null and companyProjectIds.size() > 0">  
+							            and customer.project_id in
+							            <foreach  
+							                collection="companyProjectIds"  
+							                item="proId"  
+							                open="("  
+							                separator=","  
+							                close=")">  
+							                #{proId}  
+							            </foreach>  
+							        </if>
+		                      GROUP BY date(follow_time)) customer
+		                  ON customer.visit_date = confirm.work_date
+		            WHERE     work_date &gt;= #{date1}
+		                  AND work_date &lt;= #{date2}
+		                  <if test="companyProjectIds !=null and companyProjectIds.size() > 0">  
+					            and confirm.company_project_id in
+					            <foreach  
+					                collection="companyProjectIds"  
+					                item="proId"  
+					                open="("  
+					                separator=","  
+					                close=")">  
+					                #{proId}  
+					            </foreach>  
+					        </if>
+		           GROUP BY confirm.work_date
+		           ORDER BY visit_date,confirm_amount DESC) table2
+		       ON table1.visit_date = table2.visit_date 
+		       where table1.visit_date &gt;= #{date1} and table1.visit_date &lt;= #{date2}
+		       group by table1.visit_date
+		       union 
+		       select 'total',
+		       		  sum(coming_customer) as sum_coming_customer,
+				       sum(new_customer) as sum_new_customer,
+				       sum(old_customer) as sum_old_customer,
+				       sum(phone_customer) as sum_phone_customer,
+				       sum(confirm_amount) as sum_confirm_amount,
+				       sum(sum_money) as sum_sum_money,
+				       sum(confirm_area) as sum_confirm_area,
+				       sum(average_price) as sum_average_price
+			   from
+				(
+					<include refid="findCustomerCountGroupByVisitDateSql"/>
+				) as tt
+				union
+				select '',
+				       'percent',
+				       sum(new_customer)/sum(coming_customer)*1.0 as sum_coming_customer,
+				       sum(old_customer)/sum(coming_customer)*1.0 as sum_old_customer,
+				       sum(phone_customer)/sum(coming_customer)*1.0 as sum_phone_customer,
+				       sum(confirm_amount)/sum(coming_customer)*1.0 as sum_confirm_amount,
+				       '' as sum_sum_money,
+				       '' as sum_confirm_area,
+				       '' as sum_average_price
+				   from
+				(
+					<include refid="findCustomerCountGroupByVisitDateSql"/>
+				) as tt
+				<if test="startLine >= 0">
+					<if test="pageSize > 0">
+						 limit #{startLine, jdbcType=INTEGER},#{pageSize, jdbcType=INTEGER};
+					</if>
+				</if>
+		      
+		       
+	</select> 
+	
+	
+	<sql id="findCustomerCountGroupByVisitDateSql">
+	
+		SELECT distinct table1.visit_date,
+		       table1.sum_customer as coming_customer,
+		       table1.new_customer,
+		       table1.old_customer,
+		       table2.sum_customer as phone_customer,
+		       table1.confirm_amount,
+		       table1.sum_money,
+		       table1.confirm_area,
+		       table1.average_price
+		  FROM    (SELECT date(follow_time) AS visit_date,
+		                  count(*) AS sum_customer,
+		                  sum(
+		                     CASE
+		                        WHEN date(follow_time) = visit_date THEN 1
+		                        ELSE 0
+		                     END)
+		                     new_customer,
+		                  sum(
+		                     CASE
+		                        WHEN date(follow_time) != visit_date THEN 1
+		                        ELSE 0
+		                     END)
+		                     old_customer,
+		                  confirm_amount,
+		                  confirm.sum_money,
+		                  confirm_area,
+		                  confirm.sum_money / confirm_area AS average_price
+		             FROM    customer
+		                  LEFT JOIN
+		                     (SELECT confirm.work_date,
+		                             sum(confirm.sum_money) sum_money,
+		                             count(*) AS confirm_amount,
+		                             sum(sum_money / build_price) AS confirm_area
+		                        FROM confirm
+		                       WHERE     work_date &gt;= #{date1}
+		                             AND work_date &lt;= #{date2}
+		                      <if test="companyProjectIds !=null and companyProjectIds.size() > 0">  
+					            and confirm.company_project_id in
+					            <foreach  
+					                collection="companyProjectIds"  
+					                item="proId"  
+					                open="("  
+					                separator=","  
+					                close=")">  
+					                #{proId}  
+					            </foreach>  
+					        </if>
+		                      GROUP BY confirm.work_date) confirm
+		                  ON customer.visit_date = confirm.work_date
+		            WHERE     customer_source = '1'
+		                  AND (   (    visit_date &gt;= #{date1}
+		                           AND visit_date &lt;= #{date2})
+		                       OR (    follow_time &gt;= #{date1}
+		                           AND follow_time &lt;= #{date2}))
+		                  <if test="companyProjectIds !=null and companyProjectIds.size() > 0">  
+					            and customer.project_id in
+					            <foreach  
+					                collection="companyProjectIds"  
+					                item="proId"  
+					                open="("  
+					                separator=","  
+					                close=")">  
+					                #{proId}  
+					            </foreach>  
+					        </if>
+		           GROUP BY date(follow_time)
+		           UNION
+		           SELECT date(confirm.work_date) visit_date,
+		                  customer.sum_customer,
+		                  customer.new_customer,
+		                  customer.old_customer,
+		                  count(*) AS confirm_amount,
+		                  sum(confirm.sum_money) AS sum_money,
+		                  sum(sum_money / build_price) AS confirm_area,
+		                  sum(confirm.sum_money) / sum(sum_money / build_price)
+		                     AS average_price
+		             FROM    confirm
+		                  LEFT JOIN
+		                     (SELECT date(follow_time) visit_date,
+		                             count(*) sum_customer,
+		                             sum(
+		                                CASE
+		                                   WHEN date(follow_time) =
+		                                           customer.visit_date
+		                                   THEN
+		                                      1
+		                                   ELSE
+		                                      0
+		                                END)
+		                                new_customer,
+		                             sum(
+		                                CASE
+		                                   WHEN date(follow_time) !=
+		                                           customer.visit_date
+		                                   THEN
+		                                      1
+		                                   ELSE
+		                                      0
+		                                END)
+		                                old_customer
+		                        FROM customer
+		                       WHERE     customer_source = '1'
+		                             AND (   (    visit_date &gt;= #{date1}
+		                                      AND visit_date &lt;= #{date2})
+		                                  OR (    follow_time &gt;= #{date1}
+		                                      AND follow_time &lt;= #{date2}))
+		                             <if test="companyProjectIds !=null and companyProjectIds.size() > 0">  
+							            and customer.project_id in
+							            <foreach  
+							                collection="companyProjectIds"  
+							                item="proId"  
+							                open="("  
+							                separator=","  
+							                close=")">  
+							                #{proId}  
+							            </foreach>  
+							        </if>
+		                      GROUP BY date(follow_time)) customer
+		                  ON customer.visit_date = confirm.work_date
+		            WHERE     work_date &gt;= #{date1}
+		                  AND work_date &lt;= #{date2}
+		                  <if test="companyProjectIds !=null and companyProjectIds.size() > 0">  
+							            and confirm.company_project_id in
+							            <foreach  
+							                collection="companyProjectIds"  
+							                item="proId"  
+							                open="("  
+							                separator=","  
+							                close=")">  
+							                #{proId}  
+							            </foreach>  
+							        </if>
+		           GROUP BY confirm.work_date
+		           ORDER BY visit_date,confirm_amount DESC) table1
+		       LEFT JOIN
+		          (SELECT date(follow_time) AS visit_date,
+		                  count(*) AS sum_customer,
+		                  sum(
+		                     CASE
+		                        WHEN date(follow_time) = visit_date THEN 1
+		                        ELSE 0
+		                     END)
+		                     new_customer,
+		                  sum(
+		                     CASE
+		                        WHEN date(follow_time) != visit_date THEN 1
+		                        ELSE 0
+		                     END)
+		                     old_customer,
+		                  confirm_amount,
+		                  confirm.sum_money,
+		                  confirm_area,
+		                  confirm.sum_money / confirm_area AS average_price
+		             FROM    customer
+		                  LEFT JOIN
+		                     (SELECT confirm.work_date,
+		                             sum(confirm.sum_money) sum_money,
+		                             count(*) AS confirm_amount,
+		                             sum(sum_money / build_price) AS confirm_area
+		                        FROM confirm
+		                       WHERE     work_date &gt;= #{date1}
+		                             AND work_date &lt;= #{date2}
+		                        <if test="companyProjectIds !=null and companyProjectIds.size() > 0">  
+					            and confirm.company_project_id in
+					            <foreach  
+					                collection="companyProjectIds"  
+					                item="proId"  
+					                open="("  
+					                separator=","  
+					                close=")">  
+					                #{proId}  
+					            </foreach>  
+					        </if>
+		                      GROUP BY confirm.work_date) confirm
+		                  ON customer.visit_date = confirm.work_date
+		            WHERE     customer_source = '2'
+		                  AND (   (    visit_date &gt;= #{date1}
+		                           AND visit_date &lt;= #{date2})
+		                       OR (    follow_time &gt;= #{date1}
+		                           AND follow_time &lt;= #{date2}))
+		                  <if test="companyProjectIds !=null and companyProjectIds.size() > 0">  
+					            and customer.project_id in
+					            <foreach  
+					                collection="companyProjectIds"  
+					                item="proId"  
+					                open="("  
+					                separator=","  
+					                close=")">  
+					                #{proId}  
+					            </foreach>  
+					        </if>
+		           GROUP BY date(follow_time)
+		           UNION
+		           SELECT date(confirm.work_date) visit_date,
+		                  customer.sum_customer,
+		                  customer.new_customer,
+		                  customer.old_customer,
+		                  count(*) AS confirm_amount,
+		                  sum(confirm.sum_money) AS sum_money,
+		                  sum(sum_money / build_price) AS confirm_area,
+		                  sum(confirm.sum_money) / sum(sum_money / build_price)
+		                     AS average_price
+		             FROM    confirm
+		                  LEFT JOIN
+		                     (SELECT date(follow_time) visit_date,
+		                             count(*) sum_customer,
+		                             sum(
+		                                CASE
+		                                   WHEN date(follow_time) =
+		                                           customer.visit_date
+		                                   THEN
+		                                      1
+		                                   ELSE
+		                                      0
+		                                END)
+		                                new_customer,
+		                             sum(
+		                                CASE
+		                                   WHEN date(follow_time) !=
+		                                           customer.visit_date
+		                                   THEN
+		                                      1
+		                                   ELSE
+		                                      0
+		                                END)
+		                                old_customer
+		                        FROM customer
+		                       WHERE     customer_source = '2'
+		                             AND (   (    visit_date &gt;= #{date1}
+		                                      AND visit_date &lt;= #{date2})
+		                                  OR (    follow_time &gt;= #{date1}
+		                                      AND follow_time &lt;= #{date2}))
+		                             <if test="companyProjectIds !=null and companyProjectIds.size() > 0">  
+							            and customer.project_id in
+							            <foreach  
+							                collection="companyProjectIds"  
+							                item="proId"  
+							                open="("  
+							                separator=","  
+							                close=")">  
+							                #{proId}  
+							            </foreach>  
+							        </if>
+		                      GROUP BY date(follow_time)) customer
+		                  ON customer.visit_date = confirm.work_date
+		            WHERE     work_date &gt;= #{date1}
+		                  AND work_date &lt;= #{date2}
+		                  <if test="companyProjectIds !=null and companyProjectIds.size() > 0">  
+					            and confirm.company_project_id in
+					            <foreach  
+					                collection="companyProjectIds"  
+					                item="proId"  
+					                open="("  
+					                separator=","  
+					                close=")">  
+					                #{proId}  
+					            </foreach>  
+					        </if>
+		           GROUP BY confirm.work_date
+		           ORDER BY visit_date,confirm_amount DESC) table2
+		       ON table1.visit_date = table2.visit_date 
+		       where table1.visit_date &gt;= #{date1} and table1.visit_date &lt;= #{date2}
+		       group by table1.visit_date
+		       
+	</sql>
+	
+	
+	
+	<select id="findCustomerCountGroupByVisitDateCount" resultType="int" parameterType="com.ihk.customer.data.pojo.CustomerCond">
+		select count(*) from
+		(
+		SELECT distinct table1.visit_date,
+		       table1.sum_customer as coming_customer,
+		       table1.new_customer,
+		       table1.old_customer,
+		       table2.sum_customer as phone_customer,
+		       table1.confirm_amount,
+		       table1.sum_money,
+		       table1.confirm_area,
+		       table1.average_price
+		  FROM    (SELECT date(follow_time) AS visit_date,
+		                  count(*) AS sum_customer,
+		                  sum(
+		                     CASE
+		                        WHEN date(follow_time) = visit_date THEN 1
+		                        ELSE 0
+		                     END)
+		                     new_customer,
+		                  sum(
+		                     CASE
+		                        WHEN date(follow_time) != visit_date THEN 1
+		                        ELSE 0
+		                     END)
+		                     old_customer,
+		                  confirm_amount,
+		                  confirm.sum_money,
+		                  confirm_area,
+		                  confirm.sum_money / confirm_area AS average_price
+		             FROM    customer
+		                  LEFT JOIN
+		                     (SELECT confirm.work_date,
+		                             sum(confirm.sum_money) sum_money,
+		                             count(*) AS confirm_amount,
+		                             sum(sum_money / build_price) AS confirm_area
+		                        FROM confirm
+		                       WHERE     work_date &gt;= #{date1}
+		                             AND work_date &lt;= #{date2}
+		                      <if test="companyProjectIds !=null and companyProjectIds.size() > 0">  
+					            and confirm.company_project_id in
+					            <foreach  
+					                collection="companyProjectIds"  
+					                item="proId"  
+					                open="("  
+					                separator=","  
+					                close=")">  
+					                #{proId}  
+					            </foreach>  
+					        </if>
+		                      GROUP BY confirm.work_date) confirm
+		                  ON customer.visit_date = confirm.work_date
+		            WHERE     customer_source = '1'
+		                  AND (   (    visit_date &gt;= #{date1}
+		                           AND visit_date &lt;= #{date2})
+		                       OR (    follow_time &gt;= #{date1}
+		                           AND follow_time &lt;= #{date2}))
+		                  <if test="companyProjectIds !=null and companyProjectIds.size() > 0">  
+					            and customer.project_id in
+					            <foreach  
+					                collection="companyProjectIds"  
+					                item="proId"  
+					                open="("  
+					                separator=","  
+					                close=")">  
+					                #{proId}  
+					            </foreach>  
+					        </if>
+		           GROUP BY date(follow_time)
+		           UNION
+		           SELECT date(confirm.work_date) visit_date,
+		                  customer.sum_customer,
+		                  customer.new_customer,
+		                  customer.old_customer,
+		                  count(*) AS confirm_amount,
+		                  sum(confirm.sum_money) AS sum_money,
+		                  sum(sum_money / build_price) AS confirm_area,
+		                  sum(confirm.sum_money) / sum(sum_money / build_price)
+		                     AS average_price
+		             FROM    confirm
+		                  LEFT JOIN
+		                     (SELECT date(follow_time) visit_date,
+		                             count(*) sum_customer,
+		                             sum(
+		                                CASE
+		                                   WHEN date(follow_time) =
+		                                           customer.visit_date
+		                                   THEN
+		                                      1
+		                                   ELSE
+		                                      0
+		                                END)
+		                                new_customer,
+		                             sum(
+		                                CASE
+		                                   WHEN date(follow_time) !=
+		                                           customer.visit_date
+		                                   THEN
+		                                      1
+		                                   ELSE
+		                                      0
+		                                END)
+		                                old_customer
+		                        FROM customer
+		                       WHERE     customer_source = '1'
+		                             AND (   (    visit_date &gt;= #{date1}
+		                                      AND visit_date &lt;= #{date2})
+		                                  OR (    follow_time &gt;= #{date1}
+		                                      AND follow_time &lt;= #{date2}))
+		                             <if test="companyProjectIds !=null and companyProjectIds.size() > 0">  
+							            and customer.project_id in
+							            <foreach  
+							                collection="companyProjectIds"  
+							                item="proId"  
+							                open="("  
+							                separator=","  
+							                close=")">  
+							                #{proId}  
+							            </foreach>  
+							        </if>
+		                      GROUP BY date(follow_time)) customer
+		                  ON customer.visit_date = confirm.work_date
+		            WHERE     work_date &gt;= #{date1}
+		                  AND work_date &lt;= #{date2}
+		                  <if test="companyProjectIds !=null and companyProjectIds.size() > 0">  
+							            and confirm.company_project_id in
+							            <foreach  
+							                collection="companyProjectIds"  
+							                item="proId"  
+							                open="("  
+							                separator=","  
+							                close=")">  
+							                #{proId}  
+							            </foreach>  
+							        </if>
+		           GROUP BY confirm.work_date
+		           ORDER BY visit_date,confirm_amount DESC) table1
+		       LEFT JOIN
+		          (SELECT date(follow_time) AS visit_date,
+		                  count(*) AS sum_customer,
+		                  sum(
+		                     CASE
+		                        WHEN date(follow_time) = visit_date THEN 1
+		                        ELSE 0
+		                     END)
+		                     new_customer,
+		                  sum(
+		                     CASE
+		                        WHEN date(follow_time) != visit_date THEN 1
+		                        ELSE 0
+		                     END)
+		                     old_customer,
+		                  confirm_amount,
+		                  confirm.sum_money,
+		                  confirm_area,
+		                  confirm.sum_money / confirm_area AS average_price
+		             FROM    customer
+		                  LEFT JOIN
+		                     (SELECT confirm.work_date,
+		                             sum(confirm.sum_money) sum_money,
+		                             count(*) AS confirm_amount,
+		                             sum(sum_money / build_price) AS confirm_area
+		                        FROM confirm
+		                       WHERE     work_date &gt;= #{date1}
+		                             AND work_date &lt;= #{date2}
+		                        <if test="companyProjectIds !=null and companyProjectIds.size() > 0">  
+					            and confirm.company_project_id in
+					            <foreach  
+					                collection="companyProjectIds"  
+					                item="proId"  
+					                open="("  
+					                separator=","  
+					                close=")">  
+					                #{proId}  
+					            </foreach>  
+					        </if>
+		                      GROUP BY confirm.work_date) confirm
+		                  ON customer.visit_date = confirm.work_date
+		            WHERE     customer_source = '2'
+		                  AND (   (    visit_date &gt;= #{date1}
+		                           AND visit_date &lt;= #{date2})
+		                       OR (    follow_time &gt;= #{date1}
+		                           AND follow_time &lt;= #{date2}))
+		                  <if test="companyProjectIds !=null and companyProjectIds.size() > 0">  
+					            and customer.project_id in
+					            <foreach  
+					                collection="companyProjectIds"  
+					                item="proId"  
+					                open="("  
+					                separator=","  
+					                close=")">  
+					                #{proId}  
+					            </foreach>  
+					        </if>
+		           GROUP BY date(follow_time)
+		           UNION
+		           SELECT date(confirm.work_date) visit_date,
+		                  customer.sum_customer,
+		                  customer.new_customer,
+		                  customer.old_customer,
+		                  count(*) AS confirm_amount,
+		                  sum(confirm.sum_money) AS sum_money,
+		                  sum(sum_money / build_price) AS confirm_area,
+		                  sum(confirm.sum_money) / sum(sum_money / build_price)
+		                     AS average_price
+		             FROM    confirm
+		                  LEFT JOIN
+		                     (SELECT date(follow_time) visit_date,
+		                             count(*) sum_customer,
+		                             sum(
+		                                CASE
+		                                   WHEN date(follow_time) =
+		                                           customer.visit_date
+		                                   THEN
+		                                      1
+		                                   ELSE
+		                                      0
+		                                END)
+		                                new_customer,
+		                             sum(
+		                                CASE
+		                                   WHEN date(follow_time) !=
+		                                           customer.visit_date
+		                                   THEN
+		                                      1
+		                                   ELSE
+		                                      0
+		                                END)
+		                                old_customer
+		                        FROM customer
+		                       WHERE     customer_source = '2'
+		                             AND (   (    visit_date &gt;= #{date1}
+		                                      AND visit_date &lt;= #{date2})
+		                                  OR (    follow_time &gt;= #{date1}
+		                                      AND follow_time &lt;= #{date2}))
+		                             <if test="companyProjectIds !=null and companyProjectIds.size() > 0">  
+							            and customer.project_id in
+							            <foreach  
+							                collection="companyProjectIds"  
+							                item="proId"  
+							                open="("  
+							                separator=","  
+							                close=")">  
+							                #{proId}  
+							            </foreach>  
+							        </if>
+		                      GROUP BY date(follow_time)) customer
+		                  ON customer.visit_date = confirm.work_date
+		            WHERE     work_date &gt;= #{date1}
+		                  AND work_date &lt;= #{date2}
+		                  <if test="companyProjectIds !=null and companyProjectIds.size() > 0">  
+					            and confirm.company_project_id in
+					            <foreach  
+					                collection="companyProjectIds"  
+					                item="proId"  
+					                open="("  
+					                separator=","  
+					                close=")">  
+					                #{proId}  
+					            </foreach>  
+					        </if>
+		           GROUP BY confirm.work_date
+		           ORDER BY visit_date,confirm_amount DESC) table2
+		       ON table1.visit_date = table2.visit_date 
+		       where table1.visit_date &gt;= #{date1} and table1.visit_date &lt;= #{date2}
+		       group by table1.visit_date
+		       ) as total
+		    
+	</select>
+	
+	
+	<select id="findCustomerProductAndConfirmInfo" resultType="java.util.Map" parameterType="com.ihk.customer.data.pojo.CustomerCond">
+		SELECT 
+		       project_name as product,
+		       sum_havePush as havePush,
+		       sum_haveNotPush as haveNotPush,
+		       sum_weekConfirm as weekConfirm,
+		       sum_monthConfirm as monthConfirm,
+		       sum_allConfirm as allConfirm,
+		       sum_allConfirm / sum_havePush as confirmPercent,
+		       sum_confirmArea as confirmArea,
+		       sum_confirmMoney as confirmMoney,
+		       sum_confirmMoney/sum_confirmArea as confirmPrice,
+		       sum_havePush-sum_allConfirm as havePushLeave,
+		       (sum_havePush-sum_allConfirm)/sum_havePush as havePushLeavePercent,
+		       sum_havePush+sum_haveNotPush-sum_allConfirm as allLeave,
+		       havePushLeaveArea as leaveArea,
+		       havePushLeaveMoney as leaveMoney
+		  FROM (SELECT property_unit.company_project_id,
+		               project_name,
+		               sum(CASE WHEN sale_state != '18' THEN 1 ELSE 0 END)
+		                  AS sum_havePush,
+		               sum(CASE WHEN sale_state = '18' THEN 1 ELSE 0 END)
+		                  AS sum_haveNotPush,
+		               sum(case when sale_state != '18' THEN build_area ELSE 0 END) AS havePushLeaveArea,
+		               sum(case when sale_state != '18' THEN sum_price ELSE 0 END) AS havePushLeaveMoney 
+		          FROM property_unit
+		               LEFT JOIN company_project
+		                  ON property_unit.company_project_id = company_project.id
+		         WHERE     <if test="companyProjectIds !=null and companyProjectIds.size() > 0">  
+					            property_unit.company_project_id in
+					            <foreach  
+					                collection="companyProjectIds"  
+					                item="proId"  
+					                open="("  
+					                separator=","  
+					                close=")">  
+					                #{proId}  
+					            </foreach>  
+					        </if>
+		               AND property_unit.is_deleted = '0'
+		        GROUP BY property_unit.company_project_id,
+		                 property_unit.company_project_id) table1
+		       LEFT JOIN
+		       (SELECT company_project_id,
+		               sum(
+		                  CASE
+		                     WHEN  
+		                     	#{date2}&gt;=   
+		                     	concat(year(date(work_date) - weekday(work_date)),
+						              '-',
+						              month(date(work_date) - weekday(work_date)),
+						              '-',
+						              day(date(work_date) - weekday(work_date)))
+						         and
+		                         #{date2}&lt;=
+		                         concat(year(date(work_date) + weekday(work_date)),
+						              '-',
+						              month(date(work_date) + weekday(work_date)),
+						              '-',
+						              day(date(work_date) + weekday(work_date)))
+		                     THEN
+		                        1
+		                     ELSE
+		                        0
+		                  END)
+		                  AS sum_weekConfirm,
+		               sum(
+		                  CASE
+		                     WHEN    
+		                          CASE 
+		                     		WHEN MONTH(work_date)&lt;10 THEN    
+		                          		concat(YEAR(work_date),'-0',MONTH(work_date)) = #{date1}
+		                        	ELSE 
+		                          		concat(YEAR(work_date),'-',MONTH(work_date)) = #{date1}
+		                       	 END
+		                     THEN
+		                        1
+		                     ELSE
+		                        0
+		                  END)
+		                  AS sum_monthConfirm,
+		               count(*) AS sum_allConfirm,
+		               sum(sum_money) AS sum_confirmMoney,
+		               sum(confirm.sum_money/confirm.build_price) sum_confirmArea
+		          FROM confirm
+		         WHERE <if test="companyProjectIds !=null and companyProjectIds.size() > 0">  
+					            company_project_id in
+					            <foreach  
+					                collection="companyProjectIds"  
+					                item="proId"  
+					                open="("  
+					                separator=","  
+					                close=")">  
+					                #{proId}  
+					            </foreach>  
+					        </if>
+					     AND confirm.is_deleted = '0'
+		        GROUP BY company_project_id) table2
+		          ON table1.company_project_id = table2.company_project_id
+		union 
+		
+		select 
+		       'year confirm num',
+		       sum(sum_havePush),
+		       sum(sum_haveNotPush),
+		       sum(sum_weekConfirm),
+		       sum(sum_monthConfirm),
+		       sum(sum_allConfirm),
+		       '',
+		       sum(sum_confirmArea),
+		       sum(sum_confirmMoney),
+		       '',
+		       sum(sum_havePushLeave),
+		       '',
+		       sum(allLeave),
+		       sum(havePushLeaveArea),
+		       sum(havePushLeaveMoney)
+		 from
+		(
+		SELECT table1.company_project_id,
+		       project_name,
+		       sum_havePush,
+		       sum_haveNotPush,
+		       sum_weekConfirm,
+		       sum_monthConfirm,
+		       sum_allConfirm,
+		       sum_allConfirm / sum_havePush as confirmPercent,
+		       sum_confirmArea,
+		       sum_confirmMoney,
+		       sum_confirmMoney/sum_confirmArea as confirmPrice,
+		       sum_havePush-sum_allConfirm as sum_havePushLeave,
+		       (sum_havePush-sum_allConfirm)/sum_havePush as sum_havePushLeavePercent,
+		       sum_havePush+sum_haveNotPush-sum_allConfirm as allLeave,
+		       havePushLeaveArea,
+		       havePushLeaveMoney
+		  FROM (SELECT property_unit.company_project_id,
+		               project_name,
+		               sum(CASE WHEN sale_state != '18' THEN 1 ELSE 0 END)
+		                  AS sum_havePush,
+		               sum(CASE WHEN sale_state = '18' THEN 1 ELSE 0 END)
+		                  AS sum_haveNotPush,
+		               sum(property_unit.build_area) sum_confirmArea,
+		               sum(case when sale_state != '18' THEN build_area ELSE 0 END) AS havePushLeaveArea,
+		               sum(case when sale_state != '18' THEN sum_price ELSE 0 END) AS havePushLeaveMoney 
+		          FROM property_unit
+		               LEFT JOIN company_project
+		                  ON property_unit.company_project_id = company_project.id
+		         WHERE     <if test="companyProjectIds !=null and companyProjectIds.size() > 0">  
+					            property_unit.company_project_id in
+					            <foreach  
+					                collection="companyProjectIds"  
+					                item="proId"  
+					                open="("  
+					                separator=","  
+					                close=")">  
+					                #{proId}  
+					            </foreach>  
+					        </if> 
+		               AND property_unit.is_deleted = '0'
+		        GROUP BY property_unit.company_project_id,
+		                 property_unit.company_project_id) table1
+		       LEFT JOIN
+		       (SELECT company_project_id,
+		               sum(
+		                  CASE
+		                     WHEN    
+								#{date2}&gt;=   
+		                     	concat(year(date(work_date) - weekday(work_date)),
+						              '-',
+						              month(date(work_date) - weekday(work_date)),
+						              '-',
+						              day(date(work_date) - weekday(work_date)))
+						         and
+		                         #{date2}&lt;=
+		                         concat(year(date(work_date) + weekday(work_date)),
+						              '-',
+						              month(date(work_date) + weekday(work_date)),
+						              '-',
+						              day(date(work_date) + weekday(work_date)))
+		                     THEN
+		                        1
+		                     ELSE
+		                        0
+		                  END)
+		                  AS sum_weekConfirm,
+		               sum(
+		                  CASE
+		                     WHEN 
+		                     	CASE 
+		                     		WHEN MONTH(work_date)&lt;10 THEN    
+		                          		concat(YEAR(work_date),'-0',MONTH(work_date)) = #{date1}
+		                        	ELSE 
+		                          		concat(YEAR(work_date),'-',MONTH(work_date)) = #{date1}
+		                       	 END
+		                     THEN
+		                        1
+		                     ELSE
+		                        0
+		                  END)
+		                  AS sum_monthConfirm,
+		               count(*) AS sum_allConfirm,
+		               sum(sum_money) AS sum_confirmMoney
+		          FROM confirm
+		         WHERE <if test="companyProjectIds !=null and companyProjectIds.size() > 0">  
+					            company_project_id in
+					            <foreach  
+					                collection="companyProjectIds"  
+					                item="proId"  
+					                open="("  
+					                separator=","  
+					                close=")">  
+					                #{proId}  
+					            </foreach>  
+					        </if> 
+					        AND confirm.is_deleted = '0'
+		        GROUP BY company_project_id) table2
+		          ON table1.company_project_id = table2.company_project_id
+		) as table3 
+		<if test="startLine >= 0">
+				<if test="pageSize > 0">
+					limit #{startLine, jdbcType=INTEGER},#{pageSize, jdbcType=INTEGER};
+				</if>
+			</if>
+		
+	</select> 
+	
+	<select id="findCustomerProductAndConfirmInfoCount" resultType="int" parameterType="com.ihk.customer.data.pojo.CustomerCond">
+		SELECT count(*) from (
+		SELECT 
+		       project_name as product,
+		       sum_havePush as havePush,
+		       sum_haveNotPush as haveNotPush,
+		       sum_weekConfirm as weekConfirm,
+		       sum_monthConfirm as monthConfirm,
+		       sum_allConfirm as allConfirm,
+		       sum_allConfirm / sum_havePush as confirmPercent,
+		       sum_confirmArea as confirmArea,
+		       sum_confirmMoney as confirmMoney,
+		       sum_confirmMoney/sum_confirmArea as confirmPrice,
+		       sum_havePush-sum_allConfirm as havePushLeave,
+		       (sum_havePush-sum_allConfirm)/sum_havePush as havePushLeavePercent,
+		       sum_havePush+sum_haveNotPush-sum_allConfirm as allLeave,
+		       havePushLeaveArea as leaveArea,
+		       havePushLeaveMoney as leaveMoney
+		  FROM (SELECT property_unit.company_project_id,
+		               project_name,
+		               sum(CASE WHEN sale_state != '18' THEN 1 ELSE 0 END)
+		                  AS sum_havePush,
+		               sum(CASE WHEN sale_state = '18' THEN 1 ELSE 0 END)
+		                  AS sum_haveNotPush,
+		               sum(property_unit.build_area) sum_confirmArea,
+		               sum(case when sale_state != '18' THEN build_area ELSE 0 END) AS havePushLeaveArea,
+		               sum(case when sale_state != '18' THEN sum_price ELSE 0 END) AS havePushLeaveMoney 
+		          FROM property_unit
+		               LEFT JOIN company_project
+		                  ON property_unit.company_project_id = company_project.id
+		         WHERE     <if test="companyProjectIds !=null and companyProjectIds.size() > 0">  
+					            property_unit.company_project_id in
+					            <foreach  
+					                collection="companyProjectIds"  
+					                item="proId"  
+					                open="("  
+					                separator=","  
+					                close=")">  
+					                #{proId}  
+					            </foreach>  
+					        </if>
+		               AND property_unit.is_deleted = '0'
+		        GROUP BY property_unit.company_project_id,
+		                 property_unit.company_project_id) table1
+		       LEFT JOIN
+		       (SELECT company_project_id,
+		               sum(
+		                  CASE
+		                     WHEN     work_date &gt;= #{date1}
+		                          AND work_date &lt;= #{date2}
+		                     THEN
+		                        1
+		                     ELSE
+		                        0
+		                  END)
+		                  AS sum_weekConfirm,
+		               sum(
+		                  CASE
+		                     WHEN     
+		                     	concat(YEAR(work_date),'-',MONTH(work_date)) = #{date1}
+		                     THEN
+		                        1
+		                     ELSE
+		                        0
+		                  END)
+		                  AS sum_monthConfirm,
+		               count(*) AS sum_allConfirm,
+		               sum(sum_money) AS sum_confirmMoney
+		          FROM confirm
+		         WHERE <if test="companyProjectIds !=null and companyProjectIds.size() > 0">  
+					            company_project_id in
+					            <foreach  
+					                collection="companyProjectIds"  
+					                item="proId"  
+					                open="("  
+					                separator=","  
+					                close=")">  
+					                #{proId}  
+					            </foreach>  
+					        </if>
+					     AND confirm.is_deleted = '0'
+		        GROUP BY company_project_id) table2
+		          ON table1.company_project_id = table2.company_project_id
+		)table3
+		
+		       
+	</select> 
+	
+	
+	<update id="knUpdateXqmj">
+		update customer set area_num = #{pricenum} where id = #{id}
+	</update>
+	<update id="knUpdateXqjg">
+		update customer set price_num = #{pricenum} where id = #{id}
+	</update>
+	
+	
+	<update id="knAddRemark">
+		update customer set remark1 = concat(ifnull(remark1,''),ifnull(#{remark},'')) where id = #{id}
+	</update>
+
+</mapper>

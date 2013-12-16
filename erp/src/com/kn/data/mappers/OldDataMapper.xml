@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.kn.data.IOldDataMapper">
+	<resultMap type="KN_App_User" id="kn_App_User_ResultMap">
+		<id property="userId" column="user_id" />        
+		<result property="loginName" column="login_name" />
+	</resultMap> 
+	<select id="findKN_App_User" resultMap="kn_App_User_ResultMap" parameterType="com.kn.data.pojo.KN_App_User_Cond">
+		SELECT * from  climb.app_user 
+		<where>
+		</where>	
+    </select>
+</mapper>

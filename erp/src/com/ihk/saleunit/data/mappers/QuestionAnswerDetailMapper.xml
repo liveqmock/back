@@ -1,0 +1,229 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.ihk.saleunit.data.IQuestionAnswerDetailMapper">
+
+	<resultMap type="QuestionAnswerDetail" id="questionAnswerDetailResultMap">
+		<id property="id" column="id" />        
+		<result property="anwserId" column="anwser_id" />
+		<result property="topicName" column="topic_name" />
+		<result property="topicType" column="topic_type" />
+		<result property="topicGroup" column="topic_group" />
+		<result property="orderIndex" column="order_index" />
+		<result property="topicId" column="topic_id" />
+		<result property="anwserContent" column="anwser_content" />
+		<result property="otherOption" column="other_option" />
+		<result property="isDeleted" column="is_deleted" />
+		<result property="createdId" column="created_id" />
+		<result property="createdTime" column="created_time" />
+		<result property="modId" column="mod_id" />
+		<result property="modTime" column="mod_time" />
+		<result property="column13" column="Column_13" />
+		<result property="preCustomerId" column="pre_customer_id" />
+	</resultMap>
+	<resultMap type="java.util.Map" id="topicInputCount">
+		<result property="topicName" column="topic_name" />
+		<result property="inputCount" column="input_count" />
+	</resultMap>
+
+	<insert id="addQuestionAnswerDetail" parameterType="QuestionAnswerDetail">
+		 <selectKey resultType="java.lang.Integer" keyProperty="id" order="AFTER" >
+            SELECT @@IDENTITY
+        </selectKey>		
+		insert into question_answer_detail(
+		anwser_id,
+		topic_name,
+		topic_type,
+		topic_group,
+		order_index,
+		topic_id,
+		anwser_content,
+		other_option,
+		is_deleted,
+		created_id,
+		created_time,
+		mod_id,
+		mod_time,
+		Column_13
+		)
+			VALUES(
+		#{anwserId},
+		#{topicName},
+		#{topicType},
+		#{topicGroup},
+		#{orderIndex},
+		#{topicId},
+		#{anwserContent},
+		#{otherOption},
+		#{isDeleted},
+		#{createdId},
+		#{createdTime},
+		#{modId},
+		#{modTime},
+		#{column13}
+			)
+		
+	</insert>
+	<delete id="deleteQuestionAnswerDetail" parameterType="int">
+	update question_answer_detail set is_deleted='1' where id=#{id};
+	</delete>
+	<update id="updateQuestionAnswerDetail" parameterType="int">
+	update question_answer_detail set 
+		anwser_id=#{anwserId},
+		topic_name=#{topicName},
+		topic_type=#{topicType},
+		topic_group=#{topicGroup},
+		order_index=#{orderIndex},
+		topic_id=#{topicId},
+		anwser_content=#{anwserContent},
+		other_option=#{otherOption},
+		mod_id=#{modId},
+		mod_time=#{modTime},
+		Column_13=#{column13}
+	 where id=#{id}
+	</update>
+	<select id="findQuestionAnswerDetailById" resultMap="questionAnswerDetailResultMap">
+	select * from question_answer_detail where id=#{id}
+	</select>
+    
+	<sql id="findWhereCond"> 
+		<where>
+     
+			<if test="anwserId != null and anwserId != ''">
+			anwser_id = #{anwserId}
+            </if>    
+            
+            <if test="companyProjectIds != null and companyProjectIds.size() > 0">
+            	and anwser_id in (select id from question_anwser where question_id in
+            	(select id from question where company_project_id in 
+	            <foreach  
+	                collection="companyProjectIds"  
+	                item="pId"  
+	                open="("  
+	                separator=","  
+	                close=")">   
+	                #{pId}  
+	            </foreach>
+	             and is_deleted='0' ) and is_deleted='0' )
+            </if>
+            
+			<if test="date1 != null and date1 != ''">
+				and created_time &gt;= #{date1}
+			</if>
+			<if test="date2 != null and date2 != ''">
+				and created_time &lt; date_add(#{date2},interval 1 day)
+			</if> 
+			
+            and is_deleted = '0'
+          
+		</where>
+	</sql>
+	
+	<select id="findQuestionAnswerDetailCount" resultType="int" parameterType="com.ihk.saleunit.data.pojo.QuestionAnswerDetailCond">
+		SELECT count(0) from question_answer_detail  
+        <include refid="findWhereCond"/>     
+    </select>
+        
+	<select id="findQuestionAnswerDetail" resultMap="questionAnswerDetailResultMap" parameterType="com.ihk.saleunit.data.pojo.QuestionAnswerDetailCond">
+		SELECT * from  question_answer_detail 
+        <include refid="findWhereCond"/> 
+		<if test="topNum > 0">
+			limit #{topNum};
+		</if>
+    </select>
+    
+	<select id="findQuestionAnswerDetailPage" resultMap="questionAnswerDetailResultMap" parameterType="com.ihk.saleunit.data.pojo.QuestionAnswerDetailCond">
+		SELECT * from  question_answer_detail 
+        <include refid="findWhereCond"/> 
+    
+		<if test="startLine >= 0">
+		<if test="pageSize > 0">
+			limit #{startLine},#{pageSize};
+		</if>
+		</if>
+	</select>	
+	
+	<select id="findQuestionAnswerInputCount" resultMap="topicInputCount" parameterType="com.ihk.saleunit.data.pojo.QuestionAnswerDetailCond">
+		SELECT topic_name,COUNT(0) as input_count FROM question_answer_detail WHERE anwser_content LIKE '%1:%' and is_deleted='0'
+			<if test="companyProjectId != null and companyProjectId != ''">
+			AND anwser_id IN (SELECT id FROM question_anwser WHERE question_id IN (SELECT id FROM question WHERE company_project_id=#{companyProjectId}  ))
+			</if> 
+			<if test="createdId != null and createdId != ''">
+				and created_id = #{createdId}
+            </if>  
+			<if test="date1 != null and date1 != ''">
+				and created_time &gt;= #{date1}
+			</if>
+			<if test="date2 != null and date2 != ''">
+				and created_time &lt; date_add(#{date2},interval 1 day)
+			</if>
+		GROUP BY topic_name
+	</select>
+	
+	<select id="findQuestionAnswerDetailByZsCond" resultMap="questionAnswerDetailResultMap" 
+		parameterType="com.ihk.saleunit.action.new_report.cond.ZsCustomerAnalysisCond">
+		 
+		 select qad.* from question_answer_detail qad
+			inner join 
+			(
+			select q.* from customer c
+			left join question_anwser q
+			on c.id = q.pre_customer_id
+			
+			<where>
+     
+            <if test="companyProjectIds != null and companyProjectIds.size() > 0">
+            	project_id in 
+	            <foreach  
+	                collection="companyProjectIds"  
+	                item="pId"  
+	                open="("  
+	                separator=","  
+	                close=")">   
+	                #{pId}  
+	            </foreach>
+            </if>
+            
+			<if test="date1 != null and date1 != ''">
+				and c.visit_date &gt;= #{date1}
+			</if>
+			
+			<if test="date2 != null and date2 != ''">
+				and c.visit_date &lt; date_add(#{date2},interval 1 day)
+			</if> 
+			
+			<if test="type != null and type != ''">
+				and customer_source = #{type}
+			</if>
+			
+          	and q.is_deleted = '0'
+			and c.is_deleted = '0'
+          
+		</where>
+			
+		) tmp
+		on qad.anwser_id = tmp.id
+		where qad.is_deleted = '0'
+		
+		<if test="date1 != null and date1 != ''">
+			and qad.created_time &gt;= #{date1}
+		</if>
+		
+		<if test="date2 != null and date2 != ''">
+			and qad.created_time &lt; date_add(#{date2},interval 1 day)
+		</if> 
+		 
+	</select>
+	
+	<select id="findQuestionAnswerDetailByQuestionIdAndCustId" resultMap="questionAnswerDetailResultMap" parameterType="map">
+		select qa.pre_customer_id,qad.* 
+			from question_anwser qa 
+		left join question_answer_detail qad on qa.id = qad.anwser_id 
+		where qa.question_id= #{questionId} 
+		and qa.pre_customer_id in 
+		<foreach collection="custId" item="cid" open="(" separator="," close=")" >
+			 #{cid}
+		</foreach>
+		and qa.is_deleted = '0' and qad.is_deleted = '0'
+	</select>
+	
+</mapper>

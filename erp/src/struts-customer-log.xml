@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE struts PUBLIC
+    "-//Apache Software Foundation//DTD Struts Configuration 2.0//EN"
+    "http://struts.apache.org/dtds/struts-2.0.dtd">
+<struts>
+	<package name="customer_log" extends="struts-default" namespace="/customer/log">
+		<!-- 查看客户修改记录 -->
+		<action name="index" class="com.ihk.customer.log.CustomerLogIndexAction" method="index">
+			<result name="index">/customer/log/customer_log_list.jsp</result>
+		</action>	
+		
+		
+		<!-- 查看单条客户修改记录的原始信息 -->
+		<action name="logInfo" class="com.ihk.customer.log.CustomerLogInfoAction" method="logInfo">
+			<result name="index">/customer/log/customer_log_by_id.jsp</result>
+		</action>
+	</package>
+</struts>
+
+
+

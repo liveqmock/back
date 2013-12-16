@@ -1,0 +1,219 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<beans xmlns="http://www.springframework.org/schema/beans"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:aop="http://www.springframework.org/schema/aop"
+	xmlns:tx="http://www.springframework.org/schema/tx" xmlns:jdbc="http://www.springframework.org/schema/jdbc"
+	xmlns:context="http://www.springframework.org/schema/context"
+	xsi:schemaLocation="       
+      http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context-3.0.xsd       
+      http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-3.0.xsd       
+      http://www.springframework.org/schema/jdbc http://www.springframework.org/schema/jdbc/spring-jdbc-3.0.xsd       
+      http://www.springframework.org/schema/tx http://www.springframework.org/schema/tx/spring-tx-3.0.xsd       
+      http://www.springframework.org/schema/aop http://www.springframework.org/schema/aop/spring-aop-3.0.xsd
+      http://www.springframework.org/schema/task http://www.springframework.org/schema/task/spring-task-3.0.xsd"
+      default-autowire="byName">
+
+	<!-- 单元交易日志记录 -->
+	<bean id="unitTransactionLogInterceptor" class="com.ihk.interceptor.UnitTransactionLogInterceptor"/>
+	
+	<bean id="unitTransactionLogCut" class="org.springframework.aop.support.RegexpMethodPointcutAdvisor">
+		<property name="advice">
+			<ref local="unitTransactionLogInterceptor"/>
+		</property>
+		
+		<property name="patterns">
+			<list>
+				<value>.*add.*</value>
+				<value>.*update.*</value>
+				<value>.*delete.*</value>
+			</list>
+			
+		</property>
+		
+	</bean>
+	
+	<!-- 单元修改 -->
+	<bean id="confirmBookServices" class="org.springframework.aop.framework.ProxyFactoryBean">
+		<property name="interfaces" value="com.ihk.saleunit.data.services.IConfirmBookServices"/> <!-- 可以不指定 -->
+	
+		<property name="target">
+			<bean class="com.ihk.saleunit.data.services.impl.ConfirmBookServices"/>  
+		</property>
+		
+		<property name="interceptorNames">
+			<list>
+				<value>unitTransactionLogCut</value>
+			</list>
+		</property>
+	</bean>
+
+	<!-- 单元挞定 -->
+	
+	<bean id="tartServices" class="org.springframework.aop.framework.ProxyFactoryBean">
+		<property name="interfaces" value="com.ihk.saleunit.data.services.ITartServices"/> <!-- 可以不指定 -->
+	
+		<property name="target">
+			<bean class="com.ihk.saleunit.data.services.impl.TartServices"/>  
+		</property>
+		
+		<property name="interceptorNames">
+			<list>
+				<value>unitTransactionLogCut</value>
+			</list>
+		</property>
+	</bean>
+
+
+	<!-- 单元成交 -->
+	
+		<bean id="confirmServices" class="org.springframework.aop.framework.ProxyFactoryBean">
+			<property name="interfaces" value="com.ihk.saleunit.data.services.IConfirmServices"/> <!-- 可以不指定 -->
+		
+			<property name="target">
+				<bean class="com.ihk.saleunit.data.services.impl.ConfirmServices"/>  
+			</property>
+			
+			<property name="interceptorNames">
+				<list>
+					<value>unitTransactionLogCut</value>
+				</list>
+			</property>
+		</bean>
+	<!-- 退房 -->
+	
+		<bean id="cancelUnitServices" class="org.springframework.aop.framework.ProxyFactoryBean">
+			<property name="interfaces" value="com.ihk.saleunit.data.services.ICancelUnitServices"/> <!-- 可以不指定 -->
+		
+			<property name="target">
+				<bean class="com.ihk.saleunit.data.services.impl.CancelUnitServices"/>  
+			</property>
+			
+			<property name="interceptorNames">
+				<list>
+					<value>unitTransactionLogCut</value>
+				</list>
+			</property>
+		</bean>	
+		
+		
+	<!-- 合同 -->
+		<bean id="contractServices" class="org.springframework.aop.framework.ProxyFactoryBean">
+			<property name="interfaces" value="com.ihk.saleunit.data.services.IContractServices"/> <!-- 可以不指定 -->
+		
+			<property name="target">
+				<bean class="com.ihk.saleunit.data.services.impl.ContractServices"/>  
+			</property>
+			
+			<property name="interceptorNames">
+				<list>
+					<value>unitTransactionLogCut</value>
+				</list>
+			</property>
+		</bean>		
+		
+	<!--换房  -->
+	<bean id="replaceUnitServices" class="org.springframework.aop.framework.ProxyFactoryBean">
+			<property name="interfaces" value="com.ihk.saleunit.data.services.IReplaceUnitServices"/> <!-- 可以不指定 -->
+		
+			<property name="target">
+				<bean class="com.ihk.saleunit.data.services.impl.ReplaceUnitServices"/>  
+			</property>
+			
+			<property name="interceptorNames">
+				<list>
+					<value>unitTransactionLogCut</value>
+				</list>
+			</property>
+	</bean>	
+	<!-- 换名 -->
+	<bean id="customerRenameServices" class="org.springframework.aop.framework.ProxyFactoryBean">
+			<property name="interfaces" value="com.ihk.saleunit.data.services.ICustomerRenameServices"/> <!-- 可以不指定 -->
+		
+			<property name="target">
+				<bean class="com.ihk.saleunit.data.services.impl.CustomerRenameServices"/>  
+			</property>
+			
+			<property name="interceptorNames">
+				<list>
+					<value>unitTransactionLogCut</value>
+				</list>
+			</property>
+	</bean>	
+	
+	
+	<!--楼盘，分区，单元初始化日记记录  -->
+	
+	
+	<bean id="buildingAreaUnitInitInterceptor" class="com.ihk.interceptor.BuildingAreaUnitInitInterceptor"/>
+	
+	<bean id="buildingAreaUnitInitCut" class="org.springframework.aop.support.RegexpMethodPointcutAdvisor">
+		<property name="advice">
+			<ref local="buildingAreaUnitInitInterceptor"/>
+		</property>
+		<property name="patterns">
+			<list>
+				<value>.*add.*</value>
+				<value>.*update.*</value>
+				<value>.*delete.*</value>
+			</list>
+		</property>
+	</bean>	
+	<!-- 楼盘操作 -->
+	<bean id="propertyProjectServices" class="org.springframework.aop.framework.ProxyFactoryBean">
+			<property name="interfaces" value="com.ihk.property.data.services.IPropertyProjectServices"/> <!-- 可以不指定 -->
+		
+			<property name="target">
+				<bean class="com.ihk.property.data.services.impl.PropertyProjectServices"/>  
+			</property>
+			
+			<property name="interceptorNames">
+				<list>
+					<value>buildingAreaUnitInitCut</value>
+				</list>
+			</property>
+	</bean>	
+	
+	<!-- 分区操作 -->
+	<bean id="propertyAreaServices" class="org.springframework.aop.framework.ProxyFactoryBean">
+			<property name="interfaces" value="com.ihk.property.data.services.IPropertyAreaServices"/> <!-- 可以不指定 -->
+		
+			<property name="target">
+				<bean class="com.ihk.property.data.services.impl.PropertyAreaServices"/>  
+			</property>
+			
+			<property name="interceptorNames">
+				<list>
+					<value>buildingAreaUnitInitCut</value>
+				</list>
+			</property>
+	</bean>	
+	
+	<!-- 楼栋操作 -->
+	<bean id="propertyBuildServices" class="org.springframework.aop.framework.ProxyFactoryBean">
+			<property name="interfaces" value="com.ihk.property.data.services.IPropertyBuildServices"/> <!-- 可以不指定 -->
+		
+			<property name="target">
+				<bean class="com.ihk.property.data.services.impl.PropertyBuildServices"/>  
+			</property>
+			
+			<property name="interceptorNames">
+				<list>
+					<value>buildingAreaUnitInitCut</value>
+				</list>
+			</property>
+	</bean>	
+	<!-- 分区操作 -->
+	<bean id="propertyUnitServices" class="org.springframework.aop.framework.ProxyFactoryBean">
+			<property name="interfaces" value="com.ihk.property.data.services.IPropertyUnitServices"/> <!-- 可以不指定 -->
+		
+			<property name="target">
+				<bean class="com.ihk.property.data.services.impl.PropertyUnitServices"/>  
+			</property>
+			
+			<property name="interceptorNames">
+				<list>
+					<value>buildingAreaUnitInitCut</value>
+				</list>
+			</property>
+	</bean>	
+</beans>

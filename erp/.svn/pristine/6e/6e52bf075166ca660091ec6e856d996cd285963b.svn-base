@@ -1,0 +1,176 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.ihk.article.data.IArticleMapper">
+
+	<resultMap type="Article" id="articleResultMap">
+		<id property="id" column="id" />        
+		<result property="articleType" column="article_type" />
+		<result property="title" column="title" />
+		<result property="summary" column="summary" />
+		<result property="content" column="content" />
+		<result property="orderIndex" column="order_index" />
+		<result property="devFlag" column="dev_flag" />
+		<result property="isCrm" column="is_crm" />
+		<result property="isSale" column="is_sale" />
+		<result property="companyId" column="company_id" />
+		<result property="isDeleted" column="is_deleted" />
+		<result property="createdId" column="created_id" />
+		<result property="createdTime" column="created_time" />
+		<result property="modId" column="mod_id" />
+		<result property="modTime" column="mod_time" />
+	</resultMap>
+
+	<insert id="addArticle" parameterType="Article">
+		 <selectKey resultType="java.lang.Integer" keyProperty="id" order="AFTER" >
+            SELECT @@IDENTITY
+        </selectKey>		
+		insert into article(
+		article_type,
+		title,
+		summary,
+		content,
+		order_index,
+		dev_flag,
+		is_crm,
+		is_sale,
+		company_id,
+		is_deleted,
+		created_id,
+		created_time,
+		mod_id,
+		mod_time
+		)
+			VALUES(
+		#{articleType},
+		#{title},
+		#{summary},
+		#{content},
+		#{orderIndex},
+		#{devFlag},
+		#{isCrm},
+		#{isSale},
+		#{companyId},
+		#{isDeleted},
+		#{createdId},
+		#{createdTime},
+		#{modId},
+		#{modTime}
+			)
+		
+	</insert>
+	<delete id="deleteArticle" parameterType="int">
+	update article set is_deleted='1' where id=#{id};
+	</delete>
+	<update id="updateArticle" parameterType="int">
+	update article set 
+		article_type=#{articleType},
+		title=#{title},
+		summary=#{summary},
+		content=#{content},
+		order_index=#{orderIndex},
+		dev_flag=#{devFlag},
+		is_crm=#{isCrm},
+		is_sale=#{isSale},
+		company_id=#{companyId},
+		is_deleted=#{isDeleted},
+		created_id=#{createdId},
+		created_time=#{createdTime},
+		mod_id=#{modId},
+		mod_time=#{modTime}
+	 where id=#{id}
+	</update>
+	<select id="findArticleById" resultMap="articleResultMap">
+	select * from article where id=#{id}
+	</select>
+    
+	<sql id="findWhereCond"> 
+		<where>
+        <!--
+			<if test="date1 != null and date1 != ''">
+            </if>    
+            and is_deleted = '0'
+            -->
+            <if test="devFlag != null and devFlag != '' ">
+            	and dev_flag = #{devFlag}
+            </if>
+            <if test="articleType != null and articleType != ''">
+            	and article_type=#{articleType}
+            </if>
+            <if test="title != null and title != ''">
+            	and title like  CONCAT(CONCAT('%', #{title}),'%') 
+            </if>
+            <if test="date1 != null and date1 != ''">
+				and date(created_time) = #{date1}
+			</if>
+            <if test="searchCompanyIds != null and searchCompanyIds.size() > 0">
+                and company_id in
+                <foreach collection="searchCompanyIds" item="cId" open="(" separator="," close=")">
+                    #{cId}
+                </foreach>
+            </if>
+    		and is_deleted = '0' 
+		</where>
+	</sql>
+	
+	<sql id="findWhereCondOrderModtimeDesc"> 
+        <include refid="findWhereCond"/> 
+	order by mod_time desc
+	</sql>
+	
+	<select id="findArticleCount" resultType="int" parameterType="com.ihk.article.data.pojo.ArticleCond">
+		SELECT count(0) from article  
+        <include refid="findWhereCond"/>     
+    </select>
+        
+	<select id="findArticle" resultMap="articleResultMap" parameterType="com.ihk.article.data.pojo.ArticleCond">
+		SELECT * from  article 
+        <include refid="findWhereCondOrderModtimeDesc"/> 
+		<if test="topNum > 0">
+			limit #{topNum};
+		</if>
+    </select>
+    
+	<select id="findArticlePage" resultMap="articleResultMap" parameterType="com.ihk.article.data.pojo.ArticleCond">
+		SELECT * from  article 
+        <include refid="findWhereCondOrderModtimeDesc"/> 
+		<if test="startLine >= 0">
+		<if test="pageSize > 0">
+			limit #{startLine},#{pageSize};
+		</if>
+		</if>
+		
+	</select>
+	
+	<select id="findArticleIndexMax" resultMap="articleResultMap" parameterType="com.ihk.article.data.pojo.ArticleCond">
+		select * from article where substring(created_time,1,10) = #{date1} and #{articleType} = 1 order by order_index desc limit 1;
+	</select>
+	
+        
+	<select id="findPreArticle" resultMap="articleResultMap" parameterType="com.ihk.article.data.pojo.ArticleCond">
+		SELECT * from  article 		
+        <include refid="findWhereCond"/> 
+        <if test="modTime != null and modTime != ''">
+				and mod_time &lt; #{modTime}
+		</if>
+			 order by mod_time desc
+		<if test="topNum > 0">
+			limit #{topNum};
+		</if>
+    </select>
+    
+        
+	<select id="findNextArticle" resultMap="articleResultMap" parameterType="com.ihk.article.data.pojo.ArticleCond">
+		SELECT * from  article 
+        <include refid="findWhereCond"/> 
+        <if test="modTime != null and id != ''">
+				and mod_time &gt; #{modTime}
+		</if>
+         order by mod_time 
+		<if test="topNum > 0">
+			limit #{topNum};
+		</if>
+    </select>
+	
+</mapper>
+
+

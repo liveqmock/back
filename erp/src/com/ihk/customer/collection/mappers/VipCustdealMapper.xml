@@ -1,0 +1,198 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.ihk.customer.collection.IVipCustdealMapper">
+
+	<resultMap type="VipCustdeal" id="vipCustdealResultMap">
+		<id property="id" column="id" />        
+		<result property="dealDate" column="deal_date" />
+		<result property="projectId" column="project_id" />
+		<result property="projectName" column="project_name" />
+		<result property="area" column="area" />
+		<result property="building" column="building" />
+		<result property="floor" column="floor" />
+		<result property="room_no" column="room_no" />
+		<result property="total" column="total" />
+		<result property="construction_area" column="construction_area" />
+		<result property="areaSize" column="area_size" />
+		<result property="flag" column="flag" />
+		<result property="createdate" column="createdate" />
+		<result property="refId" column="ref_id" />
+		<result property="paymethod" column="paymethod" />
+		<result property="adArea" column="ad_area" />
+		<result property="businesscircle" column="businesscircle" />
+		<result property="constructtype" column="constructtype" />
+		<result property="custImpId" column="cust_imp_id" />
+	</resultMap>
+	
+	<resultMap type="java.util.Map" id="vipCustdealgroupMap">
+		<result property="projectName" column="project_name" />
+		<result property="count" column="count" />
+		<result property="discount" column="discount" />
+		<result property="refId" column="ref_id" />
+		<result property="custImpId" column="cust_imp_id" />
+	</resultMap>
+
+	<insert id="addVipCustdeal" parameterType="VipCustdeal">
+		 <selectKey resultType="java.lang.Integer" keyProperty="id" order="AFTER" >
+            SELECT @@IDENTITY
+        </selectKey>		
+		insert into vip_custdeal(
+		deal_date,
+		project_id,
+		project_name,
+        area,
+        building,
+        floor,
+        room_no,
+		total,
+        construction_area,
+		area_size,
+		flag,
+		createdate,
+		ref_id,
+		paymethod,
+		ad_area,
+		businesscircle,
+		constructtype,
+		cust_imp_id
+		)
+			VALUES(
+		#{dealDate},
+		#{projectId},
+		#{projectName},
+		#{area},
+		#{building},
+		#{floor},
+		#{room_no},
+		#{total},
+		#{construction_area},
+		#{areaSize},
+		#{flag},
+		#{createdate},
+		#{refId},
+		#{paymethod},
+		#{adArea},
+		#{businesscircle},
+		#{constructtype},
+		#{custImpId}
+			)
+		
+	</insert>
+	<delete id="deleteVipCustdeal" parameterType="com.ihk.utils.base.PojoDeleteCond">
+	update vip_custdeal set is_deleted='1', mod_id=#{modId}, mod_time=#{modTime} where id=#{id};
+	</delete>
+	<update id="updateVipCustdeal" parameterType="int">
+	update vip_custdeal set 
+		deal_date=#{dealDate},
+		project_id=#{projectId},
+		project_name=#{projectName},
+		building=#{building},
+		floor=#{floor},
+		room_no=#{room_no},
+		total=#{total},
+		construction_area=#{construction_area},
+		area_size=#{areaSize},
+		flag=#{flag},
+		createdate=#{createdate},
+		ref_id=#{refId}
+		paymethod=#{paymethod},
+		ad_area=#{adArea},
+		businesscircle=#{businesscircle},
+		constructtype=#{constructtype},
+		cust_imp_id=#{custImpId}
+	 where id=#{id}
+	</update>
+	<select id="findVipCustdealById" resultMap="vipCustdealResultMap">
+	select * from vip_custdeal where id=#{id}
+	</select>
+    
+	<sql id="findWhereCond"> 
+		<where>
+
+			<if test="date1 != null and date1 != ''">
+                and deal_date >= #{date1}
+            </if>    
+
+
+            <if test="custImpId != null and custImpId != 0">
+            	and cust_imp_id = #{custImpId}
+            </if>
+            <if test="refId != null and refId != 0">
+            	and ref_id = #{refId}
+            </if>
+            <if test="flag !=null and flag !=''">
+            	and flag = #{flag}
+            </if>
+	         <if test="refList !=null and refList.size() >0">
+				and ref_id in
+					<foreach  
+		                collection="refList"  
+		                item="refId"  
+		                open="("  
+		                separator=","  
+		                close=")">  
+		                #{refId}  
+		            </foreach> 
+			</if> 
+		</where>
+	</sql>
+	
+	<select id="findVipCustdealCount" resultType="int" parameterType="com.ihk.customer.collection.pojo.VipCustdealCond">
+		SELECT count(0) from vip_custdeal  
+        <include refid="findWhereCond"/> 
+    </select>
+        
+	<select id="findVipCustdeal" resultMap="vipCustdealResultMap" parameterType="com.ihk.customer.collection.pojo.VipCustdealCond">
+		SELECT * from  vip_custdeal 
+        <include refid="findWhereCond"/> 
+		<if test="topNum > 0">
+			limit #{topNum};
+		</if>
+    </select>
+    
+	<select id="findVipCustdealPage" resultMap="vipCustdealResultMap" parameterType="com.ihk.customer.collection.pojo.VipCustdealCond">
+		SELECT * from  vip_custdeal 
+        <include refid="findWhereCond"/> 
+    
+		<if test="startLine >= 0">
+		<if test="pageSize > 0">
+			limit #{startLine},#{pageSize};
+		</if>
+		</if>
+	</select>
+	<select id="findVipCustdealgroup" resultMap="vipCustdealgroupMap" parameterType="com.ihk.customer.collection.pojo.VipCustdealCond">
+		select count(project_name) as count,count(distinct project_name) as discount,project_name,ref_id from vip_custdeal a, vip_cust b
+		<where>
+            a.ref_id = b.id
+            and b.company_id = #{companyId}
+			<if test="dealDate!=null">
+				and a.deal_date &gt;=#{dealDate}
+			</if>
+			<if test="date1!=null and date1 !=''">
+				and deal_date &gt;= #{date1}
+			</if>
+			<if test="date2!=null and date2 !=''">
+				and deal_date&lt;#{date2}
+			</if>
+			<if test="flag !=null and flag !=''">
+            	and flag = #{flag}
+            </if>
+		</where>
+		group by ref_id order by count(project_name) desc
+	</select>
+	<select id="findVipCustdealCustIdgroup" resultMap="vipCustdealgroupMap" parameterType="com.ihk.customer.collection.pojo.VipCustdealCond">
+		select count(project_name) as count,count(distinct project_name) as discount,project_name,ref_id,cust_imp_id from vip_custdeal  
+		<where>
+			<if test="dealDate!=null">
+				deal_date&lt;#{dealDate}
+			</if>
+			<if test="flag !=null and flag !=''">
+            	and flag = #{flag}
+            </if>
+            <if test="custImpId !=null and custImpId !=0">
+            	and cust_imp_id = #{custImpId}
+            </if>
+		</where>
+			group by cust_imp_id having count(project_name)>1
+	</select>
+</mapper>

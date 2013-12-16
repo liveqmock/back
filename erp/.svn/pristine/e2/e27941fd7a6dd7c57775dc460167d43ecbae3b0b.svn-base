@@ -1,0 +1,26 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE struts PUBLIC
+    "-//Apache Software Foundation//DTD Struts Configuration 2.0//EN"
+    "http://struts.apache.org/dtds/struts-2.0.dtd">
+<struts>
+	
+	<package name="user_shanshui" extends="struts-default">
+		<action name="user_shanshui!*" class="com.ihk.user.action.UserAccountAction">
+			<result name="error">/userAccount/shanshui/error.jsp</result>
+			<result name="loginUserAccount" type="redirectAction">${actionFront}!searchCustomer.action</result>
+			<result name="newUserAccount">/userAccount/shanshui/success.jsp</result>
+			<result name="findUserAccountPage">/userAccount/shanshui/index.jsp</result>
+			<result name="indexUserAccount">/userAccount/shanshui/index.jsp</result>
+			<result name="addUserAccountJsp">/userAccount/shanshui/input.jsp</result>
+			<result name="addUserAccount">/userAccount/shanshui/success.jsp</result>
+			<result name="updateUserAccountJsp_user">/userAccount/shanshui/update_user.jsp</result>		
+			<result name="updateUserAccountJsp_manager">/userAccount/shanshui/update_manager.jsp</result>
+			<result name="updateByManagerJsp">/userAccount/shanshui/update_manager.jsp</result>		
+			<result name="updatePwdByManager">/userAccount/shanshui/success.jsp</result>		
+			<result name="updatePwd">/userAccount/shanshui/success.jsp</result>		
+
+		</action>
+		
+	</package>
+
+</struts>

@@ -1,0 +1,136 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE struts PUBLIC
+    "-//Apache Software Foundation//DTD Struts Configuration 2.0//EN"
+    "http://struts.apache.org/dtds/struts-2.0.dtd">
+<struts>
+	<!-- 设置管理 -->
+	<package name="saleunit_setup_manager" extends="struts-base" namespace="/saleunit_setup/manager">
+	
+		<action name="layout" class="com.ihk.saleunit.action.new_.GuangZhouAppointNewLeftAction" method="layout">
+			<result name="layout">/setup/manager/layout.jsp</result>
+		</action>
+	
+	</package>
+	
+	<!-- 自定义文本下拉框 -->
+	<package name="saleunit_base_utils_guangzhou" extends="struts-base" namespace="/saleunit_new/base/utils">
+	
+		<action name="getProjectTextListByTypeNameForDataGrid" class="com.ihk.setting.action.ProjectTextAction" method="getProjectTextListByTypeNameForDataGrid"/>
+		
+		<action name="getProjectTextListByTypeNameForComboBox" class="com.ihk.setting.action.ProjectTextAction" method="getProjectTextListByTypeNameForComboBox"/>
+		
+		<action name="saveProjectText" class="com.ihk.setting.action.ProjectTextAction" method="saveProjectText"/>
+		
+	</package>
+	
+	<!-- 付款方式 -->
+	<package name="saleunit_setup_payway" extends="struts-base" namespace="/saleunit_setup/payway">
+	
+		<!-- 项目导航树 -->
+		<action name="left" class="com.ihk.setup.payway.ProjectPayWayAction" method="left"/>
+	
+		<!-- 基本tab -->
+		<action name="tabHtml" class="com.ihk.setup.base.SetPayWayAction" method="tabHtml">
+			<result name="suc">/setup/manager/tab_pay_way.jsp</result>
+		</action>
+		
+		<!-- 弹出框  新建付款方式 -->
+		<action name="dialogPayWay" class="com.ihk.setup.base.SetPayWayAction" method="dialogPayWay">
+			<result name="suc">/setup/manager/dialog_pay_way.jsp</result>
+		</action>
+		
+		<!-- 提交表单 付款方式 -->
+		<action name="dialogPayWayForm" class="com.ihk.setup.base.SetPayWayAction" method="dialogPayWayForm">
+			<result name="suc">/setup/manager/dialog_pay_way.jsp</result>
+		</action>
+		
+		<!-- 弹出框  复制付款方式 -->
+		<action name="dialogCopyPayWay" class="com.ihk.setup.base.SetPayWayAction" method="dialogCopyPayWay">
+			<result name="suc">/setup/manager/dialog_copy_pay_way.jsp</result>
+		</action>
+		<!-- 提交表单  复制付款方式 -->
+		<action name="dialogCopyPayWayForm" class="com.ihk.setup.base.SetPayWayAction" method="dialogCopyPayWayForm">
+			<result name="suc">/setup/manager/dialog_copy_pay_way.jsp</result>
+		</action>
+		
+		<!-- 弹出框  修改付款方式 -->
+		<action name="dialogUpdatePayWay" class="com.ihk.setup.base.SetPayWayAction" method="dialogUpdatePayWay">
+			<result name="suc">/setup/manager/dialog_update_pay_way.jsp</result>
+		</action>
+		
+		<!-- 提交表单 修改付款方式 -->
+		<action name="dialogUpdatePayWayForm" class="com.ihk.setup.base.SetPayWayAction" method="dialogUpdatePayWayForm">
+			<result name="suc">/setup/manager/dialog_update_pay_way.jsp</result>
+		</action>
+		
+		<!-- easyui新增付款方式 -->
+		<action name="inputPayWay" class="com.ihk.setup.base.SetPayWayAction" method="inputPayWay"/>
+		
+		<!-- easyui修改付款方式 -->
+		<action name="updatePayWay" class="com.ihk.setup.base.SetPayWayAction" method="updatePayWay"/>
+		
+		<!-- 删除付款方式 -->
+		<action name="delPayWay" class="com.ihk.setup.base.SetPayWayAction" method="delPayWay"/>
+		
+		<!-- 弹出框 新建付款方式明细 -->
+		<action name="dialogPayWayDetail" class="com.ihk.setup.base.SetPayWayAction" method="dialogPayWayDetail">
+			<result name="suc">/setup/manager/dialog_pay_way_detail.jsp</result>
+		</action>
+		<!-- 提交表单 新建付款方式明细 -->
+		<action name="dialogPayWayDetailForm" class="com.ihk.setup.base.SetPayWayAction" method="dialogPayWayDetailForm">
+			<result name="suc">/setup/manager/dialog_pay_way_detail.jsp</result>
+		</action>
+		
+		<!-- 弹出框 修改付款方式明细 -->
+		<action name="dialogUpdatePayWayDetail" class="com.ihk.setup.base.SetPayWayAction" method="dialogUpdatePayWayDetail">
+			<result name="suc">/setup/manager/dialog_update_pay_way_detail.jsp</result>
+		</action>
+		<!-- 提交表单 修改付款方式明细 -->
+		<action name="dialogUpdatePayWayDetailForm" class="com.ihk.setup.base.SetPayWayAction" method="dialogUpdatePayWayDetailForm">
+			<result name="suc">/setup/manager/dialog_update_pay_way_detail.jsp</result>
+		</action>
+		<!-- 删除付款方式明细 -->
+		<action name="delPayWayDetail" class="com.ihk.setup.base.SetPayWayAction" method="delPayWayDetail">
+		</action>
+		
+		<action name="forDiscountModify" class="com.ihk.setup.base.PayWayDiscountAction" method="forDiscountModify">
+			<result name="forDiscountModify">/setup/manager/discount_manager.jsp</result>
+		</action>
+		
+		<action name="ajaxPayWayDiscountList" class="com.ihk.setup.base.PayWayDiscountAction" method="ajaxPayWayDiscountList"/>
+		
+		<action name="discountModify" class="com.ihk.setup.base.PayWayDiscountAction" method="discountModify">
+			<result name="discountModify">/setup/manager/discount_manager.jsp</result>
+		</action>
+		
+		<!-- 项目,付款方式折扣action -->
+		<action name="forProjectDiscountModify" class="com.ihk.setup.payway.ProjectPayWayDiscountAction" method="forProjectDiscountModify">
+			<result name="forProjectDiscountModify">/setup/manager/discount_manager.jsp</result>
+		</action>
+		
+		<action name="ajaxProjectDiscountList" class="com.ihk.setup.payway.ProjectPayWayDiscountAction" method="ajaxProjectDiscountList"/>
+		
+		<action name="discountModify" class="com.ihk.setup.payway.ProjectPayWayDiscountAction" method="discountModify">
+			<result name="discountModify">/setup/manager/discount_manager.jsp</result>
+		</action>
+		
+		<!-- 新的付款方式dtc,2013-1-15 -->
+		<action name="payWayList" class="com.ihk.setup.base.SetPayWayForProjectAction" method="payWayList">
+			<result name="payWayList">/setup/manager/pay_way_list.jsp</result>
+		</action>
+		
+		<action name="toAddPayWayDetail" class="com.ihk.setup.base.SetPayWayForProjectAction" method="toAddPayWayDetail">
+			<result name="toAddPayWayDetail">/setup/manager/add_pay_way_detail.jsp</result>
+		</action>
+		
+		<action name="addPayWayDetail" class="com.ihk.setup.base.SetPayWayForProjectAction" method="addPayWayDetail"/>
+		
+		<action name="toUpdatePayWayDetail" class="com.ihk.setup.base.SetPayWayForProjectAction" method="toUpdatePayWayDetail">
+			<result name="toUpdatePayWayDetail">/setup/manager/update_pay_way_detail.jsp</result>
+		</action>
+		
+		<action name="updatePayWayDetail" class="com.ihk.setup.base.SetPayWayForProjectAction" method="updatePayWayDetail"/>
+		
+	</package>
+	
+</struts>

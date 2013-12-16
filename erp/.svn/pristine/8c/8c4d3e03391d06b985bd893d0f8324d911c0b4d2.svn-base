@@ -1,0 +1,112 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.ihk.customer.data.IRecommendRoomMapper">
+
+	<resultMap type="RecommendRoom" id="recommendRoomResultMap">
+		<id property="id" column="id" />        
+		<result property="customerId" column="customer_id" />
+		<result property="zone" column="zone" />
+		<result property="building" column="building" />
+		<result property="room" column="room" />
+		<result property="originalPrice" column="original_price" />
+		<result property="discountDesc" column="discount_desc" />
+		<result property="isDeleted" column="is_deleted" />
+		<result property="createdId" column="created_id" />
+		<result property="createdTime" column="created_time" />
+		<result property="modId" column="mod_id" />
+		<result property="modTime" column="mod_time" />
+	</resultMap>
+
+	<insert id="addRecommendRoom" parameterType="RecommendRoom">
+		 <selectKey resultType="java.lang.Integer" keyProperty="id" order="AFTER" >
+            SELECT @@IDENTITY
+        </selectKey>		
+		insert into recommend_room(
+		customer_id,
+		zone,
+		building,
+		room,
+		original_price,
+		discount_desc,
+		is_deleted,
+		created_id,
+		created_time,
+		mod_id,
+		mod_time
+		)
+			VALUES(
+		#{customerId},
+		#{zone},
+		#{building},
+		#{room},
+		#{originalPrice},
+		#{discountDesc},
+		#{isDeleted},
+		#{createdId},
+		#{createdTime},
+		#{modId},
+		#{modTime}
+			)
+		
+	</insert>
+	<delete id="deleteRecommendRoom" parameterType="int">
+	delete from recommend_room where id=#{id};
+	</delete>
+	<update id="updateRecommendRoom" parameterType="int">
+	update recommend_room set 
+		customer_id=#{customerId},
+		zone=#{zone},
+		building=#{building},
+		room=#{room},
+		original_price=#{originalPrice},
+		discount_desc=#{discountDesc},
+		is_deleted=#{isDeleted},
+		created_id=#{createdId},
+		created_time=#{createdTime},
+		mod_id=#{modId},
+		mod_time=#{modTime}
+	 where id=#{id}
+	</update>
+	<select id="findRecommendRoomById" resultMap="recommendRoomResultMap">
+	select * from recommend_room where id=#{id}
+	</select>
+	
+	<select id="findRecommendRoomCount" resultType="int" parameterType="com.ihk.customer.data.pojo.RecommendRoomCond">
+		SELECT count(0) from recommend_room  
+<!--
+    	<where>			
+	    <if test="studentName!=null and studentName!='' ">  
+	        STUDENT_NAME LIKE CONCAT(CONCAT('%', #{studentName}),'%')   
+	    </if>  
+    </where>
+    -->
+    
+    </select>
+    
+	<select id="findRecommendRoomPage" resultMap="recommendRoomResultMap" parameterType="com.ihk.customer.data.pojo.RecommendRoomCond">
+		SELECT * from  recommend_room 
+        <!--
+    	<where>			
+	    <if test="studentName!=null and studentName!='' ">  
+	        STUDENT_NAME LIKE CONCAT(CONCAT('%', #{studentName}),'%')   
+	    </if>  
+    </where>
+    -->
+    
+		<if test="startLine >= 0">
+		<if test="pageSize > 0">
+			limit #{startLine},#{pageSize};
+		</if>
+		</if>
+	</select>
+	
+	<select id="findRecommendRoomByCustomerId" resultMap="recommendRoomResultMap">
+		select * from recommend_room where customer_id=#{id}
+	</select>
+	
+	<delete id="deleteRecommendRoomByCustomerId" parameterType="int">
+	delete from recommend_room where customer_id=#{id};
+	</delete>
+	
+	
+</mapper>

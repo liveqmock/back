@@ -1,0 +1,116 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.ihk.saleunit.data.ISaleDailyMapper">
+
+	<resultMap type="SaleDaily" id="saleDailyResultMap">
+		<id property="id" column="id" />        
+		<result property="saleDate" column="sale_date" />
+		<result property="propertyId" column="property_id" />
+		<result property="phoneNum" column="phone_num" />
+		<result property="visitNum" column="visit_num" />
+		<result property="adDesc" column="ad_desc" />
+		<result property="workDesc" column="work_desc" />
+		<result property="remark" column="remark" />
+		<result property="isDeleted" column="is_deleted" />
+		<result property="createdId" column="created_id" />
+		<result property="createdTime" column="created_time" />
+		<result property="modId" column="mod_id" />
+		<result property="modTime" column="mod_time" />
+	</resultMap>
+
+	<insert id="addSaleDaily" parameterType="SaleDaily">
+		 <selectKey resultType="java.lang.Integer" keyProperty="id" order="AFTER" >
+            SELECT @@IDENTITY
+        </selectKey>		
+		insert into sale_daily(
+		sale_date,
+		property_id,
+		phone_num,
+		visit_num,
+		ad_desc,
+		work_desc,
+		remark,
+		is_deleted,
+		created_id,
+		created_time,
+		mod_id,
+		mod_time
+		)
+			VALUES(
+		#{saleDate},
+		#{propertyId},
+		#{phoneNum},
+		#{visitNum},
+		#{adDesc},
+		#{workDesc},
+		#{remark},
+		#{isDeleted},
+		#{createdId},
+		#{createdTime},
+		#{modId},
+		#{modTime}
+			)
+		
+	</insert>
+	<delete id="deleteSaleDaily" parameterType="int">
+	update sale_daily set is_deleted='1' where id=#{id};
+	</delete>
+	<update id="updateSaleDaily" parameterType="int">
+	update sale_daily set 
+		sale_date=#{saleDate},
+		property_id=#{propertyId},
+		phone_num=#{phoneNum},
+		visit_num=#{visitNum},
+		ad_desc=#{adDesc},
+		work_desc=#{workDesc},
+		remark=#{remark},
+		is_deleted=#{isDeleted},
+		created_id=#{createdId},
+		created_time=#{createdTime},
+		mod_id=#{modId},
+		mod_time=#{modTime}
+	 where id=#{id}
+	</update>
+	<select id="findSaleDailyById" resultMap="saleDailyResultMap">
+	select * from sale_daily where id=#{id}
+	</select>
+    
+	<sql id="findWhereCond"> 
+		<where>
+			<if test="propertyId != null and propertyId != '' and propertyId != 0">
+				and property_id = #{propertyId}
+			</if>
+			<if test="date1 != null and date1 != ''">
+				and sale_date &gt;= #{date1}
+			</if>
+			<if test="date2 != null and date2 != ''">
+				and sale_date &lt; date_add(#{date2},interval 1 day)
+			</if>
+            and is_deleted = '0'
+		</where>
+	</sql>
+	
+	<select id="findSaleDailyCount" resultType="int" parameterType="com.ihk.saleunit.data.pojo.SaleDailyCond">
+		SELECT count(0) from sale_daily  
+        <include refid="findWhereCond"/>     
+    </select>
+        
+	<select id="findSaleDaily" resultMap="saleDailyResultMap" parameterType="com.ihk.saleunit.data.pojo.SaleDailyCond">
+		SELECT * from  sale_daily 
+        <include refid="findWhereCond"/> 
+		<if test="topNum > 0">
+			limit #{topNum};
+		</if>
+    </select>
+    
+	<select id="findSaleDailyPage" resultMap="saleDailyResultMap" parameterType="com.ihk.saleunit.data.pojo.SaleDailyCond">
+		SELECT * from  sale_daily 
+        <include refid="findWhereCond"/> 
+    
+		<if test="startLine >= 0">
+		<if test="pageSize > 0">
+			limit #{startLine},#{pageSize};
+		</if>
+		</if>
+	</select>
+</mapper>

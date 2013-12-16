@@ -1,0 +1,119 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.ihk.customer.data.IProjectRangeMapper">
+
+	<resultMap type="ProjectRange" id="projectRangeResultMap">
+		<id property="id" column="id" />        
+		<result property="companyId" column="company_id" />
+		<result property="projectId" column="project_id" />
+		<result property="houseType" column="house_type" />
+		<result property="rangeType" column="range_type" />
+		<result property="rangeName" column="range_name" />
+		<result property="startNum" column="start_num" />
+		<result property="endNum" column="end_num" />
+		<result property="orderIndex" column="order_index" />
+		<result property="isDeleted" column="is_deleted" />
+		<result property="createdId" column="created_id" />
+		<result property="createdTime" column="created_time" />
+		<result property="modId" column="mod_id" />
+		<result property="modTime" column="mod_time" />
+	</resultMap>
+
+	<insert id="addProjectRange" parameterType="ProjectRange">
+		 <selectKey resultType="java.lang.Integer" keyProperty="id" order="AFTER" >
+            SELECT @@IDENTITY
+        </selectKey>		
+		insert into project_range(
+		company_id,
+		project_id,
+		house_type,
+		range_type,
+		range_name,
+		start_num,
+		end_num,
+		order_index,
+		is_deleted,
+		created_id,
+		created_time,
+		mod_id,
+		mod_time
+		)
+			VALUES(
+		#{companyId},
+		#{projectId},
+		#{houseType},
+		#{rangeType},
+		#{rangeName},
+		#{startNum},
+		#{endNum},
+		#{orderIndex},
+		#{isDeleted},
+		#{createdId},
+		#{createdTime},
+		#{modId},
+		#{modTime}
+			)
+		
+	</insert>
+	<delete id="deleteProjectRange" parameterType="int">
+	update project_range set is_deleted='1' where id=#{id};
+	</delete>
+	<update id="updateProjectRange" parameterType="int">
+	update project_range set 
+		company_id=#{companyId},
+		project_id=#{projectId},
+		house_type=#{houseType},
+		range_type=#{rangeType},
+		range_name=#{rangeName},
+		start_num=#{startNum},
+		end_num=#{endNum},
+		order_index=#{orderIndex},
+		is_deleted=#{isDeleted},
+		created_id=#{createdId},
+		created_time=#{createdTime},
+		mod_id=#{modId},
+		mod_time=#{modTime}
+	 where id=#{id}
+	</update>
+	<select id="findProjectRangeById" resultMap="projectRangeResultMap">
+	select * from project_range where id=#{id}
+	</select>
+    
+	<sql id="findWhereCond"> 
+		<where>
+        <!--
+			<if test="date1 != null and date1 != ''">
+            </if>    
+            and is_deleted = '0'
+            -->
+            <if test="projectId != null and projectId != '' and projectId != '0' ">
+            	and project_Id = #{projectId}
+            </if>
+            and is_deleted = '0'
+		</where>
+	</sql>
+	
+	<select id="findProjectRangeCount" resultType="int" parameterType="com.ihk.customer.data.pojo.ProjectRangeCond">
+		SELECT count(0) from project_range  
+        <include refid="findWhereCond"/>     
+    </select>
+        
+	<select id="findProjectRange" resultMap="projectRangeResultMap" parameterType="com.ihk.customer.data.pojo.ProjectRangeCond">
+		SELECT * from  project_range 
+        <include refid="findWhereCond"/> 
+		<if test="topNum > 0">
+			limit #{topNum};
+		</if>
+    </select>
+    
+	<select id="findProjectRangePage" resultMap="projectRangeResultMap" parameterType="com.ihk.customer.data.pojo.ProjectRangeCond">
+		SELECT * from  project_range 
+        <include refid="findWhereCond"/> 
+    
+		<if test="startLine >= 0">
+		<if test="pageSize > 0">
+			limit #{startLine},#{pageSize};
+		</if>
+		</if>
+	</select>
+</mapper>

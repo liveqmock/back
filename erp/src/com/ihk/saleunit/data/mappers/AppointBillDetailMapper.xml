@@ -1,0 +1,120 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.ihk.saleunit.data.IAppointBillDetailMapper">
+
+	<resultMap type="AppointBillDetail" id="appointBillDetailResultMap">
+		<id property="id" column="id" />        
+		<result property="billId" column="bill_id" />
+		<result property="payType" column="pay_type" />
+		<result property="payName" column="pay_name" />
+		<result property="payMoney" column="pay_money" />
+		<result property="payWay" column="pay_way" />
+		<result property="summary" column="summary" />
+		<result property="inBank" column="in_bank" />
+		<result property="bankWay" column="bank_way" />
+		<result property="remark" column="remark" />
+		<result property="isDeleted" column="is_deleted" />
+		<result property="createdId" column="created_id" />
+		<result property="createdTime" column="created_time" />
+		<result property="modId" column="mod_id" />
+		<result property="modTime" column="mod_time" />
+	</resultMap>
+
+	<insert id="addAppointBillDetail" parameterType="AppointBillDetail">
+		 <selectKey resultType="java.lang.Integer" keyProperty="id" order="AFTER" >
+            SELECT @@IDENTITY
+        </selectKey>		
+		insert into appoint_bill_detail(
+		bill_id,
+		pay_type,
+		pay_name,
+		pay_money,
+		pay_way,
+		summary,
+		in_bank,
+		bank_way,
+		remark,
+		is_deleted,
+		created_id,
+		created_time,
+		mod_id,
+		mod_time
+		)
+			VALUES(
+		#{billId},
+		#{payType},
+		#{payName},
+		#{payMoney},
+		#{payWay},
+		#{summary},
+		#{inBank},
+		#{bankWay},
+		#{remark},
+		#{isDeleted},
+		#{createdId},
+		#{createdTime},
+		#{modId},
+		#{modTime}
+			)
+		
+	</insert>
+	<delete id="deleteAppointBillDetail" parameterType="int">
+	update appoint_bill_detail set is_deleted='1' where id=#{id};
+	</delete>
+	<update id="updateAppointBillDetail" parameterType="int">
+	update appoint_bill_detail set 
+		bill_id=#{billId},
+		pay_type=#{payType},
+		pay_name=#{payName},
+		pay_money=#{payMoney},
+		pay_way=#{payWay},
+		summary=#{summary},
+		in_bank=#{inBank},
+		bank_way=#{bankWay},
+		remark=#{remark},
+		is_deleted=#{isDeleted},
+		created_id=#{createdId},
+		created_time=#{createdTime},
+		mod_id=#{modId},
+		mod_time=#{modTime}
+	 where id=#{id}
+	</update>
+	<select id="findAppointBillDetailById" resultMap="appointBillDetailResultMap">
+	select * from appoint_bill_detail where id=#{id}
+	</select>
+    
+	<sql id="findWhereCond"> 
+		<where>
+        	is_deleted = '0' 
+		</where>
+	</sql>
+	
+	<select id="findAppointBillDetailCount" resultType="int" parameterType="com.ihk.saleunit.data.pojo.AppointBillDetailCond">
+		SELECT count(0) from appoint_bill_detail  
+        <include refid="findWhereCond"/>     
+    </select>
+        
+	<select id="findAppointBillDetail" resultMap="appointBillDetailResultMap" parameterType="com.ihk.saleunit.data.pojo.AppointBillDetailCond">
+		SELECT * from  appoint_bill_detail 
+        <include refid="findWhereCond"/> 
+		<if test="topNum > 0">
+			limit #{topNum};
+		</if>
+    </select>
+    
+	<select id="findAppointBillDetailPage" resultMap="appointBillDetailResultMap" parameterType="com.ihk.saleunit.data.pojo.AppointBillDetailCond">
+		SELECT * from  appoint_bill_detail 
+        <include refid="findWhereCond"/> 
+    
+		<if test="startLine >= 0">
+		<if test="pageSize > 0">
+			limit #{startLine},#{pageSize};
+		</if>
+		</if>
+	</select>
+	
+	<select id="findDetailByAppointBillId" resultMap="appointBillDetailResultMap">
+		select * from appoint_bill_detail where bill_id = #{billId} and is_deleted = '0' 
+	</select>
+	
+</mapper>

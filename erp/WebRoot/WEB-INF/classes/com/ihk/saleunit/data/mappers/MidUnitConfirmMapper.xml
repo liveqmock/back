@@ -1,0 +1,169 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.ihk.saleunit.data.IMidUnitConfirmMapper">
+
+	<resultMap type="MidUnitConfirm" id="midUnitConfirmResultMap">
+		<id property="id" column="id" />        
+		<result property="companyId" column="company_id" />
+		<result property="companyProjectId" column="company_project_id" />
+		<result property="propertyProjectId" column="property_project_id" />
+		<result property="propertyAreaId" column="property_area_id" />
+		<result property="propertyBuildId" column="property_build_id" />
+		<result property="propertyUnitId" column="property_unit_id" />
+		<result property="buildPrice" column="build_price" />
+		<result property="sumMoney" column="sum_money" />
+		<result property="contractMoney" column="contract_money" />
+		<result property="realMoney" column="real_money" />
+		<result property="confirmDate" column="confirm_date" />
+		<result property="contractDate" column="contract_date" />
+		<result property="isTartGiven" column="is_tart_given" />
+		<result property="isSecondLinkage" column="is_second_linkage" />
+		<result property="isRelation" column="is_relation" />
+		<result property="customerId" column="customer_id" />
+		<result property="paymentAmount" column="payment_amount" />
+		<result property="isDeleted" column="is_deleted" />
+		<result property="createdId" column="created_id" />
+		<result property="createdTime" column="created_time" />
+		<result property="modId" column="mod_id" />
+		<result property="modTime" column="mod_time" />
+	</resultMap>
+
+	<insert id="addMidUnitConfirm" parameterType="MidUnitConfirm">
+		 <selectKey resultType="java.lang.Integer" keyProperty="id" order="AFTER" >
+            SELECT @@IDENTITY
+        </selectKey>		
+		insert into mid_unit_confirm(
+		company_id,
+		company_project_id,
+		property_project_id,
+		property_area_id,
+		property_build_id,
+		property_unit_id,
+		build_price,
+		sum_money,
+		contract_money,
+		real_money,
+		confirm_date,
+		contract_date,
+		is_tart_given,
+		is_second_linkage,
+		is_relation,
+		customer_id,
+		payment_amount,
+		is_deleted,
+		created_id,
+		created_time,
+		mod_id,
+		mod_time
+		)
+			VALUES(
+		#{companyId},
+		#{companyProjectId},
+		#{propertyProjectId},
+		#{propertyAreaId},
+		#{propertyBuildId},
+		#{propertyUnitId},
+		#{buildPrice},
+		#{sumMoney},
+		#{contractMoney},
+		#{realMoney},
+		#{confirmDate},
+		#{contractDate},
+		#{isTartGiven},
+		#{isSecondLinkage},
+		#{isRelation},
+		#{customerId},
+		#{paymentAmount},
+		#{isDeleted},
+		#{createdId},
+		#{createdTime},
+		#{modId},
+		#{modTime}
+			)
+		
+	</insert>
+	<delete id="deleteMidUnitConfirm" parameterType="com.ihk.utils.base.PojoDeleteCond">
+	update mid_unit_confirm set is_deleted='1', mod_id=#{modId}, mod_time=#{modTime} where id=#{id};
+	</delete>
+	<update id="updateMidUnitConfirm" parameterType="int">
+	update mid_unit_confirm set 
+		company_id=#{companyId},
+		company_project_id=#{companyProjectId},
+		property_project_id=#{propertyProjectId},
+		property_area_id=#{propertyAreaId},
+		property_build_id=#{propertyBuildId},
+		property_unit_id=#{propertyUnitId},
+		build_price=#{buildPrice},
+		sum_money=#{sumMoney},
+		contract_money=#{contractMoney},
+		real_money=#{realMoney},
+		confirm_date=#{confirmDate},
+		contract_date=#{contractDate},
+		is_tart_given=#{isTartGiven},
+		is_second_linkage=#{isSecondLinkage},
+		is_relation=#{isRelation},
+		customer_id=#{customerId},
+		payment_amount=#{paymentAmount},
+		mod_id=#{modId},
+		mod_time=#{modTime}
+	 where id=#{id}
+	</update>
+	<select id="findMidUnitConfirmById" resultMap="midUnitConfirmResultMap">
+	select * from mid_unit_confirm where id=#{id}
+	</select>
+    
+	<sql id="findWhereCond"> 
+		<where>
+            and is_deleted = '0'
+		</where>
+	</sql>
+	
+	<select id="findMidUnitConfirmCount" resultType="int" parameterType="com.ihk.saleunit.data.pojo.MidUnitConfirmCond">
+		SELECT count(0) from mid_unit_confirm  
+        <include refid="findWhereCond"/>     
+    </select>
+        
+	<select id="findMidUnitConfirm" resultMap="midUnitConfirmResultMap" parameterType="com.ihk.saleunit.data.pojo.MidUnitConfirmCond">
+		SELECT * from  mid_unit_confirm 
+        <include refid="findWhereCond"/> 
+		<if test="topNum > 0">
+			limit #{topNum};
+		</if>
+    </select>
+    
+	<select id="findMidUnitConfirmPage" resultMap="midUnitConfirmResultMap" parameterType="com.ihk.saleunit.data.pojo.MidUnitConfirmCond">
+		SELECT * from  mid_unit_confirm 
+        <include refid="findWhereCond"/> 
+    
+		<if test="startLine >= 0">
+		<if test="pageSize > 0">
+			limit #{startLine},#{pageSize};
+		</if>
+		</if>
+	</select>
+    
+    <!-- ajax分页使用 -->	
+    <sql id="findMidUnitConfirmForAjaxComm">
+		<where>		
+            and is_deleted = '0'
+		</where>
+		
+	</sql>
+    
+    <select id="findMidUnitConfirmForAjax" resultMap="midUnitConfirmResultMap" parameterType="com.ihk.saleunit.data.pojo.MidUnitConfirmCond">
+		SELECT * from  mid_unit_confirm 
+        <include refid="findMidUnitConfirmForAjaxComm"/> 
+    
+		<if test="startLine >= 0">
+		<if test="pageSize > 0">
+			limit #{startLine},#{pageSize};
+		</if>
+		</if>
+	</select>
+    
+    <select id="findMidUnitConfirmCountForAjax" resultType="int" parameterType="com.ihk.saleunit.data.pojo.MidUnitConfirmCond">
+		SELECT count(1) from mid_unit_confirm  
+        <include refid="findMidUnitConfirmForAjaxComm"/>     
+    </select>
+    
+</mapper>

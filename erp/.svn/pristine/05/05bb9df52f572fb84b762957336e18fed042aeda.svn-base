@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.kn.data.IKN_LPCS_LT_Mapper">
+	<resultMap type="KN_LPCS_LT_OLD" id="kN_LPCS_LT_OLD_ResultMap">
+		<id property="楼梯id" column="楼梯ID" />        
+		<result property="楼阁id" column="楼阁ID" />
+		<result property="楼梯名称" column="楼梯名称" />
+		<result property="审核" column="审核" />
+		<result property="楼梯系数" column="楼梯系数" />
+		<result property="ltPjcode" column="LT_PJCODE" />
+		<result property="ltId" column="LT_ID" />
+		<result property="ltStorey" column="LT_STOREY" />
+		<result property="ltFlrunit" column="LT_FLRUNIT" />
+		<result property="ltStairs" column="LT_STAIRS" />
+		<result property="ltFirst" column="LT_FIRST" />
+		<result property="位置" column="位置" />
+		<result property="dataLab" column="DATA_LAB" />
+	</resultMap> 
+
+	<select id="findKN_LPCS_LT_OLD" resultMap="kN_LPCS_LT_OLD_ResultMap" parameterType="com.kn.data.pojo.KN_LPCS_LT_OLD_Cond">
+		SELECT * from  climb.楼盘初始_楼梯_OLD 
+		<where>
+		</where>	
+    </select>
+</mapper>

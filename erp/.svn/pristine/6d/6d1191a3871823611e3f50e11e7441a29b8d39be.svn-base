@@ -1,0 +1,1889 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.ihk.saleunit.data.IContractCustomerMapper">
+
+	<resultMap type="ContractCustomer" id="contractCustomerResultMap">
+		<id property="id" column="id" />        
+		<result property="companyId" column="company_id" />
+		<result property="projectId" column="project_id" />
+		<result property="userId" column="user_id" />
+		<result property="confirmType" column="confirm_type" />
+		<result property="mainId" column="main_id" />
+		<result property="customerName" column="customer_name" />
+		<result property="gender" column="gender" />
+		<result property="idcardType" column="idcard_type" />
+		<result property="idcardNo" column="idcard_no" />
+		<result property="birthday" column="birthday" />
+		<result property="phone" column="phone" />
+		<result property="mobilePhone" column="mobile_phone" />
+		<result property="address" column="address" />
+		<result property="postcode" column="postcode" />
+		<result property="householdProvince" column="household_province" />
+		<result property="householdCity" column="household_city" />
+		<result property="householdRegion" column="household_region" />
+		<result property="householdContent" column="household_content" />
+		<result property="homeProvince" column="home_province" />
+		<result property="homeCity" column="home_city" />
+		<result property="homeRegion" column="home_region" />
+		<result property="homeContent" column="home_content" />
+		<result property="workProvince" column="work_province" />
+		<result property="workCity" column="work_city" />
+		<result property="workRegion" column="work_region" />
+		<result property="workContent" column="work_content" />
+		<result property="preCustomerType" column="pre_customer_type" />
+		<result property="preCustomerId" column="pre_customer_id" />
+		<result property="isValid" column="is_valid" />
+		<result property="isDeleted" column="is_deleted" />
+		<result property="createdId" column="created_id" />
+		<result property="createdTime" column="created_time" />
+		<result property="modId" column="mod_id" />
+		<result property="modTime" column="mod_time" />
+	</resultMap>
+	
+	<!-- 自定义类,非数据库中表 -->
+	<resultMap type="ContractCustConfirm" id="contractCustConfirmResultMap">
+		<result property="id" column="id"/> <!-- 客户id -->
+		<result property="confirmType" column="confirm_type"/>
+		<result property="projectName" column="property_name" />
+		<result property="buildName" column="build_name" />
+		<result property="unitNo" column="unit_no" />
+		<result property="buildArea" column="build_area" />
+		<result property="agreeNo" column="agree_no" />
+		<result property="workDate" column="work_date" />
+		<result property="sumMoney" column="sum_money" />
+		<result property="customerName" column="customer_name" />
+		<result property="gender" column="gender" />
+		<result property="idcardType" column="idcard_type" />
+		<result property="idcardNo" column="idcard_no" />
+		<result property="address" column="address" />
+		<result property="phone" column="mobile_phone" />
+		<result property="cid" column="cid"/>
+		<result property="area" column="area_name"/>
+		<result property="insideArea" column="inside_area"/>
+		<result property="floor" column="floor_num"/>
+		<result property="payType" column="pay_name"/>
+		<result property="homePhone" column="phone"/>
+		<result property="homeProvince" column="home_province"/>
+		<result property="homeCity" column="home_city"/>
+		<result property="homeRegion" column="home_region"/>
+		<result property="householdProvince" column="household_province"/>
+		<result property="householdCity" column="household_city"/>
+		<result property="householdRegion" column="household_region"/>
+		
+	</resultMap>
+	
+	<!-- 成交客户管理的结构 -->
+	<resultMap type="java.util.Map" id="contractCustomerManagerResultMap">
+		<result property="id" column="id"/>
+		<result property="confirmType" column="confirm_type"/>
+		<result property="customerName" column="customer_name"/>
+		<result property="gender" column="gender"/>
+		<result property="idcardType" column="idcard_type"/>
+		<result property="idcardNo" column="idcard_no"/>
+		<result property="phone" column="phone"/>
+		<result property="address" column="address"/>
+		<result property="unitNo" column="unit_no"/>
+		<result property="agreeNo" column="agree_no"/>
+		<result property="workDate" column="work_date"/>
+		<result property="sumMoney" column="sum_money"/>
+		
+	</resultMap>
+
+	<insert id="addContractCustomer" parameterType="ContractCustomer">
+		 <selectKey resultType="java.lang.Integer" keyProperty="id" order="AFTER" >
+            SELECT @@IDENTITY
+        </selectKey>		
+		insert into contract_customer(
+		company_id,
+		project_id,
+		user_id,
+		confirm_type,
+		main_id,
+		customer_name,
+		gender,
+		idcard_type,
+		idcard_no,
+		birthday,
+		phone,
+		mobile_phone,
+		address,
+		postcode,
+		household_province,
+		household_city,
+		household_region,
+		household_content,
+		home_province,
+		home_city,
+		home_region,
+		home_content,
+		work_province,
+		work_city,
+		work_region,
+		work_content,
+		pre_customer_type,
+		pre_customer_id,
+		is_valid,
+		is_deleted,
+		created_id,
+		created_time,
+		mod_id,
+		mod_time
+		)
+			VALUES(
+		#{companyId},
+		#{projectId},
+		#{userId},
+		#{confirmType},
+		#{mainId},
+		#{customerName},
+		#{gender},
+		#{idcardType},
+		#{idcardNo},
+		#{birthday},
+		#{phone},
+		#{mobilePhone},
+		#{address},
+		#{postcode},
+		#{householdProvince},
+		#{householdCity},
+		#{householdRegion},
+		#{householdContent},
+		#{homeProvince},
+		#{homeCity},
+		#{homeRegion},
+		#{homeContent},
+		#{workProvince},
+		#{workCity},
+		#{workRegion},
+		#{workContent},
+		#{preCustomerType},
+		#{preCustomerId},
+		#{isValid},
+		#{isDeleted},
+		#{createdId},
+		#{createdTime},
+		#{modId},
+		#{modTime}
+			)
+	</insert>
+	
+	<delete id="deleteContractCustomer" parameterType="com.ihk.utils.base.PojoDeleteCond">
+	update contract_customer set is_deleted='1', mod_id=#{modId}, mod_time=#{modTime} where id=#{id};
+	</delete>
+	
+	<update id="updateContractCustomer" parameterType="int">
+	update contract_customer set 
+		company_id=#{companyId},
+		project_id=#{projectId},
+		user_id=#{userId},
+		confirm_type=#{confirmType},
+		main_id=#{mainId},
+		customer_name=#{customerName},
+		gender=#{gender},
+		idcard_type=#{idcardType},
+		idcard_no=#{idcardNo},
+		birthday=#{birthday},
+		phone=#{phone},
+		mobile_phone=#{mobilePhone},
+		address=#{address},
+		postcode=#{postcode},
+		household_province=#{householdProvince},
+		household_city=#{householdCity},
+		household_region=#{householdRegion},
+		household_content=#{householdContent},
+		home_province=#{homeProvince},
+		home_city=#{homeCity},
+		home_region=#{homeRegion},
+		home_content=#{homeContent},
+		work_province=#{workProvince},
+		work_city=#{workCity},
+		work_region=#{workRegion},
+		work_content=#{workContent},
+		pre_customer_type=#{preCustomerType},
+		pre_customer_id=#{preCustomerId},
+		is_valid=#{isValid},
+		mod_id=#{modId},
+		mod_time=#{modTime}
+	 where id=#{id}
+	</update>
+	
+	<select id="findContractCustomerById" resultMap="contractCustomerResultMap">
+	select * from contract_customer where id=#{id}
+	</select>
+	
+	<sql id="findWhereCond"> 
+		<where>
+			<if test="date1 != null and date1 != ''">
+				and created_time &gt; #{date1}
+			</if>
+			<if test="date2 != null and date2 != ''">
+				and created_time &lt; #{date2}
+			</if>
+			
+			<if test="confirmType != null and confirmType != ''">
+				and confirm_type = #{confirmType}
+			</if>
+			
+			<if test="customerName != null and customerName != ''">
+				and customer_name like concat(concat('%', #{customerName, jdbcType=VARCHAR}), '%')
+			</if>
+			
+			<if test="projectId != null and projectId != ''">
+				and contract_customer.project_id = #{projectId}
+			</if>
+			
+			<if test="mobilePhone != null and mobilePhone != ''">
+				and mobile_phone = #{mobilePhone}
+			</if>
+			
+			<if test="isValid != null and isValid != ''">
+				and is_valid = #{isValid}
+			</if>
+			
+			<if test="mainId != null and mainId != ''">
+				and main_id = #{mainId}
+			</if>
+			
+			 and is_deleted = '0'
+			 <if test="searchProjectIds != null and searchProjectIds != ''">
+				 and project_id in 
+				<foreach
+					collection="searchProjectIds"  
+		            item="bId"  
+		            open="("  
+		            separator=","  
+		            close=")">  
+		            ${bId}  
+		        </foreach>
+	        </if>
+		</where>
+	</sql>
+	
+	<sql id="searchWhereCond"> 
+		<where>
+			
+			<if test="confirmType != null and confirmType != ''">
+				and confirm_type = #{confirmType}
+			</if>
+			
+			<if test="searchName != null and searchName != ''">
+				and customer_name like concat(concat('%', #{searchName, jdbcType=VARCHAR}), '%')
+			</if>
+			
+			<if test="projectId != null and projectId != ''">
+				and cc.project_id = #{projectId}
+			</if>
+			
+			<if test="searchPhone != null and searchPhone != ''">
+				and mobile_phone like concat(concat('%', #{searchPhone, jdbcType=VARCHAR}), '%')
+			</if>
+			
+			<if test=" area1 != null and area1 != '' ">
+				and (cf.sum_money/cf.build_price &gt; #{area1} or ct.sum_money/cf.build_price &gt; #{area1})
+			</if>
+			
+			<if test=" area2 != null and area2 != '' ">
+				and (cf.sum_money/cf.build_price &lt; #{area2} or ct.sum_money/cf.build_price &lt; #{area2})
+			</if>
+			
+			<if test=" birthday1 != null and birthday1 != '' ">
+				and cc.birthday &gt; #{birthday1}
+			</if>
+			
+			<if test=" birthday2 != null and birthday2 != '' ">
+				and cc.birthday &lt; #{birthday2}
+			</if>
+			
+			
+			<if test=" price1 != null and price1 != '' ">
+				and (cf.sum_money &gt; #{price1} * 10000 or ct.sum_money &gt; #{price1} * 10000)
+			</if>
+			
+			<if test=" price2 != null and price2 != '' ">
+				and (cf.sum_money &lt; #{price2} * 10000 or ct.sum_money &lt; #{price2} * 10000)
+			</if>
+			
+			<if test=" date1 != null and date1 != '' ">
+				and (cf.work_date &gt;= #{date1} or ct.sign_date &gt;= #{date1} or cb.created_time &gt;= #{date1}) 
+			</if>
+			
+			<if test=" date2 != null and date2 != '' ">
+				and (cf.work_date &lt;= #{date2} or ct.sign_date &lt;= #{date2} or cb.created_time &lt;= #{date2})
+			</if>
+			
+			<if test=" userId != null and userId != '' ">
+				and (cf.sales_id like concat(concat('%,', #{userId, jdbcType=VARCHAR}), ',%') or ct.sales_id like concat(concat('%,', #{userId, jdbcType=VARCHAR}), ',%'))
+			</if>
+			<if test="payType != null and payType != ''">
+				<if test="  confirmType == 1">
+					and pw.pay_name = #{payType}
+				</if>
+				
+				<if test=" confirmType == 2">
+					and pw2.pay_name = #{payType}
+				</if>
+				
+				<if test=" confirmType == '' or confirmType == null ">
+					and (pw.pay_name = #{payType} or pw2.pay_name = #{payType}) 
+				</if>
+			</if>
+			<if test="isValid != null and isValid != ''">
+				and is_valid = #{isValid}
+			</if>
+			
+			<if test="mainId != null and mainId != ''">
+				and main_id = #{mainId}
+			</if>
+			
+			<if test="homeProvinceIds != null and homeProvinceIds != ''">
+				and cc.home_province in 
+				<foreach  
+	                collection="homeProvinceIds"  
+	                item="pId"  
+	                open="("  
+	                separator=","  
+	                close=")">  
+	                #{pId}  
+	            </foreach>
+			</if>
+			<if test="householdProvinceIds != null and householdProvinceIds != ''">
+				and cc.household_province in 
+				<foreach  
+	                collection="householdProvinceIds"  
+	                item="pId"  
+	                open="("  
+	                separator=","  
+	                close=")">  
+	                #{pId}  
+	            </foreach>
+			</if>
+			<if test="homeCityIds != null and homeCityIds != ''">
+				and cc.home_city in 
+				<foreach  
+	                collection="homeCityIds"  
+	                item="cId"  
+	                open="("  
+	                separator=","  
+	                close=")">  
+	                #{cId}  
+	            </foreach>
+			</if>
+			<if test="householdCityIds != null and householdCityIds != ''">
+				and cc.household_city in 
+				<foreach  
+	                collection="householdCityIds"  
+	                item="cId"  
+	                open="("  
+	                separator=","  
+	                close=")">  
+	                #{cId}  
+	            </foreach>
+			</if>
+			<if test="homeRegionIds != null and homeRegionIds != ''">
+				and cc.home_region in 
+				<foreach  
+	                collection="homeRegionIds"  
+	                item="rId"  
+	                open="("  
+	                separator=","  
+	                close=")">  
+	                #{rId}  
+	            </foreach> 
+			</if>
+			<if test="householdRegionIds != null and householdRegionIds != ''">
+				and cc.household_region in 
+				<foreach  
+	                collection="householdRegionIds"  
+	                item="rId"  
+	                open="("  
+	                separator=","  
+	                close=")">  
+	                #{rId}
+	            </foreach> 
+			</if>
+			<if test="homeContent != null and homeContent != ''">
+				and cc.home_content like concat('%', #{homeContent},'%')
+			</if>
+			<if test="householdContent != null and householdContent != ''">
+				and cc.household_content like concat('%', #{householdContent},'%')
+			</if>
+			
+			 and cc.is_deleted = '0' 
+			
+		</where>
+	</sql>
+	
+	<select id="findContractCustomerCount" resultType="int" parameterType="com.ihk.saleunit.data.pojo.ContractCustomerCond">
+		SELECT count(0) from contract_customer  
+        <include refid="findWhereCond"/>     
+    </select>
+        
+	<select id="findContractCustomer" resultMap="contractCustomerResultMap" parameterType="com.ihk.saleunit.data.pojo.ContractCustomerCond">
+		SELECT * from  contract_customer 
+        <include refid="findWhereCond"/> 
+		<if test="topNum > 0">
+			limit #{topNum};
+		</if>
+    </select>
+    
+	<select id="findContractCustomerPage" resultMap="contractCustomerResultMap" parameterType="com.ihk.saleunit.data.pojo.ContractCustomerCond">
+		SELECT * from  contract_customer 
+        <include refid="findWhereCond"/> 
+    
+		<if test="startLine >= 0">
+		<if test="pageSize > 0">
+			limit #{startLine},#{pageSize};
+		</if>
+		</if>
+	</select>
+	
+	<!-- ajax分页使用 -->	
+   	<sql id="findContractCustomerForAjaxComm">
+		<where>		
+            and is_deleted = '0'
+		</where>
+		
+	</sql>
+    
+    <select id="findContractCustomerForAjax" resultMap="contractCustomerResultMap" parameterType="com.ihk.saleunit.data.pojo.ContractCustomerCond">
+		SELECT * from  contract_customer 
+        <include refid="findContractCustomerForAjaxComm"/> 
+    
+		<if test="startLine >= 0">
+		<if test="pageSize > 0">
+			limit #{startLine},#{pageSize};
+		</if>
+		</if>
+	</select>
+    
+    <select id="findContractCustomerCountForAjax" resultType="int" parameterType="com.ihk.saleunit.data.pojo.ContractCustomerCond">
+		SELECT count(1) from contract_customer  
+        <include refid="findContractCustomerForAjaxComm"/>     
+    </select>
+	
+	<select id="findConfirmCustomerLikeName" resultMap="contractCustomerResultMap" parameterType="com.ihk.saleunit.data.pojo.ContractCustomerCond">
+		SELECT * from  contract_customer where customer_name like concat(concat('%', #{customerName, jdbcType=VARCHAR}), '%')
+		and confirm_type = #{confirmType} 
+		order by created_time desc limit 10
+    </select>
+	
+	<select id="findCustomersForChip" resultMap="contractCustomerResultMap" parameterType="map">		
+		select * from contract_customer where customer_name like CONCAT(CONCAT('%', #{name}),'%') 
+		and confirm_type = #{type} and created_id = #{createdId}
+		and is_deleted ='0' order by customer_name desc limit 10 
+	</select>
+	
+	<select id="findCustomersFromPhoneForChip" resultMap="contractCustomerResultMap" parameterType="map">		
+		select * from contract_customer where phone like CONCAT(CONCAT('%', #{phone}),'%') 
+		and confirm_type = #{type} and created_id = #{createdId}
+		and is_deleted ='0' order by customer_name desc limit 10 
+	</select>
+	
+	<update id="updateContractCustomerConfirmType" parameterType="map">
+		update contract_customer set confirm_type = #{confirmType} where id = #{customerId}
+	</update>
+	
+	<!-- 成交客户管理 start -->
+	<select id="findContractCustomerByBuildIds" resultMap="contractCustomerResultMap" 
+		parameterType="com.ihk.saleunit.data.pojo.ContractCustomerCond" statementType="STATEMENT">
+	
+		select cu.* from contract_customer cu 
+			inner join ${confirmTypeName} c on cu.id = c.customer_id
+			left join property_unit u on c.unit_id = u.id
+			where u.build_id in
+			<foreach
+				collection="buildIds"  
+	            item="bId"  
+	            open="("  
+	            separator=","  
+	            close=")">  
+	            ${bId}  
+	        </foreach>
+        
+	        and c.is_deleted = 0
+			and cu.is_deleted = 0
+			and u.is_deleted = 0
+			
+			<if test="startLine >= 0">
+				<if test="pageSize > 0">
+					limit ${startLine},${pageSize};
+				</if>
+			</if>
+			
+	</select>
+	
+	<select id="findContractCustomerCountByBuildIds" resultType="int" 
+		parameterType="com.ihk.saleunit.data.pojo.ContractCustomerCond" statementType="STATEMENT">
+		
+		select count(1) from contract_customer cu 
+			inner join ${confirmTypeName} c on cu.id = c.customer_id
+			left join property_unit u on c.unit_id = u.id
+			where u.build_id in
+			<foreach
+				collection="buildIds"  
+	            item="bId"  
+	            open="("  
+	            separator=","  
+	            close=")">  
+	            ${bId}  
+	        </foreach>
+        
+	        and c.is_deleted = 0
+			and cu.is_deleted = 0
+			and u.is_deleted = 0
+		
+	</select>
+	
+	<!-- 成交客户管理 end -->
+	
+	<!-- 成交客户明细 start -->
+	
+	<select id="findcontractCustAndConfirm" resultMap="contractCustConfirmResultMap" 
+		parameterType="com.ihk.saleunit.data.pojo.ContractCustomerCond" statementType="STATEMENT">
+		select
+		<if test="confirmTypeName == 'confirm'">
+			1
+		</if>
+		<if test="confirmTypeName == 'contract'">
+			2
+		</if> 
+		as confirm_type, 
+		pro.property_name,build.build_name, unit.unit_no,unit.build_area,
+		${agreeNoName} as agree_no,c.${realDate} as work_date,c.sum_money,
+		cu.customer_name,cu.gender,cu.idcard_type,cu.idcard_no,cu.address,cu.mobile_phone,c.id as cid
+		,pa.area_name,unit.inside_area,unit.floor_num,pw.pay_name,cu.phone,
+		home_province,home_city,home_region,household_province,household_city,household_region
+		from contract_customer cu
+		inner join ${confirmTypeName} c on 
+		cu.main_id = c.id  and 
+		<if test="confirmTypeName == 'confirm'">
+			1
+		</if>
+		<if test="confirmTypeName == 'contract'">
+			2
+		</if> =cu.confirm_type
+		
+		<if test="createdUserId != null and createdUserId != ''">
+			and c.created_id =${createdUserId}
+		</if>
+		left join pay_way pw on c.pay_way_id = pw.id
+		left join property_unit unit on unit.id = c.unit_id
+		left join property_build build on build.id = unit.build_id
+		left join property_area pa on build.area_id = pa.id
+		left join property_project pro on pro.id = build.property_id
+		left join company_project cp on c.company_project_id = cp.id
+		<where>
+			<if test="date1 != null and date1 != ''">
+				and c.${realDate} &gt;= '${date1}'
+			</if>
+			<if test="date2 != null and date2 != ''">
+				and c.${realDate} &lt; date_add('${date2}',interval 1 day)
+			</if>
+			
+			<if test="searchProjectIds != null and searchProjectIds.size() > 0">
+            	and pro.company_project_id in
+	            <foreach  
+	                collection="searchProjectIds"  
+	                item="pId"  
+	                open="("  
+	                separator=","  
+	                close=")">  
+	                ${pId}  
+	            </foreach>  
+            </if>
+            
+            <if test="buildIds != null and buildIds.size() > 0">
+            	and build.id in
+	            <foreach  
+	                collection="buildIds"  
+	                item="bId"  
+	                open="("  
+	                separator=","  
+	                close=")">  
+	                ${bId}  
+	            </foreach>  
+            </if>
+            
+			and cu.is_deleted = 0
+			and c.is_deleted = 0
+			and unit.is_deleted = 0
+			and build.is_deleted = 0
+			and pro.is_deleted = 0
+			group by unit_id
+			order by pro.property_name,c.${realDate} desc
+				
+			<if test="startLine >= 0">
+				<if test="pageSize > 0">
+					limit ${startLine},${pageSize};
+				</if>
+			</if>
+		</where>
+		
+	</select>
+	
+	<select id="findcontractCustAndConfirmCount" resultType="int" 
+		parameterType="com.ihk.saleunit.data.pojo.ContractCustomerCond" statementType="STATEMENT">
+		
+		select count(distinct c.unit_id) from contract_customer cu
+		inner join ${confirmTypeName} c on 
+		cu.main_id = c.id  and 
+		<if test="confirmTypeName == 'confirm'">
+			1
+		</if>
+		<if test="confirmTypeName == 'contract'">
+			2
+		</if> =cu.confirm_type
+		<if test="createdUserId != null and createdUserId != ''">
+			and c.created_id =${createdUserId}
+		</if>
+		left join property_unit unit on unit.id = c.unit_id
+		left join property_build build on build.id = unit.build_id
+		left join property_project pro on pro.id = build.property_id
+		
+		<where>
+			<if test="date1 != null and date1 != ''">
+				and c.${realDate} &gt;= '${date1}'
+			</if>
+			<if test="date2 != null and date2 != ''">
+				and c.${realDate} &lt; date_add('${date2}',interval 1 day)
+			</if>
+			
+			<if test="searchProjectIds != null and searchProjectIds.size() > 0">
+            	and pro.company_project_id in
+	            <foreach  
+	                collection="searchProjectIds"  
+	                item="uId"  
+	                open="("  
+	                separator=","  
+	                close=")">  
+	                ${uId}  
+	            </foreach>  
+            </if>
+            
+             <if test="buildIds != null and buildIds.size() > 0">
+            	and build.id in
+	            <foreach  
+	                collection="buildIds"  
+	                item="bId"  
+	                open="("  
+	                separator=","  
+	                close=")">  
+	                ${bId}  
+	            </foreach>  
+            </if>
+            
+			and cu.is_deleted = 0
+			and c.is_deleted = 0
+			and unit.is_deleted = 0
+			and build.is_deleted = 0
+			and pro.is_deleted = 0
+		</where>
+			
+	</select>
+	
+	<select id="findContractConfirmCust" resultMap="contractCustConfirmResultMap" 
+		parameterType="com.ihk.saleunit.data.pojo.ContractCustomerCond" statementType="STATEMENT">
+		SELECT 
+		1 as confirm_type, 
+		pro.property_name,build.build_name, unit.unit_no,unit.build_area,
+		confirm.${realDate} as work_date,confirm.sum_money,agree_no as agree_no
+		,contract_customer.customer_name
+		,contract_customer.gender
+		,contract_customer.idcard_type
+		,contract_customer.idcard_no
+		,contract_customer.address
+		,contract_customer.phone
+		,confirm.id as cid
+  		  FROM contract_customer
+          JOIN confirm
+            ON confirm_type = 1 AND main_id = confirm.id
+		<if test="createdUserId != null and createdUserId != ''">
+			and confirm.created_id =${createdUserId}
+		</if>
+      left join property_unit unit on unit.id = confirm.unit_id
+ 		  left join property_build build on build.id = unit.build_id
+ 		  left join property_project pro on pro.id = build.property_id
+ 		  
+				left join pay_way pw on confirm.pay_way_id = pw.id
+			
+         where confirm.unit_id not in (select unit_id from contract where is_deleted=0) 
+           and contract_customer.is_deleted=0 and confirm.is_deleted = 0
+           <if test="date1 != null and date1 != ''">
+				and confirm.work_date &gt;= '${date1}'
+			</if>
+			<if test="date2 != null and date2 != ''">
+				and confirm.work_date &lt; date_add('${date2}',interval 1 day)
+			</if>
+			
+			<if test="searchProjectIds != null and searchProjectIds.size() > 0">
+            	and pro.company_project_id in
+	            <foreach  
+	                collection="searchProjectIds"  
+	                item="pId"  
+	                open="("  
+	                separator=","  
+	                close=")">  
+	                ${pId}  
+	            </foreach>  
+            </if>
+            
+            <if test="buildIds != null and buildIds.size() > 0">
+            	and build.id in
+	            <foreach  
+	                collection="buildIds"  
+	                item="bId"  
+	                open="("  
+	                separator=","  
+	                close=")">  
+	                ${bId}  
+	            </foreach>  
+            </if>
+			and unit.is_deleted = 0
+			and build.is_deleted = 0
+			and pro.is_deleted = 0
+			group by confirm.unit_id
+       union
+       SELECT 2 as confirm_type, 
+		pro.property_name,build.build_name, unit.unit_no,unit.build_area,
+		contract.${realDate} as work_date,contract.sum_money,contract_no as agree_no,
+		contract_customer.customer_name
+		,contract_customer.gender
+		,contract_customer.idcard_type
+		,contract_customer.idcard_no
+		,contract_customer.address
+		,contract_customer.phone
+		,contract.id as cid
+  		  FROM contract_customer
+          JOIN contract
+            ON confirm_type = 2 AND main_id = contract.id
+		<if test="createdUserId != null and createdUserId != ''">
+			and contract.created_id =${createdUserId}
+		</if>
+          left join property_unit unit on unit.id = contract.unit_id
+ 		      left join property_build build on build.id = unit.build_id
+ 		      left join property_project pro on pro.id = build.property_id
+ 		      left join pay_way pw on contract.pay_way_id = pw.id
+         where contract_customer.is_deleted=0 and contract.is_deleted = 0
+		
+			<if test="date1 != null and date1 != ''">
+				and contract.sign_date &gt;= '${date1}'
+			</if>
+			<if test="date2 != null and date2 != ''">
+				and contract.sign_date &lt;= date_add('${date2}',interval 1 day)
+			</if>
+			
+			<if test="searchProjectIds != null and searchProjectIds.size() > 0">
+            	and pro.company_project_id in
+	            <foreach  
+	                collection="searchProjectIds"  
+	                item="pId"  
+	                open="("  
+	                separator=","  
+	                close=")">  
+	                ${pId}  
+	            </foreach>  
+            </if>
+            
+            <if test="buildIds != null and buildIds.size() > 0">
+            	and build.id in
+	            <foreach  
+	                collection="buildIds"  
+	                item="bId"  
+	                open="("  
+	                separator=","  
+	                close=")">  
+	                ${bId}  
+	            </foreach>  
+            </if>
+			and unit.is_deleted = 0
+			and build.is_deleted = 0
+			and pro.is_deleted = 0
+			group by contract.unit_id
+				
+			<if test="startLine >= 0">
+				<if test="pageSize > 0">
+					limit ${startLine},${pageSize};
+				</if>
+			</if>
+	</select>
+	
+	<sql id="contractConfirmCustomerCond">
+	
+	</sql>
+	
+	
+	<select id="findContractConfirmCustomer" resultMap="contractCustomerResultMap" 
+		parameterType="com.ihk.saleunit.data.pojo.ContractCustomerCond">
+		SELECT 
+		cc.*
+  		  FROM contract_customer cc
+          JOIN confirm cf
+            ON confirm_type = 1 AND main_id = cf.id
+      left join property_unit unit on unit.id = cf.unit_id
+ 		  left join property_build build on build.id = unit.build_id
+ 		  left join property_project pro on pro.id = build.property_id
+        
+				left join pay_way pw on cf.pay_way_id = pw.id
+			
+           <where>
+			
+			<if test="confirmType != null and confirmType != ''">
+				and confirm_type = #{confirmType}
+			</if>
+			
+			<if test="searchName != null and searchName != ''">
+				and customer_name like concat(concat('%', #{searchName, jdbcType=VARCHAR}), '%')
+			</if>
+			
+			<if test="projectId != null and projectId != ''">
+				and cc.project_id = #{projectId}
+			</if>
+			
+			<if test="searchPhone != null and searchPhone != ''">
+				and mobile_phone like concat(concat('%', #{searchPhone, jdbcType=VARCHAR}), '%')
+			</if>
+			
+			<if test=" area1 != null and area1 != '' ">
+				and (cf.sum_money/cf.build_price &gt; #{area1})
+			</if>
+			
+			<if test=" area2 != null and area2 != '' ">
+				and (cf.sum_money/cf.build_price &lt; #{area2})
+			</if>
+			
+			<if test=" birthday1 != null and birthday1 != '' ">
+				and cc.birthday &gt; #{birthday1}
+			</if>
+			
+			<if test=" birthday2 != null and birthday2 != '' ">
+				and cc.birthday &lt; #{birthday2}
+			</if>
+			
+			
+			<if test=" price1 != null and price1 != '' ">
+				and (cf.sum_money &gt; #{price1} * 10000)
+			</if>
+			
+			<if test=" price2 != null and price2 != '' ">
+				and (cf.sum_money &lt; #{price2} * 10000)
+			</if>
+			
+			<if test=" householdProvince != null and householdProvince != '' ">
+				and cc.household_province = #{householdProvince}
+			</if>
+			
+			<if test=" homeProvince != null and homeProvince != '' ">
+				and cc.home_province = #{homeProvince}
+			</if>
+			
+			<if test=" date1 != null and date1 != '' ">
+				and (cf.work_date &gt;= #{date1}) 
+			</if>
+			
+			<if test=" date2 != null and date2 != '' ">
+				and (cf.work_date &lt;= #{date2})
+			</if>
+			
+			<if test=" userId != null and userId != '' ">
+				and (cf.sales_id like concat(concat('%,', #{userId, jdbcType=VARCHAR}), ',%'))
+			</if>
+			<if test="payType != null and payType != ''">
+				
+					and pw.pay_name = #{payType}
+				
+			</if>
+			<if test="isValid != null and isValid != ''">
+				and is_valid = #{isValid}
+			</if>
+			
+			<if test="mainId != null and mainId != ''">
+				and main_id = #{mainId}
+			</if>
+			
+			<if test="homeProvinceIds != null and homeProvinceIds != ''">
+				and cc.home_province in 
+				<foreach  
+	                collection="homeProvinceIds"  
+	                item="pId"  
+	                open="("  
+	                separator=","  
+	                close=")">  
+	                #{pId}  
+	            </foreach>
+			</if>
+			<if test="householdProvinceIds != null and householdProvinceIds != ''">
+				and cc.household_province in 
+				<foreach  
+	                collection="householdProvinceIds"  
+	                item="pId"  
+	                open="("  
+	                separator=","  
+	                close=")">  
+	                #{pId}  
+	            </foreach>
+			</if>
+			<if test="homeCityIds != null and homeCityIds != ''">
+				and cc.home_city in 
+				<foreach  
+	                collection="homeCityIds"  
+	                item="cId"  
+	                open="("  
+	                separator=","  
+	                close=")">  
+	                #{cId}  
+	            </foreach>
+			</if>
+			<if test="householdCityIds != null and householdCityIds != ''">
+				and cc.household_city in 
+				<foreach  
+	                collection="householdCityIds"  
+	                item="cId"  
+	                open="("  
+	                separator=","  
+	                close=")">  
+	                #{cId}  
+	            </foreach>
+			</if>
+			<if test="homeRegionIds != null and homeRegionIds != ''">
+				and cc.home_region in 
+				<foreach  
+	                collection="homeRegionIds"  
+	                item="rId"  
+	                open="("  
+	                separator=","  
+	                close=")">  
+	                #{rId}  
+	            </foreach> 
+			</if>
+			<if test="householdRegionIds != null and householdRegionIds != ''">
+				and cc.household_region in 
+				<foreach  
+	                collection="householdRegionIds"  
+	                item="rId"  
+	                open="("  
+	                separator=","  
+	                close=")">  
+	                #{rId}
+	            </foreach> 
+			</if>
+			
+			 and cc.is_deleted = '0' 
+			
+		</where>
+            and cf.unit_id not in 
+            (	SELECT ct.unit_id
+	      	 FROM contract_customer cc
+	          JOIN contract ct
+	            ON confirm_type = 2 AND main_id = ct.id
+	          left join property_unit unit on unit.id = ct.unit_id
+	 		      left join property_build build on build.id = unit.build_id
+	 		      left join property_project pro on pro.id = build.property_id
+	         left join pay_way pw on ct.pay_way_id = pw.id
+	         <include refid="selectContractForContractConfirmCustomerCond"/>
+	         ) 
+           and cc.is_deleted=0 and cf.is_deleted = 0
+     	<if test="searchProjectIds!=null and searchProjectIds!='' ">  
+           	and cc.project_id in 
+			<foreach  
+	            collection="searchProjectIds"  
+	            item="searchProjectId" 
+	            open="("  
+	            separator=","  
+	            close=")">  
+	            #{searchProjectId}  
+	        </foreach>
+        </if>   
+		<if test="projectIds != null and projectIds.size() > 0">
+            	and cc.project_id in
+	            <foreach  
+	                collection="projectIds"  
+	                item="pId"  
+	                open="("  
+	                separator=","  
+	                close=")">   
+	                #{pId}  
+	            </foreach>
+        </if>
+			and unit.is_deleted = 0
+			and build.is_deleted = 0
+			and pro.is_deleted = 0
+			
+       union
+	      	SELECT cc.*
+	      	 FROM contract_customer cc
+	          JOIN contract ct
+	            ON confirm_type = 2 AND main_id = ct.id
+	          left join property_unit unit on unit.id = ct.unit_id
+	 		      left join property_build build on build.id = unit.build_id
+	 		      left join property_project pro on pro.id = build.property_id
+	         left join pay_way pw on ct.pay_way_id = pw.id
+			<include refid="selectContractForContractConfirmCustomerCond"/>
+				
+			<if test="startLine >= 0">
+				<if test="pageSize > 0">
+					limit ${startLine},${pageSize};
+				</if>
+			</if>
+	</select>
+	
+	<sql id="selectContractForContractConfirmCustomerCond">
+
+			<where>
+			
+			<if test="confirmType != null and confirmType != ''">
+				and confirm_type = #{confirmType}
+			</if>
+			
+			<if test="searchName != null and searchName != ''">
+				and customer_name like concat(concat('%', #{searchName, jdbcType=VARCHAR}), '%')
+			</if>
+			
+			<if test="projectId != null and projectId != ''">
+				and cc.project_id = #{projectId}
+			</if>
+			
+			<if test="searchPhone != null and searchPhone != ''">
+				and mobile_phone like concat(concat('%', #{searchPhone, jdbcType=VARCHAR}), '%')
+			</if>
+			
+			<if test=" area1 != null and area1 != '' ">
+				and (ct.sum_money/ct.build_price &gt; #{area1})
+			</if>
+			
+			<if test=" area2 != null and area2 != '' ">
+				and (ct.sum_money/ct.build_price &lt; #{area2})
+			</if>
+			
+			<if test=" birthday1 != null and birthday1 != '' ">
+				and cc.birthday &gt; #{birthday1}
+			</if>
+			
+			<if test=" birthday2 != null and birthday2 != '' ">
+				and cc.birthday &lt; #{birthday2}
+			</if>
+			
+			
+			<if test=" price1 != null and price1 != '' ">
+				and (ct.sum_money &gt; #{price1} * 10000)
+			</if>
+			
+			<if test=" price2 != null and price2 != '' ">
+				and (ct.sum_money &lt; #{price2} * 10000)
+			</if>
+			
+			<if test=" date1 != null and date1 != '' ">
+				and (ct.sign_date &gt;= #{date1}) 
+			</if>
+			
+			<if test=" date2 != null and date2 != '' ">
+				and (ct.sign_date &lt;= #{date2})
+			</if>
+			
+			<if test=" userId != null and userId != '' ">
+				and (ct.sales_id like concat(concat('%,', #{userId, jdbcType=VARCHAR}), ',%'))
+			</if>
+			<if test="payType != null and payType != ''">
+				
+					and pw.pay_name = #{payType}
+				
+				
+				
+			</if>
+			<if test="isValid != null and isValid != ''">
+				and is_valid = #{isValid}
+			</if>
+			
+			<if test="mainId != null and mainId != ''">
+				and main_id = #{mainId}
+			</if>
+			
+			<if test="homeProvinceIds != null and homeProvinceIds != ''">
+				and cc.home_province in 
+				<foreach  
+	                collection="homeProvinceIds"  
+	                item="pId"  
+	                open="("  
+	                separator=","  
+	                close=")">  
+	                #{pId}  
+	            </foreach>
+			</if>
+			<if test="householdProvinceIds != null and householdProvinceIds != ''">
+				and cc.household_province in 
+				<foreach  
+	                collection="householdProvinceIds"  
+	                item="pId"  
+	                open="("  
+	                separator=","  
+	                close=")">  
+	                #{pId}  
+	            </foreach>
+			</if>
+			<if test="homeCityIds != null and homeCityIds != ''">
+				and cc.home_city in 
+				<foreach  
+	                collection="homeCityIds"  
+	                item="cId"  
+	                open="("  
+	                separator=","  
+	                close=")">  
+	                #{cId}  
+	            </foreach>
+			</if>
+			<if test="householdCityIds != null and householdCityIds != ''">
+				and cc.household_city in 
+				<foreach  
+	                collection="householdCityIds"  
+	                item="cId"  
+	                open="("  
+	                separator=","  
+	                close=")">  
+	                #{cId}  
+	            </foreach>
+			</if>
+			<if test="homeRegionIds != null and homeRegionIds != ''">
+				and cc.home_region in 
+				<foreach  
+	                collection="homeRegionIds"  
+	                item="rId"  
+	                open="("  
+	                separator=","  
+	                close=")">  
+	                #{rId}  
+	            </foreach> 
+			</if>
+			<if test="householdRegionIds != null and householdRegionIds != ''">
+				and cc.household_region in 
+				<foreach  
+	                collection="householdRegionIds"  
+	                item="rId"  
+	                open="("  
+	                separator=","  
+	                close=")">  
+	                #{rId}
+	            </foreach> 
+			</if>
+			
+			 and cc.is_deleted = '0' 
+			
+		</where>
+            and cc.is_deleted=0 and ct.is_deleted = 0
+     	<if test="searchProjectIds!=null and searchProjectIds!='' ">  
+           	and cc.project_id in 
+			<foreach  
+	            collection="searchProjectIds"  
+	            item="searchProjectId" 
+	            open="("  
+	            separator=","  
+	            close=")">  
+	            #{searchProjectId}  
+	        </foreach>
+        </if>   
+		<if test="projectIds != null and projectIds.size() > 0">
+            	and cc.project_id in
+	            <foreach  
+	                collection="projectIds"  
+	                item="pId"  
+	                open="("  
+	                separator=","  
+	                close=")">   
+	                #{pId}  
+	            </foreach>
+        </if>
+			and unit.is_deleted = 0
+			and build.is_deleted = 0
+			and pro.is_deleted = 0
+	</sql>
+	
+	<select id="findContractConfirmCustomerCount" resultType="int" 
+		parameterType="com.ihk.saleunit.data.pojo.ContractCustomerCond">
+		select count(*) from (
+		SELECT 
+		cc.*
+  		  FROM contract_customer cc
+          JOIN confirm cf
+            ON confirm_type = 1 AND main_id = cf.id
+      left join property_unit unit on unit.id = cf.unit_id
+ 		  left join property_build build on build.id = unit.build_id
+ 		  left join property_project pro on pro.id = build.property_id
+       
+				left join pay_way pw on cf.pay_way_id = pw.id
+			
+           <where>
+			
+			<if test="confirmType != null and confirmType != ''">
+				and confirm_type = #{confirmType}
+			</if>
+			
+			<if test="searchName != null and searchName != ''">
+				and customer_name like concat(concat('%', #{searchName, jdbcType=VARCHAR}), '%')
+			</if>
+			
+			<if test="projectId != null and projectId != ''">
+				and cc.project_id = #{projectId}
+			</if>
+			
+			<if test="searchPhone != null and searchPhone != ''">
+				and mobile_phone like concat(concat('%', #{searchPhone, jdbcType=VARCHAR}), '%')
+			</if>
+			
+			<if test=" area1 != null and area1 != '' ">
+				and (cf.sum_money/cf.build_price &gt; #{area1})
+			</if>
+			
+			<if test=" area2 != null and area2 != '' ">
+				and (cf.sum_money/cf.build_price &lt; #{area2})
+			</if>
+			
+			<if test=" birthday1 != null and birthday1 != '' ">
+				and cc.birthday &gt; #{birthday1}
+			</if>
+			
+			<if test=" birthday2 != null and birthday2 != '' ">
+				and cc.birthday &lt; #{birthday2}
+			</if>
+			
+			
+			<if test=" price1 != null and price1 != '' ">
+				and (cf.sum_money &gt; #{price1} * 10000)
+			</if>
+			
+			<if test=" price2 != null and price2 != '' ">
+				and (cf.sum_money &lt; #{price2} * 10000)
+			</if>
+			
+			<if test=" householdProvince != null and householdProvince != '' ">
+				and cc.household_province = #{householdProvince}
+			</if>
+			
+			<if test=" homeProvince != null and homeProvince != '' ">
+				and cc.home_province = #{homeProvince}
+			</if>
+			
+			<if test=" date1 != null and date1 != '' ">
+				and (cf.work_date &gt;= #{date1}) 
+			</if>
+			
+			<if test=" date2 != null and date2 != '' ">
+				and (cf.work_date &lt;= #{date2})
+			</if>
+			
+			<if test=" userId != null and userId != '' ">
+				and (cf.sales_id like concat(concat('%,', #{userId, jdbcType=VARCHAR}), ',%'))
+			</if>
+			<if test="payType != null and payType != ''">
+				
+					and pw.pay_name = #{payType}
+				
+			</if>
+			<if test="isValid != null and isValid != ''">
+				and is_valid = #{isValid}
+			</if>
+			
+			<if test="mainId != null and mainId != ''">
+				and main_id = #{mainId}
+			</if>
+			
+			<if test="homeProvinceIds != null and homeProvinceIds != ''">
+				and cc.home_province in 
+				<foreach  
+	                collection="homeProvinceIds"  
+	                item="pId"  
+	                open="("  
+	                separator=","  
+	                close=")">  
+	                #{pId}  
+	            </foreach>
+			</if>
+			<if test="householdProvinceIds != null and householdProvinceIds != ''">
+				and cc.household_province in 
+				<foreach  
+	                collection="householdProvinceIds"  
+	                item="pId"  
+	                open="("  
+	                separator=","  
+	                close=")">  
+	                #{pId}  
+	            </foreach>
+			</if>
+			<if test="homeCityIds != null and homeCityIds != ''">
+				and cc.home_city in 
+				<foreach  
+	                collection="homeCityIds"  
+	                item="cId"  
+	                open="("  
+	                separator=","  
+	                close=")">  
+	                #{cId}  
+	            </foreach>
+			</if>
+			<if test="householdCityIds != null and householdCityIds != ''">
+				and cc.household_city in 
+				<foreach  
+	                collection="householdCityIds"  
+	                item="cId"  
+	                open="("  
+	                separator=","  
+	                close=")">  
+	                #{cId}  
+	            </foreach>
+			</if>
+			<if test="homeRegionIds != null and homeRegionIds != ''">
+				and cc.home_region in 
+				<foreach  
+	                collection="homeRegionIds"  
+	                item="rId"  
+	                open="("  
+	                separator=","  
+	                close=")">  
+	                #{rId}  
+	            </foreach> 
+			</if>
+			<if test="householdRegionIds != null and householdRegionIds != ''">
+				and cc.household_region in 
+				<foreach  
+	                collection="householdRegionIds"  
+	                item="rId"  
+	                open="("  
+	                separator=","  
+	                close=")">  
+	                #{rId}
+	            </foreach> 
+			</if>
+			
+			 and cc.is_deleted = '0' 
+			
+		</where>
+            and cf.unit_id not in 
+            (
+            SELECT ct.unit_id
+	      	 FROM contract_customer cc
+	          JOIN contract ct
+	            ON confirm_type = 2 AND main_id = ct.id
+	          left join property_unit unit on unit.id = ct.unit_id
+	 		      left join property_build build on build.id = unit.build_id
+	 		      left join property_project pro on pro.id = build.property_id
+	         left join pay_way pw on ct.pay_way_id = pw.id
+	         <include refid="selectContractForContractConfirmCustomerCond"/>
+	         ) 
+           and cc.is_deleted=0 and cf.is_deleted = 0
+     	<if test="searchProjectIds!=null and searchProjectIds!='' ">  
+           	and cc.project_id in 
+			<foreach  
+	            collection="searchProjectIds"  
+	            item="searchProjectId" 
+	            open="("  
+	            separator=","  
+	            close=")">  
+	            #{searchProjectId}  
+	        </foreach>
+        </if>   
+		<if test="projectIds != null and projectIds.size() > 0">
+            	and cc.project_id in
+	            <foreach  
+	                collection="projectIds"  
+	                item="pId"  
+	                open="("  
+	                separator=","  
+	                close=")">   
+	                #{pId}  
+	            </foreach>
+        </if>
+			and unit.is_deleted = 0
+			and build.is_deleted = 0
+			and pro.is_deleted = 0
+			
+       union
+       SELECT cc.*
+  		  FROM contract_customer cc
+          JOIN contract ct
+            ON confirm_type = 2 AND main_id = ct.id
+          left join property_unit unit on unit.id = ct.unit_id
+ 		      left join property_build build on build.id = unit.build_id
+ 		      left join property_project pro on pro.id = build.property_id
+         left join pay_way pw on ct.pay_way_id = pw.id
+
+		<include refid="selectContractForContractConfirmCustomerCond"/>
+			
+				
+			)a
+	</select>
+	
+	
+	
+	<!-- 成交客户明细 end -->
+	
+	<update id="updateContractCustomerMainId" parameterType="map">
+		update contract_customer set main_id = #{mainId} where id = #{customerId}
+	</update>
+	
+	<select id="findContractCustomerByMainIdAndConfirmType" resultMap="contractCustomerResultMap" parameterType="map">
+		select * from contract_customer where main_id = #{mainId} and confirm_type = #{confirmType} and is_valid = '0' and is_deleted = '0'
+	</select>
+	
+	<select id="findContractCustomerByMainIdAndConfirmTypeNotValid" resultMap="contractCustomerResultMap" parameterType="map">
+		select * from contract_customer where main_id = #{mainId} and confirm_type = #{confirmType} and is_deleted = '0'
+	</select>
+	
+	<select id="findValidCustomerByProjectIdPhoneType" resultMap="contractCustomerResultMap" parameterType="com.ihk.saleunit.data.pojo.ContractCustomerCond">
+		select * from contract_customer where project_id = #{projectId} and confirm_type = #{confirmType} and mobile_phone = #{mobilePhone}
+		and main_id > 0 and is_valid = '0' and is_deleted = '0'
+		
+	</select>
+	
+	<update id="updateContractCustomerConfirmTypeAndMainId" parameterType="map">
+		update contract_customer set main_id = #{mainId}, confirm_type = #{confirmType} where id = #{customerId}
+	</update>
+	
+	<!-- ////// -->
+	<select id="findContractCustomer2" resultMap="contractCustomerResultMap">
+		select * from contract_customer where confirm_type = 2 and main_id = 0 and is_deleted = 0;
+	</select>
+	
+	<select id="findConfirmCustomer" resultType="map">
+		
+		select tmp.id as mainId,tmp.customer_id as id from contract_customer c
+		,
+		(
+		select id,customer_id from confirm
+		where unit_id 
+		in
+		(
+		select id from property_unit
+		where sale_state = 8
+		) and is_deleted = 0 and customer_id > 0
+		)tmp
+		where c.id = tmp.customer_id
+		and is_deleted = 0
+		and c.confirm_type = 1
+
+	</select>
+	
+	<select id="findUnitContractCustomerConfirm" resultType="map">
+	
+		select cus.id as customerId, tmp.id as mainId, tmp.unit_id as unitId from contract_customer cus,
+		(
+		select c.id, c.customer_id,c.unit_id from contract c
+		where unit_id in
+		(
+		select id from property_unit u
+		where u.sale_state = 9	
+		and is_deleted = 0
+		)
+		)
+		tmp
+		where cus.id = tmp.customer_id
+		and cus.confirm_type = 1
+		and cus.is_deleted = 0
+		
+	</select>
+	
+	<select id="findUnitContractCustomerConfirmForUpdate" resultType="map">
+	
+		select id as mainId, c.customer_id as customerId from confirm c,
+		(
+		
+		select cus.id as customer_id, tmp.id as main_id from contract_customer cus,
+		(
+		select c.id, c.customer_id,c.unit_id from contract c
+		where unit_id in
+		(
+		select id from property_unit u
+		where u.sale_state = 9	
+		and is_deleted = 0
+		)
+		)
+		tmp
+		where cus.id = tmp.customer_id
+		and cus.confirm_type = 1
+		and cus.is_deleted = 0
+		
+		)
+		tmp2
+		where c.customer_id = tmp2.customer_id
+	</select>
+	
+	<select id="findContractCustomerSearch" resultMap="contractCustomerResultMap" parameterType="com.ihk.saleunit.data.pojo.ContractCustomerCond">
+		select * from contract_customer cc 
+		left join confirm cf on cc.confirm_type=1 and cc.main_id=cf.id and cc.is_deleted = '0' and cf.is_deleted = '0' 
+		left join contract ct on cc.confirm_type=2 and cc.main_id=ct.id and cc.is_deleted = '0' and ct.is_deleted = '0' 
+		left join confirm_book cb on cc.confirm_type=3 and cc.main_id=cb.id and cc.is_deleted = '0' and cb.is_deleted = '0' 
+		left join property_unit pu on cf.unit_id = pu.id
+		<if test=" payType != null and payType != '' ">
+			<if test=" confirmType==1">
+				left join pay_way pw on cf.pay_way_id = pw.id
+			</if>
+			<if test=" confirmType==2">
+				left join pay_way pw2 on ct.pay_way_id = pw2.id
+			</if>
+			<if test=" confirmType == '' or confirmType == null ">
+				left join pay_way pw on cf.pay_way_id = pw.id
+				left join pay_way pw2 on ct.pay_way_id = pw2.id
+			</if>
+		</if>
+     <include refid="searchWhereCond"/>
+     	<if test="searchProjectIds!=null and searchProjectIds!='' ">  
+           	and cc.project_id in 
+			<foreach  
+	            collection="searchProjectIds"  
+	            item="searchProjectId" 
+	            open="("  
+	            separator=","  
+	            close=")">  
+	            #{searchProjectId}  
+	        </foreach>
+        </if>   
+		<if test="projectIds != null and projectIds.size() > 0">
+            	and cc.project_id in
+	            <foreach  
+	                collection="projectIds"  
+	                item="pId"  
+	                open="("  
+	                separator=","  
+	                close=")">   
+	                #{pId}  
+	            </foreach>
+        </if>
+    	 <if test="orderByFiled == null or orderByFiled == ''">
+			order by cc.id desc
+		</if>
+		<if test="orderByFiled=='11'">
+			order by created_time desc 
+		</if>
+		<if test="orderByFiled=='12'">
+			order by created_time 
+		</if>
+		<if test="orderByFiled=='13'">
+			order by cc.customer_name desc
+		</if>
+		<if test="orderByFiled=='14'">
+			order by cc.customer_name 
+		</if>
+		<if test="orderByFiled=='15'">
+			order by cf.company_project_id,ct.company_project_id desc
+		</if>
+		<if test="orderByFiled=='16'">
+			order by cf.company_project_id,ct.company_project_id
+		</if>	
+		<!-- 项目类型 -->
+		<if test="orderByFiled=='17'">
+			order by cc.confirm_type desc
+		</if>
+		<if test="orderByFiled=='18'">
+			order by cc.confirm_type
+		</if>
+		<if test="orderByFiled=='19'">
+			order by cf.sign_date, ct.sign_date desc
+		</if>
+		<if test="orderByFiled=='20'">
+			order by cf.sign_date, ct.sign_date
+		</if>	
+		
+		<if test="orderByFiled=='21'">
+			order by (case when cf.sales_id!='' then cf.sales_id else ct.sales_id end) desc
+		</if>
+		<if test="orderByFiled=='22'">
+			order by (case when cf.sales_id!='' then cf.sales_id else ct.sales_id end)
+		</if> 
+		
+		<if test="orderByFiled=='23'">
+			order by (case when cf.sum_money!=0 then cf.sum_money else ct.sum_money end) desc
+		</if>
+		<if test="orderByFiled=='24'">
+			order by (case when cf.sum_money!=0 then cf.sum_money else ct.sum_money end)
+		</if> 
+		
+		<if test="orderByFiled=='25'">
+			order by cf.sum_money/cf.build_price desc
+		</if>
+		<if test="orderByFiled=='26'">
+			order by cf.sum_money/cf.build_price
+		</if> 
+		
+		<if test="startLine >= 0">
+			<if test="pageSize > 0"> 
+				limit #{startLine, jdbcType=INTEGER},#{pageSize, jdbcType=INTEGER};
+			</if>
+		</if>
+	</select>
+	
+	
+	<select id="findContractCustomerDownload" resultMap="contractCustomerResultMap" parameterType="com.ihk.saleunit.data.pojo.ContractCustomerCond">
+		select * from contract_customer cc 
+		left join confirm cf on cc.confirm_type=1 and cc.main_id=cf.id and cc.is_deleted = '0' and cf.is_deleted = '0' 
+		left join contract ct on cc.confirm_type=2 and cc.main_id=ct.id and cc.is_deleted = '0' and ct.is_deleted = '0' 
+		left join confirm_book cb on cc.confirm_type=3 and cc.main_id=cb.id and cc.is_deleted = '0' and cb.is_deleted = '0' 
+		<if test=" payType != null and payType != '' ">
+			<if test=" confirmType==1">
+				left join pay_way pw on cf.pay_way_id = pw.id
+			</if>
+			<if test=" confirmType==2">
+				left join pay_way pw2 on ct.pay_way_id = pw2.id
+			</if>
+			<if test=" confirmType == '' or confirmType == null ">
+				left join pay_way pw on cf.pay_way_id = pw.id
+				left join pay_way pw2 on ct.pay_way_id = pw2.id
+			</if>
+		</if>
+     <include refid="searchWhereCond"/>
+     <if test="searchProjectIds!=null and searchProjectIds!='' ">  
+           	and cc.project_id in 
+			<foreach  
+	            collection="searchProjectIds"  
+	            item="searchProjectId" 
+	            open="("  
+	            separator=","  
+	            close=")">  
+	            #{searchProjectId}  
+	        </foreach>
+        </if>   
+		<if test="projectIds != null and projectIds.size() > 0">
+            	and cc.project_id in
+	            <foreach  
+	                collection="projectIds"  
+	                item="pId"  
+	                open="("  
+	                separator=","  
+	                close=")">   
+	                #{pId}  
+	            </foreach>
+        </if>
+     <if test="orderByFiled == null or orderByFiled == ''">
+			order by cc.id desc
+		</if>
+		<if test="orderByFiled=='11'">
+			order by created_time desc 
+		</if>
+		<if test="orderByFiled=='12'">
+			order by created_time 
+		</if>
+		<if test="orderByFiled=='13'">
+			order by cc.customer_name desc
+		</if>
+		<if test="orderByFiled=='14'">
+			order by cc.customer_name 
+		</if>
+		<if test="orderByFiled=='15'">
+			order by cf.company_project_id,ct.company_project_id desc
+		</if>
+		<if test="orderByFiled=='16'">
+			order by cf.company_project_id,ct.company_project_id
+		</if>	
+		<!-- 项目类型 -->
+		<if test="orderByFiled=='17'">
+			order by cc.confirm_type desc
+		</if>
+		<if test="orderByFiled=='18'">
+			order by cc.confirm_type
+		</if>
+		<if test="orderByFiled=='19'">
+			order by cf.sign_date,ct.sign_date desc
+		</if>
+		<if test="orderByFiled=='20'">
+			order by cf.sign_date,ct.sign_date 
+		</if>	
+		
+		<if test="orderByFiled=='21'">
+			order by cf.sales_id,ct.sales_id,cb.sales_id desc
+		</if>
+		<if test="orderByFiled=='22'">
+			order by cf.sales_id,ct.sales_id,cb.sales_id
+		</if> 
+		
+		<if test="orderByFiled=='23'">
+			order by cf.sum_money,ct.sum_money desc
+		</if>
+		<if test="orderByFiled=='24'">
+			order by cf.sum_money,ct.sum_money
+		</if> 
+		
+		<if test="orderByFiled=='25'">
+			order by cf.sum_money/cf.build_price,ct.sum_money/ct.build_price desc
+		</if>
+		<if test="orderByFiled=='26'">
+			order by cf.sum_money/cf.build_price,ct.sum_money/ct.build_price
+		</if> 
+		
+	</select>
+	
+	
+	
+	<select id="findContractCustomerCountSearch" resultType="int" parameterType="com.ihk.saleunit.data.pojo.ContractCustomerCond">
+		SELECT count(0) from contract_customer cc 
+		left join confirm cf on cc.confirm_type=1 and cc.main_id=cf.id and cc.is_deleted = '0' and cf.is_deleted = '0' 
+		left join contract ct on cc.confirm_type=2 and cc.main_id=ct.id and cc.is_deleted = '0' and ct.is_deleted = '0' 
+		left join confirm_book cb on cc.confirm_type=3 and cc.main_id=cb.id and cc.is_deleted = '0' and cb.is_deleted = '0'
+		<if test=" payType != null and payType != '' ">
+			<if test=" confirmType==1">
+				left join pay_way pw on cf.pay_way_id = pw.id
+			</if>
+			<if test=" confirmType==2">
+				left join pay_way pw2 on ct.pay_way_id = pw2.id
+			</if>
+			<if test=" confirmType == '' or confirmType == null ">
+				left join pay_way pw on cf.pay_way_id = pw.id
+				left join pay_way pw2 on ct.pay_way_id = pw2.id
+			</if>
+		</if>
+		
+        <include refid="searchWhereCond"/>   
+         <if test="searchProjectIds!=null and searchProjectIds!='' ">  
+           	and cc.project_id in 
+			<foreach  
+	            collection="searchProjectIds"  
+	            item="searchProjectId" 
+	            open="("  
+	            separator=","  
+	            close=")">  
+	            #{searchProjectId}  
+	        </foreach>
+        </if>   
+		<if test="projectIds != null and projectIds.size() > 0">
+            	and cc.project_id in
+	            <foreach  
+	                collection="projectIds"  
+	                item="pId"  
+	                open="("  
+	                separator=","  
+	                close=")">   
+	                #{pId}  
+	            </foreach>
+        </if>
+		
+    </select>
+    
+    
+    
+    <select id="findContractConfirmCustCount" resultType="int" 
+		parameterType="com.ihk.saleunit.data.pojo.ContractCustomerCond" statementType="STATEMENT">
+		
+		select count(*) from (
+		SELECT 
+		1 as confirm_type, 
+		pro.property_name,build.build_name, unit.unit_no,unit.build_area,
+		confirm.${realDate} as work_date,confirm.sum_money
+		,contract_customer.customer_name
+		,contract_customer.gender
+		,contract_customer.idcard_type
+		,contract_customer.idcard_no
+		,contract_customer.address
+		,contract_customer.phone
+		,confirm.id as cid
+  		  FROM contract_customer
+          JOIN confirm
+            ON confirm_type = 1 AND main_id = confirm.id
+		<if test="createdUserId != null and createdUserId != ''">
+			and confirm.created_id =${createdUserId}
+		</if>
+      left join property_unit unit on unit.id = confirm.unit_id
+ 		  left join property_build build on build.id = unit.build_id
+ 		  left join property_project pro on pro.id = build.property_id
+         where confirm.unit_id not in (select unit_id from contract where is_deleted=0) 
+           and contract_customer.is_deleted=0 and confirm.is_deleted = 0
+           <if test="date1 != null and date1 != ''">
+				and confirm.work_date &gt;= '${date1}'
+			</if>
+			<if test="date2 != null and date2 != ''">
+				and confirm.work_date &lt; date_add('${date2}',interval 1 day)
+			</if>
+			
+			<if test="searchProjectIds != null and searchProjectIds.size() > 0">
+            	and pro.company_project_id in
+	            <foreach  
+	                collection="searchProjectIds"  
+	                item="pId"  
+	                open="("  
+	                separator=","  
+	                close=")">  
+	                ${pId}  
+	            </foreach>  
+            </if>
+            
+            <if test="buildIds != null and buildIds.size() > 0">
+            	and build.id in
+	            <foreach  
+	                collection="buildIds"  
+	                item="bId"  
+	                open="("  
+	                separator=","  
+	                close=")">  
+	                ${bId}  
+	            </foreach>  
+            </if>
+			and unit.is_deleted = 0
+			and build.is_deleted = 0
+			and pro.is_deleted = 0
+			group by confirm.unit_id
+       union
+       
+       SELECT 2 as confirm_type, 
+		pro.property_name,build.build_name, unit.unit_no,unit.build_area,
+		contract.${realDate} as work_date,contract.sum_money,
+		contract_customer.customer_name
+		,contract_customer.gender
+		,contract_customer.idcard_type
+		,contract_customer.idcard_no
+		,contract_customer.address
+		,contract_customer.phone
+		,contract.id as cid
+  		  FROM contract_customer
+          JOIN contract
+            ON confirm_type = 2 AND main_id = contract.id
+		<if test="createdUserId != null and createdUserId != ''">
+			and contract.created_id =${createdUserId}
+		</if>
+          left join property_unit unit on unit.id = contract.unit_id
+ 		      left join property_build build on build.id = unit.build_id
+ 		      left join property_project pro on pro.id = build.property_id
+         where contract_customer.is_deleted=0 and contract.is_deleted = 0
+		
+			<if test="date1 != null and date1 != ''">
+				and contract.sign_date &gt;= '${date1}'
+			</if>
+			<if test="date2 != null and date2 != ''">
+				and contract.sign_date &lt; date_add('${date2}',interval 1 day)
+			</if>
+			
+			<if test="searchProjectIds != null and searchProjectIds.size() > 0">
+            	and pro.company_project_id in
+	            <foreach  
+	                collection="searchProjectIds"  
+	                item="pId"  
+	                open="("  
+	                separator=","  
+	                close=")">  
+	                ${pId}  
+	            </foreach>  
+            </if>
+            
+            <if test="buildIds != null and buildIds.size() > 0">
+            	and build.id in
+	            <foreach  
+	                collection="buildIds"  
+	                item="bId"  
+	                open="("  
+	                separator=","  
+	                close=")">  
+	                ${bId}  
+	            </foreach>  
+            </if>
+			and unit.is_deleted = 0
+			and build.is_deleted = 0
+			and pro.is_deleted = 0
+			group by contract.unit_id
+				
+			
+		) a
+		
+	</select>
+
+    <select id="findContractCustomerByPropertyId" resultType="map">
+        SELECT * FROM v_check_project a,contract_customer b
+            WHERE a.property_project_id=#{propertyProjectId}
+            AND a.company_id=b.company_id
+            AND a.company_project_id=b.project_id
+            AND  b.is_valid = '0' AND b.is_deleted = '0'
+    </select>
+
+   
+</mapper>

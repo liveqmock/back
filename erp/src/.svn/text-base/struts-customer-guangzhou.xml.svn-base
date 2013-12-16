@@ -1,0 +1,934 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE struts PUBLIC
+    "-//Apache Software Foundation//DTD Struts Configuration 2.0//EN"
+    "http://struts.apache.org/dtds/struts-2.0.dtd">
+<struts>
+	
+	<!-- Customer(客户) action -->
+	<package name="customer_guangzhou" extends="struts-default">
+		<action name="customer_guangzhou!*" class="com.ihk.customer.action.CustomerAction">
+			<result name="customerAdd" type="redirectAction">
+				customer_guangzhou!doSomeForAddCustomer?from=guangzhou&amp;deleteSession=false
+			</result>
+			<result name="loginFail" type="redirect">/login.jsp</result>
+			<result name="loginSucc">/customer/guangzhou/index.jsp</result>
+			<result name="queryCustomerLimit">/customer/guangzhou/index.jsp</result>
+			<result name="queryCustomerByIdForUpdate">/customer/guangzhou/update.jsp</result>
+			<result name="forAdd">/customer/guangzhou/input.jsp</result>
+			<result name="deleteCustomer" type="redirectAction">./customer_guangzhou!searchCustomer.action</result>
+			<result name="input" type="redirectAction">
+				customer_guangzhou!doSomeForAddCustomer?from=guangzhou&amp;deleteSession=input
+			</result>
+			<result name="table">/customer/guangzhou/table.jsp</result>
+		</action>
+		
+	</package>
+	
+	<!-- 广州项目登陆成功后的主页 -->
+	<package name="customer_guangzhou_index" extends="struts-default" namespace="/customer_guangzhou/index">
+		<action name="login_easyui" class="com.ihk.customer.action.GuangZhouIndexAction" method="login">
+		
+			<!-- <result name="loginSucc">/customer/guangzhou/index_login.jsp</result>-->
+			<result name="loginSucc">/ui/index.jsp</result> 
+		</action>
+		
+		<action name="selectProject" class="com.ihk.customer.action.GuangZhouIndexAction" method="selectProjectByRole">
+		<!-- 
+			<result name="loginSucc">/customer/guangzhou/index_login.jsp</result> -->
+			<result name="loginSucc">/ui/index.jsp</result>
+			
+		</action>
+	</package>
+	
+	<package name="customer_guangzhou_input" extends="struts-default" namespace="/customer_guangzhou/input">
+		<!-- 跳到增加客户界面 -->
+		<action name="forAdd" class="com.ihk.customer.action.GuangZhouInputAction" method="doSomeForAddCustomer1">
+			<result name="forAdd">/customer/guangzhou/input1.jsp</result>
+			<result name="forHuiJingAdd">/customer/guangzhou/input_huijing.jsp</result>
+			<result name="forQiaoXinAdd">/customer/guangzhou/input_qiaoxin.jsp</result>
+			<result name="forQuestionAdd">/customer/guangzhou/input_by_question.jsp</result>
+			<result name="forShanYuhu">/customer/guangzhou/input1_shanyuhu.jsp</result>
+		</action>
+		<!-- 增加客户 -->
+		<action name="addCustomer" class="com.ihk.customer.action.GuangZhouInputAction" method="addCustomer">
+			<interceptor-ref name="defaultStack"/>
+			<interceptor-ref name="token"/>
+			<result name="invalid.token" type="redirectAction">
+				forAdd?from=guangzhou&amp;deleteSession=token
+			</result>
+			<result name="customerAdd" type="redirectAction">
+				forAdd?from=guangzhou&amp;deleteSession=false
+			</result>
+		</action>
+		
+		<!-- 验证问卷必填项 -->
+		<action name="validateQuestion" class="com.ihk.customer.action.GuangZhouInputAction" method="validateQuestion" />
+		
+		<!-- 增加客户+问卷 -->
+		<action name="addCustomerAndQuestion" class="com.ihk.customer.action.GuangZhouInputAction" method="addCustomerAndQuestion">
+			<result name="suc" type="redirectAction">
+				forAdd?from=guangzhou&amp;deleteSession=false&amp;customerName=1
+			</result>
+			<result name="fail">/customer/guangzhou/input1.jsp</result>
+		</action>
+		
+		<!-- 客户问卷 -->
+		<action name="findQuestionTable" class="com.ihk.customer.action.GuangZhouInputAction" method="findTocList">
+			<result name="question">/customer/guangzhou/input_question_table.jsp</result>
+			<result name="old">/customer/guangzhou/input_old_project_buttom.jsp</result>
+		</action>
+		
+		<!-- 客户基本问卷 -->
+		<action name="getBaseQuestion" class="com.ihk.customer.action.GuangZhouInputAction" method="getBaseQuestion">
+			<result name="success">/customer/guangzhou/base_question.jsp</result>
+		</action>
+		
+		<!-- 带答案客户问卷 -->
+		<action name="findAnswerTable" class="com.ihk.customer.action.GuangZhouInputAction" method="findAnswerList">
+			<result name="question">/customer/guangzhou/input_question_table.jsp</result>
+			<result name="answer">/customer/guangzhou/update_question_table.jsp</result>
+			<result name="old">/customer/guangzhou/input_old_project_buttom.jsp</result>
+		</action>
+		
+		<!-- 新客户问卷多份 -->
+		<action name="findQuestionList" class="com.ihk.customer.action.GuangZhouInputAction" method="findQuestionList">
+			<result name="question">/customer/guangzhou/input_question_table.jsp</result>
+			<result name="old">/customer/guangzhou/input_old_project_buttom.jsp</result>
+		</action>
+		<!-- 得到售前客户问卷的列表(项目) -->
+		<action name="pickQuestionList" class="com.ihk.customer.action.GuangZhouInputAction" method="pickQuestionList"/>
+		<!-- 得到售前客户问卷的列表(公司) -->
+		<action name="pickQuestionListCompany" class="com.ihk.customer.action.GuangZhouInputAction" method="pickQuestionListCompany"/>
+		
+		<!-- 为了保证使用固定新建用户和自定义新建用户项目  进行选择的项目验证 
+		
+		<action name="changeProject" class="com.ihk.customer.action.GuangZhouInputAction" method="changeProject">
+		</action>-->
+	</package>
+	
+	<!-- 删除客户 -->
+	<package name="customer_guangzhou_delete" extends="struts-default" namespace="/customer_guangzhou/delete">
+		<action name="customers" class="com.ihk.customer.action.GuangZhouDeleteAction" method="delCustomers">
+			<result name="deleteCustomer" type="chain">
+				<param name="namespace">/customer_guangzhou/search</param>
+				<param name="actionName">indexForNotDeleSugg</param>
+			</result>
+		</action>
+	</package>
+	
+	<!-- 恢复客户-->
+	<package name="customer_guangzhou_recover" extends="struts-default" namespace="/customer_guangzhou/recover">
+		<action name="customers" class="com.ihk.customer.action.GuangZhouRecoverAction" method="recoverCustomers">
+				<result name="recoverCustomer" type="chain">
+					<param name="namespace">/customer_guangzhou/search</param>
+					<param name="actionName">indexForNotDeleSugg</param>
+				</result>
+		</action>
+	</package>
+	
+	<!-- 复制(转移)客户 -->
+	<package name="customer_guangzhou_copy" extends="struts-default" namespace="/customer_guangzhou/copy">
+		<action name="customers" class="com.ihk.customer.action.GuangZhouCopyCustomerAction" method="copyCustomers">
+			<result name="copyCustomer" type="chain">
+				<param name="namespace">/customer_guangzhou/search</param>
+				<param name="actionName">indexForNotDeleSugg</param>
+			</result>
+		</action>
+	</package>
+	
+	<!-- 设置只能查看 -->
+	<package name="customer_only_follow" extends="struts-default" namespace="/customer_guangzhou/only_follow">
+		<action name="customers" class="com.ihk.customer.action.GuangZhouOnlyFollowCustomerAction" method="onlyFollowCustomers">
+			<result name="onlyFollowCustomers" type="chain">
+				<param name="namespace">/customer_guangzhou/search</param>
+				<param name="actionName">indexForNotDeleSugg</param>
+			</result>
+		</action>
+	</package>
+	
+	<!-- 基于easyui的客源设置 start -->
+	<package name="customer_only_follow_easyui" extends="struts-default" namespace="/customer/only_follow/easyui">
+		<action name="toSetUpOnlyFollow" class="com.ihk.customer.action.easyui.OnlyFollowCustomerEasyUIAction" method="toSetUpOnlyFollow">
+			<result name="toSetUpOnlyFollow">/customer/easyui/setup_follow.jsp</result>
+		</action>
+		
+		<action name="setUpOnlyFollow" class="com.ihk.customer.action.easyui.OnlyFollowCustomerEasyUIAction" method="setUpOnlyFollow"/>
+		
+		<action name="deleteOnlyFollow" class="com.ihk.customer.action.easyui.OnlyFollowCustomerEasyUIAction" method="deleteOnlyFollow"/>
+		
+	</package>
+	<!-- 基于easyui的客源设置 end -->
+	
+	<package name="customer_guangzhou_update" extends="struts-base" namespace="/customer_guangzhou/update">
+		<!-- 查找一个客户 -->
+		<action name="getById" class="com.ihk.customer.action.GuangZhouUpdateAction" method="queryCustomerById">
+			<result name="queryCustomerByIdForUpdate">/customer/guangzhou/update.jsp</result>
+			<result name="queryHuiJingCustomerByIdForUpdate">/customer/guangzhou/update_huijing.jsp</result>
+			<result name="queryQiaoXinCustomerByIdForUpdate">/customer/guangzhou/update_qiaoxin.jsp</result>
+			<result name="queryCustomerAndQuestionByIdForUpdate">/customer/guangzhou/update_by_question1.jsp</result>
+			<result name="queryShanYuHuCustomerByIdForUpdate">/customer/guangzhou/update_by_shanyuhu.jsp</result>
+		</action>
+		<!-- 更新客户 -->
+		<action name="toUpdate" class="com.ihk.customer.action.GuangZhouUpdateAction" method="updateCustomer">
+			<result name="queryCustomerById" type="redirectAction">getById.action</result>
+		</action>
+		
+		<!-- 验证问卷必填项 -->
+		<action name="validateQuestion" class="com.ihk.customer.action.GuangZhouUpdateAction" method="validateQuestion" />
+		
+		<!-- 更新客户+问卷 -->
+		<action name="toUpdateQuestion" class="com.ihk.customer.action.GuangZhouUpdateAction" method="updateCustomerAndQuestion">
+			<result name="queryCustomerById" type="redirectAction">getById.action</result>
+		</action>
+		
+		
+		<!-- 更新最新问卷 -->
+		<action name="addAnwser" class="com.ihk.customer.action.GuangZhouUpdateAction" method="updateQuestion">
+			<result name="suc" type="redirectAction">getById.action</result>
+		</action>
+	</package>
+	
+	<package name="guangzhou_customer_search" extends="struts-default" namespace="/customer_guangzhou/search">
+		<!-- 查找客户 -->
+		<action name="index" class="com.ihk.customer.action.GuangZhouSearchAction" method="index">
+			<result name="searchCustomer" >/customer/guangzhou/index.jsp</result>
+		</action>
+		<!-- 获取项目对应付款方式列表 -->
+		<action name="getSelPayWayByCompanyProjectId" class="com.ihk.customer.action.GuangZhouSearchAction" method="getPayTypeListByCompanyProjectId">
+		</action>
+		
+		<!-- 查找客户并删除提示 -->
+		<action name="indexForDeleSugg" class="com.ihk.customer.action.GuangZhouSearchAction" method="indexForDeleSugg">
+			<result name="indexForDeleSugg" type="redirectAction">index?deleteSugg=true</result>
+		</action>
+		<!-- 查找客户不删除提示 -->
+		<action name="indexForNotDeleSugg" class="com.ihk.customer.action.GuangZhouSearchAction" method="indexForNotDeleSugg">
+			<result name="indexForNotDeleSugg" type="redirectAction">index?deleteSugg=false</result>
+		</action>
+		<!-- 查找客户(用于查找按钮) -->
+		<action name="search" class="com.ihk.customer.action.GuangZhouSearchAction" method="search">
+			<result name="searchCustomer" >/customer/guangzhou/index.jsp</result>
+		</action>
+		<!-- 查找客户不删除提示(用于查找按钮) -->
+		<action name="searchForNotDelSugg" class="com.ihk.customer.action.GuangZhouSearchAction" method="searchForNotDelSugg">
+			<result name="searchForNotDelSugg" type="redirectAction">searchOrderBy?deleteSugg=false</result>
+		</action>
+		<!-- 查找客户(排序) -->
+		<action name="searchOrderBy" class="com.ihk.customer.action.GuangZhouSearchAction" method="searchOrderBy">
+			<result name="searchCustomer" >/customer/guangzhou/index.jsp</result>
+		</action>
+		<!-- 查找售后客户(排序) -->
+		<action name="searchContractCustomerOrderBy" class="com.ihk.customer.action.GuangZhouSearchAction" method="searchContractCustomerOrderBy">
+			<result name="searchContractCustomer" >/customer/guangzhou/indexContractCustomer.jsp</result>
+		</action>
+		<!-- 下载客户资料 -->
+		<action name="downLoad" class="com.ihk.customer.action.GuangZhouSearchAction" method="downLoad"/>
+		<!-- 下载售后客户资料 -->
+		<action name="downLoadContractCustomer" class="com.ihk.customer.action.GuangZhouSearchAction" method="downLoadContractCustomer"/>
+		<!-- 查找售后客户 -->
+		<action name="indexContractCustomer" class="com.ihk.customer.action.GuangZhouSearchAction" method="indexContractCustomer">
+			<result name="searchContractCustomer" >/customer/guangzhou/indexContractCustomer.jsp</result>
+		</action>
+		<!-- 查找售后客户按钮 -->
+		<action name="searchContractCustomer" class="com.ihk.customer.action.GuangZhouSearchAction" method="searchContractCustomer">
+			<result name="searchContractCustomer" >/customer/guangzhou/indexContractCustomer.jsp</result>
+		</action>
+	</package>
+	
+	
+	<package name="customer_guangzhou_follow" extends="struts-default" namespace="/customer_guangzhou/follow">
+		<!-- 跳到跟进界面(列表界面的操作) -->
+		<action name="toAdd" class="com.ihk.customer.action.GuangZhouFollowAction" method="getSomeForAddFollow"/>
+		<!-- 跳到跟进界面(修改界面的操作) -->
+		<action name="toAddIndex" class="com.ihk.customer.action.GuangZhouFollowAction" method="getSomeForAddIndexFollow"/>
+		<!-- 增加跟进(列表界面的操作) -->
+		<action name="add" class="com.ihk.customer.action.GuangZhouFollowAction" method="addFollow">
+			<result name="queryCustomerById" type="chain">
+				<param name="namespace">/customer_guangzhou/update</param>
+				<param name="actionName">getById</param>
+				<param name="method">queryCustomerById</param>
+			</result>
+		</action>
+		<!-- 增加跟进(修改界面的操作) -->
+		<action name="addFollowForIndex" class="com.ihk.customer.action.GuangZhouFollowAction" method="addFollowForIndex">
+			<result name="addFollowForIndex" type="chain">
+				<param name="namespace">/customer_guangzhou/search</param>
+				<param name="actionName">searchForNotDelSugg</param>
+				<param name="method">searchForNotDelSugg</param>
+			</result>
+		</action>
+		
+	</package>
+	
+	<package name="guangzhou" extends="struts-default" namespace="/customer_guangzhou/search">
+		<!-- 根据省获取对应的市 -->
+		<action name="proviToCity" class="com.ihk.customer.action.ProviCityRegionAction" method="getCityByProvinceId"/>
+		<!-- 根据市获取对应的地区 -->
+		<action name="cityToRegion" class="com.ihk.customer.action.ProviCityRegionAction" method="getRegionByCityId"/>
+		<!-- 该方法已经废弃,该为手填 -->
+		<action name="regionToBlock" class="com.ihk.customer.action.ProviCityRegionAction" method="getBlockByRegionId"/>
+		
+		<!-- 所属销售 -->
+		<action name="sales" class="com.ihk.customer.action.SaleListAction" method="sales"/>
+		
+		<!-- 左边项目智能提示框 -->
+		<action name="leftProjects" class="com.ihk.customer.action.ProjectListAction" method="leftProjects"/>
+		
+		<!-- 左边项目的easyui -->
+		<action name="leftProjectsEasyui" class="com.ihk.customer.action.ProjectListAction" method="leftProjectsEasyui"/>
+		
+		<!-- 广州公司实际项目 top -->
+		<action name="projects" class="com.ihk.customer.action.ProjectListAction" method="searchProject"/>
+		<!-- 根据项目名精确查找 -->
+		<action name="searchProjectByExactName" class="com.ihk.customer.action.ProjectListAction" method="searchProjectByExactName"/>
+		<!-- 判断项目是否存在 -->
+		<action name="projectIsExists" class="com.ihk.customer.action.ProjectListAction" method="projectIsExists"/>
+		<!-- 根据项目id获取标红字段 -->
+		<action name="getRedsByProjectId" class="com.ihk.customer.action.ProjectListAction" method="getRedsByProjectId"/>
+		<!-- 根据项目名称获取对应的id -->
+		<action name="getProjectIdByProjectName" class="com.ihk.customer.action.ProjectListAction" method="getProjectIdByProjectName"/>
+		<!-- end -->
+		
+		<!-- 广州公司楼盘项目top -->
+		<action name="propertyProjects" class="com.ihk.customer.action.ProjectListAction" method="searchPropertyProject"/>
+		<!-- 根据楼盘项目名称获取对应的id -->
+		<action name="getProjectIdByProjectNameForProperty" class="com.ihk.customer.action.ProjectListAction" method="getProjectIdByProjectNameForProperty"/>
+		<!--  
+		<action name="propertyAreas" class="com.ihk.customer.action.ProjectListAction" method="searchPropertyProject"/>
+		
+		<action name="getAreaIdByAreaNameForArea" class="com.ihk.customer.action.ProjectListAction" method="getProjectIdByProjectNameForProperty"/>
+		-->
+		<!-- 根据楼盘项目id获取对应的楼栋(用于ajax) -->
+		<action name="getBuildListFromPropertyId" class="com.ihk.customer.action.ProjectListAction" method="getBuildListFromPropertyId"/>
+		<!-- 根据楼盘项目id获取对应的楼栋(用于智能提示框) -->
+		<action name="getBuildListFromPropertyIdForAuto" class="com.ihk.customer.action.ProjectListAction" method="getBuildListFromPropertyIdForAuto"/>
+		<!-- 根据单元id获取页面其他项目 -->
+		<action name="getOtherDataByUnitId" class="com.ihk.customer.action.ProjectListAction" method="getOtherDataByUnitId"/>
+		
+		<!-- end -->
+		
+		<!-- 广州公司BUILD -->
+		<!-- 查找楼栋 -->
+		<action name="propertyBuild" class="com.ihk.customer.action.ProjectListAction" method="searchPropertyBuild"/>
+		<!-- 根据楼栋名称获取对应的id -->
+		<action name="getBuildIdByBuildName" class="com.ihk.customer.action.ProjectListAction" method="getBuildIdByBuildNameForProperty"/>
+		
+		<!-- 获取家庭收入下拉框 -->
+		<action name="getSelFamilyIncome" class="com.ihk.customer.action.SelFamilyIncome" method="getSelFamilyIncome"/>
+		<!-- 根据项目id获取对应的家庭收入 -->
+		<action name="getSelFamilyIncomeByProjectId" class="com.ihk.customer.action.SelFamilyIncome" method="getSelFamilyIncomeByProjectId"/>
+		
+		<!-- 获取客户评级 -->
+		<action name="getSelRating" class="com.ihk.customer.action.SelRating" method="getSelRating"/>
+		<!-- 根据项目id获取对应的客户评级 -->
+		<action name="getSelRatingByProjectId" class="com.ihk.customer.action.SelRating" method="getSelRatingByProjectId"/>
+		
+		<!-- 根据项目id获取默认的居住工作区域的省市 -->
+		<action name="getSelProjectDefaultProvince" class="com.ihk.customer.action.SelProjectDefaultProvinceAndCity" method="getSelProjectDefaultProvince"/>
+		<action name="getSelProjectDefaultCity" class="com.ihk.customer.action.SelProjectDefaultProvinceAndCity" method="getSelProjectDefaultCity"/>
+		<action name="getSelProjectDefaultRegion" class="com.ihk.customer.action.SelProjectDefaultProvinceAndCity" method="getSelProjectDefaultRegion"/>
+		
+		<!-- 根据项目id和分析类型,获取区间范围的值(没使用到) -->
+		<action name="getRangeFromProjectIdAndType" class="com.ihk.customer.action.GetRangeFromProjectIdAndTypeAction" method="getRangeFromProjectIdAndType"/>
+		<!-- 判断号码是否存在 -->
+		<action name="phoneIsExists" class="com.ihk.customer.action.PhoneAction" method="findPhoneIsExists"/>
+		<!-- 判断家庭号码是否存在 -->
+		<action name="homePhoneIsExists" class="com.ihk.customer.action.PhoneAction" method="findHomePhoneIsExists"/>
+		<!-- 根据map参数判断号码是否存在 -->
+		<action name="phoneIsExistsForMap" class="com.ihk.customer.action.PhoneAction" method="findPhoneIsExistsForMap"/>
+		<!-- 根据map参数判断家庭号码是否存在 -->
+		<action name="homePhoneIsExistsForMap" class="com.ihk.customer.action.PhoneAction" method="findHomePhoneIsExistsForMap"/>
+		<!-- 查找用户(用于智能提示框) -->
+		<action name="users" class="com.ihk.customer.action.UserListAction" method="searchUser"/>
+		
+		<!-- appoint customer start(预约客户) -->
+		<!-- 跳到增加 -->
+		<action name="toAddAppointCustomer" class="com.ihk.customer.action.UserListAction" method="toAddAppointCustomer"/>
+		<!-- 显示单个客户 -->
+		<action name="showAppointCustomer" class="com.ihk.customer.action.UserListAction" method="showAppointCustomer"/>
+		<!-- 增加 -->
+		<action name="addAppointCustomer" class="com.ihk.customer.action.UserListAction" method="addAppointCustomer"/>
+		<!-- 获取单个客户 -->
+		<action name="getAppointCustomerById" class="com.ihk.customer.action.UserListAction" method="getAppointCustomerById"/>
+		<!-- 查找客户列表 -->
+		<action name="appointCustomers" class="com.ihk.customer.action.UserListAction" method="searchAppointCustomer"/>
+		<!-- appoint customer end -->
+		
+		<!-- confirm customer start(认购,合同的操作合并) -->
+		<!-- 跳到增加 -->
+		<action name="toAddConfirmCustomer" class="com.ihk.customer.action.UserListAction" method="toAddConfirmCustomer"/>
+		<!-- 显示单个客户 -->
+		<action name="showConfirmCustomer" class="com.ihk.customer.action.UserListAction" method="showConfirmCustomer"/>
+		<!-- 增加 -->
+		<action name="addConfirmCustomer" class="com.ihk.customer.action.UserListAction" method="addConfirmCustomer"/>
+		<!-- 获取单个客户 -->
+		<action name="getConfirmCustomerById" class="com.ihk.customer.action.UserListAction" method="getConfirmCustomerById"/>
+		<!-- 查找客户列表(认购/签约) -->
+		<action name="confirmCustomers" class="com.ihk.customer.action.UserListAction" method="searchConfirmCustomer"/>
+		<!-- 查找客户列表(合同) -->
+		<action name="contractCustomers" class="com.ihk.customer.action.UserListAction" method="searchContractCustomer"/>
+		<!-- confirm customer end -->
+		<!-- 根据名称获取用户id -->
+		<action name="getUserIdByName" class="com.ihk.customer.action.UserListAction" method="getUserIdByName"/>
+		<!-- 根据楼栋id获取单元列表 -->
+		<action name="searchUnitListByBuildId" class="com.ihk.property.action.PropertyAjaxAction" method="searchUnitListByBuildId"/>
+		<!-- 获取号码归属地(已经废弃),可以作为手工修改的如果,如果在本地要修改数据库连接 ./customer_guangzhou/search/tmpFetchPhoneFrom.action-->
+		<action name="tmpFetchPhoneFrom" class="com.ihk.customer.action.CustomerAction" method="tmpFetchPhoneFrom"/>
+		
+	</package>
+	
+	
+
+	<!-- set_role_byus   设置用户权限  已经没有使用的    (在重新设计权限之后就没有再使用)-->
+	<package name="guangzhou_role" extends="struts-default" namespace="/guangzhou/role">
+		<action name="index" class="com.ihk.sale.action.SetUserRoleByUserAction" method="search">
+			<result name="setrole">/customer/guangzhou/set_userRole_byUser.jsp</result>
+		</action>
+		<action name="search" class="com.ihk.sale.action.SetUserRoleByUserAction" method="search">
+			<result name="setrole">/customer/guangzhou/set_userRole_byUser.jsp</result>
+		</action>
+		<action name="add" class="com.ihk.sale.action.SetUserRoleByUserAction" method="addRole">
+			<result name="setrole">/customer/guangzhou/set_userRole_byUser.jsp</result>
+		</action>
+		<action name="del" class="com.ihk.sale.action.SetUserRoleByUserAction" method="delRole">
+			<result name="setrole">/customer/guangzhou/set_userRole_byUser.jsp</result>
+		</action>
+	</package>
+	<!-- set_role_by_project在重新设计权限之后就没有再使用)-->
+	<package name="guangzzhou_role_project" extends="struts-default" namespace="/guangzhou/role_project">
+		<action name="index" class="com.ihk.sale.action.guangzhou.SetUserRoleByProjectAction" method="index">
+			<result name="setrole">/customer/guangzhou/set_userRole_byProject.jsp</result>
+		</action>
+		<action name="search" class="com.ihk.sale.action.guangzhou.SetUserRoleByProjectAction" method="searchRole">
+			<result name="setrole">/customer/guangzhou/set_userRole_byProject.jsp</result>
+		</action>
+		<action name="add" class="com.ihk.sale.action.guangzhou.SetUserRoleByProjectAction" method="addUser">
+			<result name="setrole">/customer/guangzhou/set_userRole_byProject.jsp</result>
+		</action>
+		<action name="del" class="com.ihk.sale.action.guangzhou.SetUserRoleByProjectAction" method="delUser">
+			<result name="setrole">/customer/guangzhou/set_userRole_byProject.jsp</result>
+		</action>
+	</package>
+	<!-- set _ project    项目管理      现在是内部使用     在后续开放-->
+	<package name="guangzhou_project" extends="struts-default" namespace="/guangzhou/project">
+		<!-- 主要页面 -->
+		<action name="search" class="com.ihk.sale.action.guangzhou.ProjectSearchAction" method="searchProject">
+			<result name="search">/customer/guangzhou/project_search.jsp</result>
+		</action>
+		<!-- 提交项目查询  列表 -->
+		<action name="searchform" class="com.ihk.sale.action.guangzhou.ProjectSearchAction" method="searchProjectForm">
+			<result name="search">/customer/guangzhou/project_search.jsp</result>
+		</action>
+		<!-- 项目修改页面  company_project 对应表 -->
+		<action name="update" class="com.ihk.sale.action.guangzhou.ProjectSearchAction" method="updateProject">
+			<result name="update">/customer/guangzhou/project_update.jsp</result>
+			<result name="search">/customer/guangzhou/project_search.jsp</result>
+		</action>
+		<!-- 提交修改表单  company_project  -->
+		<action name="updateform" class="com.ihk.sale.action.guangzhou.ProjectSearchAction" method="updateProjectForm">
+			<result name="update">/customer/guangzhou/project_update.jsp</result>
+			<result name="search">/customer/guangzhou/project_search.jsp</result>
+		</action>
+	</package>
+	
+	<!-- 关于客户信息的汇总记录 图表    hangda 使用 -->
+	<package name="customer_guangzhou_chart" extends="struts-default" namespace="/customer_guangzhou/chart">
+	
+		<action name="table" class="com.ihk.customer.action.ChartTableAnalysisAction">
+			<result name="success" >/customer/guangzhou/table.jsp</result>
+		</action>
+		<!-- 下载信息 -->
+		<action name="downLoad" class="com.ihk.customer.action.ChartTableAnalysisAction" method="downLoad"/>
+		<!-- 客户数量环比图 -->
+		<action name="customerNum" class="com.ihk.customer.action.ChartCustomerNumAction">
+			<result name="success" >/customer/guangzhou/chart_customer_num.jsp</result>
+		</action>
+		<!-- 单项比例分析图 -->
+		<action name="customerPie" class="com.ihk.customer.action.ChartCustomerPieAction">
+			<result name="success" >/customer/guangzhou/chart_customer_pie.jsp</result>
+		</action>
+		<!-- 单项环比走势图 -->
+		<action name="categoryNum" class="com.ihk.customer.action.ChartCategoryNumAction">
+			<result name="success" >/customer/guangzhou/chart_category_num.jsp</result>
+		</action>
+		<!-- 交叉分析组合图 -->
+		<action name="customerDoublePie" class="com.ihk.customer.action.ChartCustomerDoublePieAction" method="customerDoublePie">
+			<result name="customerDoublePie">/customer/guangzhou/chart_customer_double_pie.jsp</result>
+		</action>
+		<!-- 项目客户量比例 -->
+		<action name="projectAndCustNum" class="com.ihk.sale.action.guangzhou.ChartProjectCustomerNumAction" method="index">
+			<result name="success" >/customer/guangzhou/chart_project_custnum.jsp</result>
+		</action>
+		<!-- 项目客户比例 -->
+		<action name="userAndCustNum" class="com.ihk.sale.action.guangzhou.ChartUserAccountCustomerNumAction" method="index">
+			<result name="success" >/customer/guangzhou/chart_userAccount_custnum.jsp</result>
+		</action>
+	</package>
+	<!-- customer_red   -->
+	<package name="guangzhou_customer_red" extends="struts-default" namespace="/customer_guangzhou/customer_red">
+	<!-- 调查表标红 -->
+		<action name="index" class="com.ihk.sale.action.guangzhou.SetCustomerRedAction" method="index">
+			<result name="set" >/customer/guangzhou/set_input_red.jsp</result>
+		</action>
+		<!-- 调查表标红 查询-->
+		<action name="search" class="com.ihk.sale.action.guangzhou.SetCustomerRedAction" method="searchProject">
+			<result name="set" >/customer/guangzhou/set_input_red.jsp</result>
+		</action>
+		<!-- 调查表标红 保存-->
+		<action name="save" class="com.ihk.sale.action.guangzhou.SetCustomerRedAction" method="saveCustomerRed">
+			<result name="set" >/customer/guangzhou/set_input_red.jsp</result>
+		</action>
+		<!-- 调查表标红 管理  列表-->
+		<action name="list" class="com.ihk.sale.action.guangzhou.searchCustomerRedAction" method="listIndex">
+			<result name="search" >/customer/guangzhou/search_update_red.jsp</result>
+		</action>
+		<!-- 调查表标红 管理  列表 查询-->
+		<action name="listsearch" class="com.ihk.sale.action.guangzhou.searchCustomerRedAction" method="listSearch">
+			<result name="search" >/customer/guangzhou/search_update_red.jsp</result>
+		</action>
+	</package>
+	<!-- CustomerRedAnalysis -->
+	<package name="guangzhou_customer_analysis" extends="struts-default" namespace="/customer_guangzhou/analysis">
+		<!-- 客户录入分析 -->
+		<action name="index" class="com.ihk.customer.action.CustomerRedAnalysis" method="index">
+			<result name="tablelist" >/customer/guangzhou/customerRed_analysis.jsp</result>
+		</action>
+		<!-- 客户录入分析  查询-->
+		<action name="search" class="com.ihk.customer.action.CustomerRedAnalysis" method="form">
+			<result name="tablelist" >/customer/guangzhou/customerRed_analysis.jsp</result>
+		</action>
+		
+	</package>
+	<!-- set first pwd -->
+	<package name="guangzhou_customer_firstpwd" extends="struts-default" namespace="/customer_guangzhou/first">
+		<action name="setpwd" class="com.ihk.user.action.GuangZhouFirstAction" method="firstLogin">
+			<result name="indexForSale">/customer/guangzhou/setpwd_first.jsp</result>
+			
+		</action>	
+		<!-- 第一次使用 修改密码     123456 才会进入 -->
+		<action name="form" class="com.ihk.user.action.GuangZhouFirstAction" method="form">
+			<result name="indexForSale">/customer/guangzhou/setpwd_first.jsp</result>
+			
+			<result name="success" type="chain">
+				<param name="namespace">/customer_guangzhou/index</param>
+				<param name="actionName">login_easyui</param>
+				<!--<param name="method">login</param>
+			--></result>
+		</action>	
+		
+	</package>
+	
+	<!-- 设置意向价格 面积 -->
+	<package name="guangzhou_customer_setoption" extends="struts-default" namespace="/customer_guangzhou/option">
+		<!-- 下拉框选项设计 -->
+		<action name="index" class="com.ihk.sale.action.guangzhou.OptionSetAction" method="index">
+			<result name="suc">/customer/guangzhou/option_manage.jsp</result>
+		</action>	
+		<!-- 自定义选项 -->
+		<action name="search" class="com.ihk.sale.action.guangzhou.OptionSetAction" method="search">
+			<result name="suc">/customer/guangzhou/option_manage.jsp</result>
+		</action>	
+		
+		<!-- 修改下拉框选项 -->
+		<action name="indexUpdate" class="com.ihk.sale.action.guangzhou.OptionSetAction" method="indexUpdate">
+			<result name="suc">/customer/guangzhou/option_manage_update.jsp</result>
+			<result name="err">/customer/guangzhou/option_manage.jsp</result>
+		</action>
+		<!-- 修改下拉框选项  提交-->
+		<action name="update" class="com.ihk.sale.action.guangzhou.OptionSetAction" method="update">
+			<result name="suc">/customer/guangzhou/option_manage_update.jsp</result>
+			<result name="err">/customer/guangzhou/option_manage.jsp</result>
+		</action>	
+		
+		<!-- 新建下拉项  index-->
+		<action name="indexInput" class="com.ihk.sale.action.guangzhou.OptionSetAction" method="indexInput">
+			<result name="suc">/customer/guangzhou/option_manage_input.jsp</result>
+		</action>
+		<!-- 新建下拉项 提交表单-->
+		<action name="form" class="com.ihk.sale.action.guangzhou.OptionSetAction" method="form">
+			<result name="suc">/customer/guangzhou/option_manage_input.jsp</result>
+		</action>	
+	</package>
+	
+	<!-- 公告 -->
+	<package name="guangzhou_customer_article" extends="struts-default" namespace="/customer_guangzhou/article">
+		<!-- 查询 -->
+		<action name="searchArticle" class="com.ihk.article.action.guangzhou.SearchArticleAction" method="searchArticle">
+			<result name="success">/article/guangzhou/search_article.jsp</result>
+		</action>	
+		<action name="searchArticleAjax" class="com.ihk.article.action.guangzhou.SearchArticleAction" method="searchArticleAjax"/>
+		
+		<!-- 修改 -->
+		<action name="indexUpdate" class="com.ihk.article.action.guangzhou.UpdateArticleAction" method="indexUpdate">
+			<result name="suc">/article/guangzhou/update_for_article.jsp</result>
+			
+		</action>
+		<action name="update" class="com.ihk.article.action.guangzhou.UpdateArticleAction" method="update"/>
+
+		<!-- 新建 -->
+		<action name="indexInput" class="com.ihk.article.action.guangzhou.InputArticleAction" method="indexInput">
+			<result name="suc">/article/guangzhou/input_for_article.jsp</result>
+		</action>
+		<action name="input" class="com.ihk.article.action.guangzhou.InputArticleAction" method="input"/>
+
+		<!-- 删除公告 -->
+		<action name="deleteArticle" class="com.ihk.article.action.guangzhou.DeleteArticleAction" method="deleteArticle">
+		</action>	
+		
+		<!-- 查看详细公告 -->
+		<action name="show" class="com.ihk.article.action.guangzhou.ArticleShowAction" method="articleIndex">
+			<result name="suc">/article/guangzhou/show_article.jsp</result>
+		</action>
+	</package>
+	
+	<!-- 绑定内网账户 -->
+	<package name="guangzhou_customer_band" extends="struts-default" namespace="/customer_guangzhou/band">
+		<action name="indexBand" class="com.ihk.user.action.BandAccountAction" method="indexBand">
+			<result name="suc">/userAccount/guangzhou/band_account.jsp</result>
+		</action>
+		<!-- 提交绑定 -->
+		<action name="band" class="com.ihk.user.action.BandAccountAction" method="band">
+			<result name="suc">/userAccount/guangzhou/band_account.jsp</result>
+		</action>
+		<!-- 删除绑定 -->
+		<action name="removeBand" class="com.ihk.user.action.BandAccountAction" method="removeBand">
+			<result name="suc">/userAccount/guangzhou/band_account.jsp</result>
+		</action>
+	</package>
+	<!-- 缓存 -->
+	<package name="guangzhou_customer_cache" extends="struts-default" namespace="/customer_guangzhou/cache">
+		<action name="cacheIndex" class="com.ihk.user.action.CacheAction" method="toCachePage">
+			<result name="cleancache">/userAccount/guangzhou/cleanCache.jsp</result>
+		</action>
+		
+		<action name="cacheFlush" class="com.ihk.user.action.CacheAction" method="cleanCache">
+			<result name="cleancache">/userAccount/guangzhou/cleanCache.jsp</result>
+		</action>
+		
+		<action name="cleanRoleCache" class="com.ihk.user.action.CacheAction" method="cleanRoleCache">
+			<result name="cleanRoleCache">/userAccount/guangzhou/cleanCache.jsp</result>
+		</action>
+		
+		<action name="initDownloadCache" class="com.ihk.user.action.CacheAction" method="initDownloadCache">
+			<result name="initDownloadCache">/userAccount/guangzhou/cleanCache.jsp</result>
+		</action>
+		
+		<action name="showCaches" class="com.ihk.user.action.CacheAction" method="showCaches">
+			<result name="showCaches">/userAccount/guangzhou/cleanCache.jsp</result>
+		</action>
+		
+		<action name="ajaxShowCaches" class="com.ihk.user.action.CacheAction" method="ajaxShowCaches" />
+		
+	</package>
+	
+	<!-- 开发商    已经没有在使用     仿照明远-->
+	<package name="guangzhou_property_developer" extends="struts-default" namespace="/property/developer">
+		<action name="index" class="com.ihk.property.action.DeveloperAction" method="index">
+			<result name="suc">/property/guangzhou/propertyDeveloper/search_developer.jsp</result>
+		</action>
+		<!-- 查询开发商 -->
+		<action name="search" class="com.ihk.property.action.DeveloperAction" method="search">
+			<result name="suc">/property/guangzhou/propertyDeveloper/search_developer.jsp</result>
+		</action>
+		<!-- 新建开发商 -->
+		<action name="input_index" class="com.ihk.property.action.DeveloperAction" method="inputIndex">
+			<result name="suc">/property/guangzhou/propertyDeveloper/input_developer.jsp</result>
+			
+		</action>
+		<!-- 提交新建开发商 -->
+		<action name="input" class="com.ihk.property.action.DeveloperAction" method="input">
+			<result name="suc">/property/guangzhou/propertyDeveloper/input_developer.jsp</result>
+			<result name="update">/property/guangzhou/propertyDeveloper/update_developer.jsp</result>
+		</action>
+		<!-- 修改开发商 index -->
+		<action name="update_index" class="com.ihk.property.action.DeveloperAction" method="updateIndex">
+			<result name="suc">/property/guangzhou/propertyDeveloper/update_developer.jsp</result>
+		</action>
+		<!-- 修改开发商 提交表单 -->
+		<action name="update" class="com.ihk.property.action.DeveloperAction" method="update">
+			<result name="suc">/property/guangzhou/propertyDeveloper/update_developer.jsp</result>
+		</action>
+		<!-- 删除开发商 -->
+		<action name="del" class="com.ihk.property.action.DeveloperAction" method="del">
+			<result name="suc">/property/guangzhou/propertyDeveloper/input_developer.jsp</result>
+		</action>
+		
+	</package>
+	
+	<!-- 楼盘项目     仿明远   现在没有在使用的模块-->
+	<package name="guangzhou_property_project" extends="struts-default" namespace="/property/project">
+		<!-- index页面 -->
+		<action name="index" class="com.ihk.property.action.PropertyProjectAction" method="index">
+			<result name="suc">/property/guangzhou/property/search_project.jsp</result>
+		</action>
+		<!-- 查询项目 -->
+		<action name="search" class="com.ihk.property.action.PropertyProjectAction" method="search">
+			<result name="suc">/property/guangzhou/property/search_project.jsp</result>
+		</action>
+		<!-- 新建项目 index -->
+		<action name="input_index" class="com.ihk.property.action.PropertyProjectAction" method="inputIndex">
+			<result name="suc">/property/guangzhou/property/input_project.jsp</result>
+		</action>
+		<!-- 新建项目 提交表单 -->
+		<action name="input" class="com.ihk.property.action.PropertyProjectAction" method="input">
+			<result name="suc">/property/guangzhou/property/input_project.jsp</result>
+			<result name="update">/property/guangzhou/property/update_project.jsp</result>
+		</action>
+		<!-- 修改项目  index -->
+		<action name="update_index" class="com.ihk.property.action.PropertyProjectAction" method="updateIndex">
+			<result name="suc">/property/guangzhou/property/update_project.jsp</result>
+		</action>
+		<!-- 修改项目  提交表单 -->
+		<action name="update" class="com.ihk.property.action.PropertyProjectAction" method="update">
+			<result name="suc">/property/guangzhou/property/update_project.jsp</result>
+			<result name="input">/property/guangzhou/property/update_project.jsp</result>
+		</action>
+		<!-- 删除项目 -->
+		<action name="del" class="com.ihk.property.action.PropertyProjectAction" method="del">
+			<result name="suc">/property/guangzhou/property/input_project.jsp</result>
+		</action>
+		
+	</package>
+	<!--build 楼栋管理  仿照明远时期   现在没有使用-->
+	<package name="guangzhou_property_build" extends="struts-default" namespace="/property/build">
+	<!-- 初始页面 -->
+		<action name="index" class="com.ihk.property.action.BuildAction" method="index">
+			<result name="suc">/property/guangzhou/build/search_build.jsp</result>
+		</action>
+		<!-- 查询build -->
+		<action name="search" class="com.ihk.property.action.BuildAction" method="search">
+			<result name="suc">/property/guangzhou/build/search_build.jsp</result>
+		</action>
+		<!-- 新建初始页面  build -->
+		<action name="input_index" class="com.ihk.property.action.BuildAction" method="inputIndex">
+			<result name="suc">/property/guangzhou/build/input_build.jsp</result>
+		</action>
+		<!-- build 提交新建 -->
+		<action name="input" class="com.ihk.property.action.BuildAction" method="input">
+			<result name="suc">/property/guangzhou/build/input_build.jsp</result>
+			<result name="update">/property/guangzhou/build/update_build.jsp</result>
+		</action>
+		<!-- 修改build index -->
+		<action name="update_index" class="com.ihk.property.action.BuildAction" method="updateIndex">
+			<result name="suc">/property/guangzhou/build/update_build.jsp</result>
+		</action>
+		<!-- 修改build 提交表单 -->
+		<action name="update" class="com.ihk.property.action.BuildAction" method="update">
+			<result name="suc">/property/guangzhou/build/update_build.jsp</result>
+		</action>
+		<!-- 删除build -->
+		<action name="del" class="com.ihk.property.action.BuildAction" method="del">
+			<result name="suc">/property/guangzhou/build/input_build.jsp</result>
+		</action>
+		<!-- 根据 property_project 查找build -->
+		<action name="sel_build_by_pr" class="com.ihk.property.action.BuildAction" method="selBuildByPr">
+	
+		</action>
+		
+	</package>
+	
+	<!--area 区域管理  仿照明远-->
+	<package name="guangzhou_property_area" extends="struts-default" namespace="/property/area">
+	<!-- 初始页面 -->
+		<action name="index" class="com.ihk.property.action.AreaAction" method="index">
+			<result name="input">/property/guangzhou/area/input_area.jsp</result>
+		</action>
+		<!-- 新建区域 提交表单 -->
+		<action name="inputForm" class="com.ihk.property.action.AreaAction" method="inputForm">
+			<result name="input">/property/guangzhou/area/input_area.jsp</result>
+			<result name="update">/property/guangzhou/area/update_area.jsp</result>
+		</action>
+		<!-- 查询区域列表 -->
+		<action name="searchIndex" class="com.ihk.property.action.AreaAction" method="searchIndex">
+			<result name="search">/property/guangzhou/area/search_area.jsp</result>
+		</action>
+		<!-- 查询提交 -->
+		<action name="searchForm" class="com.ihk.property.action.AreaAction" method="searchForm">
+			<result name="search">/property/guangzhou/area/search_area.jsp</result>
+		</action>
+		<!-- 修改区域信息 -->
+		<action name="updateIndex" class="com.ihk.property.action.AreaAction" method="updateIndex">
+			<result name="update">/property/guangzhou/area/update_area.jsp</result>
+		</action>
+		<!-- 修改区域信息  提交表单 -->
+		<action name="updateForm" class="com.ihk.property.action.AreaAction" method="updateForm">
+			<result name="update">/property/guangzhou/area/update_area.jsp</result>
+		</action>
+	</package>
+	
+	<!--unit 单元管理-->
+	<package name="guangzhou_property_unit" extends="struts-default" namespace="/property/unit">
+	<!-- 查找单元列表 -->
+		<action name="search_list_index" class="com.ihk.property.action.NewUnitAction" method="searchListIndex">
+			<result name="suc">/property/guangzhou/unit/list_unit.jsp</result>
+		</action>
+		<!-- form -->
+		<action name="search_list_form" class="com.ihk.property.action.NewUnitAction" method="searchList">
+			<result name="suc">/property/guangzhou/unit/list_unit.jsp</result>
+		</action>
+		
+		<!--修改单个单元 -->
+		<action name="update_one_unit" class="com.ihk.property.action.NewUnitAction" method="updateOneUnitIndex">
+			<result name="suc">/property/guangzhou/unit/update_one_unit.jsp</result>
+		</action>
+		<!-- form 修改单个单元 -->
+		<action name="update_one_unit_form" class="com.ihk.property.action.NewUnitAction" method="updateOneUnit">
+			<result name="suc">/property/guangzhou/unit/update_one_unit.jsp</result>
+		</action>
+		
+		<!-- 查找list -->
+		<action name="search_list" class="com.ihk.property.action.NewUnitAction" method="searchList">
+			<result name="suc">/property/guangzhou/unit/list_unit.jsp</result>
+		</action>
+	
+		<action name="index" class="com.ihk.property.action.NewUnitAction" method="newUnitIndex">
+			<result name="suc">/property/guangzhou/unit/input_unit.jsp</result>
+		</action>
+		<!-- 初始化楼栋 -->
+		<action name="batch_input" class="com.ihk.property.action.NewUnitAction" method="newUnitForm">
+			<result name="suc">/property/guangzhou/unit/input_unit.jsp</result>
+		
+		</action>
+		<!-- 多个单元信息初始化 -->
+		<action name="reset_index" class="com.ihk.property.action.ResetUnitAction" method="index">
+			<result name="suc">/property/guangzhou/unit/update_unit.jsp</result>
+		</action>
+		<action name="reset_unit" class="com.ihk.property.action.ResetUnitAction" method="resetIndex">
+			<result name="suc">/property/guangzhou/unit/reset_unit.jsp</result>
+		</action>
+		<action name="reset" class="com.ihk.property.action.ResetUnitAction" method="reset">
+			<result name="suc">/property/guangzhou/unit/reset_unit.jsp</result>
+		</action>
+		<!-- 绑定单元  已经没有使用 -->
+		<action name="unit_bind" class="com.ihk.property.action.ResetUnitAction" method="bindUnit">
+			<result name="suc">/property/guangzhou/unit/update_unit.jsp</result>
+		</action>
+		<!-- 删除绑定 -->
+		<action name="del_bind" class="com.ihk.property.action.ResetUnitAction" method="delAllBindUnit">
+			<result name="suc">/property/guangzhou/unit/update_unit.jsp</result>
+		</action>
+		
+		<!-- 查看单元信息   弹出框 -->
+		<action name="show_index" class="com.ihk.property.action.ShowUnitAction" method="index">
+			<result name="suc">/property/guangzhou/unit/show_unit.jsp</result>
+		</action>
+		<!-- 选择单元  查看单元信息 -->
+		<action name="select_unit" class="com.ihk.property.action.ShowUnitAction" method="showUnit">
+			<result name="suc">/property/guangzhou/unit/show_unit.jsp</result>
+		</action>
+		<!-- 修改单元信息 弹出框 -->
+		<action name="update_unit" class="com.ihk.property.action.ShowUnitAction" method="update">
+			<result name="suc">/property/guangzhou/unit/show_unit.jsp</result>
+		</action>
+		<!-- 修改单元状态 -->
+		<action name="update_unit_salestate" class="com.ihk.property.action.ShowUnitAction" method="updateSaleState">
+			<result name="suc">/property/guangzhou/unit/show_unit.jsp</result>
+		</action>
+		
+		<!-- 单个单元的详细信息 -->
+		<action name="unit_infomation" class="com.ihk.property.action.PropertyAjaxAction" method="searchUnitById">
+			<result name="suc">/property/guangzhou/unit/ajax_unit_infomation.jsp</result>
+		</action>
+		<!-- 提交单元信息  -->
+		<action name="select_unit_for_frame" class="com.ihk.property.action.PropertyAjaxAction" method="searchUnitById">
+			<result name="suc">/property/guangzhou/unit/ajax_unit_infomation.jsp</result>
+		</action>
+	</package>
+		<!--oper_log -->
+	<package name="guangzhou_property_oper" extends="struts-default" namespace="/property/oper">
+		<!-- 详细登录情况 -->
+		<action name="index" class="com.ihk.setting.action.ShowOperLogAction" method="index">
+			<result name="suc">/userAccount/guangzhou/show_oper_log.jsp</result>
+		</action>
+		<!-- 查找登陆情况 -->
+		<action name="search" class="com.ihk.setting.action.ShowOperLogAction" method="search">
+			<result name="suc">/userAccount/guangzhou/show_oper_log.jsp</result>
+		</action>
+		<!-- 功能点击明细 -->
+		<action name="actionRecordLogForm" class="com.ihk.setting.action.ActionRecordLogAction" method="indexForm">
+			<result name ="success">/userAccount/guangzhou/action_record_log.jsp </result>
+		</action>
+		<!-- 查找功能点击明细 -->
+		<action name="actionRecordSearchLog" class="com.ihk.setting.action.ActionRecordLogAction" method="searchLog">
+		</action>
+		<!-- 人员查询  根据 -->
+		<action name="user_index" class="com.ihk.setting.action.UserOperLogAction" method="index">
+			<result name="suc">/userAccount/guangzhou/user_oper_log.jsp</result>
+		</action>
+		<!-- 人员查询  提交表单 查询 -->
+		<action name="user_search" class="com.ihk.setting.action.UserOperLogAction" method="search">
+			<result name="suc">/userAccount/guangzhou/user_oper_log.jsp</result>
+		</action>
+		<!-- 根据项目查询登陆 -->
+		<action name="project_unit_index" class="com.ihk.setting.action.ProjectOperLogAction" method="index">
+			<result name="suc">/userAccount/guangzhou/project_oper_log.jsp</result>
+		</action>
+		<!-- 提交查询项目登陆情况表单 -->
+		<action name="project_unit_search" class="com.ihk.setting.action.ProjectOperLogAction" method="search">
+			<result name="suc">/userAccount/guangzhou/project_oper_log.jsp</result>
+		</action>
+	</package>
+	<!--unittex -->
+	<package name="guangzhou_property_test" extends="struts-default" namespace="/property/test">
+		<!-- 房间信息 等   已经没有在使用 -->
+		<action name="index" class="com.ihk.test.UnitFrame" method="index">
+			<result name="suc">/frame/select_unit.jsp</result>
+		</action>
+			
+		<action name="list" class="com.ihk.test.SelectUnitAction" method="index">
+			<result name="suc">/frame/unit_info.jsp</result>
+		</action>
+		<action name="find_uid" class="com.ihk.test.SelectUnitAction" method="findUid">
+			
+		</action>
+		
+		<action name="information" class="com.ihk.test.SelectUnitAction" method="selectUnitInformation">
+			<result name="ret">/frame/only_see_unit_information.jsp</result>
+		</action>
+		
+	</package>
+	
+	
+	
+	<!--认购管理
+	<package name="guangzhou_property_test" extends="struts-default" namespace="/property/test">
+		
+		
+		
+		<action name="index" class="com.ihk.test.UnitFrame" method="index">
+			<result name="suc">/frame/unit_frame.jsp</result>
+		</action>
+		
+	</package> -->
+	
+	
+	<!-- 审批 -->
+	<package name="guangzhou_approval_change" extends="struts-default" namespace="/approval/change">
+		<!-- 初始页面 -->
+		<action name="index" class="com.ihk.saleunit.action.GuangZhouApprovalChangeAction" method="index">
+			<result name="suc">/approval_change/guangzhou/index.jsp</result>
+		</action>
+		<!-- 查找 -->
+		<action name="search" class="com.ihk.saleunit.action.GuangZhouApprovalChangeAction" method="search">
+			<result name="suc">/approval_change/guangzhou/index.jsp</result>
+		</action>
+		
+		<!-- ajax HTML信息  -->
+		<action name="showdiv" class="com.ihk.saleunit.action.GuangZhouApprovalChangeAction" method="approvalInformation">
+			<result name="price">/approval_change/guangzhou/ajax_change_price.jsp</result>
+			<result name="unit">/approval_change/guangzhou/ajax_change_unit.jsp</result>
+			<result name="owner">/approval_change/guangzhou/ajax_change_owner.jsp</result>
+			<result name="out">/approval_change/guangzhou/ajax_change_out.jsp</result>
+		
+		</action>
+		
+		<action name="update" class="com.ihk.saleunit.action.GuangZhouApprovalChangeAction" method="updateApprovalState">
+			
+		</action>
+	</package>
+	
+	
+</struts>
+
+
+

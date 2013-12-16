@@ -1,0 +1,214 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<web-app version="2.4" xmlns="http://java.sun.com/xml/ns/j2ee"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://java.sun.com/xml/ns/j2ee   http://java.sun.com/xml/ns/j2ee/web-app_2_4.xsd">
+	
+	<!-- log4jConfigLocation,log4jRefreshInterval的声明要放在Log4jConfigListener前面才能读取log4jConfigLocation指定的log4j文件 -->
+	<context-param>
+		<param-name>log4jConfigLocation</param-name>
+		<param-value>/WEB-INF/classes/log4j.properties</param-value>
+	</context-param>
+	<context-param>
+		<param-name>log4jRefreshInterval</param-name>
+		<param-value>60000</param-value>
+	</context-param>
+
+	<listener>
+		<listener-class>org.springframework.web.util.Log4jConfigListener</listener-class>
+	</listener>
+	 
+	<context-param>
+		<param-name>contextConfigLocation</param-name>
+		<param-value>/WEB-INF/applicationContext-*.xml,classpath*:applicationContext-*.xml</param-value>
+	</context-param>
+	
+	<listener>
+		<listener-class>org.springframework.web.context.ContextLoaderListener</listener-class>
+	</listener>
+	
+	<listener>
+		<listener-class>com.ihk.utils.SpringUtils</listener-class>
+	</listener>
+
+	<filter>
+		<description>编码过滤器</description>
+		<filter-name>encodingFilter</filter-name>
+		<filter-class>com.ihk.filter.EncodingFilter</filter-class>
+		<init-param>
+			<param-name>encoding</param-name>
+			<param-value>utf-8</param-value>
+		</init-param>
+	</filter>
+
+	<filter-mapping>
+		<filter-name>encodingFilter</filter-name>
+		<url-pattern>/*</url-pattern>
+	</filter-mapping>
+
+	<filter>
+		<description>登录过滤器,避免没有登录而直接通过url来访问</description>
+		<filter-name>adminFilter</filter-name>
+		<filter-class>com.ihk.filter.AdminFilter</filter-class>
+		<init-param>
+			<param-name>exUrl</param-name>
+			<param-value>login.jsp,login_ipad.jsp,login_pc.jsp,loginUserAccount.action,image.jsp,login.action</param-value>
+			<!-- <param-value>login.jsp,loginUserAccount.action,image.jsp,jquery-1.6.2.min.js,login20111103.css,DD_belatedPNG_0.0.8a-min.js,loginbg.jpg,inputbox.jpg,inputbox_s.jpg,login.jpg</param-value> -->
+			<description>排除的url</description>
+		</init-param>
+		
+		<init-param>
+			<param-name>phoneUserAgent</param-name>
+			<param-value>iphone,ipod,symbian,android,itouch</param-value>
+			<description>手机浏览器文件头</description>
+		</init-param>
+	</filter>
+
+	<filter-mapping>
+		<filter-name>adminFilter</filter-name>
+		<url-pattern>*.do</url-pattern>
+		<url-pattern>*.action</url-pattern>
+		<url-pattern>*.cache</url-pattern>
+		<url-pattern>*.deal</url-pattern>
+		<url-pattern>*.jsp</url-pattern>
+		<url-pattern>*.html</url-pattern>
+		<url-pattern>*.htm</url-pattern>
+	</filter-mapping>
+
+	<filter>
+		<description>url过滤器,避免跨项目跳转访问</description>
+		<filter-name>urlFilter</filter-name>
+		<filter-class>com.ihk.filter.UrlFilter</filter-class>
+		<init-param>
+			<param-name>exUrl</param-name>
+			<param-value>loginUserAccount.action,customerLoginOut.action</param-value>
+		</init-param>
+	</filter>
+
+	<filter-mapping>
+		<filter-name>urlFilter</filter-name>
+		<url-pattern>*.action1</url-pattern>
+	</filter-mapping>
+
+	<!-- <filter> <description>过滤处理返回页面的filter</description> <filter-name>myWrapperFilter</filter-name> 
+		<filter-class>com.ihk.filter.MyHttpServletResponseWrapperFilter</filter-class> 
+		</filter> <filter-mapping> <filter-name>myWrapperFilter</filter-name> <url-pattern>*.cache</url-pattern> 
+		</filter-mapping> -->
+
+	<!-- ehcache page cache 该缓存filter是根据一个请求页面利用gzip来缓存,主要针对页面访问量大,且数据不常改变的页面,系统中暂没有该种页面 -->
+	<filter>
+		<filter-name>MySimplePageCachingFilter</filter-name>
+		<filter-class>com.ihk.filter.MySimplePageCachingFilter</filter-class>
+
+		<init-param>
+			<param-name>cacheName</param-name>
+			<param-value>mySimplePageCachingFilter</param-value>
+		</init-param>
+	</filter>
+
+	<filter-mapping>
+		<filter-name>MySimplePageCachingFilter</filter-name>
+		<url-pattern>*.cache</url-pattern>
+	</filter-mapping>
+
+	<!-- 过滤处理页面返回html,且具有缓存功能 -->
+	<filter>
+		<filter-name>MyDealFilter</filter-name>
+		<filter-class>com.ihk.test.MyDealFilter</filter-class>
+
+		<init-param>
+			<param-name>cacheName</param-name>
+			<param-value>myDealPageCachingFilter</param-value>
+		</init-param>
+	</filter>
+
+	<filter-mapping>
+		<filter-name>MyDealFilter</filter-name>
+		<url-pattern>*.deal</url-pattern>
+	</filter-mapping>
+	<filter>
+		<description>统计action的使用</description>
+		<filter-name>actionCount</filter-name>
+		<filter-class>com.ihk.filter.ActionCountFilter</filter-class>
+		<init-param>
+				<param-name>recordAction</param-name>
+				<param-value>myDealPageCachingFilter</param-value>
+		</init-param>
+	</filter>
+	<filter-mapping>
+		<filter-name>actionCount</filter-name>
+		<url-pattern>*.action</url-pattern>
+	</filter-mapping>
+	<!-- struts2的新版本中,这个可以去除 -->
+	<!-- 
+	<filter>
+		<filter-name>struts-cleanup</filter-name>
+		<filter-class>org.apache.struts2.dispatcher.ActionContextCleanUp</filter-class>
+	</filter>
+	 -->
+	
+	<filter>
+		<filter-name>struts2</filter-name>
+		<filter-class>org.apache.struts2.dispatcher.ng.filter.StrutsPrepareAndExecuteFilter</filter-class>
+	</filter>
+
+	<!-- 
+	<filter-mapping>
+		<filter-name>struts-cleanup</filter-name>
+		<url-pattern>*.do</url-pattern>
+		<url-pattern>*.action</url-pattern>
+		<url-pattern>*.cache</url-pattern>
+		<url-pattern>*.deal</url-pattern>
+		<url-pattern>*.jsp</url-pattern>
+		<url-pattern>*.htm</url-pattern>
+		<url-pattern>*.html</url-pattern>
+	</filter-mapping>
+	 -->
+
+	<filter-mapping>
+		<filter-name>struts2</filter-name>
+		<url-pattern>*.do</url-pattern>
+		<url-pattern>*.action</url-pattern>
+		<url-pattern>*.cache</url-pattern>
+		<url-pattern>*.deal</url-pattern>
+		<url-pattern>*.jsp</url-pattern>
+		<url-pattern>*.htm</url-pattern>
+		<url-pattern>*.html</url-pattern>
+	</filter-mapping>
+
+
+
+	<!-- 设置session的有效时间(单位为分钟) -->
+	<session-config>
+		<session-timeout>30</session-timeout>
+	</session-config>
+
+	<!-- 通过AdminFilter去判断,是跳到pc,还是手机 -->
+	<welcome-file-list>
+		<welcome-file>login.jsp</welcome-file>
+	</welcome-file-list>
+	<login-config>
+		<auth-method>BASIC</auth-method>
+	</login-config>
+	
+	<resource-ref>
+		<description>tomcat7 jndi 连接池(配置放在META-INF/context.xml)</description>
+		<res-ref-name>jdbc/crm</res-ref-name>
+		<res-type>javax.sql.DataSource</res-type>
+		<res-auth>Container</res-auth>
+	</resource-ref>
+
+	<!-- 
+	<servlet>
+		<description>服务器推送框架(没有使用到)</description>
+		<servlet-name>pushlet</servlet-name>
+		<servlet-class>nl.justobjects.pushlet.servlet.Pushlet</servlet-class>
+		<load-on-startup>1</load-on-startup>
+	</servlet>
+
+	<servlet-mapping>
+		<servlet-name>pushlet</servlet-name>
+		<url-pattern>/pushlet.srv</url-pattern>
+	</servlet-mapping>
+	 -->
+
+</web-app>

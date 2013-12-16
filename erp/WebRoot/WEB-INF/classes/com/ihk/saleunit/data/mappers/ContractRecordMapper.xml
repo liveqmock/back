@@ -1,0 +1,124 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.ihk.saleunit.data.IContractRecordMapper">
+
+	<resultMap type="ContractRecord" id="contractRecordResultMap">
+		<id property="id" column="id" />        
+		<result property="contractNo" column="contract_no" />
+		<result property="contractDate" column="contract_date" />
+		<result property="customerName" column="customer_name" />
+		<result property="contractMoney" column="contract_money" />
+		<result property="salesName" column="sales_name" />
+		<result property="state" column="state" />
+		<result property="remark" column="remark" />
+		<result property="handoverUser" column="handover_user" />
+		<result property="isDeleted" column="is_deleted" />
+		<result property="createdId" column="created_id" />
+		<result property="createdTime" column="created_time" />
+		<result property="modId" column="mod_id" />
+		<result property="modTime" column="mod_time" />
+	</resultMap>
+
+	<insert id="addContractRecord" parameterType="ContractRecord">
+		 <selectKey resultType="java.lang.Integer" keyProperty="id" order="AFTER" >
+            SELECT @@IDENTITY
+        </selectKey>		
+		insert into contract_record(
+		contract_no,
+		contract_date,
+		customer_name,
+		contract_money,
+		sales_name,
+		state,
+		remark,
+		handover_user,
+		is_deleted,
+		created_id,
+		created_time,
+		mod_id,
+		mod_time
+		)
+			VALUES(
+		#{contractNo},
+		#{contractDate},
+		#{customerName},
+		#{contractMoney},
+		#{salesName},
+		#{state},
+		#{remark},
+		#{handoverUser},
+		#{isDeleted},
+		#{createdId},
+		#{createdTime},
+		#{modId},
+		#{modTime}
+			)
+		
+	</insert>
+	<delete id="deleteContractRecord" parameterType="int">
+	update contract_record set is_deleted='1' where id=#{id};
+	</delete>
+	<update id="updateContractRecord" parameterType="int">
+	update contract_record set 
+		contract_no=#{contractNo},
+		contract_date=#{contractDate},
+		customer_name=#{customerName},
+		contract_money=#{contractMoney},
+		sales_name=#{salesName},
+		state=#{state},
+		remark=#{remark},
+		handover_user=#{handoverUser},
+		mod_id=#{modId},
+		mod_time=#{modTime}
+	 where id=#{id}
+	</update>
+	<select id="findContractRecordById" resultMap="contractRecordResultMap">
+	select * from contract_record where id=#{id}
+	</select>
+    
+	<sql id="findWhereCond"> 
+		<where>
+      
+			<if test="contractNoLike != null and contractNoLike != ''">
+				contract_no like  concat(concat('%', #{contractNoLike, jdbcType=VARCHAR}), '%')
+            </if> 
+            <if test="ids != null and ids.size() > 0">  
+	            and id in
+	            <foreach  
+	                collection="ids"  
+	                item="uId"  
+	                open="("  
+	                separator=","  
+	                close=")">  
+	                #{uId}  
+	            </foreach>  
+	        </if>    
+            and is_deleted = '0'
+          
+		</where>
+	</sql>
+	
+	<select id="findContractRecordCount" resultType="int" parameterType="com.ihk.saleunit.data.pojo.ContractRecordCond">
+		SELECT count(0) from contract_record  
+        <include refid="findWhereCond"/>     
+    </select>
+        
+	<select id="findContractRecord" resultMap="contractRecordResultMap" parameterType="com.ihk.saleunit.data.pojo.ContractRecordCond">
+		SELECT * from  contract_record 
+        <include refid="findWhereCond"/> 
+		<if test="topNum > 0">
+			limit #{topNum};
+		</if>
+    </select>
+    
+	<select id="findContractRecordPage" resultMap="contractRecordResultMap" parameterType="com.ihk.saleunit.data.pojo.ContractRecordCond">
+		SELECT * from  contract_record 
+        <include refid="findWhereCond"/> 
+    
+		<if test="startLine >= 0">
+		<if test="pageSize > 0">
+			limit #{startLine},#{pageSize};
+		</if>
+		</if>
+	</select>
+</mapper>

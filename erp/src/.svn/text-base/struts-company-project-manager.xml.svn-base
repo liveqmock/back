@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE struts PUBLIC
+    "-//Apache Software Foundation//DTD Struts Configuration 2.0//EN"
+    "http://struts.apache.org/dtds/struts-2.0.dtd">
+<struts>
+	<!-- 项目管理 查看以及新建 -->
+	<package name="project_manager" extends="struts-default" namespace="/projecr/manager">
+		<!-- 查询页面  查询该分公司所有项目 -->
+		<action name="indexSearch" class="com.ihk.user.manager.CompanyProjectManagerAction" method="indexSearch">
+			<result name="suc">/company_project/manager/search_project.jsp</result>
+		</action>
+		<!-- 修改项目名称 -->
+		<action name="updateProjectDialog" class="com.ihk.user.manager.InputCompanyProjectAction" method="updateProjectDialog">
+			<result name="suc">/company_project/manager/update_project_dialog.jsp</result>
+		</action>
+		<action name="updateProjectForm" class="com.ihk.user.manager.InputCompanyProjectAction" method="updateProjectForm">
+			<result name="suc">/company_project/manager/update_project_dialog.jsp</result>
+		</action>
+		<!-- 新建项目 -->
+		<action name="inputProjectDialog" class="com.ihk.user.manager.InputCompanyProjectAction" method="inputProjectDialog">
+			<result name="suc">/company_project/manager/input_project_dialog.jsp</result>
+		</action>
+		<action name="inputProjectForm" class="com.ihk.user.manager.InputCompanyProjectAction" method="inputProjectForm">
+			<result name="suc">/company_project/manager/input_project_dialog.jsp</result>
+		</action>
+	</package>
+	
+	<package name="project_manager_json" extends="json-default" namespace="/projecr/manager_json">
+		<action name="indexSearch" class="com.ihk.user.manager.CompanyProjectManagerAction" method="indexSearchJson">
+			<result name="suc" type="json">
+				<param name="root">res</param>
+			</result>
+		</action>
+	</package>
+</struts>
+
+
+

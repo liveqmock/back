@@ -1,0 +1,91 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<!-- tomcat7 jndi 连接池的配置 -->
+<!-- 使用 removeAbandoned="true"这个配置的时候将会使用AbandonedObjectPool, 而AbandonedObjectPool建议只在开发阶段使用, 
+	因为AbandonedObjectPool能帮你发现占用连接过长的代码, 真正跑的时候应该removeAbandoned="false" 
+	
+	本地: 
+	username="dev" 
+	password="peter" 
+	driverClassName="com.mysql.jdbc.Driver" 
+	url="jdbc:mysql://172.16.7.42:3306/crm?useUnicode=true&amp;characterEncoding=UTF-8&amp;charset=UTF-8"
+	 
+	服务器: 
+	username="webuser" 
+	password="1qazweb" 
+	driverClassName="com.mysql.jdbc.Driver" 
+	url="jdbc:mysql://192.168.10.4:3306/crm?useUnicode=true&amp;characterEncoding=UTF-8&amp;charset=UTF-8"
+	 
+-->
+
+<Context>
+
+	<!-- 本地测试 -->
+	<Resource name="jdbc/crm" auth="Container" type="javax.sql.DataSource"
+		factory="org.apache.tomcat.jdbc.pool.DataSourceFactory" 
+		testWhileIdle="true"
+		testOnBorrow="true" 
+		testOnReturn="false" 
+		validationQuery="SELECT 1"
+		validationInterval="30000" 
+		timeBetweenEvictionRunsMillis="30000"
+		maxActive="100" 
+		minIdle="10" 
+		maxWait="10000" 
+		initialSize="10"
+		removeAbandonedTimeout="60" 
+		removeAbandoned="true" 
+		logAbandoned="true"
+		minEvictableIdleTimeMillis="30000" 
+		jmxEnabled="true"
+		jdbcInterceptors="org.apache.tomcat.jdbc.pool.interceptor.ConnectionState;org.apache.tomcat.jdbc.pool.interceptor.StatementFinalizer"
+		username="dev" 
+		password="kik" 
+		driverClassName="com.mysql.jdbc.Driver" 
+		url="jdbc:mysql://10.10.3.169:3306/crm2?useUnicode=true&amp;characterEncoding=UTF-8&amp;charset=UTF-8&amp;zeroDateTimeBehavior=convertToNull&amp;transformedBitIsBoolean=true"
+	/> 
+	
+	<!-- 服务器 -->
+	<!-- 
+	<Resource name="jdbc/crm" auth="Container" type="javax.sql.DataSource"
+		factory="org.apache.tomcat.jdbc.pool.DataSourceFactory" 
+		testWhileIdle="true"
+		testOnBorrow="true" 
+		testOnReturn="false" 
+		validationQuery="SELECT 1"
+		validationInterval="30000" 
+		timeBetweenEvictionRunsMillis="30000"
+		maxActive="100" 
+		minIdle="10" 
+		maxWait="10000" 
+		initialSize="10"
+		removeAbandonedTimeout="60" 
+		removeAbandoned="true" 
+		logAbandoned="true"
+		minEvictableIdleTimeMillis="30000" 
+		jmxEnabled="true"
+		jdbcInterceptors="org.apache.tomcat.jdbc.pool.interceptor.ConnectionState;org.apache.tomcat.jdbc.pool.interceptor.StatementFinalizer"
+		username="webuser" 
+		password="1qazweb" 
+		driverClassName="com.mysql.jdbc.Driver" 
+		url="jdbc:mysql://192.168.10.3:3306/crm?useUnicode=true&amp;characterEncoding=UTF-8&amp;charset=UTF-8&amp;zeroDateTimeBehavior=convertToNull&amp;transformedBitIsBoolean=true"
+	/>
+	 -->
+
+	<!-- <Resource name="jdbc/olddb" auth="Container" type="javax.sql.DataSource" 
+		factory="org.apache.tomcat.jdbc.pool.DataSourceFactory" testWhileIdle="true" 
+		testOnBorrow="true" testOnReturn="false" validationQuery="SELECT 1" validationInterval="30000" 
+		timeBetweenEvictionRunsMillis="30000" maxActive="100" minIdle="10" maxWait="10000" 
+		initialSize="10" removeAbandonedTimeout="60" removeAbandoned="true" logAbandoned="true" 
+		minEvictableIdleTimeMillis="30000" jmxEnabled="true" jdbcInterceptors= "org.apache.tomcat.jdbc.pool.interceptor.ConnectionState;org.apache.tomcat.jdbc.pool.interceptor.StatementFinalizer" 
+		username="dev" password="peter" driverClassName="com.mysql.jdbc.Driver" url="jdbc:mysql://172.16.7.42:3306/crm?useUnicode=true&amp;characterEncoding=UTF-8&amp;charset=UTF-8"/> -->
+
+	<!-- jdk7使用 oracle官网(11.2.0.3) JDBC Drivers ojdbc6.jar -->
+	<!-- <Resource name="jdbc/olddb" auth="Container" type="javax.sql.DataSource" 
+		factory="org.apache.tomcat.jdbc.pool.DataSourceFactory" testWhileIdle="true" 
+		testOnBorrow="true" testOnReturn="false" validationQuery="SELECT 1" validationInterval="30000" 
+		timeBetweenEvictionRunsMillis="30000" maxActive="100" minIdle="10" maxWait="10000" 
+		initialSize="10" removeAbandonedTimeout="60" removeAbandoned="true" logAbandoned="true" 
+		minEvictableIdleTimeMillis="30000" jmxEnabled="true" username="devuser" password="ihk_dev" 
+		driverClassName="oracle.jdbc.driver.OracleDriver" url="jdbc:oracle:thin:@172.16.6.13:1521:server"/> -->
+</Context>

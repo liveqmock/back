@@ -1,0 +1,255 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.ihk.property.data.IContractBarrulesMapper">
+
+	<resultMap type="ContractBarrules" id="contractBarrulesResultMap">
+		<id property="id" column="id" />        
+		<result property="contractManagerId" column="contract_manager_id" />
+		<result property="startDate" column="start_date" />
+		<result property="endDate" column="end_date" />
+		<result property="memo" column="memo" />
+		<result property="oprF1" column="opr_f1" />
+		<result property="oprF2" column="opr_f2" />
+		<result property="oprF3" column="opr_f3" />
+		<result property="oprF4" column="opr_f4" />
+		<result property="oprF5" column="opr_f5" />
+		<result property="oprF6" column="opr_f6" />
+		<result property="oprF7" column="opr_f7" />
+		<result property="oprF8" column="opr_f8" />
+		<result property="oprB1" column="opr_b1" />
+		<result property="oprB2" column="opr_b2" />
+		<result property="oprB3" column="opr_b3" />
+		<result property="oprB4" column="opr_b4" />
+		<result property="oprB5" column="opr_b5" />
+		<result property="oprB6" column="opr_b6" />
+		<result property="oprB7" column="opr_b7" />
+		<result property="oprB8" column="opr_b8" />
+		<result property="dataF1" column="data_f1" />
+		<result property="dataF2" column="data_f2" />
+		<result property="dataF3" column="data_f3" />
+		<result property="dataF4" column="data_f4" />
+		<result property="dataF5" column="data_f5" />
+		<result property="dataF6" column="data_f6" />
+		<result property="dataF7" column="data_f7" />
+		<result property="dataF8" column="data_f8" />
+		<result property="dataB1" column="data_b1" />
+		<result property="dataB2" column="data_b2" />
+		<result property="dataB3" column="data_b3" />
+		<result property="dataB4" column="data_b4" />
+		<result property="dataB5" column="data_b5" />
+		<result property="dataB6" column="data_b6" />
+		<result property="dataB7" column="data_b7" />
+		<result property="dataB8" column="data_b8" />
+		<result property="commission" column="commission" />
+		<result property="status" column="status" />
+		<result property="isDeleted" column="is_deleted" />
+		<result property="createdId" column="created_id" />
+		<result property="createdTime" column="created_time" />
+		<result property="modId" column="mod_id" />
+		<result property="modTime" column="mod_time" />
+	</resultMap>
+
+	<insert id="addContractBarrules" parameterType="ContractBarrules">
+		 <selectKey resultType="java.lang.Integer" keyProperty="id" order="AFTER" >
+            SELECT @@IDENTITY
+        </selectKey>		
+		insert into contract_barrules(
+		contract_manager_id,
+		start_date,
+		end_date,
+		memo,
+		opr_f1,
+		opr_f2,
+		opr_f3,
+		opr_f4,
+		opr_f5,
+		opr_f6,
+		opr_f7,
+		opr_f8,
+		opr_b1,
+		opr_b2,
+		opr_b3,
+		opr_b4,
+		opr_b5,
+		opr_b6,
+		opr_b7,
+		opr_b8,
+		data_f1,
+		data_f2,
+		data_f3,
+		data_f4,
+		data_f5,
+		data_f6,
+		data_f7,
+		data_f8,
+		data_b1,
+		data_b2,
+		data_b3,
+		data_b4,
+		data_b5,
+		data_b6,
+		data_b7,
+		data_b8,
+		commission,
+		status,
+		is_deleted,
+		created_id,
+		created_time,
+		mod_id,
+		mod_time
+		)
+			VALUES(
+		#{contractManagerId},
+		#{startDate},
+		#{endDate},
+		#{memo},
+		#{oprF1},
+		#{oprF2},
+		#{oprF3},
+		#{oprF4},
+		#{oprF5},
+		#{oprF6},
+		#{oprF7},
+		#{oprF8},
+		#{oprB1},
+		#{oprB2},
+		#{oprB3},
+		#{oprB4},
+		#{oprB5},
+		#{oprB6},
+		#{oprB7},
+		#{oprB8},
+		#{dataF1},
+		#{dataF2},
+		#{dataF3},
+		#{dataF4},
+		#{dataF5},
+		#{dataF6},
+		#{dataF7},
+		#{dataF8},
+		#{dataB1},
+		#{dataB2},
+		#{dataB3},
+		#{dataB4},
+		#{dataB5},
+		#{dataB6},
+		#{dataB7},
+		#{dataB8},
+		#{commission},
+		#{status},
+		#{isDeleted},
+		#{createdId},
+		#{createdTime},
+		#{modId},
+		#{modTime}
+			)
+		
+	</insert>
+	<delete id="deleteContractBarrules" parameterType="com.ihk.utils.base.PojoDeleteCond">
+	update contract_barrules set is_deleted='1', mod_id=#{modId}, mod_time=#{modTime} where id=#{id};
+	</delete>
+	<update id="updateContractBarrules" parameterType="int">
+	update contract_barrules set 
+		contract_manager_id=#{contractManagerId},
+		start_date=#{startDate},
+		end_date=#{endDate},
+		memo=#{memo},
+		opr_f1=#{oprF1},
+		opr_f2=#{oprF2},
+		opr_f3=#{oprF3},
+		opr_f4=#{oprF4},
+		opr_f5=#{oprF5},
+		opr_f6=#{oprF6},
+		opr_f7=#{oprF7},
+		opr_f8=#{oprF8},
+		opr_b1=#{oprB1},
+		opr_b2=#{oprB2},
+		opr_b3=#{oprB3},
+		opr_b4=#{oprB4},
+		opr_b5=#{oprB5},
+		opr_b6=#{oprB6},
+		opr_b7=#{oprB7},
+		opr_b8=#{oprB8},
+		data_f1=#{dataF1},
+		data_f2=#{dataF2},
+		data_f3=#{dataF3},
+		data_f4=#{dataF4},
+		data_f5=#{dataF5},
+		data_f6=#{dataF6},
+		data_f7=#{dataF7},
+		data_f8=#{dataF8},
+		data_b1=#{dataB1},
+		data_b2=#{dataB2},
+		data_b3=#{dataB3},
+		data_b4=#{dataB4},
+		data_b5=#{dataB5},
+		data_b6=#{dataB6},
+		data_b7=#{dataB7},
+		data_b8=#{dataB8},
+		commission=#{commission},
+		status=#{status},
+		mod_id=#{modId},
+		mod_time=#{modTime}
+	 where id=#{id}
+	</update>
+	<select id="findContractBarrulesById" resultMap="contractBarrulesResultMap">
+	select * from contract_barrules where id=#{id}
+	</select>
+    
+	<sql id="findWhereCond"> 
+		<where>
+            and is_deleted = '0'
+		</where>
+	</sql>
+	
+	<select id="findContractBarrulesCount" resultType="int" parameterType="com.ihk.property.data.pojo.ContractBarrulesCond">
+		SELECT count(0) from contract_barrules  
+        <include refid="findWhereCond"/>     
+    </select>
+        
+	<select id="findContractBarrules" resultMap="contractBarrulesResultMap" parameterType="com.ihk.property.data.pojo.ContractBarrulesCond">
+		SELECT * from  contract_barrules 
+        <include refid="findWhereCond"/> 
+		<if test="topNum > 0">
+			limit #{topNum};
+		</if>
+    </select>
+    
+	<select id="findContractBarrulesPage" resultMap="contractBarrulesResultMap" parameterType="com.ihk.property.data.pojo.ContractBarrulesCond">
+		SELECT * from  contract_barrules 
+        <include refid="findWhereCond"/> 
+    
+		<if test="startLine >= 0">
+		<if test="pageSize > 0">
+			limit #{startLine},#{pageSize};
+		</if>
+		</if>
+	</select>
+	
+	<update id="updateContractBarrulesSetManagerId" parameterType="com.ihk.property.data.pojo.ContractBarrulesCond">
+		
+		update contract_barrules set contract_manager_id = #{managerId}
+		<where>
+			id in
+			 <foreach  
+                collection="barRulesIds"  
+                item="bId"  
+                open="("  
+                separator=","  
+                close=")">  
+                #{bId}  
+            </foreach>  
+			
+		</where>
+		
+	</update>
+	
+	<select id="findContractBarrulesByManagerId" resultMap="contractBarrulesResultMap">
+		select * from contract_barrules where contract_manager_id = #{managerId} and is_deleted = 0 order by commission desc
+	</select>
+	
+	<update id="cancelContractBarrules" parameterType="com.ihk.utils.base.PojoDeleteCond">
+		update contract_barrules set status='1', mod_id=#{modId}, mod_time=#{modTime} where id=#{id};
+	</update>
+	
+</mapper>

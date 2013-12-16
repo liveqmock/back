@@ -1,0 +1,221 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.ihk.saleunit.data.IChipMapper">
+
+	<resultMap type="Chip" id="chipResultMap">
+		<id property="id" column="id" />        
+		<result property="chipNo" column="chip_no" />
+		<result property="chipType" column="chip_type" />
+		<result property="chipMoney" column="chip_money" />
+		<result property="customerId" column="customer_id" />
+		<result property="companyProjectId" column="company_project_id" />
+		<result property="propertyProjectId" column="property_project_id" />
+		<result property="unitId1" column="unit_id1" />
+		<result property="unitId2" column="unit_id2" />
+		<result property="unitId3" column="unit_id3" />
+		<result property="unitId4" column="unit_id4" />
+		<result property="unitId5" column="unit_id5" />
+		<result property="buildId1" column="build_id1" />
+		<result property="buildId2" column="build_id2" />
+		<result property="buildId3" column="build_id3" />
+		<result property="areaId1" column="area_id1" />
+		<result property="areaId2" column="area_id2" />
+		<result property="areaId3" column="area_id3" />
+		<result property="isVoid" column="is_void" />
+		<result property="voidTime" column="void_time" />
+		<result property="userId" column="user_id" />
+		<result property="salesId" column="sales_id" />
+		<result property="isDeleted" column="is_deleted" />
+		<result property="createdId" column="created_id" />
+		<result property="createdTime" column="created_time" />
+		<result property="modId" column="mod_id" />
+		<result property="modTime" column="mod_time" />
+	</resultMap>
+
+	<insert id="addChip" parameterType="Chip">
+		 <selectKey resultType="java.lang.Integer" keyProperty="id" order="AFTER" >
+            SELECT @@IDENTITY
+        </selectKey>		
+		insert into chip(
+		chip_no,
+		chip_type,
+		chip_money,
+		customer_id,
+		company_project_id,
+		property_project_id,
+		unit_id1,
+		unit_id2,
+		unit_id3,
+		unit_id4,
+		unit_id5,
+		build_id1,
+		build_id2,
+		build_id3,
+		area_id1,
+		area_id2,
+		area_id3,
+		is_void,
+		void_time,
+		user_id,
+		sales_id,
+		is_deleted,
+		created_id,
+		created_time,
+		mod_id,
+		mod_time
+		)
+			VALUES(
+		#{chipNo},
+		#{chipType},
+		#{chipMoney},
+		#{customerId},
+		#{companyProjectId},
+		#{propertyProjectId},
+		#{unitId1},
+		#{unitId2},
+		#{unitId3},
+		#{unitId4},
+		#{unitId5},
+		#{buildId1},
+		#{buildId2},
+		#{buildId3},
+		#{areaId1},
+		#{areaId2},
+		#{areaId3},
+		#{isVoid},
+		#{voidTime},
+		#{userId},
+		#{salesId},
+		#{isDeleted},
+		#{createdId},
+		#{createdTime},
+		#{modId},
+		#{modTime}
+			)
+		
+	</insert>
+	<delete id="deleteChip" parameterType="com.ihk.utils.base.PojoDeleteCond">
+	update chip set is_deleted='1', mod_id=#{modId}, mod_time=#{modTime} where id=#{id};
+	</delete>
+	<update id="updateChip" parameterType="int">
+	update chip set 
+		chip_no=#{chipNo},
+		chip_type=#{chipType},
+		chip_money=#{chipMoney},
+		customer_id=#{customerId},
+		company_project_id=#{companyProjectId},
+		property_project_id=#{propertyProjectId},
+		unit_id1=#{unitId1},
+		unit_id2=#{unitId2},
+		unit_id3=#{unitId3},
+		unit_id4=#{unitId4},
+		unit_id5=#{unitId5},
+		build_id1=#{buildId1},
+		build_id2=#{buildId2},
+		build_id3=#{buildId3},
+		area_id1=#{areaId1},
+		area_id2=#{areaId2},
+		area_id3=#{areaId3},
+		is_void=#{isVoid},
+		void_time=#{voidTime},
+		user_id=#{userId},
+		sales_id=#{salesId},
+		mod_id=#{modId},
+		mod_time=#{modTime}
+	 where id=#{id}
+	</update>
+	
+	<select id="findChipById" resultMap="chipResultMap">
+	select * from chip where id=#{id}
+	</select>
+    
+	<sql id="findWhereCond"> 
+		<where>
+			<if test="chipNo != null and chipNo != ''">
+				and chip_no like concat(concat('%', #{chipNo, jdbcType=VARCHAR}), '%')
+			</if>
+			<if test="date1 != null and date1 != ''">
+				and created_time &gt;= #{date1}
+            </if>   
+			<if test="date2 != null and date2 != ''">
+				and created_time &lt; date_add(#{date2},interval 1 day)
+			</if> 
+			<if test="customerName != null and customerName != ''">
+				and id in 
+				(select main_id from contract_customer where customer_name like concat(concat('%', #{customerName, jdbcType=VARCHAR}), '%') and confirm_type = '4')
+			</if>
+			<if test="customerPhone != null and customerPhone != ''">
+				and id in 
+				(select main_id from contract_customer where mobile_phone like concat(concat('%', #{customerPhone, jdbcType=VARCHAR}), '%') and confirm_type = '4')
+			</if>
+			
+			<if test="projectId != null and projectId != '' and projectId != 0">
+            	and company_project_id = #{projectId}
+            </if> 
+            <if test="buildId!=null and buildId!=''">
+				and (build_id1 = #{buildId} or build_id2 = #{buildId} or build_id3 = #{buildId})	
+			</if>
+			<if test="areaId!=null and areaId!=''">
+				and (area_id1 = #{areaId} or area_id2 = #{areaId} or area_id3 = #{areaId})
+			</if>
+			<if test="hiddenProjectId!=null and hiddenProjectId!=''">
+				and property_project_id = #{hiddenProjectId}
+			</if>
+            and is_deleted = '0'
+		</where>
+	</sql>
+	
+	<select id="findChipCount" resultType="int" parameterType="com.ihk.saleunit.data.pojo.ChipCond">
+		SELECT count(0) from chip  
+        <include refid="findWhereCond"/>     
+    </select>
+        
+	<select id="findChip" resultMap="chipResultMap" parameterType="com.ihk.saleunit.data.pojo.ChipCond">
+		SELECT * from  chip 
+        <include refid="findWhereCond"/> 
+		<if test="topNum > 0">
+			limit #{topNum};
+		</if>
+    </select>
+    
+	<select id="findChipPage" resultMap="chipResultMap" parameterType="com.ihk.saleunit.data.pojo.ChipCond">
+		SELECT * from  chip 
+        <include refid="findWhereCond"/> 
+    		order by id desc
+		<if test="startLine >= 0">
+		<if test="pageSize > 0">
+			limit #{startLine},#{pageSize};
+		</if>
+		</if>
+	</select>
+	
+	<select id="findChipByUnitIdAndChipNo" resultMap="chipResultMap" parameterType="map">
+		select * from chip 
+		<where>
+			<if test="chipNo == 1">
+				unit_id1 = #{unitId}
+			</if>
+			<if test="chipNo == 2">
+				unit_id2 = #{unitId}
+			</if>
+			<if test="chipNo == 3">
+				unit_id3 = #{unitId}
+			</if>
+			
+			and is_void = '0' and is_deleted = '0'
+		</where>
+	</select>
+	
+	<select id="findMaxNoChip" resultMap="chipResultMap">
+		select * from chip where is_deleted = '0' order by chip_no desc limit 1;
+	</select>
+	
+	<select id="findChipByPropertyProjectId" resultMap="chipResultMap">
+		select * from chip where property_project_id=#{propertyProjectId} and is_deleted = '0'
+	</select>
+	
+	<update id="disabledChip" parameterType="com.ihk.utils.base.PojoDeleteCond">
+		update chip set is_void='1', void_time=#{modTime}, mod_id=#{modId}, mod_time=#{modTime} where id=#{id};
+	</update>
+	
+</mapper>

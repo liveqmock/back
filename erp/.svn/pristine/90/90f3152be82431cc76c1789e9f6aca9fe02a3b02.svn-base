@@ -1,0 +1,18 @@
+#Mon Oct 21 13:34:45 CST 2013
+eclipse.preferences.version=1
+encoding//WebRoot/WEB-INF/log4j.properties=UTF-8
+encoding//WebRoot/customer/guangzhou/base_question.jsp=UTF-8
+encoding//WebRoot/customer/guangzhou/header_left_js.jsp=UTF-8
+encoding//WebRoot/demo/easyui/coder_header.jsp=UTF-8
+encoding//WebRoot/demo/easyui/div_edit_paybill.jsp=UTF-8
+encoding//WebRoot/help_html/20130516/help20130516.htm=UTF-8
+encoding//WebRoot/saleunit_new_report/guangzhou/khzhlfx_report.jsp=UTF-8
+encoding//WebRoot/saleunit_new_report/guangzhou/xmgjqk_report.jsp=UTF-8
+encoding//WebRoot/ui/left_precustomer_report.jsp=UTF-8
+encoding//src/com/ihk/customer/data/mappers/CustomerMapper.xml=UTF-8
+encoding//src/contCompanyId.properties=UTF-8
+encoding//src/followType.properties=UTF-8
+encoding//src/log4j.properties=UTF-8
+encoding//src/mysql.properties=UTF-8
+encoding//src/struts.properties=UTF-8
+encoding/<project>=UTF-8

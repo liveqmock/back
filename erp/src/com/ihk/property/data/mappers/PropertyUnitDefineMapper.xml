@@ -1,0 +1,201 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.ihk.property.data.IPropertyUnitDefineMapper">
+
+	<resultMap type="PropertyUnitDefine" id="propertyUnitDefineResultMap">
+		<id property="id" column="id" />        
+		<result property="unitId" column="unit_id" />
+		<result property="raiseDate" column="raise_date" />
+		<result property="raiseNo" column="raise_no" />
+		<result property="confirmMan" column="confirm_man" />
+		<result property="signedMan" column="signed_man" />
+		<result property="checkDate" column="check_date" />
+		<result property="commissionDate" column="commission_date" />
+		<result property="commissionMoney" column="commission_money" />
+		<result property="notCommissionDate" column="not_commission_date" />
+		<result property="commissionRemark" column="commission_remark" />
+		<result property="contractSentDate" column="contract_sent_date" />
+		<result property="contractBackDate" column="contract_back_date" />
+		<result property="contractBankDate" column="contract_bank_date" />
+		<result property="contractCustomerDate" column="contract_customer_date" />
+		<result property="contractMan" column="contract_man" />
+		<result property="contractConfrimMan" column="contract_confrim_man" />
+		<result property="dealCycle" column="deal_cycle" />
+		<result property="visitNum" column="visit_num" />
+		<result property="realHouseDate" column="real_house_date" />
+		<result property="renovateDesc" column="renovate_desc" />
+		<result property="renovateRemark" column="renovate_remark" />
+		<result property="renovateFloor" column="renovate_floor" />
+		<result property="renovateShower" column="renovate_shower" />
+		<result property="renovateTile" column="renovate_tile" />
+		<result property="renovateSuggestion" column="renovate_suggestion" />
+		<result property="feedback1" column="feedback1" />
+		<result property="feedback2" column="feedback2" />
+		<result property="feedback3" column="feedback3" />
+		<result property="remark" column="remark" />
+		<result property="isDeleted" column="is_deleted" />
+		<result property="createdId" column="created_id" />
+		<result property="createdTime" column="created_time" />
+		<result property="modId" column="mod_id" />
+		<result property="modTime" column="mod_time" />
+	</resultMap>
+
+	<insert id="addPropertyUnitDefine" parameterType="PropertyUnitDefine">
+		 <selectKey resultType="java.lang.Integer" keyProperty="id" order="AFTER" >
+            SELECT @@IDENTITY
+        </selectKey>		
+		insert into property_unit_define(
+		unit_id,
+		raise_date,
+		raise_no,
+		confirm_man,
+		signed_man,
+		check_date,
+		commission_date,
+		commission_money,
+		not_commission_date,
+		commission_remark,
+		contract_sent_date,
+		contract_back_date,
+		contract_bank_date,
+		contract_customer_date,
+		contract_man,
+		contract_confrim_man,
+		deal_cycle,
+		visit_num,
+		real_house_date,
+		renovate_desc,
+		renovate_remark,
+		renovate_floor,
+		renovate_shower,
+		renovate_tile,
+		renovate_suggestion,
+		feedback1,
+		feedback2,
+		feedback3,
+		remark,
+		is_deleted,
+		created_id,
+		created_time,
+		mod_id,
+		mod_time
+		)
+			VALUES(
+		#{unitId},
+		#{raiseDate},
+		#{raiseNo},
+		#{confirmMan},
+		#{signedMan},
+		#{checkDate},
+		#{commissionDate},
+		#{commissionMoney},
+		#{notCommissionDate},
+		#{commissionRemark},
+		#{contractSentDate},
+		#{contractBackDate},
+		#{contractBankDate},
+		#{contractCustomerDate},
+		#{contractMan},
+		#{contractConfrimMan},
+		#{dealCycle},
+		#{visitNum},
+		#{realHouseDate},
+		#{renovateDesc},
+		#{renovateRemark},
+		#{renovateFloor},
+		#{renovateShower},
+		#{renovateTile},
+		#{renovateSuggestion},
+		#{feedback1},
+		#{feedback2},
+		#{feedback3},
+		#{remark},
+		#{isDeleted},
+		#{createdId},
+		#{createdTime},
+		#{modId},
+		#{modTime}
+			)
+		
+	</insert>
+	<delete id="deletePropertyUnitDefine" parameterType="int">
+	update property_unit_define set is_deleted='1' where id=#{id};
+	</delete>
+	<update id="updatePropertyUnitDefine" parameterType="int">
+	update property_unit_define set 
+		unit_id=#{unitId},
+		raise_date=#{raiseDate},
+		raise_no=#{raiseNo},
+		confirm_man=#{confirmMan},
+		signed_man=#{signedMan},
+		check_date=#{checkDate},
+		commission_date=#{commissionDate},
+		commission_money=#{commissionMoney},
+		not_commission_date=#{notCommissionDate},
+		commission_remark=#{commissionRemark},
+		contract_sent_date=#{contractSentDate},
+		contract_back_date=#{contractBackDate},
+		contract_bank_date=#{contractBankDate},
+		contract_customer_date=#{contractCustomerDate},
+		contract_man=#{contractMan},
+		contract_confrim_man=#{contractConfrimMan},
+		deal_cycle=#{dealCycle},
+		visit_num=#{visitNum},
+		real_house_date=#{realHouseDate},
+		renovate_desc=#{renovateDesc},
+		renovate_remark=#{renovateRemark},
+		renovate_floor=#{renovateFloor},
+		renovate_shower=#{renovateShower},
+		renovate_tile=#{renovateTile},
+		renovate_suggestion=#{renovateSuggestion},
+		feedback1=#{feedback1},
+		feedback2=#{feedback2},
+		feedback3=#{feedback3},
+		remark=#{remark},
+		mod_id=#{modId},
+		mod_time=#{modTime}
+	 where id=#{id}
+	</update>
+	<select id="findPropertyUnitDefineById" resultMap="propertyUnitDefineResultMap">
+	select * from property_unit_define where id=#{id}
+	</select>
+    
+	<sql id="findWhereCond"> 
+		<where>
+        
+			<if test="unitId != null and unitId != '' and unitId != '0'">
+			unit_id = #{unitId}
+            </if>   
+            and is_deleted = '0'
+            
+		</where>
+	</sql>
+	
+	<select id="findPropertyUnitDefineCount" resultType="int" parameterType="com.ihk.property.data.pojo.PropertyUnitDefineCond">
+		SELECT count(0) from property_unit_define  
+        <include refid="findWhereCond"/>     
+    </select>
+        
+	<select id="findPropertyUnitDefine" resultMap="propertyUnitDefineResultMap" parameterType="com.ihk.property.data.pojo.PropertyUnitDefineCond">
+		SELECT * from  property_unit_define 
+        <include refid="findWhereCond"/> 
+		<if test="topNum > 0">
+			limit #{topNum};
+		</if>
+    </select>
+    
+	<select id="findPropertyUnitDefinePage" resultMap="propertyUnitDefineResultMap" parameterType="com.ihk.property.data.pojo.PropertyUnitDefineCond">
+		SELECT * from  property_unit_define 
+        <include refid="findWhereCond"/> 
+    
+		<if test="startLine >= 0">
+		<if test="pageSize > 0">
+			limit #{startLine},#{pageSize};
+		</if>
+		</if>
+	</select>
+	<select id="findPropertyUnitDefineByUnitId" resultMap="propertyUnitDefineResultMap" >
+	SELECT * from  property_unit_define where unit_id = #{id}
+	</select>
+	
+</mapper>

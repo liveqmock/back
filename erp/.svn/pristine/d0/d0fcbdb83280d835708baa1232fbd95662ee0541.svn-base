@@ -1,0 +1,13 @@
+jdbc.driverClassName=com.mysql.jdbc.Driver
+jdbc.url=jdbc:mysql://10.10.3.169:3306/crm2?useUnicode=true&amp;characterEncoding=UTF-8&amp;charset=UTF-8&amp;zeroDateTimeBehavior=convertToNull&amp;transformedBitIsBoolean=true
+jdbc.username=dev
+jdbc.password=kik
+jdbc.maxActive=100
+jdbc.maxIdle=10
+#连接等待时间
+jdbc.maxWait=10000 
+#下面四个配置(数据库连接因为某种原因断掉后,再从连接池中取得连接又不进行验证,这时取得的连接实际已经时无效的数据库连接了)
+jdbc.validationQuery=select 1
+jdbc.testOnBorrow=true
+jdbc.testOnReturn=true
+jdbc.testWhileIdle=true

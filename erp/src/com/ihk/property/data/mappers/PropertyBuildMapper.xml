@@ -1,0 +1,205 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.ihk.property.data.IPropertyBuildMapper">
+
+	<resultMap type="PropertyBuild" id="propertyBuildResultMap">
+		<id property="id" column="id" />        
+		<result property="propertyId" column="property_id" />
+		<result property="buildName" column="build_name" />
+		<result property="saleType" column="sale_type" />
+		<result property="buildNature" column="build_nature" />
+		<result property="chipType" column="chip_type"/>
+		<result property="remark" column="remark" />
+		<result property="areaId" column="area_id" />
+		<result property="orderIndex" column="order_index" />
+		<result property="isDeleted" column="is_deleted" />
+		<result property="createdId" column="created_id" />
+		<result property="createdTime" column="created_time" />
+		<result property="modId" column="mod_id" />
+		<result property="modTime" column="mod_time" />
+		<result property="companyProjectId" column="company_project_id" />
+	</resultMap>
+
+	<insert id="addPropertyBuild" parameterType="PropertyBuild">
+		 <selectKey resultType="java.lang.Integer" keyProperty="id" order="AFTER" >
+            SELECT @@IDENTITY
+        </selectKey>		
+		insert into property_build(
+		property_id,
+		build_name,
+		sale_type,
+		build_nature,
+		chip_type,
+		remark,
+		area_id,
+		order_index,
+		is_deleted,
+		created_id,
+		created_time,
+		mod_id,
+		mod_time,
+		company_project_id
+		)
+			VALUES(
+		#{propertyId},
+		#{buildName},
+		#{saleType},
+		#{buildNature},
+		#{chipType},
+		#{remark},
+		#{areaId},
+		#{orderIndex},
+		#{isDeleted},
+		#{createdId},
+		#{createdTime},
+		#{modId},
+		#{modTime},
+		#{companyProjectId}
+			)
+		
+	</insert>
+	<delete id="deletePropertyBuild" parameterType="int">
+	update property_build set is_deleted='1' where id=#{id};
+	</delete>
+	<update id="updatePropertyBuild" parameterType="int">
+	update property_build set 
+		property_id=#{propertyId},
+		build_name=#{buildName},
+		sale_type=#{saleType},
+		build_nature=#{buildNature},
+		chip_type=#{chipType},
+		remark=#{remark},
+		area_id=#{areaId},
+		order_index=#{orderIndex},
+		is_deleted=#{isDeleted},
+		created_id=#{createdId},
+		created_time=#{createdTime},
+		mod_id=#{modId},
+		mod_time=#{modTime}
+	 where id=#{id}
+	</update>
+	<select id="findPropertyBuildById" resultMap="propertyBuildResultMap">
+	select * from property_build where id=#{id}
+	</select>
+    
+	<sql id="findWhereCond"> 
+		<where>
+       
+			<if test="searchName != null and searchName != ''">
+			and build_name like CONCAT(CONCAT('%', #{searchName}),'%')  
+            </if>    
+            <if test="propertyId != null and propertyId != ''">
+			and property_id =  #{propertyId}
+            </if>    
+            
+            <if test="buildId != null and buildId != ''">
+				and id = #{buildId}
+            </if>  
+              <if test="areaId != null and areaId != '' and areaId != '0'">
+				and area_id = #{areaId}
+            </if>      
+            <if test="buildIds != null and buildIds.size() > 0">
+            	and id in
+	            <foreach  
+	                collection="buildIds"  
+	                item="bId"  
+	                open="("  
+	                separator=","  
+	                close=")">  
+	                #{bId}  
+	            </foreach>  
+            </if>
+             <if test="companyProjectIds != null and companyProjectIds.size() > 0">
+            	and company_project_id in
+	            <foreach  
+	                collection="companyProjectIds"  
+	                item="bId"  
+	                open="("  
+	                separator=","  
+	                close=")">  
+	                #{bId}  
+	            </foreach>  
+            </if>
+            <if test="companyProjectId != 0 ">
+            	and company_project_id = #{companyProjectId}
+            </if>
+            and is_deleted = '0'
+		</where>
+	</sql>
+	
+	<select id="findPropertyBuildCount" resultType="int" parameterType="com.ihk.property.data.pojo.PropertyBuildCond">
+		SELECT count(0) from property_build  
+        <include refid="findWhereCond"/>     
+    </select>
+        
+	<select id="findPropertyBuild" resultMap="propertyBuildResultMap" parameterType="com.ihk.property.data.pojo.PropertyBuildCond">
+		SELECT * from  property_build 
+        <include refid="findWhereCond"/> 
+         order by property_id
+         
+		<if test="topNum > 0">
+			limit #{topNum};
+		</if>
+    </select>
+    
+	<select id="findPropertyBuildPage" resultMap="propertyBuildResultMap" parameterType="com.ihk.property.data.pojo.PropertyBuildCond">
+		SELECT * from  property_build 
+        <include refid="findWhereCond"/> 
+        order by property_id
+            
+		<if test="startLine >= 0">
+		<if test="pageSize > 0">
+			limit #{startLine},#{pageSize};
+		</if>
+		</if>
+	</select>
+	
+	<select id="findPropertyBuildsLikeName" resultMap="propertyBuildResultMap">
+		select * from property_build where build_name like CONCAT(CONCAT('%', #{name}),'%') order by build_name desc limit 10
+	</select>
+	
+	<select id="findPropertyBuildsLikeNameAndPropertyProjectId" resultMap="propertyBuildResultMap" parameterType="com.ihk.property.data.pojo.PropertyBuildCond">
+		select * from property_build where build_name like CONCAT(CONCAT('%', #{searchName}),'%')
+			and property_id = #{propertyId} and is_deleted = '0' order by build_name desc limit 10
+	</select>
+	
+	<select id="findBuildIsExistsByBuildName" resultMap="propertyBuildResultMap">
+		select * from property_build where build_name = #{name}
+	</select>
+	
+	<select id="findPropertyBuildByPropertyId" resultMap="propertyBuildResultMap">
+		select * from property_build where property_id = #{propertyId} and is_deleted = '0' order by order_index, build_name
+	</select>
+	
+	<select id="findPropertyBuildByAreaId" resultMap="propertyBuildResultMap">
+		select * from property_build where area_id = #{areaId} and is_deleted = '0' order by order_index, build_name
+	</select>
+	
+	<select id="findPropertyBuildByGroupId" resultType="list">
+		select distinct build_id from property_group_detail where group_id = #{groupId} and is_deleted = '0'
+	</select>
+	
+	<select id="findPropertyBuildAllNameByBuildId" resultType="java.lang.String">
+		select concat(p.property_name, "-", a.area_name, "-", b.build_name) as allName 
+			from property_project p 
+			inner join property_area a
+			inner join property_build b
+			where p.id = b.property_id
+			and a.id = b.area_id
+			and b.id = #{buildId}
+	</select>
+	<select id="findPropertyBuildAreaNameByBuildId" resultType="java.lang.String">
+		select concat(a.area_name, "-", b.build_name) as allName
+			from property_project p
+			inner join property_area a
+			inner join property_build b
+			where p.id = b.property_id
+			and a.id = b.area_id
+			and b.id = #{buildId}
+	</select>
+
+	<update id="updatePropertyBuildOrderIndex">
+		update property_build set order_index = #{orderIndex}, mod_id = #{modId}, mod_time = #{modTime} where id = #{id}
+	</update>
+	
+</mapper>

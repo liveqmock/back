@@ -1,0 +1,211 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE struts PUBLIC
+    "-//Apache Software Foundation//DTD Struts Configuration 2.0//EN"
+    "http://struts.apache.org/dtds/struts-2.0.dtd">
+<struts>
+
+	<package name="saleunit_financial_manager_guangzhou" extends="struts-base" namespace="/saleunit_financial_manager/guangzhou">
+	
+		<!-- 新的combobox导航树的入口,2013.4.19 -->
+		<action name="layout" class="com.ihk.saleunit.action.new_.GuangZhouAppointNewLeftAction" method="layout">
+			<result name="layout">/saleunit_new_financial/guangzhou/layout.jsp</result>
+		</action>
+		
+		<!-- 获取默认加载的页面 -->
+		<action name="getDefaultFromProperty" class="com.ihk.saleunit.action.new_financial.Layout" method="getDefaultFromProperty">
+			<result name="getDefaultFromProperty">/saleunit_new/guangzhou/unit.jsp</result>
+			<result name="getDefaultFromPropertyForFinancial">/saleunit_new_financial/guangzhou/unit.jsp</result>
+			<result name="getDefaultFromPropertyForChip">/saleunit_chip/guangzhou/unit.jsp</result>
+			<result name="getDefaultFromPropertyForScene">/saleunit_new/scene/unit.jsp</result>
+		</action>
+		<!-- 获取默认加载的单元 -->
+		<action name="getDefaultUnitIdFromProperty" class="com.ihk.saleunit.action.new_financial.Layout" method="getDefaultUnitIdFromProperty"/>
+		<!-- 获取单元 -->
+		<action name="getUnit" class="com.ihk.saleunit.action.new_financial.Layout" method="getUnit">
+			<result name="getUnit">/saleunit_new_financial/guangzhou/unit.jsp</result>
+		</action>
+		<!-- 获取分区 -->
+		<action name="getAreaUnit" class="com.ihk.saleunit.action.new_financial.Layout" method="getAreaUnit">
+			<result name="getAreaUnit">/saleunit_new_financial/guangzhou/unit.jsp</result>
+		</action>
+		<!-- 获取分组 -->
+		<action name="getGroup" class="com.ihk.saleunit.action.new_financial.Layout" method="getGroup">
+			<result name="getGroup">/saleunit_new_financial/guangzhou/unit.jsp</result>
+		</action>
+		<!-- 单元付款信息 -->
+		<action name="unitPayInfo" class="com.ihk.saleunit.action.new_financial.PayInfoAction" method="unitPayInfo">
+			<result name="unitPayInfo">/saleunit_new_financial/guangzhou/pay_info.jsp</result>
+		</action>
+		
+		<!-- 销售中心下的单元应收款(收款情况) -->
+		<!-- 跳到增加页面 -->
+		<action name="forAddUnitPayBill" class="com.ihk.saleunit.action.new_financial.PayInfoAction" method="forAddUnitPayBill">
+			<result name="forAddUnitPayBill">/saleunit_new_financial/guangzhou/add_unit_pay_bill.jsp</result>
+		</action>
+		
+		<!-- 跳到使用公式的界面 -->
+		<action name="forUnitPayBillFormula" class="com.ihk.saleunit.action.new_financial.PayInfoAction" method="forUnitPayBillFormula">
+			<result name="forUnitPayBillFormula">/saleunit_new_financial/guangzhou/add_unit_pay_bill_formula.jsp</result>
+		</action>
+		
+		<!-- 使用公式 -->
+		<action name="addUnitPayBillFormula" class="com.ihk.saleunit.action.new_financial.PayInfoAction" method="addUnitPayBillFormula"/>
+		
+		<!-- 判断付款方式对应的付款明细中的fee_type是否包含按揭 -->
+		<action name="isPayWayDetailHaveMortgage" class="com.ihk.saleunit.action.new_financial.PayInfoAction" method="isPayWayDetailHaveMortgage"/>
+		
+		<!-- 判断单元是否已经有实收 -->
+		<action name="isUnitHaveReceipt" class="com.ihk.saleunit.action.new_financial.PayInfoAction" method="isUnitHaveReceipt"/>
+		
+		<!-- 判断单元是否已经有对数 -->
+		<action name="isUnitHaveCheckfee" class="com.ihk.saleunit.action.new_financial.PayInfoAction" method="isUnitHaveCheckfee"/>
+		
+		<!-- 判断单元是否已经有实收或对数 -->
+		<action name="isUnitHaveReceiptOrCheckfee" class="com.ihk.saleunit.action.new_financial.PayInfoAction" method="isUnitHaveReceiptOrCheckfee"/>
+		
+		<!-- 获取收费项目 -->
+		<action name="getFeeTypeByPayWayId" class="com.ihk.saleunit.action.new_financial.PayInfoAction" method="getFeeTypeByPayWayId"/>
+		
+		<!-- 增加 -->
+		<action name="addUnitPayBill" class="com.ihk.saleunit.action.new_financial.PayInfoAction" method="addUnitPayBill"/>
+		
+		<!-- 跳到修改页面 -->
+		<action name="forModifyUnitPayBill" class="com.ihk.saleunit.action.new_financial.PayInfoAction" method="forModifyUnitPayBill">
+			<result name="forModifyUnitPayBill">/saleunit_new_financial/guangzhou/modify_unit_pay_bill.jsp</result>
+		</action>
+		
+		<!-- 更新 -->
+		<action name="updateUnitPayBill" class="com.ihk.saleunit.action.new_financial.PayInfoAction" method="updateUnitPayBill"/>
+		
+		<!-- 删除 -->
+		<action name="deleteUnitPayBill" class="com.ihk.saleunit.action.new_financial.PayInfoAction" method="deleteUnitPayBill"/>
+		<!-- 作废 -->
+		<action name="disabledUnitPayBill" class="com.ihk.saleunit.action.new_financial.PayInfoAction" method="disabledUnitPayBill"/>
+		<!-- 启用 -->
+		<action name="enabledUnitPayBill" class="com.ihk.saleunit.action.new_financial.PayInfoAction" method="enabledUnitPayBill"/>
+		
+		<!-- 收款类别及收款内容的级联 -->
+		<action name="payTypeToFeeType" class="com.ihk.saleunit.action.new_financial.CommonUtilsAction" method="payTypeToFeeType"/>
+		
+		<!-- 根据收款类别及付款方式id设置,收款类别及收款内容的级联 -->
+		<action name="payTypeToFeeTypeAndWayId" class="com.ihk.saleunit.action.new_financial.CommonUtilsAction" method="payTypeToFeeTypeAndWayId"/>
+		
+		<!-- 收款类别的值转成对应的key -->
+		<action name="payTypeValueToKey" class="com.ihk.saleunit.action.new_financial.CommonUtilsAction" method="payTypeValueToKey"/>
+		
+		<!-- 根据收费类别获取固定的收款内容 -->
+		<action name="getFixedFeeByType" class="com.ihk.saleunit.action.new_financial.CommonUtilsAction" method="getFixedFeeByType"/>
+		
+		<!-- 收款内容 -->
+		<!-- 列表 -->
+		<action name="receiptList" class="com.ihk.saleunit.action.new_financial.ReceiptAction" method="receiptList">
+			<result name="receiptList">/saleunit_new_financial/guangzhou/receipt_list.jsp</result>
+		</action>
+		<!-- 跳到增加页面 -->
+		<action name="forAddReceipt" class="com.ihk.saleunit.action.new_financial.ReceiptAction" method="forAddReceipt">
+			<result name="forAddReceipt">/saleunit_new_financial/guangzhou/add_receipt.jsp</result>
+		</action>
+		<!-- 根据收款类别(中文)获取对应的收款内容 -->
+		<action name="getFeeTypeByTypeNameForComboBox" class="com.ihk.saleunit.action.new_financial.ReceiptAction" method="getFeeTypeByTypeNameForComboBox"/>
+		<!-- 增加 -->
+		<action name="addReceipt" class="com.ihk.saleunit.action.new_financial.ReceiptAction" method="addReceipt">
+			<result name="addReceipt">/saleunit_new_financial/guangzhou/add_receipt.jsp</result>
+		</action>
+		<!-- 跳到更新界面 -->
+		<action name="forModifyReceipt" class="com.ihk.saleunit.action.new_financial.ReceiptAction" method="forModifyReceipt">
+			<result name="forModifyReceipt">/saleunit_new_financial/guangzhou/modify_receipt.jsp</result>
+		</action>
+		<!-- 更新 -->
+		<action name="updateReceipt" class="com.ihk.saleunit.action.new_financial.ReceiptAction" method="updateReceipt">
+			<result name="updateReceipt">/saleunit_new_financial/guangzhou/modify_receipt.jsp</result>
+		</action>
+		<!-- 删除 -->
+		<action name="deleteReceipt" class="com.ihk.saleunit.action.new_financial.ReceiptAction" method="deleteReceipt"/>
+		
+		<!-- 发票 -->
+		<action name="invoiceInfo" class="com.ihk.saleunit.action.new_financial.InvoiceAction" method="tabInfo">
+			<result name="suc">/saleunit_new_financial/guangzhou/invoice_tab_info.jsp</result>
+		</action>
+		<!-- 弹出框 新建发票 -->
+		<action name="invoiceAddDialog" class="com.ihk.saleunit.action.new_financial.InvoiceAction" method="dialogAdd">
+			<result name="suc">/saleunit_new_financial/guangzhou/invoice_dialog_add.jsp</result>
+		</action>
+		<!-- 提交表单 新建发票 -->
+		<action name="invoiceAddDialogForm" class="com.ihk.saleunit.action.new_financial.InvoiceAction" method="dialogAddForm">
+			<result name="suc">/saleunit_new_financial/guangzhou/invoice_dialog_add.jsp</result>
+		</action>
+		<!-- 弹出框 修改发票 -->
+		<action name="invoiceUpdateDialog" class="com.ihk.saleunit.action.new_financial.InvoiceAction" method="dialogUpdate">
+			<result name="suc">/saleunit_new_financial/guangzhou/invoice_dialog_update.jsp</result>
+		</action>
+		<!-- 提交表单 修改发票 -->
+		<action name="invoiceUpdateDialogForm" class="com.ihk.saleunit.action.new_financial.InvoiceAction" method="dialogUpdateForm">
+			<result name="suc">/saleunit_new_financial/guangzhou/invoice_dialog_update.jsp</result>
+		</action>
+		<!-- 删除发票 -->
+		<action name="invoiceDel" class="com.ihk.saleunit.action.new_financial.InvoiceAction" method="invoiceDel">
+		</action>
+		<!-- 废除发票 -->
+		<action name="invoiceDis" class="com.ihk.saleunit.action.new_financial.InvoiceAction" method="invoiceDis">
+		</action>
+		
+		<!-- 应收款减免延期管理 -->
+		<!-- 列表 -->
+		<action name="unitPayDelayInfo" class="com.ihk.saleunit.action.new_financial.UnitPayDelayAction" method="tabInfo">
+			<result name="suc">/saleunit_new_financial/guangzhou/unit_pay_delay_tab.jsp</result>
+		</action>
+		<!-- 保存 -->
+		<action name="saveUnitPayDelay" class="com.ihk.saleunit.action.new_financial.UnitPayDelayAction" method="save">
+			<result name="suc">/saleunit_new_financial/guangzhou/unit_pay_delay_tab.jsp</result>
+		</action>
+		
+	</package>
+	
+	<!-- 财务管理及销售中心下的tabs -->
+	<package name="saleunit_financial_tabs_guangzhou" extends="struts-base" namespace="/saleunit_financial_tabs/guangzhou">
+		
+		<!-- 销售管理的单元房款收款明细 -->
+		<action name="receiptList" class="com.ihk.saleunit.action.financial.SaleunitReceiptAction" method="receiptList">
+			<result name="receiptList">/saleunit_new/financial/receipt_list.jsp</result>
+		</action>
+		
+		<!-- 跳到增加页面 -->
+		<action name="forAddReceipt" class="com.ihk.saleunit.action.financial.SaleunitReceiptAction" method="forAddReceipt">
+			<result name="forAddReceipt">/saleunit_new/financial/add_receipt.jsp</result>
+		</action>
+		
+		<!-- 增加 -->
+		<action name="addReceipt" class="com.ihk.saleunit.action.financial.SaleunitReceiptAction" method="addReceipt"/>
+		
+		<!-- 跳到修改页面 -->
+		<action name="forModifyReceipt" class="com.ihk.saleunit.action.financial.SaleunitReceiptAction" method="forModifyReceipt">
+			<result name="forModifyReceipt">/saleunit_new/financial/modify_receipt.jsp</result>
+		</action>
+		
+		<!-- 修改 -->
+		<action name="updateReceipt" class="com.ihk.saleunit.action.financial.SaleunitReceiptAction" method="updateReceipt"/>
+		
+		<!-- 删除 -->
+		<action name="deleteReceipt" class="com.ihk.saleunit.action.financial.SaleunitReceiptAction" method="deleteReceipt"/>
+		
+		<!-- 收款明细的弹出框(根据应收id) -->
+		<action name="receiptListDialog" class="com.ihk.saleunit.action.financial.SaleunitReceiptAction" method="receiptListDialog">
+			<result name="receiptListDialog">/saleunit_new/financial/receipt_list_dialog.jsp</result>
+		</action>
+		
+		<!-- 收款明细的弹出框(根据单元id) -->
+		<action name="receiptListDialogByUnitId" class="com.ihk.saleunit.action.financial.SaleunitReceiptAction" method="receiptListDialogByUnitId">
+			<result name="receiptListDialogByUnitId">/saleunit_new/financial/receipt_list_dialog_unit_id.jsp</result>
+		</action>
+		
+		<!-- 销售管理的单元实收佣金明细 -->
+		<action name="apPaymentList" class="com.ihk.saleunit.action.financial.ApPaymentAction" method="apPaymentList">
+			<result name="apPaymentList">/saleunit_new/financial/ap_list.jsp</result>
+		</action>
+		
+		<!-- 判断单元是否有实收 -->
+		<action name="isHaveReceiptByUnitId" class="com.ihk.saleunit.action.financial.SaleunitReceiptAction" method="isHaveReceiptByUnitId"/>
+		
+	</package>
+	
+</struts>

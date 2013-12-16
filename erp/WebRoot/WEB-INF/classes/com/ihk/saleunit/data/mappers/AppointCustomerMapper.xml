@@ -1,0 +1,107 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.ihk.saleunit.data.IAppointCustomerMapper">
+
+	<resultMap type="AppointCustomer" id="appointCustomerResultMap">
+		<id property="id" column="id" />        
+		<result property="customerName" column="customer_name" />
+		<result property="gender" column="gender" />
+		<result property="idcardType" column="idcard_type" />
+		<result property="idcardNo" column="idcard_no" />
+		<result property="phone" column="phone" />
+		<result property="isDeleted" column="is_deleted" />
+		<result property="createdId" column="created_id" />
+		<result property="createdTime" column="created_time" />
+		<result property="modId" column="mod_id" />
+		<result property="modTime" column="mod_time" />
+	</resultMap>
+
+	<insert id="addAppointCustomer" parameterType="AppointCustomer">
+		 <selectKey resultType="java.lang.Integer" keyProperty="id" order="AFTER" >
+            SELECT @@IDENTITY
+        </selectKey>		
+		insert into appoint_customer(
+		customer_name,
+		gender,
+		idcard_type,
+		idcard_no,
+		phone,
+		is_deleted,
+		created_id,
+		created_time,
+		mod_id,
+		mod_time
+		)
+			VALUES(
+		#{customerName},
+		#{gender},
+		#{idcardType},
+		#{idcardNo},
+		#{phone},
+		#{isDeleted},
+		#{createdId},
+		#{createdTime},
+		#{modId},
+		#{modTime}
+			)
+		
+	</insert>
+	<delete id="deleteAppointCustomer" parameterType="int">
+	update appoint_customer set is_deleted='1' where id=#{id};
+	</delete>
+	<update id="updateAppointCustomer" parameterType="int">
+	update appoint_customer set 
+		customer_name=#{customerName},
+		gender=#{gender},
+		idcard_type=#{idcardType},
+		idcard_no=#{idcardNo},
+		phone=#{phone},
+		mod_id=#{modId},
+		mod_time=#{modTime}
+	 where id=#{id}
+	</update>
+	<select id="findAppointCustomerById" resultMap="appointCustomerResultMap">
+	select * from appoint_customer where id=#{id}
+	</select>
+    
+	<sql id="findWhereCond"> 
+		<where>
+			
+			<if test="customerName != null and customerName != ''">
+				and customer_name like concat(concat('%', #{customerName, jdbcType=VARCHAR}), '%')
+			</if>
+			
+			 and is_deleted = '0' 
+		</where>
+	</sql>
+	
+	<select id="findAppointCustomerCount" resultType="int" parameterType="com.ihk.saleunit.data.pojo.AppointCustomerCond">
+		SELECT count(0) from appoint_customer  
+        <include refid="findWhereCond"/>     
+    </select>
+        
+	<select id="findAppointCustomer" resultMap="appointCustomerResultMap" parameterType="com.ihk.saleunit.data.pojo.AppointCustomerCond">
+		SELECT * from  appoint_customer 
+        <include refid="findWhereCond"/> 
+		<if test="topNum > 0">
+			limit #{topNum};
+		</if>
+    </select>
+    
+	<select id="findAppointCustomerPage" resultMap="appointCustomerResultMap" parameterType="com.ihk.saleunit.data.pojo.AppointCustomerCond">
+		SELECT * from  appoint_customer 
+        <include refid="findWhereCond"/> 
+		
+		order by created_time desc
+		<if test="startLine >= 0">
+		<if test="pageSize > 0">
+			limit #{startLine},#{pageSize};
+		</if>
+		</if>
+	</select>
+	
+	<select id="findAppointCustomerLikeName" resultMap="appointCustomerResultMap">
+		SELECT * from  appoint_customer where customer_name like concat(concat('%', #{customerName, jdbcType=VARCHAR}), '%') order by created_time desc limit 10
+    </select>
+	
+</mapper>

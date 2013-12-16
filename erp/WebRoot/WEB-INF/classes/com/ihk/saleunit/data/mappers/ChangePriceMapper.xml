@@ -1,0 +1,234 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.ihk.saleunit.data.IChangePriceMapper">
+
+	<resultMap type="ChangePrice" id="changePriceResultMap">
+		<id property="id" column="id" />        
+		<result property="confirmType" column="confirm_type" />
+		<result property="mainId" column="main_id" />
+		<result property="priceWay1" column="price_way1" />
+		<result property="payType1" column="pay_type1" />
+		<result property="discountPercent1" column="discount_percent1" />
+		<result property="buildPrice1" column="build_price1" />
+		<result property="insideUnitPrice1" column="inside_unit_price1" />
+		<result property="discountDesc1" column="discount_desc1" />
+		<result property="sumMoney1" column="sum_money1" />
+		<result property="renovateDesc1" column="renovate_desc1" />
+		<result property="renovatePrice1" column="renovate_price1" />
+		<result property="isMerge1" column="is_merge1" />
+		<result property="renovateMoney1" column="renovate_money1" />
+		<result property="agreeNo1" column="agree_no1" />
+		<result property="shouldDeposit1" column="should_deposit1" />
+		<result property="agreeMoney1" column="agree_money1" />
+		<result property="priceWay2" column="price_way2" />
+		<result property="payType2" column="pay_type2" />
+		<result property="discountPercent2" column="discount_percent2" />
+		<result property="buildPrice2" column="build_price2" />
+		<result property="insideUnitPrice2" column="inside_unit_price2" />
+		<result property="discountDesc2" column="discount_desc2" />
+		<result property="sumMoney2" column="sum_money2" />
+		<result property="renovateDesc2" column="renovate_desc2" />
+		<result property="renovatePrice2" column="renovate_price2" />
+		<result property="isMerge2" column="is_merge2" />
+		<result property="renovateMoney2" column="renovate_money2" />
+		<result property="agreeNo2" column="agree_no2" />
+		<result property="shouldDeposit2" column="should_deposit2" />
+		<result property="agreeMoney2" column="agree_money2" />
+		<result property="resonType" column="reson_type" />
+		<result property="handFee" column="hand_fee" />
+		<result property="resonDesc" column="reson_desc" />
+		<result property="applyUser" column="apply_user" />
+		<result property="applyDate" column="apply_date" />
+		<result property="applyState" column="apply_state" />
+		<result property="isDeleted" column="is_deleted" />
+		<result property="createdId" column="created_id" />
+		<result property="createdTime" column="created_time" />
+		<result property="modId" column="mod_id" />
+		<result property="modTime" column="mod_time" />
+	</resultMap>
+
+	<insert id="addChangePrice" parameterType="ChangePrice">
+		 <selectKey resultType="java.lang.Integer" keyProperty="id" order="AFTER" >
+            SELECT @@IDENTITY
+        </selectKey>		
+		insert into change_price(
+		confirm_type,
+		main_id,
+		price_way1,
+		pay_type1,
+		discount_percent1,
+		build_price1,
+		inside_unit_price1,
+		discount_desc1,
+		sum_money1,
+		renovate_desc1,
+		renovate_price1,
+		is_merge1,
+		renovate_money1,
+		agree_no1,
+		should_deposit1,
+		agree_money1,
+		price_way2,
+		pay_type2,
+		discount_percent2,
+		build_price2,
+		inside_unit_price2,
+		discount_desc2,
+		sum_money2,
+		renovate_desc2,
+		renovate_price2,
+		is_merge2,
+		renovate_money2,
+		agree_no2,
+		should_deposit2,
+		agree_money2,
+		reson_type,
+		hand_fee,
+		reson_desc,
+		apply_user,
+		apply_date,
+		apply_state,
+		is_deleted,
+		created_id,
+		created_time,
+		mod_id,
+		mod_time
+		)
+			VALUES(
+		#{confirmType},
+		#{mainId},
+		#{priceWay1},
+		#{payType1},
+		#{discountPercent1},
+		#{buildPrice1},
+		#{insideUnitPrice1},
+		#{discountDesc1},
+		#{sumMoney1},
+		#{renovateDesc1},
+		#{renovatePrice1},
+		#{isMerge1},
+		#{renovateMoney1},
+		#{agreeNo1},
+		#{shouldDeposit1},
+		#{agreeMoney1},
+		#{priceWay2},
+		#{payType2},
+		#{discountPercent2},
+		#{buildPrice2},
+		#{insideUnitPrice2},
+		#{discountDesc2},
+		#{sumMoney2},
+		#{renovateDesc2},
+		#{renovatePrice2},
+		#{isMerge2},
+		#{renovateMoney2},
+		#{agreeNo2},
+		#{shouldDeposit2},
+		#{agreeMoney2},
+		#{resonType},
+		#{handFee},
+		#{resonDesc},
+		#{applyUser},
+		#{applyDate},
+		#{applyState},
+		#{isDeleted},
+		#{createdId},
+		#{createdTime},
+		#{modId},
+		#{modTime}
+			)
+		
+	</insert>
+	<delete id="deleteChangePrice" parameterType="int">
+	update change_price set is_deleted='1' where id=#{id};
+	</delete>
+	<update id="updateChangePrice" parameterType="int">
+	update change_price set 
+		confirm_type=#{confirmType},
+		main_id=#{mainId},
+		price_way1=#{priceWay1},
+		pay_type1=#{payType1},
+		discount_percent1=#{discountPercent1},
+		build_price1=#{buildPrice1},
+		inside_unit_price1=#{insideUnitPrice1},
+		discount_desc1=#{discountDesc1},
+		sum_money1=#{sumMoney1},
+		renovate_desc1=#{renovateDesc1},
+		renovate_price1=#{renovatePrice1},
+		is_merge1=#{isMerge1},
+		renovate_money1=#{renovateMoney1},
+		agree_no1=#{agreeNo1},
+		should_deposit1=#{shouldDeposit1},
+		agree_money1=#{agreeMoney1},
+		price_way2=#{priceWay2},
+		pay_type2=#{payType2},
+		discount_percent2=#{discountPercent2},
+		build_price2=#{buildPrice2},
+		inside_unit_price2=#{insideUnitPrice2},
+		discount_desc2=#{discountDesc2},
+		sum_money2=#{sumMoney2},
+		renovate_desc2=#{renovateDesc2},
+		renovate_price2=#{renovatePrice2},
+		is_merge2=#{isMerge2},
+		renovate_money2=#{renovateMoney2},
+		agree_no2=#{agreeNo2},
+		should_deposit2=#{shouldDeposit2},
+		agree_money2=#{agreeMoney2},
+		reson_type=#{resonType},
+		hand_fee=#{handFee},
+		reson_desc=#{resonDesc},
+		apply_user=#{applyUser},
+		apply_date=#{applyDate},
+		apply_state=#{applyState},
+		is_deleted=#{isDeleted},
+		created_id=#{createdId},
+		created_time=#{createdTime},
+		mod_id=#{modId},
+		mod_time=#{modTime}
+	 where id=#{id}
+	</update>
+	<select id="findChangePriceById" resultMap="changePriceResultMap">
+	select * from change_price where id=#{id}
+	</select>
+    
+	<sql id="findWhereCond"> 
+		<where>
+        <!--
+			<if test="date1 != null and date1 != ''">
+            </if>    
+            and is_deleted = '0'
+            -->
+            <if test="mainId != 0">
+           	and main_id = #{mainId}
+            </if>   
+             <if test="confirmType != null and confirmType != ''">
+           	and confirm_type = #{confirmType}
+            </if>  
+            and is_deleted = '0'
+		</where>
+	</sql>
+	
+	<select id="findChangePriceCount" resultType="int" parameterType="com.ihk.saleunit.data.pojo.ChangePriceCond">
+		SELECT count(0) from change_price  
+        <include refid="findWhereCond"/>     
+    </select>
+        
+	<select id="findChangePrice" resultMap="changePriceResultMap" parameterType="com.ihk.saleunit.data.pojo.ChangePriceCond">
+		SELECT * from  change_price 
+        <include refid="findWhereCond"/> 
+		<if test="topNum > 0">
+			limit #{topNum};
+		</if>
+    </select>
+    
+	<select id="findChangePricePage" resultMap="changePriceResultMap" parameterType="com.ihk.saleunit.data.pojo.ChangePriceCond">
+		SELECT * from  change_price 
+        <include refid="findWhereCond"/> 
+    
+		<if test="startLine >= 0">
+		<if test="pageSize > 0">
+			limit #{startLine},#{pageSize};
+		</if>
+		</if>
+	</select>
+</mapper>

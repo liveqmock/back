@@ -1,0 +1,111 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.ihk.customer.data.IIdcardLocationMapper">
+
+	<resultMap type="IdcardLocation" id="idcardLocationResultMap">
+		<id property="id" column="id" />        
+		<result property="identityId" column="identity_id" />
+		<result property="areaProvince" column="area_province" />
+		<result property="areaCity" column="area_city" />
+		<result property="areaRegion" column="area_region" />
+	</resultMap>
+
+	<insert id="addIdcardLocation" parameterType="IdcardLocation">
+		 <selectKey resultType="java.lang.Integer" keyProperty="id" order="AFTER" >
+            SELECT @@IDENTITY
+        </selectKey>		
+		insert into idcard_location(
+		identity_id,
+		area_province,
+		area_city,
+		area_region
+		)
+			VALUES(
+		#{identityId},
+		#{areaProvince},
+		#{areaCity},
+		#{areaRegion}
+			)
+		
+	</insert>
+	<delete id="deleteIdcardLocation" parameterType="com.ihk.utils.base.PojoDeleteCond">
+	update idcard_location set is_deleted='1', mod_id=#{modId}, mod_time=#{modTime} where id=#{id};
+	</delete>
+	<update id="updateIdcardLocation" parameterType="int">
+	update idcard_location set 
+		identity_id=#{identityId},
+		area_province=#{areaProvince},
+		area_city=#{areaCity},
+		area_region=#{areaRegion}
+	 where id=#{id}
+	</update>
+	<select id="findIdcardLocationById" resultMap="idcardLocationResultMap">
+	select * from idcard_location where id=#{id}
+	</select>
+    
+	<sql id="findWhereCond"> 
+		<where>
+		<if test="identityId!=null and identityId!='' ">
+			and identity_id = #{identityId}
+		</if>
+		<if test="areaProvince!=null and areaProvince!='' ">
+			and area_province = #{areaProvince}
+		</if>
+		<if test="areaCity!=null and areaCity!='' ">
+			and area_city = #{areaCity}
+		</if>
+		<if test="areaRegion!=null and areaRegion!='' ">
+			and area_region = #{areaRegion}
+		</if>
+		</where>
+	</sql>
+	
+	<select id="findIdcardLocationCount" resultType="int" parameterType="com.ihk.customer.data.pojo.IdcardLocationCond">
+		SELECT count(0) from idcard_location  
+        <include refid="findWhereCond"/>     
+    </select>
+        
+	<select id="findIdcardLocation" resultMap="idcardLocationResultMap" parameterType="com.ihk.customer.data.pojo.IdcardLocationCond">
+		SELECT * from  idcard_location 
+        <include refid="findWhereCond"/> 
+		<if test="topNum > 0">
+			limit #{topNum};
+		</if>
+    </select>
+    
+	<select id="findIdcardLocationPage" resultMap="idcardLocationResultMap" parameterType="com.ihk.customer.data.pojo.IdcardLocationCond">
+		SELECT * from  idcard_location 
+        <include refid="findWhereCond"/> 
+    
+		<if test="startLine >= 0">
+		<if test="pageSize > 0">
+			limit #{startLine},#{pageSize};
+		</if>
+		</if>
+	</select>
+    
+    <!-- ajax分页使用 -->	
+    <sql id="findIdcardLocationForAjaxComm">
+		<where>		
+            and is_deleted = '0'
+		</where>
+		
+	</sql>
+    
+    <select id="findIdcardLocationForAjax" resultMap="idcardLocationResultMap" parameterType="com.ihk.customer.data.pojo.IdcardLocationCond">
+		SELECT * from  idcard_location 
+        <include refid="findIdcardLocationForAjaxComm"/> 
+    
+		<if test="startLine >= 0">
+		<if test="pageSize > 0">
+			limit #{startLine},#{pageSize};
+		</if>
+		</if>
+	</select>
+    
+    <select id="findIdcardLocationCountForAjax" resultType="int" parameterType="com.ihk.customer.data.pojo.IdcardLocationCond">
+		SELECT count(1) from idcard_location  
+        <include refid="findIdcardLocationForAjaxComm"/>     
+    </select>
+    
+</mapper>

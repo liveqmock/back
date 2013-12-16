@@ -1,0 +1,119 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.ihk.saleunit.data.IMortgageMapper">
+
+	<resultMap type="Mortgage" id="mortgageResultMap">
+		<id property="id" column="id" />        
+		<result property="mortgageNo" column="mortgage_no" />
+		<result property="mortgageDate" column="mortgage_date" />
+		<result property="contractNo" column="contract_no" />
+		<result property="loanBank" column="loan_bank" />
+		<result property="loanMoney" column="loan_money" />
+		<result property="assessmentCompany" column="assessment_company" />
+		<result property="assessmentMoney" column="assessment_money" />
+		<result property="loanDate" column="loan_date" />
+		<result property="remark" column="remark" />
+		<result property="isDeleted" column="is_deleted" />
+		<result property="createdId" column="created_id" />
+		<result property="createdTime" column="created_time" />
+		<result property="modId" column="mod_id" />
+		<result property="modTime" column="mod_time" />
+	</resultMap>
+
+	<insert id="addMortgage" parameterType="Mortgage">
+		 <selectKey resultType="java.lang.Integer" keyProperty="id" order="AFTER" >
+            SELECT @@IDENTITY
+        </selectKey>		
+		insert into mortgage(
+		mortgage_no,
+		mortgage_date,
+		contract_no,
+		loan_bank,
+		loan_money,
+		assessment_company,
+		assessment_money,
+		loan_date,
+		remark,
+		is_deleted,
+		created_id,
+		created_time,
+		mod_id,
+		mod_time
+		)
+			VALUES(
+		#{mortgageNo},
+		#{mortgageDate},
+		#{contractNo},
+		#{loanBank},
+		#{loanMoney},
+		#{assessmentCompany},
+		#{assessmentMoney},
+		#{loanDate},
+		#{remark},
+		#{isDeleted},
+		#{createdId},
+		#{createdTime},
+		#{modId},
+		#{modTime}
+			)
+		
+	</insert>
+	<delete id="deleteMortgage" parameterType="int">
+	update mortgage set is_deleted='1' where id=#{id};
+	</delete>
+	<update id="updateMortgage" parameterType="int">
+	update mortgage set 
+		mortgage_no=#{mortgageNo},
+		mortgage_date=#{mortgageDate},
+		contract_no=#{contractNo},
+		loan_bank=#{loanBank},
+		loan_money=#{loanMoney},
+		assessment_company=#{assessmentCompany},
+		assessment_money=#{assessmentMoney},
+		loan_date=#{loanDate},
+		remark=#{remark},
+		is_deleted=#{isDeleted},
+		created_id=#{createdId},
+		created_time=#{createdTime},
+		mod_id=#{modId},
+		mod_time=#{modTime}
+	 where id=#{id}
+	</update>
+	<select id="findMortgageById" resultMap="mortgageResultMap">
+	select * from mortgage where id=#{id}
+	</select>
+    
+	<sql id="findWhereCond"> 
+		<where>
+        <!--
+			<if test="date1 != null and date1 != ''">
+            </if>    
+            and is_deleted = '0'
+            -->
+		</where>
+	</sql>
+	
+	<select id="findMortgageCount" resultType="int" parameterType="com.ihk.saleunit.data.pojo.MortgageCond">
+		SELECT count(0) from mortgage  
+        <include refid="findWhereCond"/>     
+    </select>
+        
+	<select id="findMortgage" resultMap="mortgageResultMap" parameterType="com.ihk.saleunit.data.pojo.MortgageCond">
+		SELECT * from  mortgage 
+        <include refid="findWhereCond"/> 
+		<if test="topNum > 0">
+			limit #{topNum};
+		</if>
+    </select>
+    
+	<select id="findMortgagePage" resultMap="mortgageResultMap" parameterType="com.ihk.saleunit.data.pojo.MortgageCond">
+		SELECT * from  mortgage 
+        <include refid="findWhereCond"/> 
+    
+		<if test="startLine >= 0">
+		<if test="pageSize > 0">
+			limit #{startLine},#{pageSize};
+		</if>
+		</if>
+	</select>
+</mapper>

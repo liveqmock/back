@@ -1,0 +1,182 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.ihk.customer.collection.IVipCustMapper">
+
+	<resultMap type="VipCust" id="vipCustResultMap">
+		<id property="id" column="id" />        
+		<result property="customerNo" column="customer_no" />
+		<result property="customerName" column="customer_name" />
+		<result property="idcardNo" column="idcard_no" />
+		<result property="tel" column="tel" />
+		<result property="phone" column="phone" />
+		<result property="contactAddr" column="contact_addr" />
+		<result property="residArea" column="resid_area" />
+		<result property="wordArea" column="word_area" />
+		<result property="natives" column="natives" />
+		<result property="source" column="source" />
+		<result property="ad_area" column="ad_area" />
+		<result property="createdate" column="createdate" />
+		<result property="deal_date" column="deal_date" />
+	</resultMap>
+	<resultMap type="java.util.Map" id="vipCustAndDeal">
+		<result property="dealDate" column="deal_date" />
+		<result property="projectName" column="project_name" />
+		<result property="total" column="total" />
+		<result property="areaSize" column="area_size" />
+		<result property="customerNo" column="customer_no" />
+		<result property="customerName" column="customer_name" />
+		<result property="idcardNo" column="idcard_no" />
+		<result property="tel" column="tel" />
+		<result property="phone" column="phone" />
+		<result property="contactAddr" column="contact_addr" />
+		<result property="residArea" column="resid_area" />
+		<result property="wordArea" column="word_area" />
+		<result property="natives" column="natives" />
+	</resultMap>
+
+	<insert id="addVipCust" parameterType="VipCust">
+		 <selectKey resultType="java.lang.Integer" keyProperty="id" order="AFTER" >
+            SELECT @@IDENTITY
+        </selectKey>		
+		insert into vip_cust(
+		customer_no,
+		customer_name,
+		idcard_no,
+		tel,
+		phone,
+		contact_addr,
+		resid_area,
+		word_area,
+		natives,
+        source,
+        ad_area,
+		createdate,
+        deal_date,
+        company_id
+		)
+			VALUES(
+		#{customerNo},
+		#{customerName},
+		#{idcardNo},
+		#{tel},
+		#{phone},
+		#{contactAddr},
+		#{residArea},
+		#{wordArea},
+		#{natives},
+        #{source},
+        #{ad_area},
+		#{createdate},
+		#{deal_date},
+		#{companyId}
+			)
+		
+	</insert>
+	<delete id="deleteVipCust" parameterType="com.ihk.utils.base.PojoDeleteCond">
+	update vip_cust set is_deleted='1', mod_id=#{modId}, mod_time=#{modTime} where id=#{id};
+	</delete>
+	<update id="updateVipCust" parameterType="int">
+	update vip_cust set 
+		customer_no=#{customerNo},
+		customer_name=#{customerName},
+		idcard_no=#{idcardNo},
+		tel=#{tel},
+		phone=#{phone},
+		contact_addr=#{contactAddr},
+		resid_area=#{residArea},
+		word_area=#{wordArea},
+		natives=#{natives},
+		ad_area=#{ad_area},
+		source=#{source},
+		createdate=#{createdate},
+		deal_date=#{deal_date}
+	 where id=#{id}
+	</update>
+	<select id="findVipCustById" resultMap="vipCustResultMap">
+	select * from vip_cust where id=#{id}
+	</select>
+    
+	<sql id="findWhereCond"> 
+		<where>
+            company_id = #{companyId}
+		<if test="idcardNo !=null and idcardNo!= ''">
+			and idcard_no = #{idcardNo}
+		</if>
+        <if test="customerName !=null and customerName!= ''">
+            and customer_name = #{customerName}
+		</if>
+        <!--
+			<if test="date1 != null and date1 != ''">
+            </if>    
+            and is_deleted = '0'
+            -->
+        <if test="refList !=null and refList.size() >0">
+			and id in
+			<foreach  
+	           collection="refList"  
+	           item="refId"  
+	           open="("  
+	           separator=","  
+	           close=")">  
+	           #{refId}  
+	        </foreach> 
+		</if>
+		</where>
+	</sql>
+	
+	<select id="findVipCustCount" resultType="int" parameterType="com.ihk.customer.collection.pojo.VipCustCond">
+		SELECT count(0) from vip_cust  
+        <include refid="findWhereCond"/>     
+    </select>
+        
+	<select id="findVipCust" resultMap="vipCustResultMap" parameterType="com.ihk.customer.collection.pojo.VipCustCond">
+		SELECT * from  vip_cust 
+        <include refid="findWhereCond"/> 
+		<if test="topNum > 0">
+			limit #{topNum};
+		</if>
+    </select>
+    
+	<select id="findVipCustPage" resultMap="vipCustResultMap" parameterType="com.ihk.customer.collection.pojo.VipCustCond">
+		SELECT * from  vip_cust 
+        <include refid="findWhereCond"/> 
+    
+		<if test="startLine >= 0">
+		<if test="pageSize > 0">
+			limit #{startLine},#{pageSize};
+		</if>
+		</if>
+	</select>
+	
+	<select id="findVipCustAndDeal" resultMap="vipCustAndDeal" parameterType="com.ihk.customer.collection.pojo.VipCustdealCond" >
+		select vi.deal_date as deal_date,vi.project_name as project_name,vi.total as total,vi.area_size as area_size,vi.customer_no as customer_no,vi.customer_name as customer_name,
+		vi.idcard_no as idcard_no,vi.tel as tel,vi.phone as phone,vi.contact_addr as contact_addr,vi.reside_area as resid_area,vi.word_area as word_area,vi.natives as natives,
+        vi.area as area ,vi.building as building,vi.floor as floor ,vi.room_no as room_no,vi.construction_area as construction_area ,vi.id as id from
+		  vip_custdeal vd ,vip_cust_imp vi
+		<where>
+            vi.company_id=#{companyId}
+            and vd.cust_imp_id=vi.id
+			<if test="refList !=null and refList.size() >0">
+			    and vd.ref_id in
+				<foreach  
+	                collection="refList"  
+	                item="refId"  
+	                open="("  
+	                separator=","  
+	                close=")">  
+	                #{refId}  
+	            </foreach> 
+			</if>
+		</where>
+
+        <if test="sort != null and sort != ''">
+            order by ${sort} ${order}
+        </if>
+
+        <if test="startLine >= 0">
+		<if test="pageSize > 0">
+			limit #{startLine},#{pageSize};
+		</if>
+		</if>
+	</select>
+</mapper>

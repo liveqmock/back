@@ -1,0 +1,146 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.ihk.saleunit.data.IUnitOperRecordMapper">
+
+	<resultMap type="UnitOperRecord" id="unitOperRecordResultMap">
+		<id property="id" column="id" />        
+		<result property="companyProjectId" column="company_project_id" />
+		<result property="propertyProjectId" column="property_project_id" />
+		<result property="areaId" column="area_id" />
+		<result property="buildId" column="build_id" />
+		<result property="unitId" column="unit_id" />
+		<result property="parentId" column="parent_id" />
+		<result property="operType" column="oper_type" />
+		<result property="mainId" column="main_id" />
+		<result property="isDeleted" column="is_deleted" />
+		<result property="createdId" column="created_id" />
+		<result property="createdTime" column="created_time" />
+		<result property="modId" column="mod_id" />
+		<result property="modTime" column="mod_time" />
+	</resultMap>
+
+	<insert id="addUnitOperRecord" parameterType="UnitOperRecord">
+		 <selectKey resultType="java.lang.Integer" keyProperty="id" order="AFTER" >
+            SELECT @@IDENTITY
+        </selectKey>		
+		insert into unit_oper_record(
+		company_project_id,
+		property_project_id,
+		area_id,
+		build_id,
+		unit_id,
+		parent_id,
+		oper_type,
+		main_id,
+		is_deleted,
+		created_id,
+		created_time,
+		mod_id,
+		mod_time
+		)
+			VALUES(
+		#{companyProjectId},
+		#{propertyProjectId},
+		#{areaId},
+		#{buildId},
+		#{unitId},
+		#{parentId},
+		#{operType},
+		#{mainId},
+		#{isDeleted},
+		#{createdId},
+		#{createdTime},
+		#{modId},
+		#{modTime}
+			)
+		
+	</insert>
+	<delete id="deleteUnitOperRecord" parameterType="com.ihk.utils.base.PojoDeleteCond">
+	update unit_oper_record set is_deleted='1', mod_id=#{modId}, mod_time=#{modTime} where id=#{id};
+	</delete>
+	<update id="updateUnitOperRecord" parameterType="int">
+	update unit_oper_record set 
+		company_project_id=#{companyProjectId},
+		property_project_id=#{propertyProjectId},
+		area_id=#{areaId},
+		build_id=#{buildId},
+		unit_id=#{unitId},
+		parent_id=#{parentId},
+		oper_type=#{operType},
+		main_id=#{mainId},
+		mod_id=#{modId},
+		mod_time=#{modTime}
+	 where id=#{id}
+	</update>
+	<select id="findUnitOperRecordById" resultMap="unitOperRecordResultMap">
+	select * from unit_oper_record where id=#{id}
+	</select>
+	
+	<select id="findUnitOperRecordByUnitId" resultMap="unitOperRecordResultMap">
+	select * from unit_oper_record where unit_id=#{unitId} and is_deleted = '0'
+	</select>
+	
+    <select id="findUnitOperRecordByUnitIdOfMaxId" resultMap="unitOperRecordResultMap">
+	select * from unit_oper_record where unit_id=#{unitId} and is_deleted = '0' order by id desc limit 1
+	</select>
+    
+    
+	<sql id="findWhereCond"> 
+		<where>
+            and is_deleted = '0'
+		</where>
+	</sql>
+	
+	<select id="findUnitOperRecordCount" resultType="int" parameterType="com.ihk.saleunit.data.pojo.UnitOperRecordCond">
+		SELECT count(0) from unit_oper_record  
+        <include refid="findWhereCond"/>     
+    </select>
+        
+	<select id="findUnitOperRecord" resultMap="unitOperRecordResultMap" parameterType="com.ihk.saleunit.data.pojo.UnitOperRecordCond">
+		SELECT * from  unit_oper_record 
+        <include refid="findWhereCond"/> 
+		<if test="topNum > 0">
+			limit #{topNum};
+		</if>
+    </select>
+    
+	<select id="findUnitOperRecordPage" resultMap="unitOperRecordResultMap" parameterType="com.ihk.saleunit.data.pojo.UnitOperRecordCond">
+		SELECT * from  unit_oper_record 
+        <include refid="findWhereCond"/> 
+    
+		<if test="startLine >= 0">
+		<if test="pageSize > 0">
+			limit #{startLine},#{pageSize};
+		</if>
+		</if>
+	</select>
+    
+    <!-- ajax分页使用 -->	
+   <sql id="findUnitOperRecordForAjaxComm">
+		<where>		
+            and is_deleted = '0'
+		</where>
+		
+	</sql>
+    
+    <select id="findUnitOperRecordForAjax" resultMap="unitOperRecordResultMap" parameterType="com.ihk.saleunit.data.pojo.UnitOperRecordCond">
+		SELECT * from  unit_oper_record 
+        <include refid="findUnitOperRecordForAjaxComm"/> 
+    
+		<if test="startLine >= 0">
+		<if test="pageSize > 0">
+			limit #{startLine},#{pageSize};
+		</if>
+		</if>
+	</select>
+    
+    <select id="findUnitOperRecordCountForAjax" resultType="int" parameterType="com.ihk.saleunit.data.pojo.UnitOperRecordCond">
+		SELECT count(1) from unit_oper_record  
+        <include refid="findUnitOperRecordForAjaxComm"/>     
+    </select>
+    
+    <select id="findUnitOperRecordForLimit1ByUnitId" resultMap="unitOperRecordResultMap">
+    	select * from unit_oper_record where unit_id=#{unitId} and is_deleted = '0' order by id desc limit 1
+	</select>
+    
+</mapper>

@@ -1,0 +1,96 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE struts PUBLIC
+    "-//Apache Software Foundation//DTD Struts Configuration 2.0//EN"
+    "http://struts.apache.org/dtds/struts-2.0.dtd">
+<struts>
+	<!-- 恒大权限设定    没有开放使用 -->
+	<package name="permission" extends="struts-default">
+		<action name="userrole!*" class="com.ihk.user.action.UserRoleAction">
+			<result name="queryRole">/permission/role_index.jsp</result>
+			<result name="toAdd">/permission/role_input.jsp</result>
+			<result name="addRole">/permission/role_input.jsp</result>
+			<result name="queryRoleById">/permission/role_update.jsp</result>
+			<result name="updateRole">/permission/role_update.jsp</result>
+			<result name="deleteRole" type="redirectAction">userrole!queryRoles?deleteSession=false</result>
+			<result name="queryUserRole">/permission/userrole_index.jsp</result>
+			<result name="toAddUserRole">/permission/userrole_input.jsp</result>
+			<result name="addUserRole">/permission/userrole_input.jsp</result>
+			<result name="queryUserRoleById">/permission/userrole_update.jsp</result>
+			<result name="updateUserRole">/permission/userrole_update.jsp</result>
+			<result name="queryUserPriv">/permission/userpriv_index.jsp</result>
+			<result name="deleteUserRole" type="redirectAction">userrole!queryUserRoles?deleteSession=false</result>
+		</action>
+		
+		<action name="function_tree!*" class="com.ihk.user.action.FuncTreeAction">
+			<result name="list">/permission/treePriv_Main.jsp</result>
+			<result name="update">/permission/treePriv_updateMain.jsp</result>
+			<result name="updated">/permission/treePriv_updateMain.jsp</result>
+			<result name="findbyname">/permission/treePriv_Main.jsp</result>
+		</action>
+		
+		<action name="priv_func!*" class="com.ihk.user.action.PrivFuncAction">
+			<result name="list">/permission/priv_func_Main.jsp</result>
+			<result name="update">/permission/priv_func_updateMain.jsp</result>
+			<result name="updated">/permission/priv_func_updateMain.jsp</result>
+			<result name="add">/permission/priv_func_addMain.jsp</result>
+			<result name="added">/permission/priv_func_addMain.jsp</result>
+			<result name="findbyname">/permission/priv_func_Main.jsp</result>
+		</action>
+	
+		
+		<action name="user_role_priv!*" class="com.ihk.user.action.RolePrivAction">
+			<result name="role_priv_index">/permission/rolePriv.jsp</result>
+			<result name="role_priv_ref_index">/permission/rolePrivRef.jsp</result>
+			<result name="role_priv_ref_add">/permission/rolePrivRef_add.jsp</result>
+			<result name="role_priv_ref_update">/permission/rolePrivRef_update.jsp</result>
+			<result name="priv_index">/permission/priv.jsp</result>
+			
+		</action>
+		<action name="cache!*" class="com.ihk.user.action.CacheAction">
+			<result name="cleancache">/permission/cleanCache.jsp</result>
+		</action>
+		
+		<action name="quartzAction" class="com.ihk.quartz.SaleMonitorQuartzAction">
+			<result name="doQuartz" type="redirectAction">cache!toCachePage.action</result>
+		</action>
+	</package>
+	<!-- 新增文章 -->
+	<package name="article_input" extends="struts-default" namespace="/article/input">
+		<action name="for_article" class="com.ihk.article.action.InputArticleAction" method="inputForArticle">
+			<result name="forinput">/article/input_for_article.jsp</result>
+		</action>
+		
+		<action name="article" class="com.ihk.article.action.InputArticleAction" method="inputArticle">
+			<result name="input">/article/input_for_article.jsp</result>
+		</action>
+	</package>
+	<!-- 修改文章 -->
+	<package name="article_update" extends="struts-default" namespace="/article/update">
+		<action name="for_article" class="com.ihk.article.action.UpdateArticleAction" method="updateForArticle">
+			<result name="forupdate">/article/update_for_article.jsp</result>
+		</action>
+		
+		<action name="article" class="com.ihk.article.action.UpdateArticleAction" method="updateArticle">
+			<result name="update">/article/update_for_article.jsp</result>
+		</action>
+	</package>
+	<!-- 查询文章 -->
+	
+	<package name="article_search" extends="struts-default" namespace="/article/search">
+		<action name="all" class="com.ihk.article.action.SearchArticleAction" method="searchAllArticle">
+			<result name="searchAllArticle">/article/search_article.jsp</result>
+		</action>
+		</package>
+	<!-- 删除文章 -->
+	<package name="article_delete" extends="struts-default" namespace="/article/delete">
+		<action name="delete" class="com.ihk.article.action.DeleteArticleAction" method="deleteArticle">
+			<result type="redirectAction" name="deleteArticle">
+			<param name="actionName">all</param>
+			<param name="namespace">/article/search</param>
+			</result>
+		</action>
+		
+	</package>
+	
+	
+</struts>

@@ -1,0 +1,224 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE struts PUBLIC
+    "-//Apache Software Foundation//DTD Struts Configuration 2.0//EN"
+    "http://struts.apache.org/dtds/struts-2.0.dtd">
+<struts>
+
+	<package name="coder" extends="struts-default" namespace="/">	
+		<!-- 主页面 -->
+		<action name="coder" class="com.ihk.demo.action.easyui.DocumentAction" method="layout">
+			<result name="layout">/demo/easyui/layout.jsp</result>
+		</action>
+	</package>
+	
+	<package name="demo_easyui" extends="struts-default" namespace="/demo/easyui">	
+	
+		<!-- 主页面 -->
+		<action name="layout" class="com.ihk.demo.action.easyui.DocumentAction" method="layout">
+			<result name="layout">/demo/easyui/layout.jsp</result>
+		</action>
+	
+		<!-- 查询列表 -->
+		<action name="searchList" class="com.ihk.demo.action.easyui.DemoTableAction" method="searchList">
+			<result name="finish">/demo/easyui/search_list.jsp</result>
+		</action>	
+		<!-- 查询排序列表 -->
+		<action name="searchOrderBy" class="com.ihk.demo.action.easyui.DemoTableAction" method="searchOrderBy">
+			<result name="finish" >/demo/easyui/search_list.jsp</result>
+		</action>	
+			
+		<!-- 新增数据提交前的页面 -->
+		<action name="forInput" class="com.ihk.demo.action.easyui.DemoTableAction" method="forInput">
+			<result name="finish" >/demo/easyui/input.jsp</result>
+		</action>		
+		
+		<!-- 新增数据提交后的处理与页面 -->	
+		<action name="inputData" class="com.ihk.demo.action.easyui.DemoTableAction" method="inputData">
+			<result name="finish" >/demo/easyui/input.jsp</result>
+		</action>
+				
+		<!-- 取得一条数据显示的页面 -->
+		<action name="getById" class="com.ihk.demo.action.easyui.DemoTableAction" method="getById">
+			<result name="finish" >/demo/easyui/update.jsp</result>
+		</action>
+		
+		<!-- 执行修改数据的处理与页面 -->
+		<action name="updateData" class="com.ihk.demo.action.easyui.DemoTableAction" method="updateData">
+			<result name="finish" >/demo/easyui/update.jsp</result>
+		</action>	
+		<!-- 执行删除数据的处理与页面 -->	
+		<action name="deleteData" class="com.ihk.demo.action.easyui.DemoTableAction" method="deleteData">
+			<result name="finish" >/demo/easyui/search_list.jsp</result>
+		</action>
+		
+		
+		<!-- 查询的document说明 -->
+		<action name="searchListDoc" class="com.ihk.demo.action.easyui.DocumentAction" method="searchListDoc">
+			<result name="finish">/demo/easyui/search_list_doc.jsp</result>
+		</action>	
+		
+		<!-- 左右结构的document说明 -->
+		<action name="layoutLeftRightDoc" class="com.ihk.demo.action.easyui.DocumentAction" method="layoutLeftRightDoc">
+			<result name="finish">/demo/easyui/layout_left_right_doc.jsp</result>
+		</action>	
+		
+		<!-- 主体上下构的document说明 -->
+		<action name="layoutCenterBottomDoc" class="com.ihk.demo.action.easyui.DocumentAction" method="layoutCenterBottomDoc">
+			<result name="finish">/demo/easyui/layout_center_bottom_doc.jsp</result>
+		</action>	
+		
+		
+		<!-- 按钮的demo页面-->
+		<action name="buttonDemo" class="com.ihk.demo.action.easyui.DocumentAction" method="buttonDemo">
+			<result name="finish">/demo/easyui/button_demo.jsp</result>
+		</action>
+		
+		<!-- 页面控件界面标准的demo页面-->
+		<action name="uiStandDemo" class="com.ihk.demo.action.easyui.DocumentAction" method="uiStandDemo">
+			<result name="finish">/demo/easyui/ui_stand_demo.jsp</result>
+		</action>
+		
+		<!-- 自定义标签的demo说明 -->
+		<action name="myTagDemo" class="com.ihk.demo.action.easyui.DocumentAction" method="myTagDemo">
+			<result name="finish">/demo/easyui/my_tag_demo.jsp</result>
+		</action>
+		
+		<!-- 下载数据的demo说明 -->
+		<action name="downDataDemo" class="com.ihk.demo.action.easyui.DocumentAction" method="downDataDemo">
+			<result name="finish">/demo/easyui/down_data_demo.jsp</result>
+		</action>
+		
+		<!-- 空白的document说明 -->
+		<action name="blankDoc" class="com.ihk.demo.action.easyui.DocumentAction" method="blankDoc">
+			<result name="finish">/demo/easyui/blank_doc.jsp</result>
+		</action>			
+		
+		<!-- 增删改查div的demo说明 -->
+		<action name="crudDivDemo" class="com.ihk.demo.action.easyui.DocumentAction" method="crudDivDemo">
+			<result name="finish">/demo/easyui/crud_div_demo.jsp</result>
+		</action>
+		
+		<!-- struts使用参考的demo说明 -->
+		<action name="strutsDemo" class="com.ihk.demo.action.easyui.DocumentAction" method="strutsDemo">
+			<result name="finish">/demo/easyui/struts_demo.jsp</result>
+		</action>
+		
+		<!-- js使用参考的demo说明 -->
+		<action name="jsDemo" class="com.ihk.demo.action.easyui.DocumentAction" method="jsDemo">
+			<result name="finish">/demo/easyui/js_demo.jsp</result>
+		</action>
+		
+
+<!-- begin 试验codesmith 自动生成的  div 增删改查 -->
+<!-- 查询列表(付款单)  -->
+<action name="searchPayBill" class="com.ihk.demo.action.easyui.SearchPayBillAction" method="searchPayBill">
+	<result name="finish">/demo/easyui/search_paybill.jsp</result>
+</action>	
+<!-- ajax新增数据提交后的处理(付款单) -->	
+<action name="ajaxCreatePayBill" class="com.ihk.demo.action.easyui.SearchPayBillAction" method="ajaxCreatePayBill"/>
+		
+<!-- ajax取得一条数据显示(付款单) -->
+<action name="ajaxGetPayBillById" class="com.ihk.demo.action.easyui.SearchPayBillAction" method="ajaxGetPayBillById"/>
+
+<!-- ajax执行修改数据的处理(付款单) -->
+<action name="ajaxUpdatePayBill" class="com.ihk.demo.action.easyui.SearchPayBillAction" method="ajaxUpdatePayBill"/>	
+
+<!-- end 试验codesmith 自动生成的  div 增删改查 -->
+
+
+		<!-- easyui版查询与分页(json)的demo说明 -->
+		<action name="easyuiSearchlistDemo" class="com.ihk.demo.action.easyui.DocumentAction" method="finish">
+			<result name="finish">/demo/easyui/easyui_searchlist_demo.jsp</result>
+		</action>
+		<!-- 杂项的demo说明 -->
+		<action name="otherDocDemo" class="com.ihk.demo.action.easyui.DocumentAction" method="finish">
+			<result name="finish">/demo/easyui/other_doc_demo.jsp</result>
+		</action>
+		<!-- easyui版弹出框新建与修改的demo说明 -->
+		<action name="addandupdateDemo" class="com.ihk.demo.action.easyui.DocumentAction" method="finish">
+			<result name="finish">/demo/easyui/addandupdate_demo.jsp</result>
+		</action>
+		<!-- 数据校验的demo说明 -->
+		<action name="checkDataDemo" class="com.ihk.demo.action.easyui.DocumentAction" method="finish">
+			<result name="finish">/demo/easyui/check_data_demo.jsp</result>
+		</action>
+		<!-- 删除做法的demo说明 -->
+		<action name="deleteDataDemo" class="com.ihk.demo.action.easyui.DocumentAction" method="finish">
+			<result name="finish">/demo/easyui/delete_data_demo.jsp</result>
+		</action>
+		<!-- 弹窗(内容框)的demo说明 -->
+		<action name="popwindowDataDemo" class="com.ihk.demo.action.easyui.DocumentAction" method="finish">
+			<result name="finish">/demo/easyui/popwindow_data_demo.jsp</result>
+		</action>
+		<!-- 弹窗(提示框)的demo说明 -->
+		<action name="popwindowMessageDemo" class="com.ihk.demo.action.easyui.DocumentAction" method="finish">
+			<result name="finish">/demo/easyui/popwindow_message_demo.jsp</result>
+		</action>
+		<!-- 界面间的通信的demo说明 -->
+		<action name="communicationDemo" class="com.ihk.demo.action.easyui.DocumentAction" method="finish">
+			<result name="finish">/demo/easyui/communication_demo.jsp</result>
+		</action>
+		<!-- 报表常规做法的demo说明 -->
+		<action name="reportNormalDemo" class="com.ihk.demo.action.easyui.DocumentAction" method="finish">
+			<result name="finish">/demo/easyui/report_normal_demo.jsp</result>
+		</action>
+		<!-- 折线图的demo说明 -->
+		<action name="reportLineDemo" class="com.ihk.demo.action.easyui.DocumentAction" method="finish">
+			<result name="finish">/demo/easyui/report_line_demo.jsp</result>
+		</action>
+		<!-- 柱状图的demo说明 -->
+		<action name="reportColumnDemo" class="com.ihk.demo.action.easyui.DocumentAction" method="finish">
+			<result name="finish">/demo/easyui/report_column_demo.jsp</result>
+		</action>
+		<!-- 比例图的demo说明 -->
+		<action name="reportPieDemo" class="com.ihk.demo.action.easyui.DocumentAction" method="finish">
+			<result name="finish">/demo/easyui/report_pie_demo.jsp</result>
+		</action>
+		<!-- 报表表格(列表)的demo说明 -->
+		<action name="reportListDemo" class="com.ihk.demo.action.easyui.DocumentAction" method="finish">
+			<result name="finish">/demo/easyui/report_list_demo.jsp</result>
+		</action>
+		<!-- 公司下拉框(单选，多选)的demo说明 -->
+		<action name="myCompanyComboboxDemo" class="com.ihk.demo.action.easyui.DocumentAction" method="finish">
+			<result name="finish">/demo/easyui/my_company_combobox_demo.jsp</result>
+		</action>
+		<!-- 项目下拉框(单选，多选)的demo说明 -->
+		<action name="myProjectComboboxDemo" class="com.ihk.demo.action.easyui.DocumentAction" method="finish">
+			<result name="finish">/demo/easyui/my_project_combobox_demo.jsp</result>
+		</action>
+		<!-- 楼盘项目，分区，楼栋级联下拉框的demo说明 -->
+		<action name="myPropertyprojectMulDemo" class="com.ihk.demo.action.easyui.DocumentAction" method="finish">
+			<result name="finish">/demo/easyui/my_propertyproject_mul_demo.jsp</result>
+		</action>
+		<!-- 公司，公司项目级联下拉框的demo说明 -->
+		<action name="myCompanyprojectMulDemo" class="com.ihk.demo.action.easyui.DocumentAction" method="finish">
+			<result name="finish">/demo/easyui/my_companyproject_mul_demo.jsp</result>
+		</action>
+		<!-- 公司项目拼音搜索下拉框的demo说明 -->
+		<action name="myCompanyprojectPinyinDemo" class="com.ihk.demo.action.easyui.DocumentAction" method="finish">
+			<result name="finish">/demo/easyui/my_companyproject_pinyin_demo.jsp</result>
+		</action>
+		<!-- 常用java工具类的demo说明 -->
+		<action name="commonJavaDemo" class="com.ihk.demo.action.easyui.DocumentAction" method="finish">
+			<result name="finish">/demo/easyui/common_java_demo.jsp</result>
+		</action>
+		<!-- 常用权限类的demo说明 -->
+		<action name="commonPermissionDemo" class="com.ihk.demo.action.easyui.DocumentAction" method="finish">
+			<result name="finish">/demo/easyui/common_permission_demo.jsp</result>
+		</action>
+		<!-- 常用js类的demo说明 -->
+		<action name="commonJsDemo" class="com.ihk.demo.action.easyui.DocumentAction" method="finish">
+			<result name="finish">/demo/easyui/common_js_demo.jsp</result>
+		</action>
+		<!-- 日志的做法的demo说明 -->
+		<action name="commonLogDemo" class="com.ihk.demo.action.easyui.DocumentAction" method="finish">
+			<result name="finish">/demo/easyui/common_log_demo.jsp</result>
+		</action>
+	</package>
+	
+	
+	
+</struts>
+
+
+
